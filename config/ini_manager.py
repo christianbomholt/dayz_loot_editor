@@ -9,7 +9,7 @@ class INIManager(object):
     def write_ini(self, section, sub_section, value):
         self.config[section] = {}
         self.config[section][sub_section] = str(value)
-        with open(self.file_name, 'w') as configfile:
+        with open(self.file_name, "w") as configfile:
             self.config.write(configfile)
 
     def read_ini(self, section, sub_section):

@@ -29,42 +29,60 @@ class XMLParser(object):
         self.string_data = string_data
         self.xml = ET.fromstring(self.string_data)
         self.mod_prefixes = ["Mass", "GP_", "gp_", "FP4_"]
-        self.not_gun_keywords = ["lrs", "ammo", "optic", "sawed", "suppressor", "goggles", "mag", "light", "rnd",
-                                 "bayonet", "railatt", "compensator", "drum", "palm", "STANAG", "buttstock", "bttstck",
-                                 "handguard", "hndgrd"]
+        self.not_gun_keywords = [
+            "lrs",
+            "ammo",
+            "optic",
+            "sawed",
+            "suppressor",
+            "goggles",
+            "mag",
+            "light",
+            "rnd",
+            "bayonet",
+            "railatt",
+            "compensator",
+            "drum",
+            "palm",
+            "STANAG",
+            "buttstock",
+            "bttstck",
+            "handguard",
+            "hndgrd",
+        ]
 
     def get_items(self):
         items = list()
-        for item_value in self.xml.iter('type'):
+        for item_value in self.xml.iter("type"):
             item = Item()
             usages = list()
             tiers = list()
-            item.name = item_value.attrib['name']
+            item.name = item_value.attrib["name"]
             for i in item_value:
-                if i.tag == 'nominal':
+                if i.tag == "nominal":
                     item.nominal = i.text
-                elif i.tag == 'restock':
+                elif i.tag == "restock":
                     item.restock = i.text
-                elif i.tag == 'min':
+                elif i.tag == "min":
                     item.min = i.text
-                elif i.tag == 'category':
-                    category = i.attrib['name']
-                    if category != 'weapons':
+                elif i.tag == "category":
+                    category = i.attrib["name"]
+                    if category != "weapons":
                         item.item_type = category
                     else:
                         item.item_type = self.__get_type(name=item.name)
-                elif i.tag == 'lifetime':
+                elif i.tag == "lifetime":
                     item.lifetime = i.text
-                elif i.tag == 'usage':
-                    usages.append(i.attrib['name'])
-                elif i.tag == 'value':
-                    tiers.append(i.attrib['name'])
-                elif i.tag == 'flags':
-                    item.dynamic_event = i.attrib['deloot']
-                    item.count_in_hoarder = i.attrib['count_in_hoarder']
-                    item.count_in_cargo = i.attrib['count_in_cargo']
-                    item.count_in_player = i.attrib['count_in_player']
-                    item.count_in_map = i.attrib['count_in_map']
+                elif i.tag == "usage":
+                    usages.append(i.attrib["name"])
+                elif i.tag == "value":
+                    tiers.append(i.attrib["name"])
+                elif i.tag == "flags":
+                    item.dynamic_event = i.attrib["deloot"]
+                    item.count_in_hoarder = i.attrib["count_in_hoarder"]
+                    item.count_in_cargo = i.attrib["count_in_cargo"]
+                    item.count_in_player = i.attrib["count_in_player"]
+                    item.count_in_map = i.attrib["count_in_map"]
             item.usage = ",".join(usages)
             item.tire = ",".join(tiers)
             items.append(item)
@@ -93,5 +111,5 @@ class XMLParser(object):
     def __remove_mod_prefix(self, name):
         for prefix in self.mod_prefixes:
             if name.startswith(prefix):
-                name = name[len(prefix):]
+                name = name[len(prefix) :]
         return name

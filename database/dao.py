@@ -13,9 +13,9 @@ class DAO(object):
         session_maker.configure(bind=engine)
         self.session = session_maker()
 
-    '''
+    """
     CRUD Operations related to items
-    '''
+    """
 
     # create item
     def create_item(self, item: Item, duplicate=0):
@@ -58,7 +58,7 @@ class DAO(object):
     # get items
     def all_items(self):
         """items = self.session.query(Item).all()
-                self.session.commit()"""
+        self.session.commit()"""
 
         db_connection = sqlite3.connect(self.db_name)
         sql_delete_items = "select * from items"
@@ -117,7 +117,7 @@ class DAO(object):
         db_connection = sqlite3.connect(self.db_name)
         db_cursor = db_connection.cursor()
         sql_filter_items = "SELECT name FROM sqlite_master WHERE type= ? AND name=?"
-        db_cursor.execute(sql_filter_items, ('table', 'items'))
+        db_cursor.execute(sql_filter_items, ("table", "items"))
         tables = db_cursor.fetchall()
         db_connection.commit()
         db_connection.close()

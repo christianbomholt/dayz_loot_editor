@@ -14,7 +14,7 @@ import tkinter.filedialog as filedialog
 class GUI(object):
     def __init__(self, main_container: Tk):
         #
-        self.config = ConfigManager('config.xml')
+        self.config = ConfigManager("config.xml")
         self.ini_manger = INIManager("app.ini")
         self.database = DAO(self.ini_manger.read_ini("Database", "Database_Name"))
         #
@@ -77,11 +77,15 @@ class GUI(object):
         Label(self.entryFrame, text="Nominal").grid(row=1, column=0, sticky="w", pady=5)
         Label(self.entryFrame, text="Min").grid(row=2, column=0, sticky="w", pady=5)
         Label(self.entryFrame, text="Restock").grid(row=3, column=0, sticky="w", pady=5)
-        Label(self.entryFrame, text="Lifetime").grid(row=4, column=0, sticky="w", pady=5)
+        Label(self.entryFrame, text="Lifetime").grid(
+            row=4, column=0, sticky="w", pady=5
+        )
         Label(self.entryFrame, text="Usages").grid(row=5, column=0, sticky="w", pady=5)
         Label(self.entryFrame, text="Tiers").grid(row=6, column=0, sticky="w", pady=5)
         Label(self.entryFrame, text="Type").grid(row=7, column=0, sticky="w", pady=5)
-        Label(self.entryFrame, text="Sub Type").grid(row=8, column=0, sticky="w", pady=5)
+        Label(self.entryFrame, text="Sub Type").grid(
+            row=8, column=0, sticky="w", pady=5
+        )
         Label(self.entryFrame, text="Rarity").grid(row=9, column=0, sticky="w", pady=5)
         Label(self.entryFrame, text="Mod").grid(row=10, column=0, sticky="w", pady=5)
         Label(self.entryFrame, text="Trader").grid(row=11, column=0, sticky="w", pady=5)
@@ -115,22 +119,38 @@ class GUI(object):
         self.restockField.grid(row=3, column=1, sticky="w")
         self.lifetimeField = Entry(self.entryFrame, textvariable=self.lifetime)
         self.lifetimeField.grid(row=4, column=1, sticky="w")
-        self.usagesListBox = Listbox(self.entryFrame, height=4, selectmode="multiple", exportselection=False, )
+        self.usagesListBox = Listbox(
+            self.entryFrame,
+            height=4,
+            selectmode="multiple",
+            exportselection=False,
+        )
         self.usagesListBox.grid(row=5, column=1, pady=5, sticky="w")
         usages = self.config.get_usages()
         for i in usages:
             self.usagesListBox.insert(END, i)
 
-        self.tiersListBox = Listbox(self.entryFrame, height=4, selectmode="multiple", exportselection=False, )
+        self.tiersListBox = Listbox(
+            self.entryFrame,
+            height=4,
+            selectmode="multiple",
+            exportselection=False,
+        )
         self.tiersListBox.grid(row=6, column=1, pady=5, sticky="w")
         tires = self.config.get_tires()
         for i in tires:
             self.tiersListBox.insert(END, i)
-        self.typeOption = OptionMenu(self.entryFrame, self.type, *self.config.get_types()[1:])
+        self.typeOption = OptionMenu(
+            self.entryFrame, self.type, *self.config.get_types()[1:]
+        )
         self.typeOption.grid(row=7, column=1, sticky="w", pady=5)
-        self.subtypeAutoComp = ComboBoxManager(self.entryFrame, self.config.get_sub_types(), highlightthickness=1)
+        self.subtypeAutoComp = ComboBoxManager(
+            self.entryFrame, self.config.get_sub_types(), highlightthickness=1
+        )
         self.subtypeAutoComp.grid(row=8, column=1, sticky="w", pady=5)
-        self.rarityOption = OptionMenu(self.entryFrame, self.rarity, *self.config.get_rarities())
+        self.rarityOption = OptionMenu(
+            self.entryFrame, self.rarity, *self.config.get_rarities()
+        )
         self.rarityOption.grid(row=9, column=1, sticky="w", pady=5)
         self.modField = Entry(self.entryFrame, textvariable=self.mod)
         self.modField.grid(row=10, column=1, sticky="w", pady=5)
@@ -139,24 +159,34 @@ class GUI(object):
         # check boxes frame
         self.checkBoxFrame = Frame(self.entryFrameHolder)
         self.checkBoxFrame.grid(row=1, column=0, columnspan=2, sticky="w")
-        self.dynamic_event_check = Checkbutton(self.checkBoxFrame, text="Dynamic Event", variable=self.dynamic_event)
+        self.dynamic_event_check = Checkbutton(
+            self.checkBoxFrame, text="Dynamic Event", variable=self.dynamic_event
+        )
         self.dynamic_event_check.grid(row=0, column=0, sticky="w")
-        self.count_in_cargo_check = Checkbutton(self.checkBoxFrame, text="Count in Cargo", variable=self.count_in_cargo)
+        self.count_in_cargo_check = Checkbutton(
+            self.checkBoxFrame, text="Count in Cargo", variable=self.count_in_cargo
+        )
         self.count_in_cargo_check.grid(row=1, column=0, sticky="w")
-        self.count_in_hoarder_check = Checkbutton(self.checkBoxFrame, text="Count in Hoarder",
-                                                  variable=self.count_in_hoarder)
+        self.count_in_hoarder_check = Checkbutton(
+            self.checkBoxFrame, text="Count in Hoarder", variable=self.count_in_hoarder
+        )
         self.count_in_hoarder_check.grid(row=2, column=0, sticky="w")
-        self.count_in_map_check = Checkbutton(self.checkBoxFrame, text="Count in Map", variable=self.count_in_map)
+        self.count_in_map_check = Checkbutton(
+            self.checkBoxFrame, text="Count in Map", variable=self.count_in_map
+        )
         self.count_in_map_check.grid(row=3, column=0, sticky="w")
-        self.count_in_player_check = Checkbutton(self.checkBoxFrame, text="Count in Player",
-                                                 variable=self.count_in_player)
+        self.count_in_player_check = Checkbutton(
+            self.checkBoxFrame, text="Count in Player", variable=self.count_in_player
+        )
         self.count_in_player_check.grid(row=4, column=0, sticky="w")
 
-        Button(self.checkBoxFrame, text="Update", width=8, command=self.__update_item). \
-            grid(row=5, column=0, pady=5, sticky="w")
+        Button(
+            self.checkBoxFrame, text="Update", width=8, command=self.__update_item
+        ).grid(row=5, column=0, pady=5, sticky="w")
 
-        Button(self.checkBoxFrame, text="Delete", width=8, command=self.__delete_item). \
-            grid(row=5, column=1, pady=5, sticky="w")
+        Button(
+            self.checkBoxFrame, text="Delete", width=8, command=self.__delete_item
+        ).grid(row=5, column=1, pady=5, sticky="w")
 
     def __create_tree_view(self):
         self.treeFrame = Frame(self.window)
@@ -167,8 +197,13 @@ class GUI(object):
         self.column_info = self.config.get_tree_heading()
         self.tree = ttk.Treeview(self.treeFrame, columns=self.column_info[0], height=40)
         for col in self.column_info[1]:
-            self.tree.heading(col[2], text=col[0], command=lambda _col=col[0]:
-            self.tree_view_sort_column(self.tree, _col, False), )
+            self.tree.heading(
+                col[2],
+                text=col[0],
+                command=lambda _col=col[0]: self.tree_view_sort_column(
+                    self.tree, _col, False
+                ),
+            )
             self.tree.column(col[2], width=col[1], stretch=0)
 
         self.tree.grid(row=0, column=0, sticky="nsew")
@@ -196,18 +231,29 @@ class GUI(object):
 
         self.type_for_filter = StringVar()
         self.type_for_filter.set("all")
-        OptionMenu(self.filterFrame, self.type_for_filter, *self.config.get_types()). \
-            grid(row=1, column=1, sticky="w", padx=5)
-        self.sub_type_combo_for_filter = ComboBoxManager(self.filterFrame, self.config.get_sub_types(),
-                                                         highlightthickness=1, width=15)
+        OptionMenu(
+            self.filterFrame, self.type_for_filter, *self.config.get_types()
+        ).grid(row=1, column=1, sticky="w", padx=5)
+        self.sub_type_combo_for_filter = ComboBoxManager(
+            self.filterFrame,
+            self.config.get_sub_types(),
+            highlightthickness=1,
+            width=15,
+        )
         self.sub_type_combo_for_filter.grid(row=2, column=1, sticky="w", pady=5, padx=5)
 
-        Button(self.filterFrame, text="Filter", width=12, command=self.__filter_items).grid(columnspan=2, pady=5,
-                                                                                            padx=10, sticky='nesw')
+        Button(
+            self.filterFrame, text="Filter", width=12, command=self.__filter_items
+        ).grid(columnspan=2, pady=5, padx=10, sticky="nesw")
         self.buttons_frame = Frame(self.filterFrame)
         self.buttons_frame.grid(row=4, columnspan=2)
         # Button(self.buttons, text="view linked items", width=12).grid(row=3)
-        Button(self.buttons_frame, text="Search by Name", width=12, command=self.__search_by_name).grid(row=4)
+        Button(
+            self.buttons_frame,
+            text="Search by Name",
+            width=12,
+            command=self.__search_by_name,
+        ).grid(row=4)
 
     def __update_item(self):
         updated_item = Item()
@@ -268,7 +314,7 @@ class GUI(object):
 
     def __fill_entry_frame(self, event):
         tree_row = self.tree.item(self.tree.focus())
-        id = tree_row['text']
+        id = tree_row["text"]
         item = self.database.get_item(id)
         self.id.set(id)
         self.name.set(item.name)
@@ -279,7 +325,7 @@ class GUI(object):
         self.mod.set(item.mod)
         self.trader.set(item.trader)
         usages = self.config.get_usages()
-        _usages = str(item.usage).split(',')
+        _usages = str(item.usage).split(",")
         for i in range(len(usages)):
             self.usagesListBox.select_clear(i)
         for i in range(len(usages)):
@@ -287,7 +333,7 @@ class GUI(object):
                 if usages[i] == j:
                     self.usagesListBox.select_set(i)
         tires = self.config.get_tires()
-        _tires = str(item.tire).split(',')
+        _tires = str(item.tire).split(",")
         for i in range(len(tires)):
             self.tiersListBox.select_clear(i)
         for i in range(len(tires)):
@@ -318,15 +364,18 @@ class GUI(object):
         xml_writer.export_xml(items)
 
     def tree_view_sort_column(self, tv, col, reverse):
-        l = [(tv.set(k, col), k) for k in tv.get_children('')]
+        l = [(tv.set(k, col), k) for k in tv.get_children("")]
         l.sort(reverse=reverse)
 
         # rearrange items in sorted positions
         for index, (val, k) in enumerate(l):
-            tv.move(k, '', index)
+            tv.move(k, "", index)
 
         # reverse sort next time
-        tv.heading(col, command=lambda _col=col: self.tree_view_sort_column(tv, _col, not reverse))
+        tv.heading(
+            col,
+            command=lambda _col=col: self.tree_view_sort_column(tv, _col, not reverse),
+        )
 
 
 window = Tk()

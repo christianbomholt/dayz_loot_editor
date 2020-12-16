@@ -3,13 +3,13 @@ from model.item import Item
 
 
 def get_type_block(item: Item):
-    type_block = ET.Element('type')
-    type_block.set('name', item.name)
+    type_block = ET.Element("type")
+    type_block.set("name", item.name)
     # nominal
-    nominal = ET.SubElement(type_block, 'nominal')
+    nominal = ET.SubElement(type_block, "nominal")
     nominal.text = str(item.nominal)
     # restock
-    restock = ET.SubElement(type_block, 'restock')
+    restock = ET.SubElement(type_block, "restock")
     restock.text = str(item.restock)
     # lifetime
     lifetime = ET.SubElement(type_block, "lifetime")
@@ -24,26 +24,26 @@ def get_type_block(item: Item):
     cost = ET.SubElement(type_block, "cost")
     cost.text = "100"
 
-    flags = ET.SubElement(type_block, 'flags')
-    flags.set('count_in_hoarder', str(item.count_in_hoarder))
-    flags.set('count_in_player', str(item.count_in_player))
-    flags.set('count_in_map', str(item.count_in_map))
-    flags.set('count_in_cargo', str(item.count_in_cargo))
-    flags.set('crafted', "0")
-    flags.set('deloot', str(item.dynamic_event))
-    category = ET.SubElement(type_block, 'category')
+    flags = ET.SubElement(type_block, "flags")
+    flags.set("count_in_hoarder", str(item.count_in_hoarder))
+    flags.set("count_in_player", str(item.count_in_player))
+    flags.set("count_in_map", str(item.count_in_map))
+    flags.set("count_in_cargo", str(item.count_in_cargo))
+    flags.set("crafted", "0")
+    flags.set("deloot", str(item.dynamic_event))
+    category = ET.SubElement(type_block, "category")
     category.set("name", str(item.item_type))
     #
     usages = str(item.usage)
     usages = usages.split(",")
     for i in usages:
-        usage = ET.SubElement(type_block, 'usage')
+        usage = ET.SubElement(type_block, "usage")
         usage.set("name", i)
-    tires = item.tire.split(',')
+    tires = item.tire.split(",")
 
     for i in tires:
-        tire = ET.SubElement(type_block, 'value')
-        tire.set('name', i)
+        tire = ET.SubElement(type_block, "value")
+        tire.set("name", i)
 
     return ET.tostring(type_block).decode("utf-8").replace("><", ">\n<")
 
