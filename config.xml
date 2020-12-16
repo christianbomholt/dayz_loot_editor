@@ -1,0 +1,47 @@
+<config>
+    <usages>
+        <usage value="Town"/>
+        <usage value="Police"/>
+        <usage value="Military"/>
+        <usage value="item4"/>
+    </usages>
+    <tires>
+        <tire value="Tier1"/>
+        <tire value="Tier2"/>
+        <tire value="Tier3"/>
+        <tire value="Tier4"/>
+    </tires>
+    <types>
+        <type value="all"/>
+        <type value="type"/>
+        <type value="type1"/>
+        <type value="type2"/>
+    </types>
+    <sub_types>
+        <sub_type value="Sub Type 1"/>
+        <sub_type value="Sub Type 2"/>
+    </sub_types>
+    <mods>
+        <mod value="Mod 1"/>
+        <mod value="Mod 2"/>
+    </mods>
+    <rairties>
+        <rarity value="Rarity 1"/>
+        <rarity value="Rarity 2"/>
+    </rairties>
+    <tree>
+        <node name="ID" width ="80" col_id="#0" stretch="YES"/>
+        <node name="Name" width ="80" col_id="#1" stretch="YES"/>
+        <node name="Nominal" width ="80" col_id="#2" stretch="YES"/>
+        <node name="Min" width="80" col_id="#3" stretch="YES"/>
+        <node name="Restock" width="80" col_id="#4" stretch="YES"/>
+        <node name="Lifetime" width="80" col_id="#5" stretch="YES"/>
+        <node name="Usage" width="80" col_id="#6" stretch="YES"/>
+        <node name="Tire" width="80" col_id="#7" stretch="YES"/>
+        <node name="Rarity" width="80" col_id="#8" stretch="YES"/>
+        <node name="Type" width="80" col_id="#9" stretch="YES"/>
+        <node name="Sub Type" width="80" col_id="#10" stretch="YES"/>
+        <node name="Mod" width="80" col_id="#11" stretch="NO"/>
+        <node name="Trader" width="80" col_id="#12" stretch="NO"/>
+    </tree>
+</config>
