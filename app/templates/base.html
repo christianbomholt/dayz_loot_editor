@@ -1,0 +1,59 @@
+<html>
+    <head>
+      <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/materialize.css') }}">
+
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+
+      <script type="text/javascript" src="{{ url_for('static', filename='js/materialize.js') }}"></script>
+      <script type="text/javascript" src="{{ url_for('static', filename='js/materialize.min.js') }}"></script>
+      <script type="text/javascript" src="{{ url_for('static', filename='js/core.min.js') }}"></script>
+      <script type="text/javascript" src="{{ url_for('static', filename='js/moment.min.js') }}"></script>
+      <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    </head>
+    <body>
+      <div class="navbar-fixed">
+        <nav color="warn" class="teal grey darken-4">
+          <div class="nav-wrapper">
+
+            {% if g.user %}
+            <a href ="/auth/logout" class="btn-floating btn-large halfway-fab waves-effect waves-light teal">
+                   <i class="material-icons">lock</i>
+            </a>
+            {% endif %}
+
+            <a href="/" class="brand-logo">
+              <h4> Dayz </h4>
+            </a>
+
+            {% block navbar %}{% endblock %}
+
+          </div>
+        </nav>
+      </div>
+
+      {% block content %}{% endblock %}
+
+      {% if g.user %}
+      <div class="fixed-action-btn">
+        <a class="btn-floating btn-large teal">
+          <i class="large material-icons">dehaze</i>
+        </a>
+        <ul>
+         <li><a href ="/" class="btn-floating teal"><i class="material-icons">home</i></a></li>
+         <!-- <li><a href ="/analysis" class="btn-floating teal"><i class="material-icons">show_chart</i></a></li> -->
+       </ul>
+      </div>
+
+      <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          var elems = document.querySelectorAll('.fixed-action-btn');
+          var instances = M.FloatingActionButton.init(elems, {
+            direction: 'left'
+          });
+        });
+      </script>
+
+      {% endif %}
+    </body>
+</html>

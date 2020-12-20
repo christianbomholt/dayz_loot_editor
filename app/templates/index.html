@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block content %}
+
+<script>
+$(document).ready( function () {
+    $('#datatable').DataTable({
+      select: true  
+    });
+} );
+</script>
+
+<script type="text/javascript" src="{{ url_for('static', filename='js/dataTable.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/dataTables.select.js') }}"></script>
+
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/dataTable.css') }}">
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/select.dataTables.css') }}">
+
+
+<div class="row">
+  <div class="col m12 offset">
+    <div class="card-panel hoverable">
+      <div class="card-content">
+      <a class="waves-effect waves-light btn green darken-1 modal-trigger" href="{{ url_for('.index') }}">  New item </a>
+        <table class="table striped" id="datatable">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Nominal</th>
+              <th>Min </th>
+              <th>Restock </th>
+              <th>Lifetime </th>
+              <th>Usage </th>
+              <th>Tier </th>
+              <th>Rarity </th>
+              <th>Type </th>
+              <th>SubType </th>
+              <th>Mod </th>
+              <th>Trader </th>
+              <th>Delete </th>
+            </tr>
+          </thead>
+           <tbody>
+            {% for result in items %}
+            <tr class="success">
+              <td>{{result.name}}</td>
+              <td>{{result.nominal}}</td>
+              <td>{{result.min}}</td>
+              <td>{{result.restock}}</td>
+              <td>{{result.lifetime}}</td>
+              <td>{{result.usage}}</td>
+              <td>{{result.tire}}</td>
+              <td>{{result.rarity}}</td>
+              <td>{{result.item_type}}</td>
+              <td>{{result.sub_type}}</td>
+              <td>{{result.mod}}</td>
+              <td>{{result.trader}}</td>
+              
+              <td> <a class="waves-effect waves-light btn pink darken-1 modal-trigger" href="#delete-modal" onclick="SetId('{{result.id}}')">
+                <i class="material-icons">delete</i>
+              </a></td>
+            </tr>
+            {% endfor %}
+          </tbody> 
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div id="delete-modal" class="modal">
+  <div class="modal-content">
+    <h4>Are you sure?</h4>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="modal-action modal-close waves-effect waves-red btn red lighten-1">Close</a>
+    <a href="#" class="modal-action modal-close waves-effect waves-red btn red lighten-1">Delete</a>
+    <!-- onclick="Delete()" -->
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.modal');
+    var instances = M.Modal.init(elems);
+  });
+
+
+  function Delete(){
+  console.log(localStorage.getItem('deleteId'));
+	$.ajax({
+		url : '/delete',
+		data : {id: localStorage.getItem('deleteId')},
+		type : 'POST',
+		success: function(res){
+			var result = JSON.parse(res);
+			if(result.status == 'OK'){
+        window.location.reload();
+			}
+			else{
+				alert(result.status);
+			}
+		},
+		error: function(error){
+			console.log(error);
+		}
+	});
+}
+</script>
+
+{% endblock %}

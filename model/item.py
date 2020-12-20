@@ -1,8 +1,27 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, Table
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.ext.hybrid import hybrid_property
+from werkzeug.security import check_password_hash,generate_password_hash
 
 Base = declarative_base()
 
+class User(Base):
+    __tablename__ = "user"
+    id = Column(Integer, primary_key=True)
+    username = Column(String, unique=True, nullable=False)
+    _password = Column("password", String, nullable=False)
+
+    @hybrid_property
+    def password(self):
+        return self._password
+
+    @password.setter
+    def password(self, value):
+        """Store the password as a hash for security."""
+        self._password = generate_password_hash(value)
+
+    def check_password(self, value):
+        return check_password_hash(self.password, value)
 
 class Item(Base):
     __tablename__ = "items"

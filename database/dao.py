@@ -8,9 +8,9 @@ from model.item import Item
 class DAO(object):
     def __init__(self, db_name):
         self.db_name = db_name
-        engine = create_engine(f"sqlite:///{db_name}")
+        self.engine = create_engine(f"sqlite:///{db_name}")
         session_maker = sessionmaker()
-        session_maker.configure(bind=engine)
+        session_maker.configure(bind=self.engine)
         self.session = session_maker()
 
     """
@@ -115,9 +115,8 @@ class DAO(object):
     
     def fast_search_by_name(self, item_name):
         search = f'%{item_name}%'
-        results = self.session.query(Item).filter(Item.name.like(search)).all()
-        return [u.__dict__ for u in results]
-
+        # [u.__dict__ for u in results]
+        return self.session.query(Item).filter(Item.name.like(search)).all()
 
     def items_table_exist(self):
         db_connection = sqlite3.connect(self.db_name)
