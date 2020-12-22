@@ -57,7 +57,7 @@ class GUI(object):
 
         # help menus builder
         help_menu = Menu(self.menu_bar, tearoff=0)
-        help_menu.add_command(label="visit the loot editor github for ")
+        help_menu.add_command(label="You are totally on your own")
 
         # building menu bar
         self.menu_bar.add_cascade(label="File", menu=file_menu)
@@ -257,7 +257,7 @@ class GUI(object):
 
 # Updated to loop through selected items in the grid.
     def __update_item(self):
-        for row in self.treeView.selection():           #This should loop throught the selectionin the treeview ??
+        for updated_item in self.treeView.selection():
             updated_item = Item()
             updated_item.id = self.id.get()
             updated_item.name = self.name.get()
@@ -284,7 +284,7 @@ class GUI(object):
             updated_item.count_in_map = self.count_in_map.get()
             updated_item.count_in_player = self.count_in_player.get()
             self.database.update_item(updated_item)
-            self.__populate_items()
+        self.__populate_items()
 
     def __delete_item(self):
         self.database.delete_item(self.id.get())
