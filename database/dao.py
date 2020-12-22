@@ -93,11 +93,11 @@ class DAO(object):
         db_connection = sqlite3.connect(self.db_name)
         db_cursor = db_connection.cursor()
         if item_sub_type is not None:
-            sql_filter_items = "select * from items where item_type=? AND sub_type=?"
-            db_cursor.execute(sql_filter_items, (item_type, item_sub_type))
+            sql_filter_items = f"select * from items where item_type='%{item_type}%' AND sub_type='%{item_sub_type}%'"
+            db_cursor.execute(sql_filter_items)
         else:
-            sql_filter_items = "select * from items where item_type=?"
-            db_cursor.execute(sql_filter_items, (item_type,))
+            sql_filter_items = f"select * from items where item_type='%{item_type}%'"
+            db_cursor.execute(sql_filter_items)
         items = db_cursor.fetchall()
         db_connection.commit()
         db_connection.close()
@@ -106,7 +106,7 @@ class DAO(object):
     def search_by_name(self, item_name):
         db_connection = sqlite3.connect(self.db_name)
         db_cursor = db_connection.cursor()
-        sql_filter_items = f"select * from items where name = '%{item_name}%'"
+        sql_filter_items = f"select * from items where name='%{item_name}%'"
         db_cursor.execute(sql_filter_items)
         items = db_cursor.fetchall()
         db_connection.commit()
@@ -133,8 +133,8 @@ class DAO(object):
     def items_table_exist(self):
         db_connection = sqlite3.connect(self.db_name)
         db_cursor = db_connection.cursor()
-        sql_filter_items = "SELECT name FROM sqlite_master WHERE type= ? AND name=?"
-        db_cursor.execute(sql_filter_items, ("table", "items"))
+        sql_filter_items = f"SELECT name FROM sqlite_master WHERE type='%{table}%' AND name='%{items}%'"
+        db_cursor.execute(sql_filter_items)
         tables = db_cursor.fetchall()
         db_connection.commit()
         db_connection.close()
