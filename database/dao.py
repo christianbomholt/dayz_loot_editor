@@ -94,10 +94,12 @@ class DAO(object):
         db_cursor = db_connection.cursor()
         if item_sub_type is not None:
             sql_filter_items = f"select * from items where item_type = '%{item_type}%' AND sub_type='%{item_sub_type}%'"
+            print(spl_filter_items)
             db_cursor.execute(sql_filter_items)
         else:
             sql_filter_items = f"select * from items where item_type = '%{item_type}%'"
             db_cursor.execute(sql_filter_items)
+            print(spl_filter_items)
         items = db_cursor.fetchall()
         db_connection.commit()
         db_connection.close()
@@ -107,6 +109,7 @@ class DAO(object):
         db_connection = sqlite3.connect(self.db_name)
         db_cursor = db_connection.cursor()
         sql_filter_items = f"select * from items where name = '%{item_name}%'"
+        print(spl_filer_items)
         db_cursor.execute(sql_filter_items)
         items = db_cursor.fetchall()
         db_connection.commit()
