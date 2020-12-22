@@ -255,35 +255,36 @@ class GUI(object):
             command=self.__search_like_name,
         ).grid(row=4)
 
+# Updated to loop through selected items in the grid.
     def __update_item(self):
-        updated_item = Item()
-        updated_item.id = self.id.get()
-        updated_item.name = self.name.get()
-        updated_item.nominal = self.nominal.get()
-        updated_item.min = self.min.get()
-        updated_item.lifetime = self.lifetime.get()
-        updated_item.restock = self.restock.get()
-        usages = self.usagesListBox.curselection()
-        values = [self.usagesListBox.get(i) for i in usages]
-        usages = ",".join(values)
-        updated_item.usage = usages
-        tires = self.tiersListBox.curselection()
-        tire_values = [self.tiersListBox.get(i) for i in tires]
-        tires = ",".join(tire_values)
-        updated_item.tire = tires
-        updated_item.rarity = self.rarity.get()
-        updated_item.item_type = self.type.get()
-        updated_item.sub_type = self.subtypeAutoComp.get()
-        updated_item.mod = self.mod.get()
-        print(updated_item.mod)
-        updated_item.trader = self.trader.get()
-        updated_item.dynamic_event = self.dynamic_event.get()
-        updated_item.count_in_hoarder = self.count_in_hoarder.get()
-        updated_item.count_in_cargo = self.count_in_cargo.get()
-        updated_item.count_in_map = self.count_in_map.get()
-        updated_item.count_in_player = self.count_in_player.get()
-        self.database.update_item(updated_item)
-        self.__populate_items()
+        for row in self.treeView.selection():           #This should loop throught the selectionin the treeview ??
+            updated_item = Item()
+            updated_item.id = self.id.get()
+            updated_item.name = self.name.get()
+            updated_item.nominal = self.nominal.get()
+            updated_item.min = self.min.get()
+            updated_item.lifetime = self.lifetime.get()
+            updated_item.restock = self.restock.get()
+            usages = self.usagesListBox.curselection()
+            values = [self.usagesListBox.get(i) for i in usages]
+            usages = ",".join(values)
+            updated_item.usage = usages
+            tires = self.tiersListBox.curselection()
+            tire_values = [self.tiersListBox.get(i) for i in tires]
+            tires = ",".join(tire_values)
+            updated_item.tire = tires
+            updated_item.rarity = self.rarity.get()
+            updated_item.item_type = self.type.get()
+            updated_item.sub_type = self.subtypeAutoComp.get()
+            updated_item.mod = self.mod.get()
+            updated_item.trader = self.trader.get()
+            updated_item.dynamic_event = self.dynamic_event.get()
+            updated_item.count_in_hoarder = self.count_in_hoarder.get()
+            updated_item.count_in_cargo = self.count_in_cargo.get()
+            updated_item.count_in_map = self.count_in_map.get()
+            updated_item.count_in_player = self.count_in_player.get()
+            self.database.update_item(updated_item)
+            self.__populate_items()
 
     def __delete_item(self):
         self.database.delete_item(self.id.get())
