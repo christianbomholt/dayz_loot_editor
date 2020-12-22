@@ -20,7 +20,7 @@ $(document).ready( function () {
   <div class="col m12 offset">
     <div class="card-panel hoverable">
       <div class="card-content">
-      <a class="waves-effect waves-light btn green darken-1 modal-trigger" href="{{ url_for('.index') }}">  New item </a>
+      <a class="waves-effect waves-light btn green darken-1 modal-trigger" href="#new-modal">  New item </a>
         <table class="table striped" id="datatable">
           <thead>
             <tr>
@@ -77,6 +77,33 @@ $(document).ready( function () {
     <a href="#" class="modal-action modal-close waves-effect waves-red btn red lighten-1">Delete</a>
     <!-- onclick="Delete()" -->
   </div>
+</div>
+
+
+<div id="new-modal" class="modal">
+  <div class="modal-content">
+    <h4>Add new item</h4>
+  </div>
+  
+  <div class="row">
+    <form class="col s12">
+      <div class="row">
+        <div class="input-field col s12">
+          <i class="material-icons prefix">mode_edit</i>
+          <textarea id="icon_prefix2" class="materialize-textarea"></textarea>
+          <label for="icon_prefix2">XML</label>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="modal-footer">
+    <a href="#" class="modal-action modal-close waves-effect waves-red btn red lighten-1">Close</a>
+    <a href="#" class="modal-action modal-close waves-effect waves-red btn green lighten-1">Add</a>
+    <!-- onclick="Delete()" -->
+  </div>
+
+
 </div>
 
 <script>

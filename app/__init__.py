@@ -13,7 +13,7 @@ from database import DAO
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.utils import secure_filename
 import json
-from model.item import Item
+from model.item import Item, User
 
 db = SQLAlchemy()
 ini_manger = INIManager("app.ini")
@@ -37,10 +37,17 @@ def create_app(env=None):
   @login_required
   def index():
     if request.method == 'POST':
-      a=2
-    # filter(Item.name.like(search))
+      pass
     items = db.session.query(Item).all()
     
     return render_template('index.html', items=items)
+
+  @app.route('/user')
+  def user():
+    user = db.session.query(User).first().__dict__
+    user.pop('_sa_instance_state')
+    user.pop('_password')
+    print(user)
+    return jsonify(user)
 
   return app

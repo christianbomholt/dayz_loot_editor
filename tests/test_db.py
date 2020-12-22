@@ -8,6 +8,6 @@ def test_config_getters():
   assert db.search_by_name("MassBlack")[0][1] == 'MassBlackYellowMB'
   
   for item in db.fast_search_by_name("MassBlackY"):
-    assert item.get("name") in ['MassBlackYellowMB']
+    assert item.name == 'MassBlackYellowMB'
   
 
