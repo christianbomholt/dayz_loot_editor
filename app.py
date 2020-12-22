@@ -250,9 +250,9 @@ class GUI(object):
         # Button(self.buttons, text="view linked items", width=12).grid(row=3)
         Button(
             self.buttons_frame,
-            text="Search by Name",
-            width=12,
-            command=self.__search_by_name,
+            text="Search like Name",
+            width=14,
+            command=self.__search_like_name,
         ).grid(row=4)
 
     def __update_item(self):
@@ -300,6 +300,10 @@ class GUI(object):
     def __search_by_name(self):
         if self.name.get() != "":
             self.__populate_items(self.database.search_by_name(self.name.get()))
+
+    def __search_like_name(self):
+        if self.name.get() != "":
+            self.__populate_items(self.database.search_like_name(self.name.get()))
 
     def __filter_items(self):
         item_type = self.type_for_filter.get()
