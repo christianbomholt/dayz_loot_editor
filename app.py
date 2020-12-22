@@ -1,5 +1,5 @@
-from tkinter import *
-from tkinter import ttk
+from tkinter import Tk, Menu, IntVar, Frame, Label, StringVar, Entry, Listbox, END, OptionMenu, Checkbutton, Button
+from tkinter import ttk, VERTICAL, HORIZONTAL, LabelFrame
 from config import ConfigManager
 from database.dao import DAO
 from model.item import Item

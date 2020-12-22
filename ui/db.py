@@ -1,4 +1,4 @@
-from tkinter import *
+from tkinter import Tk, Toplevel, Frame, StringVar, Radiobutton, Label, Entry, Button
 
 from database.init_db import InitDatabase
 from config.ini_manager import INIManager
