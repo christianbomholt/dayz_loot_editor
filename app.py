@@ -254,10 +254,17 @@ class GUI(object):
             width=14,
             command=self.__search_like_name,
         ).grid(row=4)
+        Button(
+            self.buttons_frame,
+            text="TestButton",
+            width=14,
+            command=self.__search_by_name,
+        ).grid(row=5)
 
 # Updated to loop through selected items in the grid.
     def __update_item(self):
-        for updated_item in self.treeView.selection():
+        for items in self.treeView.selection():
+            print(Item())
             updated_item = Item()
             updated_item.id = self.id.get()
             updated_item.name = self.name.get()
@@ -315,7 +322,8 @@ class GUI(object):
                 sub_type = self.sub_type_combo_for_filter.get()
             else:
                 sub_type = None
-            self.__populate_items(self.database.search_by_name(item_type, sub_type))
+            self.__populate_items(self.database.filter_items(item_type, sub_type))    
+          #  self.__populate_items(self.database.search_by_name(item_type, sub_type))
 
     def __fill_entry_frame(self, event):
         tree_row = self.tree.item(self.tree.focus())
