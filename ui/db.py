@@ -72,7 +72,7 @@ class DB(object):
                     )
                     self.db_status.set("Database connected to: " + self.db_name.get())
                 else:
-                    if DAO(self.db_name.get()).items_table_exist():
+                    if DAO(self.db_name.get()).items_table_exist(): # Dont quite understand what is checked in Items_table_exist()
                         self.manage_ini.write_ini(
                             section="Database",
                             sub_section="Database_Name",
