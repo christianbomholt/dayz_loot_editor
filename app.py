@@ -6,6 +6,7 @@ from model.item import Item
 from ui.db import DB
 from ui.new_items import NewItems
 from ui.combo_box_manager import ComboBoxManager
+from ui.distibutor import Distributor
 from config.ini_manager import INIManager
 from xml_manager.xml_writer import XMLWriter
 import tkinter.filedialog as filedialog
@@ -254,11 +255,16 @@ class GUI(object):
             width=14,
             command=self.__search_like_name,
         ).grid(row=4)
+#
+# This is were we have the test button
+# 
+# 
+#         
         Button(
             self.buttons_frame,
             text="TestButton",
             width=14,
-            command=self.__search_like_name,
+            command=self.updateSel(),
         ).grid(row=5)
 
 # Updated to loop through selected items in the grid.
@@ -292,6 +298,76 @@ class GUI(object):
             updated_item.count_in_player = self.count_in_player.get()
             self.database.update_item(updated_item)
         self.__populate_items()
+
+
+#Trying to port the multi updater from the old application
+
+    def updateSel(self, multiplier=None):
+        for element in self.treeView.selection():
+            print(element)
+            val = self.getEditedValues(element)
+
+    def getSelectedValues(self, element):
+        dict = self.treeView.item(element)
+        # print("DEBUG dict", dict)
+        flags = dao.getFlags(dict["text"])
+
+        val = {
+            "name": dict["text"],
+            "nominal": dict["values"][0],
+            "min": dict["values"][1],
+            "deloot": dict["values"][8],
+            "restock": dict["values"][2],
+            "lifetime": dict["values"][3],
+            "type": dict["values"][4],
+            "subtype": dict["values"][5],
+            "rarity": dict["values"][9],
+            "mod": dict["values"][10],
+            "trader": dict["values"][11],
+            "cargo": flags[0],
+            "hoarder": flags[1],
+            "map": flags[2],
+            "player": flags[3],
+            "flags": flags,
+        }
+        return val
+    
+    
+    def getEditedValues(self, element):
+        selected = self.getSelectedValues(element)
+        selected.pop("rarity")
+        selected.pop("item_type")
+
+        usages = self.usagesListBox.curselection()
+        values = [self.usagesListBox.get(i) for i in usages]
+        usages = ",".join(values)
+        updated_item.usage = usages
+        tires = self.tiersListBox.curselection()
+        tire_values = [self.tiersListBox.get(i) for i in tires]
+        tires = ",".join(tire_values)
+
+        val = {
+            "nominal": self.nominal.get(),
+            "min": self.min.get(),
+            "dynamic_event": self.dynamic_event.get(), # Will have to check
+            "restock": self.restock.get(),
+            "lifetime": self.lifetime.get(),
+            "mod": self.mod.get(),
+            "trader": self.trader.get(),
+            "usage": usages,
+            "tire": tires,
+            "count_in_cargo": self.count_in_cargo.get(),
+            "count_in_hoarder": self.count_in_hoarder.get(),
+            "sub_type": self.subtypeAutoComp.get(),
+            "count_in_map": self.count_in_map.get(),
+            "count_in_player": self.count_in_player.get(),
+        }
+        for field in self.activatedFields:
+            selected[field] = val[field]
+            print(selected)
+        return selected
+
+
 
     def __delete_item(self):
         self.database.delete_item(self.id.get())

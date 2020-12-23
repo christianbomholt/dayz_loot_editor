@@ -141,5 +141,4 @@ class DAO(object):
         tables = db_cursor.fetchall()
         db_connection.commit()
         db_connection.close()
-        print(sql_filter_items)
         return len(tables) == 1
