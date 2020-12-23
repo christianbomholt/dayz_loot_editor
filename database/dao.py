@@ -136,9 +136,10 @@ class DAO(object):
     def items_table_exist(self):
         db_connection = sqlite3.connect(self.db_name)
         db_cursor = db_connection.cursor()
-        sql_filter_items = f"SELECT name FROM sqlite_master WHERE table='{table}' AND name='{items}'"
+        sql_filter_items = f"SELECT name FROM sqlite_master WHERE type='table' AND name='items'"
         db_cursor.execute(sql_filter_items)
         tables = db_cursor.fetchall()
         db_connection.commit()
         db_connection.close()
+        print(sql_filter_items)
         return len(tables) == 1

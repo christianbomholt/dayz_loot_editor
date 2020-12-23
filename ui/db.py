@@ -52,6 +52,9 @@ class DB(object):
         Button(
             button_frame, text="Init Database", width=12, command=self.__init_db
         ).grid(row=0, column=1, sticky="w", padx=5)
+        Button(
+            button_frame, text="Test Button", width=12, command=DAO(self.db_name.get()).items_table_exist()
+        ).grid(row=0, column=2, sticky="w", padx=5)
 
         # windows.center(self.window)
         self.window.wait_window()

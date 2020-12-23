@@ -258,7 +258,7 @@ class GUI(object):
             self.buttons_frame,
             text="TestButton",
             width=14,
-            command=self.__search_by_name,
+            command=self.__search_like_name,
         ).grid(row=5)
 
 # Updated to loop through selected items in the grid.
