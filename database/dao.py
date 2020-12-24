@@ -59,7 +59,6 @@ class Dao(object):
     def all_items(self):
         """items = self.session.query(Item).all()
         self.session.commit()"""
-
         db_connection = sqlite3.connect(self.db_name)
         sql_delete_items = "select * from items"
         db_cursor = db_connection.cursor()
@@ -146,7 +145,7 @@ class Dao(object):
     def getDicts(items):
         itemsListOfDicts = []
         for item in items:
-            itemsListOfDicts.append(getDict(item))
+            itemsListOfDicts.append(Dao.getDict(item))
         return itemsListOfDicts
 
 
@@ -162,3 +161,12 @@ class Dao(object):
             dict[key] = item[k]
         return dict 
 
+    def getFlags(self, item_id):
+        db_connection = sqlite3.connect(self.db_name)
+        db_cursor = db_connection.cursor()
+        sql_filter_items = f"select dynamic_event, count_in_cargo, count_in_hoarder, count_in_map, count_in_player  from items where id = '{item_id}'"
+        db_cursor.execute(sql_filter_items)
+        items = db_cursor.fetchall()
+        db_connection.commit()
+        db_connection.close()
+        return items

@@ -103,7 +103,7 @@ class GUI(object):
         self.sub_type = StringVar()
         self.rarity = StringVar()
         self.mod = StringVar()
-        self.trader = StringVar()
+        self.trader = IntVar()
         self.dynamic_event = IntVar()
         self.count_in_cargo = IntVar()
         self.count_in_hoarder = IntVar()
@@ -264,13 +264,12 @@ class GUI(object):
             self.buttons_frame,
             text="TestButton",
             width=14,
-            command=self.updateSel(),
+            command=self.__updateSel,
         ).grid(row=5)
 
 # Updated to loop through selected items in the grid.
     def __update_item(self):
         for items in self.treeView.selection():
-            print(Item())
             updated_item = Item()
             updated_item.id = self.id.get()
             updated_item.name = self.name.get()
@@ -301,47 +300,50 @@ class GUI(object):
 
 
 #Trying to port the multi updater from the old application
-
-    def updateSel(self, multiplier=None):
+    def __updateSel(self, multiplier=None):
         for element in self.treeView.selection():
-            print(element)
-            val = self.getEditedValues(element)
+            print("DEBUG __updateSel", element)
+            val = self.__getEditedValues(element)
 
-    def getSelectedValues(self, element):
+    def __getSelectedValues(self, element):
         dict = self.treeView.item(element)
-        # print("DEBUG dict", dict)
-        flags = Dao.getFlags(dict["text"])
-
+        print("DEBUG dict", dict)
+        print("DEBUG dict", dict["text"])
+        flags = self.database.getFlags(dict["text"])
+        print("DEBUG Flags", flags)
         val = {
-            "name": dict["text"],
-            "nominal": dict["values"][0],
-            "min": dict["values"][1],
-            "deloot": dict["values"][8],
-            "restock": dict["values"][2],
-            "lifetime": dict["values"][3],
-            "type": dict["values"][4],
-            "subtype": dict["values"][5],
-            "rarity": dict["values"][9],
-            "mod": dict["values"][10],
-            "trader": dict["values"][11],
-            "cargo": flags[0],
-            "hoarder": flags[1],
-            "map": flags[2],
-            "player": flags[3],
-            "flags": flags,
+            "id": dict["text"],
+            "name": dict["values"][1],
+            "nominal": dict["values"][2],
+            "min": dict["values"][3],
+            "restock": dict["values"][4],
+            "lifetime": dict["values"][5],
+            "rarity": dict["values"][8],
+            "item_type": dict["values"][9],
+            "sub_type": dict["values"][10],
+            "mod": dict["values"][11],
+            "trader": dict["values"][12],
+            "dynamic_event" : flags[0],
+            "count_in_cargo": flags[1],
+            "count_in_hoarder": flags[2],
+            "count_in_map": flags[3],
+            "count_in_player": flags[4],
+            "flags": flags
         }
         return val
     
     
-    def getEditedValues(self, element):
-        selected = self.getSelectedValues(element)
+    def __getEditedValues(self, element):
+        selected = self.__getSelectedValues(element)
+        print("before we pop", selected)
         selected.pop("rarity")
         selected.pop("item_type")
+        print("after we pop ",self.trader.get() )
 
         usages = self.usagesListBox.curselection()
         values = [self.usagesListBox.get(i) for i in usages]
         usages = ",".join(values)
-        updated_item.usage = usages
+        print("Usages ", usages)
         tires = self.tiersListBox.curselection()
         tire_values = [self.tiersListBox.get(i) for i in tires]
         tires = ",".join(tire_values)
@@ -364,7 +366,7 @@ class GUI(object):
         }
         for field in self.activatedFields:
             selected[field] = val[field]
-            print(selected)
+            print("__getEditedValues", selected)
         return selected
 
 
