@@ -5,7 +5,7 @@ from sqlalchemy.orm import sessionmaker
 from model.item import Item
 
 
-class DAO(object):
+class Dao(object):
     def __init__(self, db_name):
         self.db_name = db_name
         engine = create_engine(f"sqlite:///{db_name}")
@@ -142,3 +142,23 @@ class DAO(object):
         db_connection.commit()
         db_connection.close()
         return len(tables) == 1
+
+    def getDicts(items):
+        itemsListOfDicts = []
+        for item in items:
+            itemsListOfDicts.append(getDict(item))
+        return itemsListOfDicts
+
+
+    def getDict(item):
+        dict = {}
+        keys = getCoulumNames()
+        for k in range(len(item)):
+            key = keys[k]
+            if key == "mods":
+                key = "mod"
+            if key.startswith("count_in_"):
+                key = key[9:]
+            dict[key] = item[k]
+        return dict 
+

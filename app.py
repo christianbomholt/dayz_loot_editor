@@ -1,7 +1,7 @@
 from tkinter import Tk, Menu, IntVar, Frame, Label, StringVar, Entry, Listbox, END, OptionMenu, Checkbutton, Button
 from tkinter import ttk, VERTICAL, HORIZONTAL, LabelFrame
 from config import ConfigManager
-from database.dao import DAO
+from database.dao import Dao
 from model.item import Item
 from ui.db import DB
 from ui.new_items import NewItems
@@ -17,7 +17,7 @@ class GUI(object):
         #
         self.config = ConfigManager("config.xml")
         self.ini_manger = INIManager("app.ini")
-        self.database = DAO(self.ini_manger.read_ini("Database", "Database_Name"))
+        self.database = Dao(self.ini_manger.read_ini("Database", "Database_Name"))
         #
         self.window = main_container
         self.window.wm_title("Loot Editor v0.98.6")
@@ -310,7 +310,7 @@ class GUI(object):
     def getSelectedValues(self, element):
         dict = self.treeView.item(element)
         # print("DEBUG dict", dict)
-        flags = dao.getFlags(dict["text"])
+        flags = Dao.getFlags(dict["text"])
 
         val = {
             "name": dict["text"],

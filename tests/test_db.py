@@ -1,8 +1,8 @@
 from config import ConfigManager, INIManager
-from database import DAO
+from database import Dao
 
 ini_manger = INIManager("app.ini")
-db = DAO(ini_manger.read_ini("Database", "Database_Name"))
+db = Dao(ini_manger.read_ini("Database", "Database_Name"))
 
 def test_config_getters():
   assert db.search_like_name("MassBlack")[0][1] == 'MassBlackYellowMB'

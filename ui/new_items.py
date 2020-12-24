@@ -2,7 +2,7 @@ from tkinter import *
 from tkinter import ttk
 from config import ConfigManager
 from xml_manager.xml_parser import XMLParser
-from database.dao import DAO
+from database.dao import Dao
 from config.ini_manager import INIManager
 from tkinter import messagebox
 
@@ -22,7 +22,7 @@ class NewItems(object):
         self.modSelector.set(self.config.get_mods()[0])
         self.modSelector.grid(row=0, column=1)
         self.ini_manger = INIManager("app.ini")
-        self.database = DAO(self.ini_manger.read_ini("Database", "Database_Name"))
+        self.database = Dao(self.ini_manger.read_ini("Database", "Database_Name"))
         self.duplicate = IntVar()
         self.duplicate.set(0)
 

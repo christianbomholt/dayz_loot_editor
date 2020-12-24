@@ -1,6 +1,6 @@
 from math import ceil
 
-from database.dao import DAO
+from database.dao import Dao
 
 # todo enum from rarities store at one place
 
@@ -28,13 +28,13 @@ class Distributor():
 
 # input: type to distribute, target nominal, List of include flags
 def distribute(itemsToDistribute, targetNominal, targetMag, targetAmmo, flags):
-    itemsToDistribute = dao.getDicts(itemsToDistribute)
+    itemsToDistribute = Dao.getDicts(itemsToDistribute)
     numElements = calculateNumElements(itemsToDistribute)
     nominalPerElement = targetNominal / numElements if numElements != 0 else 0
     setValues(nominalPerElement, itemsToDistribute)
 
     for item in itemsToDistribute:
-        dao.update_item(item)
+        Dao.update_item(item)
 
     if flags[0] == 1:
         distributeLinkedItem(itemsToDistribute, targetAmmo, "ammo")
@@ -61,10 +61,10 @@ def setValues(nominalPerElement, itemsToDistribute):
 def distributeLinkedItem(guns, targetCount, type):
     zeroAllItems(guns, type)
     elementCount = 0
-    allItems = dao.getDicts(dao.getType(type))
+    allItems = Dao.getDicts(Dao.getType(type))
     for gun in guns:
         elementCount += int(gun["nominal"])
-        linkedItemsToGun = dao.getDicts(dao.getWeaponAndCorresponding(gun["name"]))
+        linkedItemsToGun = Dao.getDicts(Dao.getWeaponAndCorresponding(gun["name"]))
         matchingItems = getLinkedOfType(linkedItemsToGun, type)
 
         # If Multiple item types linked: multiple Mags for example, then the sum of nominals should equal the nominal
@@ -80,7 +80,7 @@ def distributeLinkedItem(guns, targetCount, type):
         item["nominal"] = int(ceil(item["nominal"] * perUnit))
         item["min"] = int(ceil(item["nominal"] / 2))
 
-        dao.update(item)
+        Dao.update(item)
 
 
 def getLinkedOfType(linkedItems, type):
@@ -96,8 +96,8 @@ def get_digits(string):
 
 
 def zeroAllItems(items, type):
-    for item in dao.getDicts(dao.getItemsToZero([item["name"] for item in items], type)):
+    for item in Dao.getDicts(Dao.getItemsToZero([item["name"] for item in items], type)):
         item["nominal"] = 0
         item["min_val"] = 0
 
-        dao.update(item)
+        Dao.update(item)

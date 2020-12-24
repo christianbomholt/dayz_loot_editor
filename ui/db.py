@@ -2,7 +2,7 @@ from tkinter import Tk, Toplevel, Frame, StringVar, Radiobutton, Label, Entry, B
 
 from database.init_db import InitDatabase
 from config.ini_manager import INIManager
-from database.dao import DAO
+from database.dao import Dao
 
 
 class DB(object):
@@ -53,7 +53,7 @@ class DB(object):
             button_frame, text="Init Database", width=12, command=self.__init_db
         ).grid(row=0, column=1, sticky="w", padx=5)
         Button(
-            button_frame, text="Test Button", width=12, command=DAO(self.db_name.get()).items_table_exist()
+            button_frame, text="Test Button", width=12, command=Dao(self.db_name.get()).items_table_exist()
         ).grid(row=0, column=2, sticky="w", padx=5)
 
         # windows.center(self.window)
@@ -75,7 +75,7 @@ class DB(object):
                     )
                     self.db_status.set("Database connected to: " + self.db_name.get())
                 else:
-                    if DAO(self.db_name.get()).items_table_exist(): # Dont quite understand what is checked in Items_table_exist()
+                    if Dao(self.db_name.get()).items_table_exist(): # Dont quite understand what is checked in Items_table_exist()
                         self.manage_ini.write_ini(
                             section="Database",
                             sub_section="Database_Name",
