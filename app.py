@@ -313,16 +313,16 @@ class GUI(object):
         print("DEBUG Flags", flags)
         val = {
             "id": dict["text"],
-            "name": dict["values"][1],
-            "nominal": dict["values"][2],
-            "min": dict["values"][3],
-            "restock": dict["values"][4],
-            "lifetime": dict["values"][5],
-            "rarity": dict["values"][8],
-            "item_type": dict["values"][9],
-            "sub_type": dict["values"][10],
-            "mod": dict["values"][11],
-            "trader": dict["values"][12],
+            "name": dict["values"][0],
+            "nominal": dict["values"][1],
+            "min": dict["values"][2],
+            "restock": dict["values"][3],
+            "lifetime": dict["values"][4],
+            "rarity": dict["values"][7],
+            "item_type": dict["values"][8],
+            "sub_type": dict["values"][9],
+            "mod": dict["values"][10],
+            "trader": dict["values"][11],
             "dynamic_event" : flags[0],
             "count_in_cargo": flags[1],
             "count_in_hoarder": flags[2],
@@ -336,9 +336,9 @@ class GUI(object):
     def __getEditedValues(self, element):
         selected = self.__getSelectedValues(element)
         print("before we pop", selected)
-        selected.pop("rarity")
-        selected.pop("item_type")
-        print("after we pop ",self.trader.get() )
+        selected.pop("id")
+        selected.pop("name")
+        print("after we pop ", selected)
 
         usages = self.usagesListBox.curselection()
         values = [self.usagesListBox.get(i) for i in usages]
@@ -351,16 +351,18 @@ class GUI(object):
         val = {
             "nominal": self.nominal.get(),
             "min": self.min.get(),
-            "dynamic_event": self.dynamic_event.get(), # Will have to check
             "restock": self.restock.get(),
             "lifetime": self.lifetime.get(),
+            "rarity": self.rarity.get(),
+            "item_type": self.type.get(),
+            "sub_type": self.subtypeAutoComp.get(),
             "mod": self.mod.get(),
             "trader": self.trader.get(),
             "usage": usages,
             "tire": tires,
+            "dynamic_event": self.dynamic_event.get(), # Will have to check
             "count_in_cargo": self.count_in_cargo.get(),
             "count_in_hoarder": self.count_in_hoarder.get(),
-            "sub_type": self.subtypeAutoComp.get(),
             "count_in_map": self.count_in_map.get(),
             "count_in_player": self.count_in_player.get(),
         }
