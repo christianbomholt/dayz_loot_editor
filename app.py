@@ -309,8 +309,12 @@ class GUI(object):
         dict = self.treeView.item(element)
         print("DEBUG dict", dict)
         print("DEBUG dict", dict["text"])
-        flags = self.database.getFlags(dict["text"])
+        selectedID = dict["text"]
+        print("DEBUG dict", selectedID)
+
+        flags = self.database.getFlags(selectedID)
         print("DEBUG Flags", flags)
+        print("DEBUG in Flags ", flags[0])        
         val = {
             "id": dict["text"],
             "name": dict["values"][0],
