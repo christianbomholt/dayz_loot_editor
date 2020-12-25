@@ -141,33 +141,3 @@ class Dao(object):
         db_connection.commit()
         db_connection.close()
         return len(tables) == 1
-
-    def getDicts(items):
-        itemsListOfDicts = []
-        for item in items:
-            itemsListOfDicts.append(Dao.getDict(item))
-        return itemsListOfDicts
-
-
-    def getDict(item):
-        dict = {}
-        keys = getCoulumNames()
-        for k in range(len(item)):
-            key = keys[k]
-            if key == "mods":
-                key = "mod"
-            if key.startswith("count_in_"):
-                key = key[9:]
-            dict[key] = item[k]
-        return dict 
-
-    def getFlags(self, item_id):
-        db_connection = sqlite3.connect(self.db_name)
-        db_cursor = db_connection.cursor()
-        sql_filter_flags = f"select dynamic_event, count_in_cargo, count_in_hoarder, count_in_map, count_in_player  from items where id = '{item_id}'"
-        db_cursor.execute(sql_filter_flags)
-        flags = db_cursor.fetchall()
-        db_connection.commit()
-        db_connection.close()
-        print("we are in getflags ", flags)
-        return flags
