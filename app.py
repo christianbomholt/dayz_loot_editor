@@ -270,8 +270,10 @@ class GUI(object):
 # Updated to loop through selected items in the grid.
     def __update_item(self):
         for items in self.treeView.selection():
+            item = self.treeView.item(items)
+            print(item)
             updated_item = Item()
-            updated_item.id = self.id.get()
+            updated_item.id = item["text"]#self.id.get()
             updated_item.name = self.name.get()
             updated_item.nominal = self.nominal.get()
             updated_item.min = self.min.get()
@@ -297,85 +299,6 @@ class GUI(object):
             updated_item.count_in_player = self.count_in_player.get()
             self.database.update_item(updated_item)
         self.__populate_items()
-
-
-#Trying to port the multi updater from the old application
-    def __updateSel(self, multiplier=None):
-        for element in self.treeView.selection():
-            print("DEBUG __updateSel", element)
-            val = self.__getEditedValues(element)
-
-    def __getSelectedValues(self, element):
-        dict = self.treeView.item(element)
-        print("DEBUG dict", dict)
-        print("DEBUG dict", dict["text"])
-        selectedID = dict["text"]
-        print("DEBUG dict", selectedID)
-
-        flags = self.database.getFlags(selectedID)
-        print("DEBUG Flags", flags)
-        print("DEBUG in Flags ", flags[0])        
-        val = {
-            "id": dict["text"],
-            "name": dict["values"][0],
-            "nominal": dict["values"][1],
-            "min": dict["values"][2],
-            "restock": dict["values"][3],
-            "lifetime": dict["values"][4],
-            "rarity": dict["values"][7],
-            "item_type": dict["values"][8],
-            "sub_type": dict["values"][9],
-            "mod": dict["values"][10],
-            "trader": dict["values"][11],
-            "dynamic_event" : flags[0],
-            "count_in_cargo": flags[1],
-            "count_in_hoarder": flags[2],
-            "count_in_map": flags[3],
-            "count_in_player": flags[4],
-            "flags": flags
-        }
-        return val
-    
-    
-    def __getEditedValues(self, element):
-        selected = self.__getSelectedValues(element)
-        print("before we pop", selected)
-        selected.pop("id")
-        selected.pop("name")
-        print("after we pop ", selected)
-
-        usages = self.usagesListBox.curselection()
-        values = [self.usagesListBox.get(i) for i in usages]
-        usages = ",".join(values)
-        print("Usages ", usages)
-        tires = self.tiersListBox.curselection()
-        tire_values = [self.tiersListBox.get(i) for i in tires]
-        tires = ",".join(tire_values)
-
-        val = {
-            "nominal": self.nominal.get(),
-            "min": self.min.get(),
-            "restock": self.restock.get(),
-            "lifetime": self.lifetime.get(),
-            "rarity": self.rarity.get(),
-            "item_type": self.type.get(),
-            "sub_type": self.subtypeAutoComp.get(),
-            "mod": self.mod.get(),
-            "trader": self.trader.get(),
-            "usage": usages,
-            "tire": tires,
-            "dynamic_event": self.dynamic_event.get(), # Will have to check
-            "count_in_cargo": self.count_in_cargo.get(),
-            "count_in_hoarder": self.count_in_hoarder.get(),
-            "count_in_map": self.count_in_map.get(),
-            "count_in_player": self.count_in_player.get(),
-        }
-        for field in self.activatedFields:
-            selected[field] = val[field]
-            print("__getEditedValues", selected)
-        return selected
-
-
 
     def __delete_item(self):
         self.database.delete_item(self.id.get())
