@@ -22,7 +22,7 @@ class GUI(object):
         self.window = main_container
         self.window.wm_title("Loot Editor v0.98.6")
         self.window.grid_rowconfigure(0, weight=1)
-        self.window.grid_columnconfigure(1, weight=1)
+        self.window.grid_columnconfigure(1, weight=3)
         self.menu_bar = Menu(self.window)
         #
         self.__create_menu_bar()
@@ -209,7 +209,6 @@ class GUI(object):
 
         self.tree.grid(row=0, column=0, sticky="nsew")
         self.treeView = self.tree
-
         vertical = ttk.Scrollbar(self.treeFrame, orient=VERTICAL)
         horizontal = ttk.Scrollbar(self.treeFrame, orient=HORIZONTAL)
 
@@ -219,7 +218,7 @@ class GUI(object):
         self.tree.config(xscrollcommand=horizontal.set)
         vertical.config(command=self.tree.yview)
         horizontal.config(command=self.tree.xview)
-
+ 
     def __create_side_bar(self):
         self.filterFrameHolder = Frame(self.window)
         self.filterFrameHolder.grid(row=0, column=2, sticky="n")
@@ -264,16 +263,15 @@ class GUI(object):
             self.buttons_frame,
             text="TestButton",
             width=14,
-            command=self.__updateSel,
+            command="",
         ).grid(row=5)
 
 # Updated to loop through selected items in the grid.
     def __update_item(self):
         for items in self.treeView.selection():
             item = self.treeView.item(items)
-            print(item)
             updated_item = Item()
-            updated_item.id = item["text"]#self.id.get()
+            updated_item.id = item["text"]
             updated_item.name = self.name.get()
             updated_item.nominal = self.nominal.get()
             updated_item.min = self.min.get()
@@ -289,7 +287,7 @@ class GUI(object):
             updated_item.tire = tires
             updated_item.rarity = self.rarity.get()
             updated_item.item_type = self.type.get()
-            updated_item.sub_type = self.subtypeAutoComp.get()
+            updated_item.suMub_type = self.subtypeAutoComp.get()
             updated_item.mod = self.mod.get()
             updated_item.trader = self.trader.get()
             updated_item.dynamic_event = self.dynamic_event.get()
@@ -301,7 +299,10 @@ class GUI(object):
         self.__populate_items()
 
     def __delete_item(self):
-        self.database.delete_item(self.id.get())
+        for items in self.treeView.selection():
+            item = self.treeView.item(items)
+            itemid = item["text"]
+            self.database.delete_item(itemid)
         self.__populate_items()
 
     def __populate_items(self, items=None):
