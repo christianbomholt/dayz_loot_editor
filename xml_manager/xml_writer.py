@@ -39,11 +39,11 @@ def get_type_block(item: Item):
     for i in usages:
         usage = ET.SubElement(type_block, "usage")
         usage.set("name", i)
-    tires = item.tire.split(",")
+    tiers = item.tier.split(",")
 
-    for i in tires:
-        tire = ET.SubElement(type_block, "value")
-        tire.set("name", i)
+    for i in tiers:
+        tier = ET.SubElement(type_block, "value")
+        tier.set("name", i)
 
     return ET.tostring(type_block).decode("utf-8").replace("><", ">\n<")
 

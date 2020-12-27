@@ -5,12 +5,12 @@
         <usage value="Military"/>
         <usage value="item4"/>
     </usages>
-    <tires>
-        <tire value="Tier1"/>
-        <tire value="Tier2"/>
-        <tire value="Tier3"/>
-        <tire value="Tier4"/>
-    </tires>
+    <tiers>
+        <tier value="Tier1"/>
+        <tier value="Tier2"/>
+        <tier value="Tier3"/>
+        <tier value="Tier4"/>
+    </tiers>
     <types>
         <type value="all"/>
         <type value="type"/>
@@ -37,7 +37,7 @@
         <node name="Restock" width="80" col_id="#4" stretch="YES"/>
         <node name="Lifetime" width="80" col_id="#5" stretch="YES"/>
         <node name="Usage" width="150" col_id="#6" stretch="YES"/>
-        <node name="Tire" width="150" col_id="#7" stretch="YES"/>
+        <node name="tier" width="150" col_id="#7" stretch="YES"/>
         <node name="Rarity" width="80" col_id="#8" stretch="YES"/>
         <node name="Type" width="80" col_id="#9" stretch="YES"/>
         <node name="Sub Type" width="80" col_id="#10" stretch="YES"/>

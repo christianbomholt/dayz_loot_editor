@@ -17,7 +17,6 @@ class ConfigManager(object):
         types = list()
         for i in type_list:
             types.append(i.attributes["value"].value)
-
         return types
 
     def get_sub_types(self):
@@ -25,15 +24,14 @@ class ConfigManager(object):
         types = list()
         for i in type_list:
             types.append(i.attributes["value"].value)
-
         return types
 
-    def get_tires(self):
-        tire_list = self.config_file.getElementsByTagName("tire")
-        tires = list()
-        for i in tire_list:
-            tires.append(i.attributes["value"].value)
-        return tires
+    def get_tiers(self):
+        tier_list = self.config_file.getElementsByTagName("tier")
+        tiers = list()
+        for i in tier_list:
+            tiers.append(i.attributes["value"].value)
+        return tiers
 
     def get_mods(self):
         mod_list = self.config_file.getElementsByTagName("mod")

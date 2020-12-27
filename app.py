@@ -98,7 +98,7 @@ class GUI(object):
         self.restock = StringVar()
         self.lifetime = StringVar()
         self.usages = StringVar()
-        self.tires = StringVar()
+        self.tiers = StringVar()
         self.type = StringVar()
         self.sub_type = StringVar()
         self.rarity = StringVar()
@@ -138,8 +138,8 @@ class GUI(object):
             exportselection=False,
         )
         self.tiersListBox.grid(row=6, column=1, pady=5, sticky="w")
-        tires = self.config.get_tires()
-        for i in tires:
+        tiers = self.config.get_tiers()
+        for i in tiers:
             self.tiersListBox.insert(END, i)
         self.typeOption = OptionMenu(
             self.entryFrame, self.type, *self.config.get_types()[1:]
@@ -281,10 +281,10 @@ class GUI(object):
             values = [self.usagesListBox.get(i) for i in usages]
             usages = ",".join(values)
             updated_item.usage = usages
-            tires = self.tiersListBox.curselection()
-            tire_values = [self.tiersListBox.get(i) for i in tires]
-            tires = ",".join(tire_values)
-            updated_item.tire = tires
+            tiers = self.tiersListBox.curselection()
+            tier_values = [self.tiersListBox.get(i) for i in tiers]
+            tiers = ",".join(tier_values)
+            updated_item.tier = tiers
             updated_item.rarity = self.rarity.get()
             updated_item.item_type = self.type.get()
             updated_item.suMub_type = self.subtypeAutoComp.get()
@@ -353,13 +353,13 @@ class GUI(object):
             for j in _usages:
                 if usages[i] == j:
                     self.usagesListBox.select_set(i)
-        tires = self.config.get_tires()
-        _tires = str(item.tire).split(",")
-        for i in range(len(tires)):
+        tiers = self.config.get_tiers()
+        _tiers = str(item.tier).split(",")
+        for i in range(len(tiers)):
             self.tiersListBox.select_clear(i)
-        for i in range(len(tires)):
-            for j in _tires:
-                if tires[i] == j:
+        for i in range(len(tiers)):
+            for j in _tiers:
+                if tiers[i] == j:
                     self.tiersListBox.select_set(i)
 
         self.rarity.set(item.rarity)

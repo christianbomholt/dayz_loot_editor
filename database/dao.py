@@ -36,7 +36,7 @@ class Dao(object):
         item.restock = updated_item.restock
         item.lifetime = updated_item.lifetime
         item.usage = updated_item.usage
-        item.tire = updated_item.tire
+        item.tier = updated_item.tier
         item.rarity = updated_item.rarity
         item.item_type = updated_item.item_type
         item.sub_type = updated_item.sub_type

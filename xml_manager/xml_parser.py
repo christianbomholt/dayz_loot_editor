@@ -84,7 +84,7 @@ class XMLParser(object):
                     item.count_in_player = i.attrib["count_in_player"]
                     item.count_in_map = i.attrib["count_in_map"]
             item.usage = ",".join(usages)
-            item.tire = ",".join(tiers)
+            item.tier = ",".join(tiers)
             items.append(item)
         return items
 

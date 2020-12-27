@@ -13,7 +13,7 @@ class Item(Base):
     restock = Column(Integer)
     lifetime = Column(Integer)
     usage = Column(String)
-    tire = Column(String)
+    tier = Column(String)
     rarity = Column(String)
     item_type = Column(String)
     sub_type = Column(String)

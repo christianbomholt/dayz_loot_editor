@@ -13,7 +13,7 @@ class InitDatabase(object):
         Column("restock", Integer),
         Column("lifetime", Integer),
         Column("usage", String),
-        Column("tire", String),
+        Column("tier", String),
         Column("rarity", String),
         Column("item_type", String),
         Column("sub_type", String),
