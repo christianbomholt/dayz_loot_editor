@@ -1,4 +1,4 @@
-from tkinter import Tk, Toplevel, Frame, StringVar, Radiobutton, Label, Entry, Button
+from tkinter import Tk, Toplevel, Frame, StringVar, Radiobutton, Label, Entry, Button, filedialog
 
 from database.init_db import InitDatabase
 from config.ini_manager import INIManager
@@ -9,6 +9,14 @@ class DB(object):
     DATABASE_NAME = "dayz_items"
     INI_FILE = "app.ini"
     manage_ini = INIManager(INI_FILE)
+
+    def openDB(self):
+        DBname = filedialog.askopenfilename(filetypes=[("Sqlite db's", ".db")])
+        self.__start_db(False, DBname)
+
+    def newDB(self):
+        DBname = filedialog.asksaveasfilename(filetypes=[("Sqlite db's", ".db")])
+        self.__start_db(True, DBname)
 
     def __init__(self, root):
         self.window = Toplevel(root)
@@ -51,13 +59,46 @@ class DB(object):
         button_frame.grid(row=2, column=0, columnspan=3, pady=10)
         Button(
             button_frame, text="Init Database", width=12, command=self.__init_db
-        ).grid(row=0, column=1, sticky="w", padx=5)
-        Button(
-            button_frame, text="Test Button", width=12, command=Dao(self.db_name.get()).items_table_exist()
         ).grid(row=0, column=2, sticky="w", padx=5)
+        Button(
+            button_frame, text="Open DB", width=12, command=self.openDB
+        ).grid(row=0, column=0, sticky="w", padx=5)
+        Button(
+            button_frame, text="New DB", width=12, command=self.newDB
+        ).grid(row=0, column=1, sticky="w", padx=5)
 
         # windows.center(self.window)
         self.window.wait_window()
+
+
+    def __start_db(self, new, DBname):
+        if new:
+            print("StartDB", DBname)
+            InitDatabase(DBname)
+            self.manage_ini.write_ini(
+                section="Database",
+                sub_section="Database_Name",
+                value=DBname,
+            )
+            self.db_status.set("Database connected to: " + DBname)
+            print("We have connected to ",DBname)
+        else:
+            if Dao(self.db_name.get()).items_table_exist(): # Dont quite understand what is checked in Items_table_exist()
+                self.manage_ini.write_ini(
+                    section="Database",
+                    sub_section="Database_Name",
+                    value=self.db_name.get(),
+                )
+                self.db_status.set(
+                "Database connected to: " + self.db_name.get()
+            )
+            else:
+                self.db_status.set(
+                    "items table doesn't exist! Please initialize your Database."
+                )
+
+
+
 
     def __init_db(self):
         if len(self.db_name.get().split(".")) != 2:
