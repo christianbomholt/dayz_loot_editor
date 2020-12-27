@@ -63,6 +63,7 @@ class DB(object):
         Label(self.configFrame, textvariable=self.db_status).grid(
             columnspan=2, row=8, column=0, sticky="w"
         )
+        self.db_name = self.db_status
         button_frame = Frame(self.window)
         button_frame.grid(row=2, column=0, columnspan=3, pady=10)
         Button(
