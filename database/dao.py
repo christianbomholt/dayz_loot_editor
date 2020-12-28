@@ -12,6 +12,7 @@ class Dao(object):
         session_maker = sessionmaker()
         session_maker.configure(bind=engine)
         self.session = session_maker()
+        print("DEBUG the database is connected and session made")
 
     """
     CRUD Operations related to items
@@ -133,6 +134,7 @@ class Dao(object):
 
 
     def items_table_exist(self):
+        print("DEBUG checking if table exist ", self.db_name)
         db_connection = sqlite3.connect(self.db_name)
         db_cursor = db_connection.cursor()
         sql_filter_items = f"SELECT name FROM sqlite_master WHERE type='table' AND name='items'"
@@ -141,3 +143,10 @@ class Dao(object):
         db_connection.commit()
         db_connection.close()
         return len(tables) == 1
+
+    def sql_dbDump(self):
+        print("DEBUG - we are in SQL_dbDump ", self.db_name)
+        db_connection = sqlite3.connect(self.db_name)
+        with open('../dump.sql', 'w') as f:
+            for line in db_connection.iterdump():
+                f.write('%s\n' % line)

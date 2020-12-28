@@ -30,3 +30,5 @@ class InitDatabase(object):
         print("DEBUG We are in __Init__ ",db_name)
         engine = create_engine(f"sqlite:///{db_name}")
         self.meta.create_all(engine)
+        
+        
