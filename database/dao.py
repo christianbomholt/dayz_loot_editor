@@ -145,8 +145,9 @@ class Dao(object):
         return len(tables) == 1
 
     def sql_dbDump(self):
-        print("DEBUG - we are in SQL_dbDump ", self.db_name)
+        s =  str(self.db_name).split(".")
+        filename = f"../{s[0]}.sql"
         db_connection = sqlite3.connect(self.db_name)
-        with open('../dump.sql', 'w') as f:
+        with open(filename, 'w') as f:
             for line in db_connection.iterdump():
                 f.write('%s\n' % line)

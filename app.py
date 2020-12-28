@@ -263,7 +263,7 @@ class GUI(object):
             self.buttons_frame,
             text="TestButton",
             width=14,
-            command=Dao.sql_dbDump(self.database),
+            command=self.database.sql_dbDump,
         ).grid(row=5)
 
 # Updated to loop through selected items in the grid.
