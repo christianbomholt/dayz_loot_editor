@@ -105,7 +105,7 @@ class GUI(object):
         self.sub_type = StringVar()
         self.rarity = StringVar()
         self.mod = StringVar()
-        self.trader = IntVar()
+        self.trader = StringVar()
         self.dynamic_event = IntVar()
         self.count_in_cargo = IntVar()
         self.count_in_hoarder = IntVar()

@@ -35,7 +35,7 @@
         <node text="Min" width="80" col_id="#3" stretch="NO"/>
         <node text="Restock" width="80" col_id="#4" stretch="NO"/>
         <node text="Lifetime" width="80" col_id="#5" stretch="NO"/>
-        <node text="Usage" width="150" col_id="#6" stretch="NO"/>
+        <node text="Usage" width="200" col_id="#6" stretch="YES"/>
         <node text="Tier" width="150" col_id="#7" stretch="NO"/>
         <node text="Rarity" width="80" col_id="#8" stretch="NO"/>
         <node text="Type" width="80" col_id="#9" stretch="NO"/>

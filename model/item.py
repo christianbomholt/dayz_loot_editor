@@ -18,7 +18,7 @@ class Item(Base):
     item_type = Column(String)
     sub_type = Column(String)
     mod = Column(String, default="Vanilla")
-    trader = Column(Integer)
+    trader = Column(String, default="Trader1")
     dynamic_event = Column(Integer)
     count_in_cargo = Column(Integer)
     count_in_hoarder = Column(Integer)

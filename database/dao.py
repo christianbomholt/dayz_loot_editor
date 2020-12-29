@@ -181,10 +181,10 @@ class Dao(object):
             result[i] = list(result[i])
         return result
 
-    def getItemDetailsByTraderLoc(self, subtype, trader_loc):
+    def getItemDetailsByTraderLoc(self, subtype, trader):
         db_connection = sqlite3.connect(self.db_name)
         db_cursor = db_connection.cursor()
-        query = f'SELECT name FROM items where trader_loc = {trader_loc} and subtype = "{subtype}"'
+        query = f'SELECT name FROM items where trader = {trader} and subtype = "{subtype}"'
         db_cursor.execute(query)
         results = db_cursor.fetchall()
         db_connection.commit()
@@ -192,10 +192,10 @@ class Dao(object):
         return [row[0] for row in results]
 
 
-    def getTraderLocsBySubtype(self, subtype):
+    def getTradersBySubtype(self, subtype):
         db_connection = sqlite3.connect(self.db_name)
         db_cursor = db_connection.cursor()
-        query = f"SELECT trader_loc FROM items WHERE subtype = '{subtype}' group by trader_loc"
+        query = f"SELECT trader FROM items WHERE subtype = '{subtype}' group by trader"
         db_cursor.execute(query)
         results = db_cursor.fetchall()
         db_connection.commit()
@@ -204,9 +204,11 @@ class Dao(object):
         return sorted(results)
 
     def setSubtypeForTrader(self, items):
-        db_connection = sqlite3.connect(self.db_name)
-        db_cursor = db_connection.cursor()
-        sql_set_items = f"UPDATE items SET traderCat = ?, buyprice = ?, sellprice= ?, traderExclude= ?, rarity= ? WHERE name = ?;", items)"
-        db_cursor.executemany(sql_set_items, items)
-        db_connection.commit()
-        db_connection.close()              
+        pass
+#        db_connection = sqlite3.connect(self.db_name)
+#        db_cursor = db_connection.cursor()
+#        sql_set_items = f"UPDATE items SET traderCat = ?, buyprice = ?, sellprice= ?, traderExclude= ?, rarity= ? WHERE name = ?;", items)"
+#        db_cursor.executemany(sql_set_items, items)
+#        db_connection.commit()
+#        db_connection.close() 
+      
