@@ -57,9 +57,9 @@
         <node text="Tier" width="150" col_id="#7" stretch="NO"/>
         <node text="Rarity" width="80" col_id="#8" stretch="NO"/>
 		<node text="Category" width="80" col_id="#9" stretch="NO"/>
-        <node text="Type" width="80" col_id="#9" stretch="NO"/>
-        <node text="Sub Type" width="80" col_id="#10" stretch="NO"/>
-        <node text="Mod" width="80" col_id="#11" stretch="NO"/>
-        <node text="Trader" width="60" col_id="#12" stretch="NO"/>
+        <node text="Type" width="80" col_id="#10" stretch="NO"/>
+        <node text="Sub Type" width="80" col_id="#11" stretch="NO"/>
+        <node text="Mod" width="80" col_id="#12" stretch="NO"/>
+        <node text="Trader" width="60" col_id="#13" stretch="NO"/>
     </tree>
 </config>
