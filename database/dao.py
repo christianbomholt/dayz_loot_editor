@@ -164,11 +164,11 @@ class Dao(object):
             for line in db_connection.iterdump():
                 f.write('%s\n' % line)
 
-    # name, subtype, tradercat, buyprice, sellprice, rarity, nominal, traderexclude, mods
+    # name, subtype, tradercat, buyprice, sellprice, rarity, nominal, traderexclude, mod
     def getSubtypeForTrader(self, subtype):
         db_connection = sqlite3.connect(self.db_name)
         db_cursor = db_connection.cursor()
-        sql_filter_items = f"select name, subtype, tradercat, buyprice, sellprice, rarity, nominal, traderexclude, mods from items where subtype = '{subtype}'"
+        sql_filter_items = f"select name, subtype, tradercat, buyprice, sellprice, rarity, nominal, traderexclude, mod from items where subtype = '{subtype}'"
         db_cursor.execute(sql_filter_items)
         result = db_cursor.fetchall()
         for i in range(len(result)):
