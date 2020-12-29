@@ -57,13 +57,13 @@ class DB(object):
         db_path_name = filedialog.asksaveasfilename(filetypes=[("Sqlite db's", ".db")])
         if "/" in db_path_name:
             db_name = db_path_name.split("/")[-1]
-            print("DEBUG in OpenDB ", db_name)
+            #print("DEBUG in OpenDB ", db_name)
         newDataBase = True
         self.__start_db(newDataBase, db_name)
 
     def __start_db(self, newDataBase, db_name):
         if newDataBase:
-            print("DEBUG Start newDataBase", db_name)
+            #print("DEBUG Start newDataBase", db_name)
             InitDatabase(db_name)
             self.manage_ini.write_ini(
                 section="Database",
@@ -71,7 +71,7 @@ class DB(object):
                 value = db_name
             )
             self.db_status.set("Database connected to: " + db_name)
-            print("DEBUG A New Database is being connected to ",db_name)
+            #print("DEBUG A New Database is being connected to ",db_name)
         else:
             if Dao(db_name).items_table_exist():
                 self.manage_ini.write_ini(

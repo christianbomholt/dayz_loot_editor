@@ -1,5 +1,5 @@
 from tkinter import *
-from tkinter import _setit
+from tkinter import _setit, messagebox
 
 #import windows
 import pyperclip
@@ -102,7 +102,7 @@ class TraderEditor(object):
             trader_filtered_rows = rows
         else:
             quick_subtype = rows[0][1]
-            trader_filter_reflist = dao.getItemDetailsByTraderLoc(subtype=quick_subtype, trader_loc=trader_loc)
+            trader_filter_reflist = Dao.getItemDetailsByTraderLoc(subtype=quick_subtype, trader_loc=trader_loc)
             #print("DEBUG: trader_filter_reflist ", trader_filter_reflist)
             trader_filtered_rows = []
             for item in rows:
@@ -233,10 +233,10 @@ class TraderEditor(object):
         selSubtype = "" if selSubtype == "UNASSIGNED" else selSubtype
 
         self.current_selSubtype = selSubtype
-        trader_subtype_choices = dao.getTraderLocsBySubtype(subtype=selSubtype)
+        trader_subtype_choices = Dao.getTraderLocsBySubtype(subtype=selSubtype)
         self.refresh_tradersel(new_locs=trader_subtype_choices)
 
-        itemsOfSubtype = dao.getSubtypeForTrader(selSubtype)
+        itemsOfSubtype = Dao.getSubtypeForTrader(selSubtype)
         itemsOfSubtypeOfSelectedMods = []
 
         for item in itemsOfSubtype:
@@ -263,7 +263,7 @@ class TraderEditor(object):
 
     def update(self):
         values = self.createValues()
-        dao.setSubtypeForTrader(values)
+        Dao.setSubtypeForTrader(values)
 
     def createTrader(self):
         subtype = self.subTypeListbox.get(ANCHOR)
@@ -279,7 +279,7 @@ class TraderEditor(object):
         selSubtype = self.subTypeListbox.get(ANCHOR)
         selSubtype = "" if selSubtype == "UNASSIGNED" else selSubtype
         # name, subtype, tradercat, buyprice, sellprice, rarity, nominal, traderexclude
-        itms = dao.getSubtypeForTrader(selSubtype)
+        itms = Dao.getSubtypeForTrader(selSubtype)
 
         # buyprice, sellprice, tradercat, subtype, name
         for item in self.traderVal:
@@ -293,7 +293,7 @@ class TraderEditor(object):
         selSubtype = "" if selSubtype == "UNASSIGNED" else selSubtype
 
         # name, subtype, tradercat, buyprice, sellprice, rarity, nominal, traderexclude
-        itemsOfSubtype = dao.getSubtypeForTrader(selSubtype)
+        itemsOfSubtype = Dao.getSubtypeForTrader(selSubtype)
         rarities = []
 
         # rarity, nominal
@@ -303,7 +303,7 @@ class TraderEditor(object):
             pricing = distribute(rarities, int(self.buyEntires[0].get()), int(self.buyEntires[1].get()),
                                  int(self.sellEntries[0].get()), int(self.sellEntries[1].get()), rarity_is_set)
         except IndexError:
-            windows.showError(self.window, "No rarities", "Set the rarity for your items, or use nominals")
+            messagebox.showerror("No rarities", "Set the rarity for your items, or use nominals")
 
         buyPricing = pricing[0]
         sellPricing = pricing[1]

@@ -163,3 +163,18 @@ class Dao(object):
         with open(filename, 'w') as f:
             for line in db_connection.iterdump():
                 f.write('%s\n' % line)
+
+    # name, subtype, tradercat, buyprice, sellprice, rarity, nominal, traderexclude, mods
+    def getSubtypeForTrader(self, subtype):
+        db_connection = sqlite3.connect(self.db_name)
+        db_cursor = db_connection.cursor()
+        sql_filter_items = f"select name, subtype, tradercat, buyprice, sellprice, rarity, nominal, traderexclude, mods from items where subtype = '{subtype}'"
+        db_cursor.execute(sql_filter_items)
+        result = db_cursor.fetchall()
+        for i in range(len(result)):
+            if result[i][3] is None:
+                result[i][3] = -1
+            if result[i][4] is None:
+                result[i][4] = -1
+            result[i] = list(result[i])
+        return result
