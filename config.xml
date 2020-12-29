@@ -11,6 +11,15 @@
         <tier value="Tier3"/>
         <tier value="Tier4"/>
     </tiers>
+	<categoryes>
+	    <category value="other"/>	
+	    <category value="clothes"/>
+        <category value="containers"/>
+        <category value="explosives"/>
+        <category value="food"/>
+        <category value="tools"/>
+        <category value="weapons"/>
+	</categoryes>	
     <types>
         <type value="all"/>
         <type value="type"/>
@@ -22,12 +31,21 @@
         <sub_type value="Sub Type 2"/>
     </sub_types>
     <mods>
+	    <mod value="Vanilla"/>
         <mod value="Mod 1"/>
         <mod value="Mod 2"/>
     </mods>
     <rairties>
-        <rarity value="Rarity 1"/>
-        <rarity value="Rarity 2"/>
+        <rarity value="undefined"/>
+        <rarity value="Legendary"/>
+        <rarity value="Extremely Rare"/>
+        <rarity value="Very Rare"/>
+        <rarity value="Rare"/>
+        <rarity value="Somewhat Rare"/>
+        <rarity value="Uncommon"/>
+        <rarity value="Common"/>
+        <rarity value="Very Common"/>
+        <rarity value="All Over The Place"/>
     </rairties>
     <tree>
         <node text="Name" width ="200" col_id="#1" stretch="YES"/>
@@ -38,6 +56,7 @@
         <node text="Usage" width="200" col_id="#6" stretch="YES"/>
         <node text="Tier" width="150" col_id="#7" stretch="NO"/>
         <node text="Rarity" width="80" col_id="#8" stretch="NO"/>
+		<node text="Category" width="80" col_id="#9" stretch="NO"/>
         <node text="Type" width="80" col_id="#9" stretch="NO"/>
         <node text="Sub Type" width="80" col_id="#10" stretch="NO"/>
         <node text="Mod" width="80" col_id="#11" stretch="NO"/>

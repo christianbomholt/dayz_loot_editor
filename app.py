@@ -22,7 +22,7 @@ class GUI(object):
         self.selectedMods = ['mod 1','mod 2']
         #
         self.window = main_container
-        self.window.wm_title("Loot Editor v0.98.6")
+        self.window.wm_title("Loot Editor v0.98.7")
         self.window.grid_rowconfigure(0, weight=1)
         self.window.grid_columnconfigure(1, weight=3)
         self.menu_bar = Menu(self.window)
@@ -80,18 +80,15 @@ class GUI(object):
         Label(self.entryFrame, text="Nominal").grid(row=1, column=0, sticky="w", pady=5)
         Label(self.entryFrame, text="Min").grid(row=2, column=0, sticky="w", pady=5)
         Label(self.entryFrame, text="Restock").grid(row=3, column=0, sticky="w", pady=5)
-        Label(self.entryFrame, text="Lifetime").grid(
-            row=4, column=0, sticky="w", pady=5
-        )
+        Label(self.entryFrame, text="Lifetime").grid(row=4, column=0, sticky="w", pady=5)
         Label(self.entryFrame, text="Usages").grid(row=5, column=0, sticky="w", pady=5)
         Label(self.entryFrame, text="Tiers").grid(row=6, column=0, sticky="w", pady=5)
-        Label(self.entryFrame, text="Type").grid(row=7, column=0, sticky="w", pady=5)
-        Label(self.entryFrame, text="Sub Type").grid(
-            row=8, column=0, sticky="w", pady=5
-        )
-        Label(self.entryFrame, text="Rarity").grid(row=9, column=0, sticky="w", pady=5)
-        Label(self.entryFrame, text="Mod").grid(row=10, column=0, sticky="w", pady=5)
-        Label(self.entryFrame, text="Trader").grid(row=11, column=0, sticky="w", pady=5)
+        Label(self.entryFrame, text="Cat. Type").grid(row=7, column=0, sticky="w", pady=5)
+        Label(self.entryFrame, text="Type").grid(row=8, column=0, sticky="w", pady=5)
+        Label(self.entryFrame, text="Sub Type").grid(row=9, column=0, sticky="w", pady=5)
+        Label(self.entryFrame, text="Rarity").grid(row=10, column=0, sticky="w", pady=5)
+        Label(self.entryFrame, text="Mod").grid(row=11, column=0, sticky="w", pady=5)
+        Label(self.entryFrame, text="Trader").grid(row=12, column=0, sticky="w", pady=5)
         # input variables
         self.id = IntVar()
         self.name = StringVar()
@@ -101,6 +98,7 @@ class GUI(object):
         self.lifetime = StringVar()
         self.usages = StringVar()
         self.tiers = StringVar()
+        self.cat_type = StringVar()
         self.type = StringVar()
         self.sub_type = StringVar()
         self.rarity = StringVar()
@@ -143,22 +141,26 @@ class GUI(object):
         tiers = self.config.get_tiers()
         for i in tiers:
             self.tiersListBox.insert(END, i)
+        self.cat_typeOption = OptionMenu(
+            self.entryFrame, self.cat_type, *self.config.get_cat_types()[1:]
+        )
+        self.cat_typeOption.grid(row=7, column=1, sticky="w", pady=5)
         self.typeOption = OptionMenu(
             self.entryFrame, self.type, *self.config.get_types()[1:]
         )
-        self.typeOption.grid(row=7, column=1, sticky="w", pady=5)
+        self.typeOption.grid(row=8, column=1, sticky="w", pady=5)
         self.subtypeAutoComp = ComboBoxManager(
             self.entryFrame, self.config.get_sub_types(), highlightthickness=1
         )
-        self.subtypeAutoComp.grid(row=8, column=1, sticky="w", pady=5)
+        self.subtypeAutoComp.grid(row=9, column=1, sticky="w", pady=5)
         self.rarityOption = OptionMenu(
             self.entryFrame, self.rarity, *self.config.get_rarities()
         )
-        self.rarityOption.grid(row=9, column=1, sticky="w", pady=5)
+        self.rarityOption.grid(row=10, column=1, sticky="w", pady=5)
         self.modField = Entry(self.entryFrame, textvariable=self.mod)
-        self.modField.grid(row=10, column=1, sticky="w", pady=5)
+        self.modField.grid(row=11, column=1, sticky="w", pady=5)
         self.traderField = Entry(self.entryFrame, textvariable=self.trader)
-        self.traderField.grid(row=11, column=1, sticky="w")
+        self.traderField.grid(row=12, column=1, sticky="w")
         # check boxes frame
         self.checkBoxFrame = Frame(self.entryFrameHolder)
         self.checkBoxFrame.grid(row=1, column=0, columnspan=2, sticky="w")
@@ -197,9 +199,9 @@ class GUI(object):
         self.treeFrame.grid_rowconfigure(0, weight=1)
         self.treeFrame.grid_columnconfigure(1, weight=1)
         self.column_info = self.config.get_tree_heading()
-        #print("DEBUG column Headers: ", self.column_info[0])
+        print("DEBUG column Headers: ", self.column_info[0])
         self.tree = ttk.Treeview(self.treeFrame, columns=self.column_info[0], height=40)
-        #print("DEBUG column Config: ", self.column_info[1])
+        print("DEBUG column Config: ", self.column_info[1])
         for col in self.column_info[1]:
            # print("DEBUG we are in app treeview ", col[0], col[1], col[2], col[3])
             self.tree.heading(
@@ -290,8 +292,9 @@ class GUI(object):
             tiers = ",".join(tier_values)
             updated_item.tier = tiers
             updated_item.rarity = self.rarity.get()
+            updated_item.cat_type = self.cat_type.get()
             updated_item.item_type = self.type.get()
-            updated_item.suMub_type = self.subtypeAutoComp.get()
+            updated_item.sub_type = self.subtypeAutoComp.get()
             updated_item.mod = self.mod.get()
             updated_item.trader = self.trader.get()
             updated_item.dynamic_event = self.dynamic_event.get()
@@ -315,7 +318,7 @@ class GUI(object):
         if self.tree.get_children() != ():
             self.tree.delete(*self.tree.get_children())
         for i in items:
-            self.tree.insert("", "end", text=i[0], value=i[1:13])
+            self.tree.insert("", "end", text=i[0], value=i[1:14])
 
     def __search_by_name(self):
         if self.name.get() != "":
@@ -367,6 +370,7 @@ class GUI(object):
                     self.tiersListBox.select_set(i)
 
         self.rarity.set(item.rarity)
+        self.cat_type.set(item.cat_type)
         self.type.set(item.item_type)
         self.subtypeAutoComp.set_value(item.sub_type)
         self.dynamic_event.set(item.dynamic_event)
@@ -415,18 +419,11 @@ class GUI(object):
         self.usage.trace_add("write", lambda *pargs: OnChange(self.usage,"usage",*pargs))
         self.tier.trace_add("write", lambda *pargs: OnChange(self.tier,"tier",*pargs))
         self.rarity.trace_add("write", lambda *pargs: OnChange(self.rarity,"rarity",*pargs))
+        self.cat_type.trace_add("write", lambda *pargs: OnChange(self.cat_type,"cat_type",*pargs))        
         self.item_type.trace_add("write", lambda *pargs: OnChange(self.item_type,"item_type",*pargs))
         self.sub_type.trace_add("write", lambda *pargs: OnChange(self.sub_type,"sub_type",*pargs))
         self.mod.trace_add("write", lambda *pargs: OnChange(self.mod,"mod",*pargs))
         self.trader.trace_add("write", lambda *pargs: OnChange(self.trader,"trader",*pargs))
-
-
-
-
-
-
-
-        
 
 window = Tk()
 GUI(window)

@@ -15,6 +15,7 @@ class Item(Base):
     usage = Column(String)
     tier = Column(String)
     rarity = Column(String)
+    cat_type = Column(String)
     item_type = Column(String)
     sub_type = Column(String)
     mod = Column(String, default="Vanilla")
