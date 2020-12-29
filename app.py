@@ -195,7 +195,7 @@ class GUI(object):
         self.treeFrame = Frame(self.window)
         self.treeFrame.grid(row=0, column=1, sticky="nsew")
         self.treeFrame.grid_rowconfigure(0, weight=1)
-        self.treeFrame.grid_columnconfigure(0, weight=1)
+        self.treeFrame.grid_columnconfigure(1, weight=1)
         self.column_info = self.config.get_tree_heading()
         print("DEBUG column Headers: ", self.column_info[0])
         self.tree = ttk.Treeview(self.treeFrame, columns=self.column_info[0], height=40)

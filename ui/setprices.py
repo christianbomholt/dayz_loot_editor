@@ -17,6 +17,7 @@ class TraderEditor(object):
         self.selectedMods = selectedMods
         print("DEBUG print selected mods", selectedMods)
         self.traderVal = []
+    
 
         self.main = Frame(self.window)
         self.main.grid()
@@ -42,7 +43,7 @@ class TraderEditor(object):
 
         for mod in self.selectedMods:
             print("DEBUG print mod: ",mod)
-            for subtype_in_mod in Dao.getSubtypesMods(self , mod):
+            for subtype_in_mod in Dao.getSubtypesMods(mod):
                 subTypes.add(subtype_in_mod)
 
         for subType in sorted(subTypes):
