@@ -164,6 +164,8 @@ class Dao(object):
             for line in db_connection.iterdump():
                 f.write('%s\n' % line)
 
+
+#Trying to make the setprices work...............
     # name, subtype, tradercat, buyprice, sellprice, rarity, nominal, traderexclude, mod
     def getSubtypeForTrader(self, subtype):
         db_connection = sqlite3.connect(self.db_name)
@@ -178,3 +180,25 @@ class Dao(object):
                 result[i][4] = -1
             result[i] = list(result[i])
         return result
+
+    def getItemDetailsByTraderLoc(self, subtype, trader_loc):
+        db_connection = sqlite3.connect(self.db_name)
+        db_cursor = db_connection.cursor()
+        query = f'SELECT name FROM items where trader_loc = {trader_loc} and subtype = "{subtype}"'
+        db_cursor.execute(query)
+        results = db_cursor.fetchall()
+        db_connection.commit()
+        db_connection.close()
+        return [row[0] for row in results]
+
+
+    def getTraderLocsBySubtype(self, subtype):
+        db_connection = sqlite3.connect(self.db_name)
+        db_cursor = db_connection.cursor()
+        query = f"SELECT trader_loc FROM items WHERE subtype = '{subtype}' group by trader_loc"
+        db_cursor.execute(query)
+        results = db_cursor.fetchall()
+        db_connection.commit()
+        db_connection.close()
+        results = [row[0] if row[0] is not None else "" for row in results]
+        return sorted(results)        
