@@ -1,4 +1,4 @@
-import pyperclip
+# import pyperclip
 #from windows import addToClipboard
 from math import ceil
 

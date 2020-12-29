@@ -2,7 +2,7 @@ from tkinter import *
 from tkinter import _setit, messagebox
 
 #import windows
-import pyperclip
+# import pyperclip
 from database.dao import Dao
 from utility.categories import traderCatSwitcher
 from utility.exportTrader import createTrader, distribute

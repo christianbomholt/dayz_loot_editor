@@ -1,3 +1,5 @@
+*.toml
+*.lock
 *.pyc
 .idea/
 venv/
