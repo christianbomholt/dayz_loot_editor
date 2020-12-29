@@ -404,6 +404,30 @@ class GUI(object):
     def openTraderEditor(self):
         TraderEditor(self.window,self.selectedMods)
 
+    def OnChange(value, name, *pargs):
+        self.update_dict[name] =  value.get()
+        print(self.update_dict)
+#        do more. set av value based on omv value
+        self.nominal.trace_add("write", lambda *pargs: OnChange(self.nominal,"nominal",*pargs))
+        self.min.trace_add("write", lambda *pargs: OnChange(self.min,"min",*pargs))
+        self.restock.trace_add("write", lambda *pargs: OnChange(self.restock,"restock",*pargs))
+        self.lifetime.trace_add("write", lambda *pargs: OnChange(self.lifetime,"lifetime",*pargs))  
+        self.usage.trace_add("write", lambda *pargs: OnChange(self.usage,"usage",*pargs))
+        self.tier.trace_add("write", lambda *pargs: OnChange(self.tier,"tier",*pargs))
+        self.rarity.trace_add("write", lambda *pargs: OnChange(self.rarity,"rarity",*pargs))
+        self.item_type.trace_add("write", lambda *pargs: OnChange(self.item_type,"item_type",*pargs))
+        self.sub_type.trace_add("write", lambda *pargs: OnChange(self.sub_type,"sub_type",*pargs))
+        self.mod.trace_add("write", lambda *pargs: OnChange(self.mod,"mod",*pargs))
+        self.trader.trace_add("write", lambda *pargs: OnChange(self.trader,"trader",*pargs))
+
+
+
+
+
+
+
+        
+
 window = Tk()
 GUI(window)
 window.mainloop()

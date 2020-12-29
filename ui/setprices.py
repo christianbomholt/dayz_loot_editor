@@ -242,12 +242,13 @@ class TraderEditor(object):
         for item in itemsOfSubtype:
             if item[-1] in self.selectedMods:
                 itemsOfSubtypeOfSelectedMods.append(item[:-1])
-
         self.createTraderEditor(self.window, 0, 1, itemsOfSubtypeOfSelectedMods)
 
     def createLabel(self, root, text, row, column, sticky="w", px=5, py=5):
         Label(root, text=text).grid(row=row, column=column, sticky=sticky, padx=px, pady=py)
 
+ 
+ #   self.traderVal.append(([traderCatEntry, buyPriceEntry, sellPriceEntry, doExclude], [rarity, name, nominal]))
     # traderCat, buyprice, sellprice, traderExclude, rarity, name
     def createValues(self):
         values = []
@@ -258,12 +259,26 @@ class TraderEditor(object):
             item.append(self.traderVal[i][1][0])
             item.append(self.traderVal[i][1][1])
             values.append(item)
-
         return values
 
     def update(self):
         values = self.createValues()
-        Dao.setSubtypeForTrader(values)
+        self.setSubtypeForTrader(values)
+
+    #def setSubtypeForTrader_fast(self, names, cat, bprice, sprice, exclude, rarity):
+    def setSubtypeForTrader_fast(self, values):
+        self.session.query(Item).filter(
+            Item.name.in_(values[5])
+        ).update({
+            Item.traderCat: values[0],
+            Item.buyprice: values[1],
+            Item.sellprice: values[2],
+            Item.traderExclude: values[3],
+            Item.rarity: values[4]
+        }, synchronize_session=False)
+        self.session.commit()
+
+
 
     def createTrader(self):
         subtype = self.subTypeListbox.get(ANCHOR)

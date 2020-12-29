@@ -202,13 +202,4 @@ class Dao(object):
         db_connection.close()
         results = [row[0] if row[0] is not None else "" for row in results]
         return sorted(results)
-
-    def setSubtypeForTrader(self, items):
-        pass
-#        db_connection = sqlite3.connect(self.db_name)
-#        db_cursor = db_connection.cursor()
-#        sql_set_items = f"UPDATE items SET traderCat = ?, buyprice = ?, sellprice= ?, traderExclude= ?, rarity= ? WHERE name = ?;", items)"
-#        db_cursor.executemany(sql_set_items, items)
-#        db_connection.commit()
-#        db_connection.close() 
       
