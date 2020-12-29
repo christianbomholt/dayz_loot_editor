@@ -192,12 +192,14 @@ class GUI(object):
     def __create_tree_view(self):
         self.treeFrame = Frame(self.window)
         self.treeFrame.grid(row=0, column=1, sticky="nsew")
-
         self.treeFrame.grid_rowconfigure(0, weight=1)
         self.treeFrame.grid_columnconfigure(0, weight=1)
         self.column_info = self.config.get_tree_heading()
+        print("DEBUG column Headers: ", self.column_info[0])
         self.tree = ttk.Treeview(self.treeFrame, columns=self.column_info[0], height=40)
+        print("DEBUG column Config: ", self.column_info[1])
         for col in self.column_info[1]:
+           # print("DEBUG we are in app treeview ", col[0], col[1], col[2], col[3])
             self.tree.heading(
                 col[2],
                 text=col[0],
@@ -205,7 +207,7 @@ class GUI(object):
                     self.tree, _col, False
                 ),
             )
-            self.tree.column(col[2], width=col[1], stretch=0)
+            self.tree.column(col[2], width=col[1], stretch=col[3])
 
         self.tree.grid(row=0, column=0, sticky="nsew")
         self.treeView = self.tree

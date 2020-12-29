@@ -54,11 +54,11 @@ class ConfigManager(object):
         for i in column_list:
             columns_info.append(
                 [
-                    i.attributes["name"].value,
+                    i.attributes["text"].value,
                     i.attributes["width"].value,
                     i.attributes["col_id"].value,
                     i.attributes["stretch"].value,
                 ]
             )
-            columns.append(i.attributes["name"].value)
+            columns.append(i.attributes["text"].value)
         return columns, columns_info
