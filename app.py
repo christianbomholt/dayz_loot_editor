@@ -5,6 +5,7 @@ from database.dao import Dao
 from model.item import Item
 from ui.db import DB
 from ui.new_items import NewItems
+from ui.setprices import TraderEditor
 from utility.combo_box_manager import ComboBoxManager
 from utility.distibutor import Distributor
 from config.ini_manager import INIManager
@@ -265,7 +266,7 @@ class GUI(object):
             self.buttons_frame,
             text="TestButton",
             width=14,
-            command=self.database.sql_dbDump,
+            command=self.openTraderEditor,
         ).grid(row=5)
 
 # Updated to loop through selected items in the grid.
@@ -399,7 +400,8 @@ class GUI(object):
             col,
             command=lambda _col=col: self.tree_view_sort_column(tv, _col, not reverse),
         )
-
+    def openTraderEditor(self):
+            TraderEditor(self.window, ['mod1'])
 
 window = Tk()
 GUI(window)

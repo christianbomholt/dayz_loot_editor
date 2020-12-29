@@ -120,13 +120,23 @@ class Dao(object):
         db_connection = sqlite3.connect(self.db_name)
         db_cursor = db_connection.cursor()
         sql_filter_items = f"select * from items where name like '%{item_name}%'"
-        print(sql_filter_items)        
+        #print("DEBUG :", sql_filter_items)        
         db_cursor.execute(sql_filter_items)
         items = db_cursor.fetchall()
         db_connection.commit()
         db_connection.close()
         return items
-    
+
+    def getSubtypesMods(self, mod):
+        db_connection = sqlite3.connect(self.db_name)
+        db_cursor = db_connection.cursor()
+        sql_filter_items = f"SELECT subtype, mods FROM items WHERE mods = '{mod}' group by subtype"
+        db_cursor.execute(sql_filter_items)
+        subtypes = db_cursor.fetchall()
+        db_connection.commit()
+        db_connection.close()
+        return [_[0] for _ in subtypes]    
+  
     def fast_search_like_name(self, item_name):
         search = f'%{item_name}%'
         results = self.session.query(Item).filter(Item.name.like(search)).all()
@@ -134,7 +144,7 @@ class Dao(object):
 
 
     def items_table_exist(self):
-        print("DEBUG checking if table exist ", self.db_name)
+        #print("DEBUG checking if table exist ", self.db_name)
         db_connection = sqlite3.connect(self.db_name)
         db_cursor = db_connection.cursor()
         sql_filter_items = f"SELECT name FROM sqlite_master WHERE type='table' AND name='items'"

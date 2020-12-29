@@ -1,4 +1,5 @@
-from windows import addToClipboard
+import pyperclip
+#from windows import addToClipboard
 from math import ceil
 
 rarityForTrader = {50: 1, 45: 2, 40: 3, 35: 4, 30: 5, 25: 6, 20: 7, 15: 8, 10: 9}
@@ -21,7 +22,7 @@ def createTrader(root, subtype, rows):
             text += "\t\t{},\t\t\t{},\t\t{},\t\t{}\n".format(name, traderCat, buyPrice, sellPrice)
     text += "\n"
 
-    addToClipboard(root, text)
+    pyperclip.copy(root, text)
 
 
 # (rarity, nominal)
