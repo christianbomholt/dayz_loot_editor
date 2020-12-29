@@ -15,7 +15,7 @@ class TraderEditor(object):
         self.window.wm_title("Set Prices for trader config")
         self.window.grab_set()
         self.selectedMods = selectedMods
-
+        print("DEBUG print selected mods", selectedMods)
         self.traderVal = []
 
         self.main = Frame(self.window)
@@ -41,7 +41,8 @@ class TraderEditor(object):
         subTypes = set()
 
         for mod in self.selectedMods:
-            for subtype_in_mod in Dao.getSubtypesMods(mod):
+            print("DEBUG print mod: ",mod)
+            for subtype_in_mod in Dao.getSubtypesMods(self , mod):
                 subTypes.add(subtype_in_mod)
 
         for subType in sorted(subTypes):

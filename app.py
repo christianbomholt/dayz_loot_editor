@@ -19,6 +19,7 @@ class GUI(object):
         self.config = ConfigManager("config.xml")
         self.ini_manger = INIManager("app.ini")
         self.database = Dao(self.ini_manger.read_ini("Database", "Database_Name"))
+        self.selectedMods = ['mod 1','mod 2']
         #
         self.window = main_container
         self.window.wm_title("Loot Editor v0.98.6")
@@ -401,7 +402,7 @@ class GUI(object):
             command=lambda _col=col: self.tree_view_sort_column(tv, _col, not reverse),
         )
     def openTraderEditor(self):
-            TraderEditor(self.window, ['mod1'])
+            TraderEditor(self.window,self.selectedMods)
 
 window = Tk()
 GUI(window)

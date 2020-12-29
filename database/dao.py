@@ -130,7 +130,9 @@ class Dao(object):
     def getSubtypesMods(self, mod):
         db_connection = sqlite3.connect(self.db_name)
         db_cursor = db_connection.cursor()
-        sql_filter_items = f"SELECT subtype, mods FROM items WHERE mods = '{mod}' group by subtype"
+        print("DEBUG in GetSubtupesMods: ", mod)
+        sql_filter_items = f"SELECT subtype, mods FROM items WHERE mods='{mod}' group by subtype"
+        print("DEBUG in GetSubtupesMods", sql_filter_items)
         db_cursor.execute(sql_filter_items)
         subtypes = db_cursor.fetchall()
         db_connection.commit()
