@@ -5,8 +5,8 @@ from database.dao import Dao
 from model.item import Item
 from ui.db import DB
 from ui.new_items import NewItems
-from ui.combo_box_manager import ComboBoxManager
-from ui.distibutor import Distributor
+from utility.combo_box_manager import ComboBoxManager
+from utility.distibutor import Distributor
 from config.ini_manager import INIManager
 from xml_manager.xml_writer import XMLWriter
 import tkinter.filedialog as filedialog
