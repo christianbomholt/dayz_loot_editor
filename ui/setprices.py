@@ -42,14 +42,13 @@ class TraderEditor(object):
         subTypes = set()
 
         for mod in self.selectedMods:
-            print("DEBUG print mod: ",mod)
+            print("DEBUG print mod: ", mod)
             for subtype_in_mod in Dao.getSubtypesMods(mod):
                 subTypes.add(subtype_in_mod)
 
         for subType in sorted(subTypes):
             if subType == "":
                 subType = "UNASSIGNED"
-
             self.subTypeListbox.insert(END, subType)
 
         #######################################

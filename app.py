@@ -19,7 +19,7 @@ class GUI(object):
         self.config = ConfigManager("config.xml")
         self.ini_manger = INIManager("app.ini")
         self.database = Dao(self.ini_manger.read_ini("Database", "Database_Name"))
-        self.selectedMods = ['mod 1','mod 2']
+        self.selectedMods = ['Vanilla','mod 1']
         #
         self.window = main_container
         self.window.wm_title("Loot Editor v0.98.7")
@@ -83,7 +83,7 @@ class GUI(object):
         Label(self.entryFrame, text="Lifetime").grid(row=4, column=0, sticky="w", pady=5)
         Label(self.entryFrame, text="Usages").grid(row=5, column=0, sticky="w", pady=5)
         Label(self.entryFrame, text="Tiers").grid(row=6, column=0, sticky="w", pady=5)
-        Label(self.entryFrame, text="Cat. Type").grid(row=7, column=0, sticky="w", pady=5)
+        Label(self.entryFrame, text="Category").grid(row=7, column=0, sticky="w", pady=5)
         Label(self.entryFrame, text="Type").grid(row=8, column=0, sticky="w", pady=5)
         Label(self.entryFrame, text="Sub Type").grid(row=9, column=0, sticky="w", pady=5)
         Label(self.entryFrame, text="Rarity").grid(row=10, column=0, sticky="w", pady=5)
@@ -199,9 +199,9 @@ class GUI(object):
         self.treeFrame.grid_rowconfigure(0, weight=1)
         self.treeFrame.grid_columnconfigure(1, weight=1)
         self.column_info = self.config.get_tree_heading()
-        print("DEBUG column Headers: ", self.column_info[0])
+        #print("DEBUG column Headers: ", self.column_info[0])
         self.tree = ttk.Treeview(self.treeFrame, columns=self.column_info[0], height=40)
-        print("DEBUG column Config: ", self.column_info[1])
+        #print("DEBUG column Config: ", self.column_info[1])
         for col in self.column_info[1]:
            # print("DEBUG we are in app treeview ", col[0], col[1], col[2], col[3])
             self.tree.heading(
