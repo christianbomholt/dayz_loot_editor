@@ -408,7 +408,7 @@ class GUI(object):
     def openTraderEditor(self):
         TraderEditor(self.window,self.selectedMods)
 
-    def OnChange(value, name, *pargs):
+"""     def OnChange(value, name, *pargs):
         self.update_dict[name] =  value.get()
         print(self.update_dict)
 #        do more. set av value based on omv value
@@ -423,7 +423,7 @@ class GUI(object):
         self.item_type.trace_add("write", lambda *pargs: OnChange(self.item_type,"item_type",*pargs))
         self.sub_type.trace_add("write", lambda *pargs: OnChange(self.sub_type,"sub_type",*pargs))
         self.mod.trace_add("write", lambda *pargs: OnChange(self.mod,"mod",*pargs))
-        self.trader.trace_add("write", lambda *pargs: OnChange(self.trader,"trader",*pargs))
+        self.trader.trace_add("write", lambda *pargs: OnChange(self.trader,"trader",*pargs)) """
 
 window = Tk()
 GUI(window)
