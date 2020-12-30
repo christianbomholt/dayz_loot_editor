@@ -19,7 +19,7 @@ class GUI(object):
         self.config = ConfigManager("config.xml")
         self.ini_manger = INIManager("app.ini")
         self.database = Dao(self.ini_manger.read_ini("Database", "Database_Name"))
-        self.selectedMods = ['Vanilla','mod 1']
+        self.selectedMods = ['Vanilla','Mod 1']
         #
         self.window = main_container
         self.window.wm_title("Loot Editor v0.98.7")
@@ -385,6 +385,48 @@ class GUI(object):
     def __open_items_window(self):
         NewItems(self.window)
         self.__populate_items()
+
+    """ def __create_nominal_info(self):
+        self.infoFrame = Frame(self.window)
+        self.infoFrame.grid(row=1, column=1, sticky="s,w,e")
+
+        Label(self.infoFrame, text="overall nominal / delta:").grid(row=0, column=0)
+
+        Label(self.infoFrame, text="Displayed:").grid(row=0, column=1)
+        Label(self.infoFrame, textvariable=self.totalNomDisplayed).grid(row=0, column=2)
+        i = 3
+
+        for item_type in itemTypes:
+            var = StringVar()
+            delta_start = StringVar()
+
+            self.start_nominal.append(Dao.getNominalByType(item_type))
+            var.set(dao.getNominalByType(item_type))
+            self.nomVars.append(var)
+            delta_start.set(0)
+            self.deltaNom.append(delta_start)
+
+            Label(self.infoFrame, text=item_type.capitalize() + ":").grid(row=0, column=i)
+            Label(self.infoFrame, textvariable=var).grid(row=0, column=i + 1)
+            Label(self.infoFrame, text="/").grid(row=0, column=i + 2)
+            Label(self.infoFrame, textvariable=delta_start).grid(row=0, column=i + 3)
+
+            i += 4
+
+    def __update_nominal_info(self):
+        for i in range(len(self.nomVars)):
+            nominal = dao.getNominalByType(itemTypes[i])
+            self.nomVars[i].set(nominal)
+            try:
+                self.deltaNom[i].set(nominal - self.start_nominal[i])
+            except TypeError:
+                pass
+                #self.deltaupdateNominalInfoNom[i].set(nominal)
+ """
+
+
+
+
 
     def __export_xml(self):
         file = filedialog.asksaveasfile(mode="a", defaultextension=".xml")
