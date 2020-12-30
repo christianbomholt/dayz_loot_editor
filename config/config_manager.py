@@ -12,6 +12,13 @@ class ConfigManager(object):
             usages.append(i.attributes["value"].value)
         return usages
 
+    def get_cat_types(self):
+        cat_type_list = self.config_file.getElementsByTagName("category")
+        cat_types = list()
+        for i in cat_type_list:
+            cat_types.append(i.attributes["value"].value)
+        return cat_types
+
     def get_types(self):
         type_list = self.config_file.getElementsByTagName("type")
         types = list()

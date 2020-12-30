@@ -6,8 +6,10 @@ from model.item import Item
 
 
 class Dao(object):
+    databasename = ""
     def __init__(self, db_name):
         self.db_name = db_name
+        Dao.databasename = db_name
         engine = create_engine(f"sqlite:///{db_name}")
         session_maker = sessionmaker()
         session_maker.configure(bind=engine)
@@ -39,6 +41,7 @@ class Dao(object):
         item.usage = updated_item.usage
         item.tier = updated_item.tier
         item.rarity = updated_item.rarity
+        item.cat_type = updated_item.cat_type
         item.item_type = updated_item.item_type
         item.sub_type = updated_item.sub_type
         item.mod = updated_item.mod
@@ -131,7 +134,7 @@ class Dao(object):
         db_connection = sqlite3.connect(self.db_name)
         db_cursor = db_connection.cursor()
         print("DEBUG in GetSubtupesMods: ", mod)
-        sql_filter_items = f"SELECT subtype, mods FROM items WHERE mods='{mod}' group by subtype"
+        sql_filter_items = f"SELECT subtype, mod FROM items WHERE mod='{mod}' group by subtype"
         print("DEBUG in GetSubtupesMods", sql_filter_items)
         db_cursor.execute(sql_filter_items)
         subtypes = db_cursor.fetchall()
@@ -181,10 +184,10 @@ class Dao(object):
             result[i] = list(result[i])
         return result
 
-    def getItemDetailsByTraderLoc(self, subtype, trader_loc):
+    def getItemDetailsByTraderLoc(self, subtype, trader):
         db_connection = sqlite3.connect(self.db_name)
         db_cursor = db_connection.cursor()
-        query = f'SELECT name FROM items where trader_loc = {trader_loc} and subtype = "{subtype}"'
+        query = f'SELECT name FROM items where trader = {trader} and subtype = "{subtype}"'
         db_cursor.execute(query)
         results = db_cursor.fetchall()
         db_connection.commit()
@@ -192,10 +195,10 @@ class Dao(object):
         return [row[0] for row in results]
 
 
-    def getTraderLocsBySubtype(self, subtype):
+    def getTradersBySubtype(self, subtype):
         db_connection = sqlite3.connect(self.db_name)
         db_cursor = db_connection.cursor()
-        query = f"SELECT trader_loc FROM items WHERE subtype = '{subtype}' group by trader_loc"
+        query = f"SELECT trader FROM items WHERE subtype = '{subtype}' group by trader"
         db_cursor.execute(query)
         results = db_cursor.fetchall()
         db_connection.commit()

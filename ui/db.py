@@ -32,9 +32,9 @@ class DB(object):
         self.db_name = self.db_status
         button_frame = Frame(self.window)
         button_frame.grid(row=2, column=0, columnspan=3, pady=10)
-        Button(
-            button_frame, text="Init Database", width=12, command=self.__init_db
-        ).grid(row=0, column=2, sticky="w", padx=5)
+       # Button(
+       #     button_frame, text="Init Database", width=12, command=self.__init_db
+       # ).grid(row=0, column=2, sticky="w", padx=5)
         Button(
             button_frame, text="Open DB", width=12, command=self.openDB
         ).grid(row=0, column=0, sticky="w", padx=5)
