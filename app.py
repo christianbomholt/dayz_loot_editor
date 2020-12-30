@@ -26,6 +26,7 @@ class GUI(object):
         self.window.grid_rowconfigure(0, weight=1)
         self.window.grid_columnconfigure(1, weight=3)
         self.menu_bar = Menu(self.window)
+        self.update_dict = {}
         #
         self.__create_menu_bar()
         self.__create_entry_frame()
@@ -272,6 +273,7 @@ class GUI(object):
 
 # Updated to loop through selected items in the grid.
     def __update_item(self):
+        
         for items in self.treeView.selection():
             item = self.treeView.item(items)
             updated_item = Item()
@@ -341,6 +343,7 @@ class GUI(object):
         tree_row = self.tree.item(self.tree.focus())
         id = tree_row["text"]
         item = self.database.get_item(id)
+        
         self.id.set(id)
         self.name.set(item.name)
         self.nominal.set(item.nominal)
@@ -374,6 +377,21 @@ class GUI(object):
         self.count_in_cargo.set(item.count_in_cargo)
         self.count_in_map.set(item.count_in_map)
         self.count_in_player.set(item.count_in_player)
+
+
+        # How to set
+        def OnChange(value, name, *pargs):
+            self.update_dict[name] =  value.get()
+            print(self.update_dict)
+            do more. set av value based on omv value
+    
+        self.nominal.trace_add("write", lambda *pargs: OnChange(
+            self.nominal,"nominal",
+             *pargs))
+        self.min.trace_add("write", lambda *pargs: OnChange(
+            self.min,
+            "min",
+             *pargs))
 
     def __open_db_window(self):
         DB(self.window)
