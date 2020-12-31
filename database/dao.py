@@ -14,7 +14,7 @@ class Dao(object):
         session_maker = sessionmaker()
         session_maker.configure(bind=engine)
         self.session = session_maker()
-        print("DEBUG the database is connected and session made")
+        #print("DEBUG the database is connected and session made")
 
     """
     CRUD Operations related to items
@@ -182,22 +182,21 @@ class Dao(object):
     def getSubtypeForTrader(self, sub_type):
         db_connection = sqlite3.connect(Dao.databasename)
         db_cursor = db_connection.cursor()
-        print("DEBUG getSubtypeForTrader ", sub_type)
+        #print("DEBUG getSubtypeForTrader ", sub_type)
         query = f"select name, sub_type, tradercat, buyprice, sellprice, rarity, nominal, traderexclude, mod from items where sub_type = '{sub_type}'"
-        print("DEBUG getSubtypeForTrader ", query)
+        #print("DEBUG getSubtypeForTrader ", query)
         db_cursor.execute(query)
         result = db_cursor.fetchall()
-        print("DEBUG getSubtypeForTrader ", result)
         db_connection.commit()
         db_connection.close()
-        aResult = list(result)        
-        for i in range(len(aResult)):
-            if aResult[i][3] is None:
-                aResult[i][3] = -1
-            if aResult[i][4] is None:
-                aResult[i][4] = -1
-            aResult[i] = list(aResult[i])
-        return aResult
+        result =  [list(elem) for elem in result]
+        for i in range(len(result)):
+            if result[i][3] is None:
+                result[i][3] = -1
+            if result[i][4] is None:
+                result[i][4] = -1
+            result[i] = list(result[i])
+        return result
 
     def getItemDetailsByTraderLoc(self, subtype, trader):
         db_connection = sqlite3.connect(Dao.databasename)

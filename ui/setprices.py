@@ -70,6 +70,7 @@ class TraderEditor(object):
         self.canv.create_window(0, 0, window=self.canvFrame, anchor='nw')
 
         for item in rows:
+            #print("DEBUG item in Rows", item)
             self.traderRow(self.canvFrame, *item)
 
         scrl = Scrollbar(self.frame, orient=VERTICAL)
@@ -134,27 +135,20 @@ class TraderEditor(object):
     def update_scrollregion(self, event):
         self.canv.configure(scrollregion=self.canv.bbox("all"))
 
-    def traderRow(self, parent, name, subtype, traderCat, buyPrice, sellPrice, rarity, nominal, exclude):
+    def traderRow(self, parent, name, sub_type, traderCat, buyPrice, sellPrice, rarity, nominal, exclude):
         frame = Frame(parent)
         frame.grid(padx=5, pady=2, sticky="w")
-
         doExclude = IntVar()
         doExclude.set(exclude)
-
         nameVar = StringVar()
         nameVar.set(name)
-
         traderCatVar = StringVar()
         traderCatVar.set(traderCat)
-
         buyPriceVar = StringVar()
         buyPriceVar.set(buyPrice)
-
         sellPriceVar = StringVar()
         sellPriceVar.set(sellPrice)
-
         xpad = 10
-
         Checkbutton(frame, variable=doExclude).grid(row=0, column=0)
         nameEntry = Entry(frame, textvariable=nameVar, width=25)
         nameEntry.grid(row=0, column=1, padx=xpad)
@@ -169,7 +163,6 @@ class TraderEditor(object):
 
     def clearTraderWindow(self):
         self.frame.grid_forget()
-
         self.traderVal = []
 
     def fillTraderWindow(self, event):
@@ -199,28 +192,27 @@ class TraderEditor(object):
             item.append(self.traderVal[i][1][0])
             item.append(self.traderVal[i][1][1])
             values.append(item)
-
         return values
 
     def update(self):
         values = self.createValues()
-        dao.setSubtypeForTrader(values)
+        Dao.setSubtypeForTrader(values)
 
     def createTrader(self):
-        subtype = self.subTypeListbox.get(ANCHOR)
+        sub_type = self.subTypeListbox.get(ANCHOR)
         items = self.createValues()
         newItems = []
         for item in items:
             newItem = [item[5], item[0], item[1], item[2], item[3], item[4]]
             newItems.append(newItem)
         # name, traderCat, buyPrice, sellPrice, rarity
-        createTrader(self.window, subtype, newItems)
+        createTrader(self.window, sub_type, newItems)
 
     def applyFractions(self):
         selSubtype = self.subTypeListbox.get(ANCHOR)
         selSubtype = "" if selSubtype == "UNASSIGNED" else selSubtype
         # name, subtype, tradercat, buyprice, sellprice, rarity, nominal, traderexclude
-        itms = dao.getSubtypeForTrader(selSubtype)
+        item = Dao.getSubtypeForTrader(self, selSubtype)
 
         # buyprice, sellprice, tradercat, subtype, name
         for item in self.traderVal:
@@ -232,15 +224,17 @@ class TraderEditor(object):
         rarity_is_set = True if self.v.get() == "rar" else False
         selSubtype = self.subTypeListbox.get(ANCHOR)
         selSubtype = "" if selSubtype == "UNASSIGNED" else selSubtype
-
+        #print("DEBUG in DistributePricing ", selSubtype)
         # name, subtype, tradercat, buyprice, sellprice, rarity, nominal, traderexclude
-        itemsOfSubtype = Dao.getSubtypeForTrader(selSubtype)
+        itemsOfSubtype = Dao.getSubtypeForTrader(self, selSubtype)
         rarities = []
 
         # rarity, nominal
         for item in itemsOfSubtype:
+            #print("DEBUG Item", item)
             rarities.append((item[5], item[6]))
         try:
+            #print("DEBUG Rarities", rarities)
             pricing = distribute(rarities, int(self.buyEntires[0].get()), int(self.buyEntires[1].get()),
                                  int(self.sellEntries[0].get()), int(self.sellEntries[1].get()), rarity_is_set)
         except IndexError:
