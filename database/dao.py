@@ -130,6 +130,12 @@ class Dao(object):
         db_connection.close()
         return items
 
+#*******************Used for PyTest***********************************************
+    def fast_search_like_name(self, item_name):
+        search = f'%{item_name}%'
+        results = self.session.query(Item).filter(Item.name.like(search)).all()
+        return [u.__dict__ for u in results]        
+
     def items_table_exist(self):
         #print("DEBUG checking if table exist ", self.db_name)
         db_connection = sqlite3.connect(self.db_name)
