@@ -92,10 +92,10 @@ class GUI(object):
         # input variables
         self.id = IntVar()
         self.name = StringVar()
-        self.nominal = StringVar()
-        self.min = StringVar()
-        self.restock = StringVar()
-        self.lifetime = StringVar()
+        self.nominal = IntVar()
+        self.min = IntVar()
+        self.restock = IntVar()
+        self.lifetime = IntVar()
         self.usages = StringVar()
         self.tiers = StringVar()
         self.cat_type = StringVar()
@@ -280,16 +280,24 @@ class GUI(object):
             item = self.treeView.item(items)
             updated_item = Item()
             updated_item.id = item["text"]
-            if (name := self.name.get()) != '':
-                updated_item.name = name
-            if (nominal := self.nominal.get()) != '':
+#            if (name := self.name.get()) != '':
+#                updated_item.name = name
+            if (nominal := self.nominal.get()) != -1:
                 updated_item.nominal = nominal
-            if (min := self.min.get()) != '':
+            else:
+                updated_item.nominal = item.nominal
+            if (min := self.min.get()) != -1:
                 updated_item.min = min
-            if (lifetime := self.lifetime.get()) != '':
+            else:
+                updated_item.min = item.min
+            if (lifetime := self.lifetime.get()) != -1:
                 updated_item.lifetime = lifetime
-            if (restock := self.restock.get()) != '':
+            else:
+                updated_item.lifetime = item.lifetime    
+            if (restock := self.restock.get()) != -1:
                 updated_item.restock = restock
+            else:
+                updated_item.restock = item.restock    
             usages = self.usagesListBox.curselection()
             values = [self.usagesListBox.get(i) for i in usages]
             usages = ",".join(values)
@@ -300,26 +308,46 @@ class GUI(object):
             updated_item.tier = tiers
             if (rarity := self.rarity.get()) != '':
                 updated_item.rarity = rarity
+            else:
+                updated_item.rarity = item.rarity                
             if (cat_type := self.cat_type.get()) != '':
                 updated_item.cat_type = cat_type
+            else:
+                updated_item.cat_type = item.cat_type    
             if (item_type := self.type.get()) != '':
                 updated_item.item_type = item_type
+            else:
+                updated_item.item_type = item.item_type    
 #            if (sub_type := self.subtypeAutoComp()) != '':
 #                updated_item.sub_type = sub_type
             if (mod := self.mod.get()) != '':
                 updated_item.mod = mod
+            else:
+                updated_item.mod = item.mod    
             if (trader := self.trader.get()) != '':
                 updated_item.trader = trader
+            else:
+                updated_item.trader = item.trader    
             if (dynamic_event := self.dynamic_event.get()) != -1:
                 updated_item.dynamic_event = dynamic_event
+            else:
+                updated_item.dynamic_event = item.dynamic_event    
             if (count_in_hoarder := self.count_in_hoarder.get()) != -1:
                 updated_item.count_in_hoarder = count_in_hoarder
+            else:
+                updated_item.count_in_hoarder = item.count_in_hoarder    
             if (count_in_cargo := self.count_in_cargo.get()) != -1:
                 updated_item.count_in_cargo = count_in_cargo
+            else:
+                updated_item.count_in_cargo = item.count_in_cargo
             if (count_in_map := self.count_in_map.get()) != -1:
                 updated_item.count_in_map = count_in_map
+            else:
+                updated_item.count_in_map = item.count_in_map    
             if (count_in_player := self.count_in_player.get()) != -1:
                 updated_item.count_in_player = count_in_player
+            else:
+                updated_item.count_in_player = item.count_in_player    
             self.database.update_item(updated_item)
         self.__populate_items()
 
@@ -363,11 +391,11 @@ class GUI(object):
         id = tree_row["text"]
         item = self.database.get_item(id)
         self.id.set(id)
-        self.name.set("")
-        self.nominal.set("")
-        self.min.set("")
-        self.lifetime.set("")
-        self.restock.set("")
+        self.name.set(item.name)
+        self.nominal.set(-1)
+        self.min.set(-1)
+        self.lifetime.set(-1)
+        self.restock.set(-1)
         self.mod.set("")
         self.trader.set("")
         for i in range(len(usages)):
