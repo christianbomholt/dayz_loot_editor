@@ -278,6 +278,7 @@ class GUI(object):
     def __update_item(self):
         for items in self.treeView.selection():
             item = self.treeView.item(items)
+            print("DEBUG Item", item)
             updated_item = Item()
             updated_item.id = item["text"]
 #            if (name := self.name.get()) != '':
