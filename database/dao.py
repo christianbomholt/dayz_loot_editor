@@ -204,7 +204,7 @@ class Dao(object):
             result[i] = list(result[i])
         return result
 
-    def getItemDetailsByTraderLoc(self, subtype, trader):
+    def getItemDetailsByTraderLoc(self, sub_type, trader):
         db_connection = sqlite3.connect(Dao.databasename)
         db_cursor = db_connection.cursor()
         query = f'SELECT name FROM items where trader = {trader} and sub_type = "{sub_type}"'
@@ -226,3 +226,4 @@ class Dao(object):
         results = [row[0] if row[0] is not None else "" for row in results]
         return sorted(results)
       
+
