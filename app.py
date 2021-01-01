@@ -467,7 +467,7 @@ class GUI(object):
         self.rarity.set("")
         self.cat_type.set("")
         self.item_type.set("")
-        self.subtypeAutoComp.set_value("")
+        self.sub_type.set("")
         self.dynamic_event.set(-1)
         self.count_in_hoarder.set(-1)
         self.count_in_cargo.set(-1)
