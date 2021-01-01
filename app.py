@@ -298,134 +298,34 @@ class GUI(object):
 
             __update_helper(item_to_update, "nominal", -1)
             __update_helper(item_to_update, "min", -1)
+            __update_helper(item_to_update, "restock", -1)
+            __update_helper(item_to_update, "lifetime", -1)
+            __update_helper(item_to_update, "rarity", "")
+            __update_helper(item_to_update, "cat_type", "")
+            __update_helper(item_to_update, "item_type", "")
+            __update_helper(item_to_update, "sub_type", "")
+            __update_helper(item_to_update, "mod", "")
+            __update_helper(item_to_update, "trader", "")
+            __update_helper(item_to_update, "dynamic_event", -1)
+            __update_helper(item_to_update, "count_in_hoarder", -1)
+            __update_helper(item_to_update, "count_in_cargo", -1)
+            __update_helper(item_to_update, "count_in_player", -1)
+            __update_helper(item_to_update, "count_in_map", -1)
+
+            usages = self.usagesListBox.curselection()
+            usage_values = [self.usagesListBox.get(i) for i in usages]
+            usages = ",".join(usage_values)
+            if usages  != "":
+                setattr(item_to_update, "usage", usages)
 
             tiers = self.tiersListBox.curselection()
             tier_values = [self.tiersListBox.get(i) for i in tiers]
             tiers = ",".join(tier_values)
-
+            print("DEBUG: ", tiers)
             if tiers  != "":
-                setattr(item_to_update, "tiers", tiers)
+                setattr(item_to_update, "tier", tiers)
 
             self.database.session.commit()
-            
-#             nominal = self.nominal.get()
-#             if nominal != -1:
-#                 updated_item.nominal = nominal
-#             else:
-#                 updated_item.nominal = item['values'][1]    
-# #min
-#             min = self.min.get()
-#             if min != -1:
-#                 updated_item.min = min
-#             else:
-#                 updated_item.min = item['values'][2]
-# #lifetime
-#             lifetime = self.lifetime.get()
-#             if lifetime != -1:
-#                 updated_item.lifetime = lifetime
-#             else:
-#                 updated_item.lifetime = item['values'][3]    
-# #restock
-#             restock = self.restock.get()
-#             if restock != -1:
-#                 updated_item.restock = restock
-#             else:
-#                 updated_item.restock = item['values'][4]
-# # Usages
-#             usages = self.usagesListBox.curselection()
-#             values = [self.usagesListBox.get(i) for i in usages]
-#             self.usages = ",".join(values)
-#             if usages != "":
-#                 updated_item.usage = usages
-#             else:
-#                 updated_item.usage = item['values'][5]
-
-# # Tiers            
-#             tiers = self.tiersListBox.curselection()
-#             tier_values = [self.tiersListBox.get(i) for i in tiers]
-#             self.tiers = ",".join(tier_values)
-#             if tiers != "":
-#                 updated_item.tier = tiers
-#             else:
-#                 updated_item.tier = item['values'][6]
-
-# #rarity
-#             rarity = self.rarity.get()
-#             if rarity != '':
-#                 updated_item.rarity = rarity
-#             else:
-#                 updated_item.rarity = item['values'][7]
-
-# #cat_type
-#             cat_type = self.cat_type.get()
-#             if cat_type != '':
-#                 updated_item.cat_type = cat_type
-#             else:
-#                 updated_item.cat_type = item['values'][8]
-
-# #item_type
-#             item_type = self.item_type.get()
-#             if item_type != '':
-#                 updated_item.item_type = item_type
-#             else:
-#                 updated_item.item_type = item['values'][9]
-
-# #sub_type
-#             sub_type = self.sub_type.get()
-#             if sub_type != '':
-#                 updated_item.sub_type = sub_type
-#             else:
-#                 updated_item.sub_type = item['values'][10]
-
-# #mod
-#             mod = self.mod.get()
-#             if mod != '':
-#                 updated_item.mod = mod
-#             else:
-#                 updated_item.mod = item['values'][11]
-
-# #trader
-#             trader = self.trader.get()
-#             if trader != '':
-#                 updated_item.trader = trader
-#             else:
-#                 updated_item.trader = item['values'][12]
-
-# #dynamic_event
-#             dynamic_event = self.dynamic_event.get()
-#             if dynamic_event != -1:
-#                 updated_item.dynamic_event = dynamic_event
-#             else:
-#                 updated_item.dynamic_event = item['values'][13]
-
-# #count_in_hoarder
-#             count_in_hoarder = self.count_in_hoarder.get()
-#             if count_in_hoarder != -1:
-#                 updated_item.count_in_hoarder = count_in_hoarder
-#             else:
-#                 updated_item.count_in_hoarder = item['values'][14]
-
-# #count_in_cargo
-#             count_in_cargo = self.count_in_cargo.get()
-#             if count_in_cargo != -1:
-#                 updated_item.count_in_cargo = count_in_cargo
-#             else:
-#                 updated_item.count_in_cargo = item['values'][15]
-
-# #count_in_map
-#             count_in_map = self.count_in_map.get()
-#             if count_in_map != -1:
-#                 updated_item.count_in_map = count_in_map
-#             else:
-#                 updated_item.count_in_map = item['values'][16]
-
-# #count_in_player
-#             count_in_player = self.count_in_player.get()
-#             if count_in_player != -1:
-#                 updated_item.count_in_player = count_in_player
-#             else:
-#                 updated_item.count_in_player = item['values'][17]    
-#             self.database.update_item(updated_item)
         self.__populate_items()
 
     def __delete_item(self):
@@ -467,7 +367,7 @@ class GUI(object):
         tree_row = self.tree.item(self.tree.focus())
         id = tree_row["text"]
         item = self.database.get_item(id)
-        print("DEBUG __fill_entry_frame: ",tree_row)
+#        print("DEBUG __fill_entry_frame: ",tree_row)
         self.id.set(id)
         self.name.set(item.name)
         self.nominal.set(-1)
