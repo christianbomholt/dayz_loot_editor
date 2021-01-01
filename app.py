@@ -387,7 +387,6 @@ class GUI(object):
         def OnChange(value, name, *pargs):
             self.update_dict[name] =  value.get()
             print(self.update_dict)
-            do more. set av value based on omv value
     
         self.nominal.trace_add("write", lambda *pargs: OnChange(
             self.nominal,"nominal",
