@@ -1,6 +1,5 @@
 *.toml
 *.lock
-*.db
 *.pyc
 .idea/
 venv/
