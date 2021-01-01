@@ -95,7 +95,7 @@ class GUI(object):
         for i in range(len(self.config.get_mods())):
             if self.modSelectionVars[i].get() == 1:
                 self.selectedMods.append(self.config.get_mods(i))
-                print("DEBUG updateModSelection:", selectedMods)
+                print("DEBUG updateModSelection:", self.selectedMods)
 
 
     def __create_entry_frame(self):
