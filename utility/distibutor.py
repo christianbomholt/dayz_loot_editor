@@ -32,7 +32,7 @@ class Dist(object):
         nominalPerElement = targetNominal / numElements if numElements != 0 else 0
         setValues(nominalPerElement, itemsToDistribute)
         for item in itemsToDistribute:
-            Dao.update_item(item)
+            pass   
 
         if flags[0] == 1:
             distributeLinkedItem(itemsToDistribute, targetAmmo, "ammo")

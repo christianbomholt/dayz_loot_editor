@@ -30,6 +30,8 @@ class Dao(object):
                 self.session.add(item)
                 self.session.commit()
 
+
+    """### 
     # update item
     def update_item(self, updated_item: Item):
         item = self.session.query(Item).get(updated_item.id)
@@ -51,8 +53,8 @@ class Dao(object):
         item.count_in_cargo = updated_item.count_in_cargo
         item.count_in_map = updated_item.count_in_map
         item.count_in_player = updated_item.count_in_player
-        self.session.commit()
-
+        self.session.commit()#
+        """
     # get item
     def get_item(self, item_id):
         item = self.session.query(Item).get(item_id)
@@ -268,4 +270,4 @@ class Dao(object):
         return dict
 
     def getCoulumNames(self, item):
-        return item.__table__.columns.keys()  
+        return item.__table__.columns.keys()

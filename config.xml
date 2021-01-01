@@ -48,18 +48,24 @@
         <rarity value="All Over The Place"/>
     </rairties>
     <tree>
-        <node text="Name" width ="200" col_id="#1" stretch="YES"/>
-        <node text="Nominal" width ="60" col_id="#2" stretch="NO"/>
-        <node text="Min" width="80" col_id="#3" stretch="NO"/>
-        <node text="Restock" width="80" col_id="#4" stretch="NO"/>
-        <node text="Lifetime" width="80" col_id="#5" stretch="NO"/>
+        
+        <node text="Name" width ="250" col_id="#1" stretch="YES"/>
+        <node text="Nominal" width ="60" col_id="#2" stretch="YES"/>
+        <node text="Min" width="50" col_id="#3" stretch="No"/>
+        <node text="Restock" width="60" col_id="#4" stretch="YES"/>
+        <node text="Lifetime" width="60" col_id="#5" stretch="YES"/>
         <node text="Usage" width="200" col_id="#6" stretch="YES"/>
-        <node text="Tier" width="150" col_id="#7" stretch="NO"/>
-        <node text="Rarity" width="80" col_id="#8" stretch="NO"/>
-		<node text="Category" width="80" col_id="#9" stretch="NO"/>
-        <node text="Type" width="80" col_id="#10" stretch="NO"/>
-        <node text="Sub Type" width="80" col_id="#11" stretch="NO"/>
-        <node text="Mod" width="80" col_id="#12" stretch="NO"/>
-        <node text="Trader" width="60" col_id="#13" stretch="NO"/>
+        <node text="Tier" width="200" col_id="#7" stretch="YES"/>
+        <node text="Rarity" width="60" col_id="#8" stretch="YES"/>
+		<node text="Category" width="60" col_id="#9" stretch="YES"/>
+        <node text="Type" width="60" col_id="#10" stretch="YES"/>
+        <node text="Sub Type" width="60" col_id="#11" stretch="YES"/>
+        <node text="Mod" width="60" col_id="#12" stretch="YES"/>
+        <node text="Trader" width="60" col_id="#13" stretch="YES"/>
+        <node text="D" width="20" col_id="#14" stretch="NO"/>
+        <node text="H" width="20" col_id="#15" stretch="NO"/>
+        <node text="C" width="20" col_id="#16" stretch="NO"/>
+        <node text="P" width="20" col_id="#17" stretch="NO"/>
+        <node text="M" width="20" col_id="#18" stretch="NO"/>
     </tree>
 </config>
