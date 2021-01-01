@@ -16,8 +16,7 @@ class TraderEditor(object):
         self.window.grab_set()
         self.selectedMods = selectedMods
         print("DEBUG print selected mods", selectedMods)
-        self.traderVal = []
-    
+        self.traderVal = getSubtypesMods()
 
         self.main = Frame(self.window)
         self.main.grid()
