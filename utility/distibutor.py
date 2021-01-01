@@ -25,13 +25,12 @@ class Dist(object):
         self.targetAmmo = targetAmmo
         self.flags = flags
 
-    # input: type to distribute, target nominal, List of include flags
+    # input: type to distribute, target nominal, targetMag, targetAmmo, List of include flags
     def distribute(itemsToDistribute, targetNominal, targetMag, targetAmmo, flags):
-        itemsToDistribute = Dist.getDicts(self,itemsToDistribute)
+        itemsToDistribute = Dist.getDicts(itemsToDistribute)
         numElements = self.calculateNumElements(itemsToDistribute)
         nominalPerElement = targetNominal / numElements if numElements != 0 else 0
         setValues(nominalPerElement, itemsToDistribute)
-
         for item in itemsToDistribute:
             Dao.update_item(item)
 
@@ -47,7 +46,6 @@ class Dist(object):
 
         for item in itemsToDistribute:
             numElements += rarityMultiplier[item["rarity"]]
-
         return numElements
 
 
@@ -102,16 +100,16 @@ class Dist(object):
             Dao.update(item)
 
     #******************Distributor*****************************
-    def getDicts(self,items):
+    def getDicts(items):
         itemsListOfDicts = []
         for item in items:
-            itemsListOfDicts.append(getDict(item))
+            itemsListOfDicts.append(Dist.getDict(item))
         return itemsListOfDicts
 
 
-    def getDict(self,item):
+    def getDict(item):
         dict = {}
-        keys = getCoulumNames()
+        keys = Dist.getCoulumNames(item)
         for k in range(len(item)):
             key = keys[k]
             if key == "mods":
@@ -120,3 +118,6 @@ class Dist(object):
                 key = key[9:]
             dict[key] = item[k]
         return dict
+
+    def getCoulumNames(item):
+        return item.__table__.columns.keys()        

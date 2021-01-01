@@ -99,7 +99,7 @@ class GUI(object):
         self.usages = StringVar()
         self.tiers = StringVar()
         self.cat_type = StringVar()
-        self.type = StringVar()
+        self.item_type = StringVar()
         self.sub_type = StringVar()
         self.rarity = StringVar()
         self.mod = StringVar()
@@ -146,7 +146,7 @@ class GUI(object):
         )
         self.cat_typeOption.grid(row=7, column=1, sticky="w", pady=5)
         self.typeOption = OptionMenu(
-            self.entryFrame, self.type, *self.config.get_types()[1:]
+            self.entryFrame, self.item_type, *self.config.get_types()[1:]
         )
         self.typeOption.grid(row=8, column=1, sticky="w", pady=5)
         self.subtypeAutoComp = ComboBoxManager(
@@ -281,24 +281,27 @@ class GUI(object):
             print("DEBUG Item", item)
             updated_item = Item()
             updated_item.id = item["text"]
-#            if (name := self.name.get()) != '':
-#                updated_item.name = name
-            if (nominal := self.nominal.get()) != -1:
+            updated_item.name = item[0]
+            #nominal
+            nominal = self.nominal.get()
+            if nominal != -1:
                 updated_item.nominal = nominal
             else:
-                updated_item.nominal = item.nominal
-            if (min := self.min.get()) != -1:
+                updated_item.nominal = item.nominal    
+            #min
+            min = self.min.get()
+            if min != -1:
                 updated_item.min = min
             else:
-                updated_item.min = item.min
-            if (lifetime := self.lifetime.get()) != -1:
+                updated_item.min = item.min    
+            #lifetime
+            lifetime = self.lifetime.get()
+            if lifetime != -1:
                 updated_item.lifetime = lifetime
-            else:
-                updated_item.lifetime = item.lifetime    
-            if (restock := self.restock.get()) != -1:
+            #restock
+            restock = self.restock.get()
+            if restock != -1:
                 updated_item.restock = restock
-            else:
-                updated_item.restock = item.restock    
             usages = self.usagesListBox.curselection()
             values = [self.usagesListBox.get(i) for i in usages]
             usages = ",".join(values)
@@ -307,48 +310,52 @@ class GUI(object):
             tier_values = [self.tiersListBox.get(i) for i in tiers]
             tiers = ",".join(tier_values)
             updated_item.tier = tiers
-            if (rarity := self.rarity.get()) != '':
+            #rarity
+            rarity = self.rarity.get()
+            if rarity != '':
                 updated_item.rarity = rarity
-            else:
-                updated_item.rarity = item.rarity                
-            if (cat_type := self.cat_type.get()) != '':
+            #cat_type
+            cat_type = self.cat_type.get()
+            if cat_type != '':
                 updated_item.cat_type = cat_type
-            else:
-                updated_item.cat_type = item.cat_type    
-            if (item_type := self.type.get()) != '':
+            #item_type
+            item_type = self.item_type.get()
+            if item_type != '':
                 updated_item.item_type = item_type
-            else:
-                updated_item.item_type = item.item_type    
+            #sub_type
+#            restock = self.restock.get()
+#            if restock != '':
+#            updated_item.restock = restock
 #            if (sub_type := self.subtypeAutoComp()) != '':
 #                updated_item.sub_type = sub_type
-            if (mod := self.mod.get()) != '':
+            #mod
+            mod = self.mod.get()
+            if mod != '':
                 updated_item.mod = mod
-            else:
-                updated_item.mod = item.mod    
-            if (trader := self.trader.get()) != '':
+            #trader
+            trader = self.trader.get()
+            if trader != '':
                 updated_item.trader = trader
-            else:
-                updated_item.trader = item.trader    
-            if (dynamic_event := self.dynamic_event.get()) != -1:
+            #dynamic_event
+            dynamic_event = self.dynamic_event.get()
+            if dynamic_event != -1:
                 updated_item.dynamic_event = dynamic_event
-            else:
-                updated_item.dynamic_event = item.dynamic_event    
-            if (count_in_hoarder := self.count_in_hoarder.get()) != -1:
+            #count_in_hoarder
+            count_in_hoarder = self.count_in_hoarder.get()
+            if count_in_hoarder != -1:
                 updated_item.count_in_hoarder = count_in_hoarder
-            else:
-                updated_item.count_in_hoarder = item.count_in_hoarder    
-            if (count_in_cargo := self.count_in_cargo.get()) != -1:
+            #count_in_cargo
+            count_in_cargo = self.count_in_cargo.get()
+            if count_in_cargo != -1:
                 updated_item.count_in_cargo = count_in_cargo
-            else:
-                updated_item.count_in_cargo = item.count_in_cargo
-            if (count_in_map := self.count_in_map.get()) != -1:
+            #count_in_map
+            count_in_map = self.count_in_map.get()
+            if count_in_map != -1:
                 updated_item.count_in_map = count_in_map
-            else:
-                updated_item.count_in_map = item.count_in_map    
-            if (count_in_player := self.count_in_player.get()) != -1:
+            #count_in_player
+            count_in_player = self.count_in_player.get()
+            if count_in_player != -1:
                 updated_item.count_in_player = count_in_player
-            else:
-                updated_item.count_in_player = item.count_in_player    
             self.database.update_item(updated_item)
         self.__populate_items()
 
