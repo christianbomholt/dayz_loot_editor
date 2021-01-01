@@ -141,6 +141,7 @@ class GUI(object):
         tiers = self.config.get_tiers()
         for i in tiers:
             self.tiersListBox.insert(END, i)
+            
         self.cat_typeOption = OptionMenu(
             self.entryFrame, self.cat_type, *self.config.get_cat_types()[1:]
         )
@@ -278,7 +279,7 @@ class GUI(object):
     def __update_item(self):
         for items in self.treeView.selection():
             item = self.treeView.item(items)
-            print("DEBUG Item", item)
+            #print("DEBUG Item", item)
             updated_item = Item()
             updated_item.id = item["text"]
             updated_item.name = item['values'][0]
@@ -310,73 +311,91 @@ class GUI(object):
             usages = self.usagesListBox.curselection()
             values = [self.usagesListBox.get(i) for i in usages]
             usages = ",".join(values)
-            updated_item.usage = usages
+            if usages != "":
+                updated_item.usage = usages
+            else:
+                updated_item.usage = item['values'][5]
+
 # Tiers            
             tiers = self.tiersListBox.curselection()
             tier_values = [self.tiersListBox.get(i) for i in tiers]
             tiers = ",".join(tier_values)
-            updated_item.tier = tiers
+            if tiers != "":
+                updated_item.tier = tiers
+            else:
+                updated_item.tier = item['values'][6]
+
 #rarity
             rarity = self.rarity.get()
             if rarity != '':
                 updated_item.rarity = rarity
             else:
                 updated_item.rarity = item['values'][7]
-            #cat_type
+
+#cat_type
             cat_type = self.cat_type.get()
             if cat_type != '':
                 updated_item.cat_type = cat_type
             else:
                 updated_item.cat_type = item['values'][8]
-            #item_type
+
+#item_type
             item_type = self.item_type.get()
             if item_type != '':
                 updated_item.item_type = item_type
             else:
                 updated_item.item_type = item['values'][9]
-            #sub_type
-#            restock = self.restock.get()
-#            if restock != '':
-#            updated_item.restock = restock
-#            if (sub_type := self.subtypeAutoComp()) != '':
-#                updated_item.sub_type = sub_type
-            #mod
+
+#sub_type
+            sub_type = self.sub_type_combo_for_filter.get()
+            if sub_type != '':
+                updated_item.sub_type = sub_type
+            else:
+                updated_item.sub_type = item['values'][10]
+
+#mod
             mod = self.mod.get()
             if mod != '':
                 updated_item.mod = mod
             else:
                 updated_item.mod = item['values'][11]
-            #trader
+
+#trader
             trader = self.trader.get()
             if trader != '':
                 updated_item.trader = trader
             else:
                 updated_item.trader = item['values'][12]
-            #dynamic_event
+
+#dynamic_event
             dynamic_event = self.dynamic_event.get()
             if dynamic_event != -1:
                 updated_item.dynamic_event = dynamic_event
             else:
                 updated_item.dynamic_event = item['values'][13]
-            #count_in_hoarder
+
+#count_in_hoarder
             count_in_hoarder = self.count_in_hoarder.get()
             if count_in_hoarder != -1:
                 updated_item.count_in_hoarder = count_in_hoarder
             else:
                 updated_item.count_in_hoarder = item['values'][14]
-            #count_in_cargo
+
+#count_in_cargo
             count_in_cargo = self.count_in_cargo.get()
             if count_in_cargo != -1:
                 updated_item.count_in_cargo = count_in_cargo
             else:
                 updated_item.count_in_cargo = item['values'][15]
-            #count_in_map
+
+#count_in_map
             count_in_map = self.count_in_map.get()
             if count_in_map != -1:
                 updated_item.count_in_map = count_in_map
             else:
                 updated_item.count_in_map = item['values'][16]
-            #count_in_player
+
+#count_in_player
             count_in_player = self.count_in_player.get()
             if count_in_player != -1:
                 updated_item.count_in_player = count_in_player
@@ -424,6 +443,7 @@ class GUI(object):
         tree_row = self.tree.item(self.tree.focus())
         id = tree_row["text"]
         item = self.database.get_item(id)
+        print("DEBUG __fill_entry_frame: ",tree_row)
         self.id.set(id)
         self.name.set(item.name)
         self.nominal.set(-1)
@@ -432,13 +452,15 @@ class GUI(object):
         self.restock.set(-1)
         self.mod.set("")
         self.trader.set("")
+        usages = tree_row['values'][5]
         for i in range(len(usages)):
             self.usagesListBox.select_clear(i)
+        tiers = tree_row['values'][6]    
         for i in range(len(tiers)):
             self.tiersListBox.select_clear(i)
         self.rarity.set("")
         self.cat_type.set("")
-        self.type.set("")
+        self.item_type.set("")
         self.subtypeAutoComp.set_value("")
         self.dynamic_event.set(-1)
         self.count_in_hoarder.set(-1)
@@ -561,18 +583,7 @@ class GUI(object):
         self.update_dict[name] =  value.get()
         print(self.update_dict)
 #        do more. set av value based on omv value
-        self.nominal.trace_add("write", lambda *pargs: OnChange(self.nominal,"nominal",*pargs))
-        self.min.trace_add("write", lambda *pargs: OnChange(self.min,"min",*pargs))
-        self.restock.trace_add("write", lambda *pargs: OnChange(self.restock,"restock",*pargs))
-        self.lifetime.trace_add("write", lambda *pargs: OnChange(self.lifetime,"lifetime",*pargs))  
-        self.usage.trace_add("write", lambda *pargs: OnChange(self.usage,"usage",*pargs))
-        self.tier.trace_add("write", lambda *pargs: OnChange(self.tier,"tier",*pargs))
-        self.rarity.trace_add("write", lambda *pargs: OnChange(self.rarity,"rarity",*pargs))
-        self.cat_type.trace_add("write", lambda *pargs: OnChange(self.cat_type,"cat_type",*pargs))        
-        self.item_type.trace_add("write", lambda *pargs: OnChange(self.item_type,"item_type",*pargs))
-        self.sub_type.trace_add("write", lambda *pargs: OnChange(self.sub_type,"sub_type",*pargs))
-        self.mod.trace_add("write", lambda *pargs: OnChange(self.mod,"mod",*pargs))
-        self.trader.trace_add("write", lambda *pargs: OnChange(self.trader,"trader",*pargs)) """
+        self.nominal.trace_add("write", lambda *pargs: OnChange(self.nominal,"nominal",*pargs))"""
 
 window = Tk()
 GUI(window)
