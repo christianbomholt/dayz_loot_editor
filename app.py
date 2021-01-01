@@ -506,7 +506,8 @@ class GUI(object):
 
     def Distributor(self):
         items = self.database.get_items()
-        Dist.distribute(items,1000,1000,1000,[1,1])    
+        
+        #Dist.distribute(items,1000,1000,1000,[1,1])    
 
     def openTraderEditor(self):
         TraderEditor(self.window,self.selectedMods)
