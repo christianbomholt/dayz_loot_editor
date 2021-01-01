@@ -99,25 +99,4 @@ class Dist(object):
 
             Dao.update(item)
 
-    #******************Distributor*****************************
-    def getDicts(items):
-        itemsListOfDicts = []
-        for item in items:
-            itemsListOfDicts.append(Dist.getDict(item))
-        return itemsListOfDicts
-
-
-    def getDict(item):
-        dict = {}
-        keys = Dist.getCoulumNames(item)
-        for k in range(len(item)):
-            key = keys[k]
-            if key == "mods":
-                key = "mod"
-            if key.startswith("count_in_"):
-                key = key[9:]
-            dict[key] = item[k]
-        return dict
-
-    def getCoulumNames(item):
-        return item.__table__.columns.keys()        
+      

@@ -227,3 +227,25 @@ class Dao(object):
         return sorted(results)
       
 
+    #******************Distributor*****************************
+    def getDicts(self, items):
+        itemsListOfDicts = []
+        for item in items:
+            itemsListOfDicts.append(Dao.getDict(item))
+        return itemsListOfDicts
+
+
+    def getDict(self, item):
+        dict = {}
+        keys = Dao.getCoulumNames(item)
+        for k in range(len(item)):
+            key = keys[k]
+            if key == "mods":
+                key = "mod"
+            if key.startswith("count_in_"):
+                key = key[9:]
+            dict[key] = item[k]
+        return dict
+
+    def getCoulumNames(self, item):
+        return item.__table__.columns.keys()  
