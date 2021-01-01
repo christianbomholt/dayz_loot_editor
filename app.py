@@ -7,7 +7,7 @@ from ui.db import DB
 from ui.new_items import NewItems
 from ui.setprices import TraderEditor
 from utility.combo_box_manager import ComboBoxManager
-from utility.distibutor import Dist
+#from utility.distibutor import Dist
 from config.ini_manager import INIManager
 from xml_manager.xml_writer import XMLWriter
 import tkinter.filedialog as filedialog

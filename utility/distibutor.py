@@ -1,3 +1,4 @@
+"""
 from math import ceil
 from database.dao import Dao
 
@@ -99,4 +100,4 @@ class Dist(object):
 
             Dao.update(item)
 
-      
+"""      
