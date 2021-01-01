@@ -18,12 +18,12 @@ def test_set_all():
   bprice = "200"
   sprice = "100"
   exclude = "N"
-  rarity = "High"
+  rarity = "Very Rare"
   db.setSubtypeForTrader_fast(names, cat, bprice, sprice, exclude, rarity)
 
   for item in db.fast_search_like_name("Massppsh"):
     print(item.get("name"))
-    assert item.get("rarity") == 'High'
-    assert item.get("traderExclude") == 'N'
+    assert item.get("rarity") == 'Very Rare'
+    assert item.get("traderExclude") == 0
   
   
