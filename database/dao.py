@@ -217,7 +217,7 @@ class Dao(object):
         return [row[0] for row in results]
 
 
-    def getTradersBySubtype(self, subtype):
+    def getTradersBySubtype(self, sub_type):
         db_connection = sqlite3.connect(Dao.databasename)
         db_cursor = db_connection.cursor()
         query = f"SELECT trader FROM items WHERE sub_type = '{sub_type}' group by trader"
