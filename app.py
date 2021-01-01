@@ -281,47 +281,59 @@ class GUI(object):
             print("DEBUG Item", item)
             updated_item = Item()
             updated_item.id = item["text"]
-            updated_item.name = item[0]
+            updated_item.name = item['values'][0]
             #nominal
             nominal = self.nominal.get()
             if nominal != -1:
                 updated_item.nominal = nominal
             else:
-                updated_item.nominal = item.nominal    
+                updated_item.nominal = item['values'][1]    
             #min
             min = self.min.get()
             if min != -1:
                 updated_item.min = min
             else:
-                updated_item.min = item.min    
+                updated_item.min = item['values'][2]
             #lifetime
             lifetime = self.lifetime.get()
             if lifetime != -1:
                 updated_item.lifetime = lifetime
+            else:
+                updated_item.lifetime = item['values'][3]    
             #restock
             restock = self.restock.get()
             if restock != -1:
                 updated_item.restock = restock
+            else:
+                updated_item.restock = item['values'][4]
+# Usages
             usages = self.usagesListBox.curselection()
             values = [self.usagesListBox.get(i) for i in usages]
             usages = ",".join(values)
             updated_item.usage = usages
+# Tiers            
             tiers = self.tiersListBox.curselection()
             tier_values = [self.tiersListBox.get(i) for i in tiers]
             tiers = ",".join(tier_values)
             updated_item.tier = tiers
-            #rarity
+#rarity
             rarity = self.rarity.get()
             if rarity != '':
                 updated_item.rarity = rarity
+            else:
+                updated_item.rarity = item['values'][7]
             #cat_type
             cat_type = self.cat_type.get()
             if cat_type != '':
                 updated_item.cat_type = cat_type
+            else:
+                updated_item.cat_type = item['values'][8]
             #item_type
             item_type = self.item_type.get()
             if item_type != '':
                 updated_item.item_type = item_type
+            else:
+                updated_item.item_type = item['values'][9]
             #sub_type
 #            restock = self.restock.get()
 #            if restock != '':
@@ -332,30 +344,44 @@ class GUI(object):
             mod = self.mod.get()
             if mod != '':
                 updated_item.mod = mod
+            else:
+                updated_item.mod = item['values'][11]
             #trader
             trader = self.trader.get()
             if trader != '':
                 updated_item.trader = trader
+            else:
+                updated_item.trader = item['values'][12]
             #dynamic_event
             dynamic_event = self.dynamic_event.get()
             if dynamic_event != -1:
                 updated_item.dynamic_event = dynamic_event
+            else:
+                updated_item.dynamic_event = item['values'][13]
             #count_in_hoarder
             count_in_hoarder = self.count_in_hoarder.get()
             if count_in_hoarder != -1:
                 updated_item.count_in_hoarder = count_in_hoarder
+            else:
+                updated_item.count_in_hoarder = item['values'][14]
             #count_in_cargo
             count_in_cargo = self.count_in_cargo.get()
             if count_in_cargo != -1:
                 updated_item.count_in_cargo = count_in_cargo
+            else:
+                updated_item.count_in_cargo = item['values'][15]
             #count_in_map
             count_in_map = self.count_in_map.get()
             if count_in_map != -1:
                 updated_item.count_in_map = count_in_map
+            else:
+                updated_item.count_in_map = item['values'][16]
             #count_in_player
             count_in_player = self.count_in_player.get()
             if count_in_player != -1:
                 updated_item.count_in_player = count_in_player
+            else:
+                updated_item.count_in_player = item['values'][17]    
             self.database.update_item(updated_item)
         self.__populate_items()
 
