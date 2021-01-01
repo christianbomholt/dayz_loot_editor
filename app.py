@@ -299,6 +299,13 @@ class GUI(object):
             __update_helper(item_to_update, "nominal", -1)
             __update_helper(item_to_update, "min", -1)
 
+            tiers = self.tiersListBox.curselection()
+            tier_values = [self.tiersListBox.get(i) for i in tiers]
+            tiers = ",".join(tier_values)
+
+            if tiers  != "":
+                setattr(item_to_update, "tiers", tiers)
+
             self.database.session.commit()
             
 #             nominal = self.nominal.get()
