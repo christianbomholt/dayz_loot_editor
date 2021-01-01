@@ -141,19 +141,22 @@ class GUI(object):
         tiers = self.config.get_tiers()
         for i in tiers:
             self.tiersListBox.insert(END, i)
-            
+
         self.cat_typeOption = OptionMenu(
             self.entryFrame, self.cat_type, *self.config.get_cat_types()[1:]
         )
         self.cat_typeOption.grid(row=7, column=1, sticky="w", pady=5)
-        self.typeOption = OptionMenu(
+
+        self.item_typeOption = OptionMenu(
             self.entryFrame, self.item_type, *self.config.get_types()[1:]
         )
-        self.typeOption.grid(row=8, column=1, sticky="w", pady=5)
-        self.subtypeAutoComp = ComboBoxManager(
-            self.entryFrame, self.config.get_sub_types(), highlightthickness=1
+        self.item_typeOption.grid(row=8, column=1, sticky="w", pady=5)
+
+        self.sub_typeOption = OptionMenu(
+            self.entryFrame, self.sub_type, *self.config.get_sub_types()
         )
-        self.subtypeAutoComp.grid(row=9, column=1, sticky="w", pady=5)
+        self.sub_typeOption.grid(row=9, column=1, sticky="w", pady=5)
+
         self.rarityOption = OptionMenu(
             self.entryFrame, self.rarity, *self.config.get_rarities()
         )
@@ -162,6 +165,7 @@ class GUI(object):
         self.modField.grid(row=11, column=1, sticky="w", pady=5)
         self.traderField = Entry(self.entryFrame, textvariable=self.trader)
         self.traderField.grid(row=12, column=1, sticky="w")
+
         # check boxes frame
         self.checkBoxFrame = Frame(self.entryFrameHolder)
         self.checkBoxFrame.grid(row=1, column=0, columnspan=2, sticky="w")
@@ -238,6 +242,7 @@ class GUI(object):
         OptionMenu(
             self.filterFrame, self.type_for_filter, *self.config.get_types()
         ).grid(row=1, column=1, sticky="w", padx=5)
+        
         self.sub_type_combo_for_filter = ComboBoxManager(
             self.filterFrame,
             self.config.get_sub_types(),
@@ -282,26 +287,27 @@ class GUI(object):
             #print("DEBUG Item", item)
             updated_item = Item()
             updated_item.id = item["text"]
+#name
             updated_item.name = item['values'][0]
-            #nominal
+#nominal
             nominal = self.nominal.get()
             if nominal != -1:
                 updated_item.nominal = nominal
             else:
                 updated_item.nominal = item['values'][1]    
-            #min
+#min
             min = self.min.get()
             if min != -1:
                 updated_item.min = min
             else:
                 updated_item.min = item['values'][2]
-            #lifetime
+#lifetime
             lifetime = self.lifetime.get()
             if lifetime != -1:
                 updated_item.lifetime = lifetime
             else:
                 updated_item.lifetime = item['values'][3]    
-            #restock
+#restock
             restock = self.restock.get()
             if restock != -1:
                 updated_item.restock = restock
@@ -347,7 +353,7 @@ class GUI(object):
                 updated_item.item_type = item['values'][9]
 
 #sub_type
-            sub_type = self.sub_type_combo_for_filter.get()
+            sub_type = self.sub_type.get()
             if sub_type != '':
                 updated_item.sub_type = sub_type
             else:
