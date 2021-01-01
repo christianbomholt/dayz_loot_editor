@@ -49,7 +49,7 @@ class DB(object):
         db_path_name = filedialog.askopenfilename(filetypes=[("Sqlite db's", ".db")])
         if "/" in db_path_name:
             db_name = db_path_name.split("/")[-1]
-            print("DEBUG in OpenDB ", db_name)
+            #print("DEBUG in OpenDB ", db_name)
         newDataBase = False
         self.__start_db(newDataBase, db_name)
 

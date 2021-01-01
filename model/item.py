@@ -14,7 +14,7 @@ class Item(Base):
     lifetime = Column(Integer)
     usage = Column(String)
     tier = Column(String)
-    rarity = Column(String)
+    rarity = Column(String, default = "undefined")
     cat_type = Column(String)
     item_type = Column(String)
     sub_type = Column(String)

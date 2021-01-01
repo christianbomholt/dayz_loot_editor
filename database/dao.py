@@ -14,7 +14,7 @@ class Dao(object):
         session_maker = sessionmaker()
         session_maker.configure(bind=engine)
         self.session = session_maker()
-        print("DEBUG the database is connected and session made")
+        #print("DEBUG the database is connected and session made")
 
     """
     CRUD Operations related to items
@@ -130,23 +130,11 @@ class Dao(object):
         db_connection.close()
         return items
 
-    def getSubtypesMods(self, mod):
-        db_connection = sqlite3.connect(self.db_name)
-        db_cursor = db_connection.cursor()
-        print("DEBUG in GetSubtupesMods: ", mod)
-        sql_filter_items = f"SELECT subtype, mod FROM items WHERE mod='{mod}' group by subtype"
-        print("DEBUG in GetSubtupesMods", sql_filter_items)
-        db_cursor.execute(sql_filter_items)
-        subtypes = db_cursor.fetchall()
-        db_connection.commit()
-        db_connection.close()
-        return [_[0] for _ in subtypes]    
-  
+#*******************Used for PyTest***********************************************
     def fast_search_like_name(self, item_name):
         search = f'%{item_name}%'
         results = self.session.query(Item).filter(Item.name.like(search)).all()
-        return [u.__dict__ for u in results]
-
+        return [u.__dict__ for u in results]        
 
     def items_table_exist(self):
         #print("DEBUG checking if table exist ", self.db_name)
@@ -167,15 +155,47 @@ class Dao(object):
             for line in db_connection.iterdump():
                 f.write('%s\n' % line)
 
+#***********************Selects for Trader Prices ***************************************************
+    def getSubtypesMods(self, mod):
+        db_connection = sqlite3.connect(Dao.databasename)
+        db_cursor = db_connection.cursor()
+        query = f"SELECT sub_type, mod FROM items WHERE mod='{mod}' group by sub_type"
+        #print("DEBUG in GetSubtupesMods", query)
+        db_cursor.execute(query)
+        subtypes = db_cursor.fetchall()
+        db_connection.commit()
+        db_connection.close()
+        #print("DEBUG getSubtypesMods ",subtypes)
+        #print("DEBUG getSubtypesMods ",[_[0] for _ in subtypes])
+        return [_[0] for _ in subtypes]
 
+    def getTraderBySubtype(self, sub_type):
+        db_connection = sqlite3.connect(Dao.databasename)
+        db_cursor = db_connection.cursor()
+        #print("DEBUG in getTraderBySubtype", sub_type)
+        query = f"SELECT trader FROM items WHERE sub_type = '{sub_type}' group by trader"
+        #print("DEBUG query in getTraderBySubtype", query)
+        db_cursor.execute(query)
+        raw_results = db_cursor.fetchall()
+        db_connection.commit()
+        db_connection.close()
+        #print("DEBUG - raw Trader_results", raw_results)
+        results = [row[0] if row[0] is not None else "" for row in raw_results]
+        return sorted(results)
+ 
 #Trying to make the setprices work...............
     # name, subtype, tradercat, buyprice, sellprice, rarity, nominal, traderexclude, mod
-    def getSubtypeForTrader(self, subtype):
-        db_connection = sqlite3.connect(self.db_name)
+    def getSubtypeForTrader(self, sub_type):
+        db_connection = sqlite3.connect(Dao.databasename)
         db_cursor = db_connection.cursor()
-        sql_filter_items = f"select name, subtype, tradercat, buyprice, sellprice, rarity, nominal, traderexclude, mod from items where subtype = '{subtype}'"
-        db_cursor.execute(sql_filter_items)
+        #print("DEBUG getSubtypeForTrader ", sub_type)
+        query = f"select name, sub_type, tradercat, buyprice, sellprice, rarity, nominal, traderexclude, mod from items where sub_type = '{sub_type}'"
+        #print("DEBUG getSubtypeForTrader ", query)
+        db_cursor.execute(query)
         result = db_cursor.fetchall()
+        db_connection.commit()
+        db_connection.close()
+        result =  [list(elem) for elem in result]
         for i in range(len(result)):
             if result[i][3] is None:
                 result[i][3] = -1
@@ -184,10 +204,10 @@ class Dao(object):
             result[i] = list(result[i])
         return result
 
-    def getItemDetailsByTraderLoc(self, subtype, trader):
-        db_connection = sqlite3.connect(self.db_name)
+    def getItemDetailsByTraderLoc(self, sub_type, trader):
+        db_connection = sqlite3.connect(Dao.databasename)
         db_cursor = db_connection.cursor()
-        query = f'SELECT name FROM items where trader = {trader} and subtype = "{subtype}"'
+        query = f'SELECT name FROM items where trader = {trader} and sub_type = "{sub_type}"'
         db_cursor.execute(query)
         results = db_cursor.fetchall()
         db_connection.commit()
@@ -196,9 +216,9 @@ class Dao(object):
 
 
     def getTradersBySubtype(self, subtype):
-        db_connection = sqlite3.connect(self.db_name)
+        db_connection = sqlite3.connect(Dao.databasename)
         db_cursor = db_connection.cursor()
-        query = f"SELECT trader FROM items WHERE subtype = '{subtype}' group by trader"
+        query = f"SELECT trader FROM items WHERE sub_type = '{sub_type}' group by trader"
         db_cursor.execute(query)
         results = db_cursor.fetchall()
         db_connection.commit()
@@ -225,3 +245,27 @@ class Dao(object):
     #     db_cursor.executemany(sql_set_items, items)
     #     db_connection.commit()
     #     db_connection.close()              
+      
+
+    #******************Distributor*****************************
+    def getDicts(self, items):
+        itemsListOfDicts = []
+        for item in items:
+            itemsListOfDicts.append(Dao.getDict(item))
+        return itemsListOfDicts
+
+
+    def getDict(self, item):
+        dict = {}
+        keys = Dao.getCoulumNames(item)
+        for k in range(len(item)):
+            key = keys[k]
+            if key == "mods":
+                key = "mod"
+            if key.startswith("count_in_"):
+                key = key[9:]
+            dict[key] = item[k]
+        return dict
+
+    def getCoulumNames(self, item):
+        return item.__table__.columns.keys()  

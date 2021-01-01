@@ -7,7 +7,7 @@ from ui.db import DB
 from ui.new_items import NewItems
 from ui.setprices import TraderEditor
 from utility.combo_box_manager import ComboBoxManager
-from utility.distibutor import Distributor
+from utility.distibutor import Dist
 from config.ini_manager import INIManager
 from xml_manager.xml_writer import XMLWriter
 import tkinter.filedialog as filedialog
@@ -19,7 +19,7 @@ class GUI(object):
         self.config = ConfigManager("config.xml")
         self.ini_manger = INIManager("app.ini")
         self.database = Dao(self.ini_manger.read_ini("Database", "Database_Name"))
-        self.selectedMods = ['Vanilla','mod 1']
+        self.selectedMods = ['Vanilla','Mod 1']
         #
         self.window = main_container
         self.window.wm_title("Loot Editor v0.98.7")
@@ -93,14 +93,14 @@ class GUI(object):
         # input variables
         self.id = IntVar()
         self.name = StringVar()
-        self.nominal = StringVar()
-        self.min = StringVar()
-        self.restock = StringVar()
-        self.lifetime = StringVar()
+        self.nominal = IntVar()
+        self.min = IntVar()
+        self.restock = IntVar()
+        self.lifetime = IntVar()
         self.usages = StringVar()
         self.tiers = StringVar()
         self.cat_type = StringVar()
-        self.type = StringVar()
+        self.item_type = StringVar()
         self.sub_type = StringVar()
         self.rarity = StringVar()
         self.mod = StringVar()
@@ -142,18 +142,22 @@ class GUI(object):
         tiers = self.config.get_tiers()
         for i in tiers:
             self.tiersListBox.insert(END, i)
+
         self.cat_typeOption = OptionMenu(
             self.entryFrame, self.cat_type, *self.config.get_cat_types()[1:]
         )
         self.cat_typeOption.grid(row=7, column=1, sticky="w", pady=5)
-        self.typeOption = OptionMenu(
-            self.entryFrame, self.type, *self.config.get_types()[1:]
+
+        self.item_typeOption = OptionMenu(
+            self.entryFrame, self.item_type, *self.config.get_types()[1:]
         )
-        self.typeOption.grid(row=8, column=1, sticky="w", pady=5)
-        self.subtypeAutoComp = ComboBoxManager(
-            self.entryFrame, self.config.get_sub_types(), highlightthickness=1
+        self.item_typeOption.grid(row=8, column=1, sticky="w", pady=5)
+
+        self.sub_typeOption = OptionMenu(
+            self.entryFrame, self.sub_type, *self.config.get_sub_types()
         )
-        self.subtypeAutoComp.grid(row=9, column=1, sticky="w", pady=5)
+        self.sub_typeOption.grid(row=9, column=1, sticky="w", pady=5)
+
         self.rarityOption = OptionMenu(
             self.entryFrame, self.rarity, *self.config.get_rarities()
         )
@@ -162,27 +166,28 @@ class GUI(object):
         self.modField.grid(row=11, column=1, sticky="w", pady=5)
         self.traderField = Entry(self.entryFrame, textvariable=self.trader)
         self.traderField.grid(row=12, column=1, sticky="w")
+
         # check boxes frame
         self.checkBoxFrame = Frame(self.entryFrameHolder)
         self.checkBoxFrame.grid(row=1, column=0, columnspan=2, sticky="w")
-        self.dynamic_event_check = Checkbutton(
-            self.checkBoxFrame, text="Dynamic Event", variable=self.dynamic_event
+        self.dynamic_event_check = Checkbutton( 
+            self.checkBoxFrame, text="Dynamic Event", variable=self.dynamic_event, onvalue = 1, offvalue = 0
         )
         self.dynamic_event_check.grid(row=0, column=0, sticky="w")
         self.count_in_cargo_check = Checkbutton(
-            self.checkBoxFrame, text="Count in Cargo", variable=self.count_in_cargo
+            self.checkBoxFrame, text="Count in Cargo", variable=self.count_in_cargo, onvalue = 1, offvalue = 0
         )
         self.count_in_cargo_check.grid(row=1, column=0, sticky="w")
         self.count_in_hoarder_check = Checkbutton(
-            self.checkBoxFrame, text="Count in Hoarder", variable=self.count_in_hoarder
+            self.checkBoxFrame, text="Count in Hoarder", variable=self.count_in_hoarder, onvalue = 1, offvalue = 0
         )
         self.count_in_hoarder_check.grid(row=2, column=0, sticky="w")
         self.count_in_map_check = Checkbutton(
-            self.checkBoxFrame, text="Count in Map", variable=self.count_in_map
+            self.checkBoxFrame, text="Count in Map", variable=self.count_in_map, onvalue = 1, offvalue = 0
         )
         self.count_in_map_check.grid(row=3, column=0, sticky="w")
-        self.count_in_player_check = Checkbutton(
-            self.checkBoxFrame, text="Count in Player", variable=self.count_in_player
+        self.count_in_player_check = Checkbutton( 
+            self.checkBoxFrame, text="Count in Player", variable=self.count_in_player, onvalue = 1, offvalue = 0
         )
         self.count_in_player_check.grid(row=4, column=0, sticky="w")
 
@@ -200,11 +205,8 @@ class GUI(object):
         self.treeFrame.grid_rowconfigure(0, weight=1)
         self.treeFrame.grid_columnconfigure(1, weight=1)
         self.column_info = self.config.get_tree_heading()
-        #print("DEBUG column Headers: ", self.column_info[0])
         self.tree = ttk.Treeview(self.treeFrame, columns=self.column_info[0], height=40)
-        #print("DEBUG column Config: ", self.column_info[1])
         for col in self.column_info[1]:
-           # print("DEBUG we are in app treeview ", col[0], col[1], col[2], col[3])
             self.tree.heading(
                 col[2],
                 text=col[0],
@@ -241,6 +243,7 @@ class GUI(object):
         OptionMenu(
             self.filterFrame, self.type_for_filter, *self.config.get_types()
         ).grid(row=1, column=1, sticky="w", padx=5)
+        
         self.sub_type_combo_for_filter = ComboBoxManager(
             self.filterFrame,
             self.config.get_sub_types(),
@@ -263,48 +266,159 @@ class GUI(object):
         ).grid(row=4)
 #
 # This is were we have the test button
-# 
-# 
 #         
         Button(
             self.buttons_frame,
-            text="TestButton",
+            text="Trader Editor",
             width=14,
             command=self.openTraderEditor,
         ).grid(row=5)
 
+        Button(
+            self.buttons_frame,
+            text="Distributor",
+            width=14,
+            command=self.Distributor,
+        ).grid(row=6)
+
 # Updated to loop through selected items in the grid.
     def __update_item(self):
         
+        def __update_helper(item, field, default_value):
+            
+            value_from_update_form = getattr(self, field).get()
+            if value_from_update_form != default_value:
+                setattr(item, field, value_from_update_form)
+
         for items in self.treeView.selection():
             item = self.treeView.item(items)
-            updated_item = Item()
-            updated_item.id = item["text"]
-            updated_item.name = self.name.get()
-            updated_item.nominal = self.nominal.get()
-            updated_item.min = self.min.get()
-            updated_item.lifetime = self.lifetime.get()
-            updated_item.restock = self.restock.get()
-            usages = self.usagesListBox.curselection()
-            values = [self.usagesListBox.get(i) for i in usages]
-            usages = ",".join(values)
-            updated_item.usage = usages
-            tiers = self.tiersListBox.curselection()
-            tier_values = [self.tiersListBox.get(i) for i in tiers]
-            tiers = ",".join(tier_values)
-            updated_item.tier = tiers
-            updated_item.rarity = self.rarity.get()
-            updated_item.cat_type = self.cat_type.get()
-            updated_item.item_type = self.type.get()
-            updated_item.sub_type = self.subtypeAutoComp.get()
-            updated_item.mod = self.mod.get()
-            updated_item.trader = self.trader.get()
-            updated_item.dynamic_event = self.dynamic_event.get()
-            updated_item.count_in_hoarder = self.count_in_hoarder.get()
-            updated_item.count_in_cargo = self.count_in_cargo.get()
-            updated_item.count_in_map = self.count_in_map.get()
-            updated_item.count_in_player = self.count_in_player.get()
-            self.database.update_item(updated_item)
+            id_of_interest = item["text"]
+            
+            item_to_update = self.database.session.query(Item).get(id_of_interest)
+
+            __update_helper(item_to_update, "nominal", -1)
+            __update_helper(item_to_update, "min", -1)
+
+            self.database.session.commit()
+            
+#             nominal = self.nominal.get()
+#             if nominal != -1:
+#                 updated_item.nominal = nominal
+#             else:
+#                 updated_item.nominal = item['values'][1]    
+# #min
+#             min = self.min.get()
+#             if min != -1:
+#                 updated_item.min = min
+#             else:
+#                 updated_item.min = item['values'][2]
+# #lifetime
+#             lifetime = self.lifetime.get()
+#             if lifetime != -1:
+#                 updated_item.lifetime = lifetime
+#             else:
+#                 updated_item.lifetime = item['values'][3]    
+# #restock
+#             restock = self.restock.get()
+#             if restock != -1:
+#                 updated_item.restock = restock
+#             else:
+#                 updated_item.restock = item['values'][4]
+# # Usages
+#             usages = self.usagesListBox.curselection()
+#             values = [self.usagesListBox.get(i) for i in usages]
+#             self.usages = ",".join(values)
+#             if usages != "":
+#                 updated_item.usage = usages
+#             else:
+#                 updated_item.usage = item['values'][5]
+
+# # Tiers            
+#             tiers = self.tiersListBox.curselection()
+#             tier_values = [self.tiersListBox.get(i) for i in tiers]
+#             self.tiers = ",".join(tier_values)
+#             if tiers != "":
+#                 updated_item.tier = tiers
+#             else:
+#                 updated_item.tier = item['values'][6]
+
+# #rarity
+#             rarity = self.rarity.get()
+#             if rarity != '':
+#                 updated_item.rarity = rarity
+#             else:
+#                 updated_item.rarity = item['values'][7]
+
+# #cat_type
+#             cat_type = self.cat_type.get()
+#             if cat_type != '':
+#                 updated_item.cat_type = cat_type
+#             else:
+#                 updated_item.cat_type = item['values'][8]
+
+# #item_type
+#             item_type = self.item_type.get()
+#             if item_type != '':
+#                 updated_item.item_type = item_type
+#             else:
+#                 updated_item.item_type = item['values'][9]
+
+# #sub_type
+#             sub_type = self.sub_type.get()
+#             if sub_type != '':
+#                 updated_item.sub_type = sub_type
+#             else:
+#                 updated_item.sub_type = item['values'][10]
+
+# #mod
+#             mod = self.mod.get()
+#             if mod != '':
+#                 updated_item.mod = mod
+#             else:
+#                 updated_item.mod = item['values'][11]
+
+# #trader
+#             trader = self.trader.get()
+#             if trader != '':
+#                 updated_item.trader = trader
+#             else:
+#                 updated_item.trader = item['values'][12]
+
+# #dynamic_event
+#             dynamic_event = self.dynamic_event.get()
+#             if dynamic_event != -1:
+#                 updated_item.dynamic_event = dynamic_event
+#             else:
+#                 updated_item.dynamic_event = item['values'][13]
+
+# #count_in_hoarder
+#             count_in_hoarder = self.count_in_hoarder.get()
+#             if count_in_hoarder != -1:
+#                 updated_item.count_in_hoarder = count_in_hoarder
+#             else:
+#                 updated_item.count_in_hoarder = item['values'][14]
+
+# #count_in_cargo
+#             count_in_cargo = self.count_in_cargo.get()
+#             if count_in_cargo != -1:
+#                 updated_item.count_in_cargo = count_in_cargo
+#             else:
+#                 updated_item.count_in_cargo = item['values'][15]
+
+# #count_in_map
+#             count_in_map = self.count_in_map.get()
+#             if count_in_map != -1:
+#                 updated_item.count_in_map = count_in_map
+#             else:
+#                 updated_item.count_in_map = item['values'][16]
+
+# #count_in_player
+#             count_in_player = self.count_in_player.get()
+#             if count_in_player != -1:
+#                 updated_item.count_in_player = count_in_player
+#             else:
+#                 updated_item.count_in_player = item['values'][17]    
+#             self.database.update_item(updated_item)
         self.__populate_items()
 
     def __delete_item(self):
@@ -346,7 +460,36 @@ class GUI(object):
         tree_row = self.tree.item(self.tree.focus())
         id = tree_row["text"]
         item = self.database.get_item(id)
-        
+        print("DEBUG __fill_entry_frame: ",tree_row)
+        self.id.set(id)
+        self.name.set(item.name)
+        self.nominal.set(-1)
+        self.min.set(-1)
+        self.lifetime.set(-1)
+        self.restock.set(-1)
+        self.mod.set("")
+        self.trader.set("")
+        usages = tree_row['values'][5]
+        for i in range(len(usages)):
+            self.usagesListBox.select_clear(i)
+        tiers = tree_row['values'][6]    
+        for i in range(len(tiers)):
+            self.tiersListBox.select_clear(i)
+        self.rarity.set("")
+        self.cat_type.set("")
+        self.item_type.set("")
+        self.sub_type.set("")
+        self.dynamic_event.set(-1)
+        self.count_in_hoarder.set(-1)
+        self.count_in_cargo.set(-1)
+        self.count_in_map.set(-1)
+        self.count_in_player.set(-1)
+
+    """
+    def __fill_entry_frame(self, event):
+        tree_row = self.tree.item(self.tree.focus())
+        id = tree_row["text"]
+        item = self.database.get_item(id)
         self.id.set(id)
         self.name.set(item.name)
         self.nominal.set(item.nominal)
@@ -380,21 +523,58 @@ class GUI(object):
         self.count_in_hoarder.set(item.count_in_hoarder)
         self.count_in_cargo.set(item.count_in_cargo)
         self.count_in_map.set(item.count_in_map)
-        self.count_in_player.set(item.count_in_player)
+        self.count_in_player.set(item.count_in_player) """
+    """
+    def __create_nominal_info(self):
+        self.infoFrame = Frame(self.window)
+        self.infoFrame.grid(row=1, column=1, sticky="s,w,e")
+
+        Label(self.infoFrame, text="overall nominal / delta:").grid(row=0, column=0)
+
+        Label(self.infoFrame, text="Displayed:").grid(row=0, column=1)
+        Label(self.infoFrame, textvariable=self.totalNomDisplayed).grid(row=0, column=2)
+        i = 3
+
+        for item_type in itemTypes:
+            var = StringVar()
+            delta_start = StringVar()
+
+            self.start_nominal.append(Dao.getNominalByType(item_type))
+            var.set(dao.getNominalByType(item_type))
+            self.nomVars.append(var)
+            delta_start.set(0)
+            self.deltaNom.append(delta_start)
+
+            Label(self.infoFrame, text=item_type.capitalize() + ":").grid(row=0, column=i)
+            Label(self.infoFrame, textvariable=var).grid(row=0, column=i + 1)
+            Label(self.infoFrame, text="/").grid(row=0, column=i + 2)
+            Label(self.infoFrame, textvariable=delta_start).grid(row=0, column=i + 3)
+
+            i += 4
+
+    def __update_nominal_info(self):
+        for i in range(len(self.nomVars)):
+            nominal = dao.getNominalByType(itemTypes[i])
+            self.nomVars[i].set(nominal)
+            try:
+                self.deltaNom[i].set(nominal - self.start_nominal[i])
+            except TypeError:
+                pass
+                #self.deltaupdateNominalInfoNom[i].set(nominal) """
 
 
         # How to set
-        def OnChange(value, name, *pargs):
-            self.update_dict[name] =  value.get()
-            print(self.update_dict)
-    
-        self.nominal.trace_add("write", lambda *pargs: OnChange(
-            self.nominal,"nominal",
-             *pargs))
-        self.min.trace_add("write", lambda *pargs: OnChange(
-            self.min,
-            "min",
-             *pargs))
+    # def OnChange(value, name, *pargs):
+    #     self.update_dict[name] =  value.get()
+    #     print(self.update_dict)
+
+    # self.nominal.trace_add("write", lambda *pargs: OnChange(
+    #     self.nominal,"nominal",
+    #         *pargs))
+    # self.min.trace_add("write", lambda *pargs: OnChange(
+    #     self.min,
+    #     "min",
+    #         *pargs))
 
     def __open_db_window(self):
         DB(self.window)
@@ -422,6 +602,11 @@ class GUI(object):
             col,
             command=lambda _col=col: self.tree_view_sort_column(tv, _col, not reverse),
         )
+
+    def Distributor(self,):
+        items = self.database.get_items()
+        Dist.distribute(items,1000,1000,1000,[1,1])    
+
     def openTraderEditor(self):
         TraderEditor(self.window,self.selectedMods)
 
@@ -429,18 +614,7 @@ class GUI(object):
         self.update_dict[name] =  value.get()
         print(self.update_dict)
 #        do more. set av value based on omv value
-        self.nominal.trace_add("write", lambda *pargs: OnChange(self.nominal,"nominal",*pargs))
-        self.min.trace_add("write", lambda *pargs: OnChange(self.min,"min",*pargs))
-        self.restock.trace_add("write", lambda *pargs: OnChange(self.restock,"restock",*pargs))
-        self.lifetime.trace_add("write", lambda *pargs: OnChange(self.lifetime,"lifetime",*pargs))  
-        self.usage.trace_add("write", lambda *pargs: OnChange(self.usage,"usage",*pargs))
-        self.tier.trace_add("write", lambda *pargs: OnChange(self.tier,"tier",*pargs))
-        self.rarity.trace_add("write", lambda *pargs: OnChange(self.rarity,"rarity",*pargs))
-        self.cat_type.trace_add("write", lambda *pargs: OnChange(self.cat_type,"cat_type",*pargs))        
-        self.item_type.trace_add("write", lambda *pargs: OnChange(self.item_type,"item_type",*pargs))
-        self.sub_type.trace_add("write", lambda *pargs: OnChange(self.sub_type,"sub_type",*pargs))
-        self.mod.trace_add("write", lambda *pargs: OnChange(self.mod,"mod",*pargs))
-        self.trader.trace_add("write", lambda *pargs: OnChange(self.trader,"trader",*pargs)) """
+        self.nominal.trace_add("write", lambda *pargs: OnChange(self.nominal,"nominal",*pargs))"""
 
 window = Tk()
 GUI(window)
