@@ -257,12 +257,13 @@ class GUI(object):
         self.tree.config(xscrollcommand=horizontal.set)
         vertical.config(command=self.tree.yview)
         horizontal.config(command=self.tree.xview)
- 
+
+
     def __create_side_bar(self):
         self.filterFrameHolder = Frame(self.window)
         self.filterFrameHolder.grid(row=0, column=2, sticky="n")
 
-        self.filterFrame = LabelFrame(self.filterFrameHolder, text="Filter")
+        self.filterFrame = LabelFrame(self.filterFrameHolder,width=14, text="Filter")
         self.filterFrame.grid(row=1, column=0, pady=5)
 
         Label(self.filterFrame, text="Category").grid(row=1, column=0, sticky="w")
@@ -273,8 +274,8 @@ class GUI(object):
         self.cat_type_for_filter = StringVar()
         self.cat_type_for_filter.set("all")
         OptionMenu(
-            self.filterFrame, self.cat_type_for_filter, *self.config.get_cat_types()
-        ).grid(row=1, column=1, sticky="w", padx=5)
+            self.filterFrame, self.cat_type_for_filter, *self.config.get_cat_types(),
+        ).grid(row=1, column=1,  sticky="w", padx=5)
 
 
 #Item_type
@@ -294,15 +295,17 @@ class GUI(object):
         Button(
             self.filterFrame, text="Filter", width=12, command=self.__filter_items
         ).grid(row=4, columnspan=2, pady=5, padx=10, sticky="nesw")
+
+
         self.buttons_frame = Frame(self.filterFrame)
-        self.buttons_frame.grid(row=4, columnspan=2)
-        
+        self.buttons_frame.grid(row=6, columnspan=2)
+    
         Button(
             self.buttons_frame,
             text="Search like Name",
             width=14,
             command=self.__search_like_name,
-        ).grid(row=5)
+        ).grid(row=1)
 #
 # This is were we have the test button
 #         
@@ -311,14 +314,15 @@ class GUI(object):
             text="Trader Editor",
             width=14,
             command=self.openTraderEditor,
-        ).grid(row=6)
+        ).grid(row=2)
 
         Button(
             self.buttons_frame,
             text="Distributor",
             width=14,
             command=self.Distributor,
-        ).grid(row=7)
+        ).grid(row=3)
+
 
 
 # Updated to loop through selected items in the grid.

@@ -12,7 +12,8 @@
         <tier value="Tier4"/>
     </tiers>
 	<categoryes>
-	    <category value="other"/>	
+	    <category value="all"/>
+        <category value="other"/>	
 	    <category value="clothes"/>
         <category value="containers"/>
         <category value="explosives"/>
@@ -27,6 +28,7 @@
         <type value="type2"/>
     </types>
     <sub_types>
+        <sub_type value="all"/>
         <sub_type value="Sub Type 1"/>
         <sub_type value="Sub Type 2"/>
     </sub_types>
