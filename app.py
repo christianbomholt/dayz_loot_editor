@@ -325,6 +325,7 @@ class GUI(object):
     def __selectmodsfunction___(self,*args):
         values = [(mod, var.get()) for mod, var in self.moddict.items()]
         print(values)
+        self.__populate_items()
 
 # Updated to loop through selected items in the grid.
     def __update_item(self):
@@ -381,12 +382,16 @@ class GUI(object):
         self.__populate_items()
 
     def __populate_items(self, items=None):
+        #self.moddict = [('Vanilla', 0), ('Mod 1', 1), ('Mod 2', 1)]
+        selected_mods = [x[0] for x in self.moddict if x[1]==1]
+        if len(selected_mods)>0:
+           items = self.database.session.query(Item).filter(Item.mod.in_ (selected_Mods))
         if items is None:
-            items = self.database.all_items()
+           items = self.database.all_items()
         if self.tree.get_children() != ():
-            self.tree.delete(*self.tree.get_children())
+           self.tree.delete(*self.tree.get_children())
         for i in items:
-            self.tree.insert("", "end", text=i[0], value=i[1:19])
+           self.tree.insert("", "end", text=i[0], value=i[1:19])
 
     def __search_by_name(self):
         if self.name.get() != "":
