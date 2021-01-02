@@ -381,7 +381,12 @@ class GUI(object):
         if self.tree.get_children() != ():
             self.tree.delete(*self.tree.get_children())
         for i in items:
-            self.tree.insert("", "end", text=i[0], value=i[1:19])
+            self.tree.insert("", "end", text=i.id, value=[i.name,i.nominal,i.min,
+            i.restock,i.lifetime,i.usages,i.tiers,i.cat_type,i.item_type,i.sub_type,
+            i.rarity,i.mod,i.trader,i.dynamic_event,i.count_in_cargo,i.count_in_hoarder,
+            i.count_in_map,i.count_in_player])    
+        #for i in items:
+            #self.tree.insert("", "end", text=i[0], value=i[1:19])
 
     def __search_by_name(self):
         if self.name.get() != "":
