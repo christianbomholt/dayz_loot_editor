@@ -375,7 +375,7 @@ class GUI(object):
         if len(selected_mods)>0:
             print("DEBUG selected_mods: ",selected_mods)    
             items = self.database.session.query(Item).filter(Item.mod.in_ (selected_mods))
-            items = [item.__dict__.values() for item in items]
+            items = [list(item.__dict__.values()) for item in items]
         if items is None:
             items = self.database.all_items()
         if self.tree.get_children() != ():
