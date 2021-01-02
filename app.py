@@ -14,7 +14,6 @@ import tkinter.filedialog as filedialog
 
 
 class GUI(object):
-
     def __init__(self, main_container: Tk):
         #
         self.config = ConfigManager("config.xml")
@@ -28,6 +27,8 @@ class GUI(object):
         self.window.grid_columnconfigure(1, weight=1)
         self.menu_bar = Menu(self.window)
         self.update_dict = {}
+        self.moddict = {}
+
         #
         self.__create_menu_bar()
         self.__create_entry_frame()
@@ -58,8 +59,6 @@ class GUI(object):
 
 # initializing mods menu
         mods_menu = Menu(self.menu_bar, tearoff=0)
-        self.modSelectionVars = []
-        self.moddict = {}
         mods_menu.add_command(label="Deselect All" ) #command=self.deselectAllMods)
         mods_menu.add_command(label="Select All") # command=self.selectAllMods)
         mods_menu.add_separator()
@@ -71,7 +70,8 @@ class GUI(object):
             else:
                 int_var.set(1)
             #int_var.trace("w", self.__updateModSelection__)
-            mods_menu.add_checkbutton(label=mod, variable=int_var, command=self.__modfilter__)	
+            #mods_menu.add_checkbutton(label=mod, variable=int_var, command=self.__modfilter__)
+            mods_menu.add_checkbutton(label=mod, variable=int_var, command=self.__selectmodsfunction___)
             self.moddict[mod] = int_var
 
         # help menus builder
@@ -314,15 +314,15 @@ class GUI(object):
             width=14,
             command=self.openTraderEditor,
         ).grid(row=2)
-
+        """    
         Button(
             self.buttons_frame,
             text="printmods",
             width=14,
             command=self.printmods,
-        ).grid(row=3)
+        ).grid(row=3)"""
 
-    def printmods(*args):
+    def __selectmodsfunction___(self,*args):
         values = [(mod, var.get()) for mod, var in self.moddict.items()]
         print(values)
 
