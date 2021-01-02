@@ -107,7 +107,7 @@ class Dao(object):
         items = db_cursor.fetchall()
         db_connection.commit()
         db_connection.close()
-        print(sql_filter_items)
+        print("DEBUG :", sql_filter_items)
         return items
 
     def search_by_name(self, item_name):
