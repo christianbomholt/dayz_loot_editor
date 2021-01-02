@@ -14,6 +14,7 @@ import tkinter.filedialog as filedialog
 
 
 class GUI(object):
+
     def __init__(self, main_container: Tk):
         #
         self.config = ConfigManager("config.xml")
@@ -33,6 +34,7 @@ class GUI(object):
         self.__create_tree_view()
         self.__create_side_bar()
         self.__populate_items()
+        
         #
         self.tree.bind("<ButtonRelease-1>", self.__fill_entry_frame)
 
@@ -41,7 +43,6 @@ class GUI(object):
         #print("DEBUG modfilter: ", selected_Mods)
         self.database.filtertoselectedmods(selected_Mods)
         self.__populate_items()
-
 
     def __create_menu_bar(self):
         # file menus builder
@@ -57,20 +58,21 @@ class GUI(object):
 
 # initializing mods menu
         mods_menu = Menu(self.menu_bar, tearoff=0)
-        modSelectionVars = []
+        self.modSelectionVars = []
+        self.moddict = {}
         mods_menu.add_command(label="Deselect All" ) #command=self.deselectAllMods)
         mods_menu.add_command(label="Select All") # command=self.selectAllMods)
         mods_menu.add_separator()
+        
         for mod in self.config.get_mods():
             int_var = IntVar()
             if mod == "removed":
                 int_var.set(0)
             else:
                 int_var.set(1)
-            int_var.trace("w", self.__updateModSelection__)
-            modSelectionVars.append(int_var)
-
+            #int_var.trace("w", self.__updateModSelection__)
             mods_menu.add_checkbutton(label=mod, variable=int_var, command=self.__modfilter__)	
+            self.moddict[mod] = int_var
 
         # help menus builder
         help_menu = Menu(self.menu_bar, tearoff=0)
@@ -315,12 +317,14 @@ class GUI(object):
 
         Button(
             self.buttons_frame,
-            text="Distributor",
+            text="printmods",
             width=14,
-            command=self.Distributor,
+            command=self.printmods,
         ).grid(row=3)
 
-
+    def printmods(*args):
+        values = [(mod, var.get()) for mod, var in self.moddict.items()]
+        print(values)
 
 # Updated to loop through selected items in the grid.
     def __update_item(self):
