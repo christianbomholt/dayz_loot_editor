@@ -86,17 +86,6 @@ class GUI(object):
         # configuring menu bar
         self.window.config(menu=self.menu_bar)
 
-
-    def __updateModSelection__(self, *args):
-        print("DEBUG in __updateModSelection__")
-        self.selectedMods = []
-        print("DEBUG updateModSelection:", self.selectedMods)
-        for i in range(len(self.config.get_mods())):
-            if self.modSelectionVars[i].get() == 1:
-                self.selectedMods.append(self.config.get_mods(i))
-                print("DEBUG updateModSelection:", self.selectedMods)
-
-
     def __create_entry_frame(self):
         self.entryFrameHolder = Frame(self.window)
         self.entryFrameHolder.grid(row=0, column=0, sticky="nw")
@@ -324,7 +313,7 @@ class GUI(object):
 
     def __selectmodsfunction___(self,*args):
         values = [(mod, var.get()) for mod, var in self.moddict.items()]
-        print(values)
+        self.moddict = values
         self.__populate_items()
 
 # Updated to loop through selected items in the grid.
@@ -382,16 +371,16 @@ class GUI(object):
         self.__populate_items()
 
     def __populate_items(self, items=None):
-        #self.moddict = [('Vanilla', 0), ('Mod 1', 1), ('Mod 2', 1)]
         selected_mods = [x[0] for x in self.moddict if x[1]==1]
         if len(selected_mods)>0:
-           items = self.database.session.query(Item).filter(Item.mod.in_ (selected_Mods))
+            print("DEBUG selected_mods: ",selected_mods)    
+            items = self.database.session.query(Item).filter(Item.mod.in_ (selected_mods))
         if items is None:
-           items = self.database.all_items()
+            items = self.database.all_items()
         if self.tree.get_children() != ():
-           self.tree.delete(*self.tree.get_children())
+            self.tree.delete(*self.tree.get_children())
         for i in items:
-           self.tree.insert("", "end", text=i[0], value=i[1:19])
+            self.tree.insert("", "end", text=i[0], value=i[1:19])
 
     def __search_by_name(self):
         if self.name.get() != "":
