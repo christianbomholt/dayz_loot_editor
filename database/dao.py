@@ -30,6 +30,8 @@ class Dao(object):
                 self.session.add(item)
                 self.session.commit()
 
+
+    """### 
     # update item
     def update_item(self, updated_item: Item):
         item = self.session.query(Item).get(updated_item.id)
@@ -51,8 +53,8 @@ class Dao(object):
         item.count_in_cargo = updated_item.count_in_cargo
         item.count_in_map = updated_item.count_in_map
         item.count_in_player = updated_item.count_in_player
-        self.session.commit()
-
+        self.session.commit()#
+        """
     # get item
     def get_item(self, item_id):
         item = self.session.query(Item).get(item_id)
@@ -215,7 +217,7 @@ class Dao(object):
         return [row[0] for row in results]
 
 
-    def getTradersBySubtype(self, subtype):
+    def getTradersBySubtype(self, sub_type):
         db_connection = sqlite3.connect(Dao.databasename)
         db_cursor = db_connection.cursor()
         query = f"SELECT trader FROM items WHERE sub_type = '{sub_type}' group by trader"
@@ -238,14 +240,11 @@ class Dao(object):
         }, synchronize_session=False)
         self.session.commit()
 
-    # def setSubtypeForTrader(self, items):
-    #     db_connection = sqlite3.connect(self.db_name)
-    #     db_cursor = db_connection.cursor()
-    #     sql_set_items = f"UPDATE items SET traderCat = ?, buyprice = ?, sellprice= ?, traderExclude= ?, rarity= ? WHERE name = ?;", items"
-    #     db_cursor.executemany(sql_set_items, items)
-    #     db_connection.commit()
-    #     db_connection.close()              
-      
+
+    def filtertoselectedmods(self,selected_Mods):
+        result = self.session.query(Item).filter(Item.mod.in_ (selected_Mods))
+        self.session.commit()
+        return result
 
     #******************Distributor*****************************
     def getDicts(self, items):
@@ -268,4 +267,4 @@ class Dao(object):
         return dict
 
     def getCoulumNames(self, item):
-        return item.__table__.columns.keys()  
+        return item.__table__.columns.keys()

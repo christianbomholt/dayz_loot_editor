@@ -7,7 +7,7 @@ from ui.db import DB
 from ui.new_items import NewItems
 from ui.setprices import TraderEditor
 from utility.combo_box_manager import ComboBoxManager
-from utility.distibutor import Dist
+#from utility.distibutor import Dist
 from config.ini_manager import INIManager
 from xml_manager.xml_writer import XMLWriter
 import tkinter.filedialog as filedialog
@@ -24,17 +24,26 @@ class GUI(object):
         self.window = main_container
         self.window.wm_title("Loot Editor v0.98.7")
         self.window.grid_rowconfigure(0, weight=1)
-        self.window.grid_columnconfigure(1, weight=3)
+        self.window.grid_columnconfigure(1, weight=1)
         self.menu_bar = Menu(self.window)
         self.update_dict = {}
+        self.moddict = {}
+
         #
         self.__create_menu_bar()
         self.__create_entry_frame()
         self.__create_tree_view()
         self.__create_side_bar()
         self.__populate_items()
+        
         #
         self.tree.bind("<ButtonRelease-1>", self.__fill_entry_frame)
+
+    def __modfilter__(self):
+        selected_Mods = ("Vanilla")
+        #print("DEBUG modfilter: ", selected_Mods)
+        self.database.filtertoselectedmods(selected_Mods)
+        self.__populate_items()
 
     def __create_menu_bar(self):
         # file menus builder
@@ -48,16 +57,22 @@ class GUI(object):
 
         # database menus builder
 
-        # mod menus builder
+# initializing mods menu
         mods_menu = Menu(self.menu_bar, tearoff=0)
-        mods_menu.add_command(label="Deselect All")
-        mods_menu.add_command(label="Select All")
+        mods_menu.add_command(label="Deselect All" ) #command=self.deselectAllMods)
+        mods_menu.add_command(label="Select All") # command=self.selectAllMods)
         mods_menu.add_separator()
+        
         for mod in self.config.get_mods():
             int_var = IntVar()
-
-            mods_menu.add_checkbutton(label=mod, variable=int_var)
-            int_var.set(1)
+            if mod == "removed":
+                int_var.set(0)
+            else:
+                int_var.set(1)
+            #int_var.trace("w", self.__updateModSelection__)
+            #mods_menu.add_checkbutton(label=mod, variable=int_var, command=self.__modfilter__)
+            mods_menu.add_checkbutton(label=mod, variable=int_var, command=self.__selectmodsfunction___)
+            self.moddict[mod] = int_var
 
         # help menus builder
         help_menu = Menu(self.menu_bar, tearoff=0)
@@ -70,6 +85,17 @@ class GUI(object):
 
         # configuring menu bar
         self.window.config(menu=self.menu_bar)
+
+
+    def __updateModSelection__(self, *args):
+        print("DEBUG in __updateModSelection__")
+        self.selectedMods = []
+        print("DEBUG updateModSelection:", self.selectedMods)
+        for i in range(len(self.config.get_mods())):
+            if self.modSelectionVars[i].get() == 1:
+                self.selectedMods.append(self.config.get_mods(i))
+                print("DEBUG updateModSelection:", self.selectedMods)
+
 
     def __create_entry_frame(self):
         self.entryFrameHolder = Frame(self.window)
@@ -217,6 +243,9 @@ class GUI(object):
             self.tree.column(col[2], width=col[1], stretch=col[3])
 
         self.tree.grid(row=0, column=0, sticky="nsew")
+        self.tree.heading('#0', text='ID')
+
+        self.tree.column('#0', width ="60", stretch="NO")
         self.treeView = self.tree
         vertical = ttk.Scrollbar(self.treeFrame, orient=VERTICAL)
         horizontal = ttk.Scrollbar(self.treeFrame, orient=HORIZONTAL)
@@ -227,43 +256,55 @@ class GUI(object):
         self.tree.config(xscrollcommand=horizontal.set)
         vertical.config(command=self.tree.yview)
         horizontal.config(command=self.tree.xview)
- 
+
+
     def __create_side_bar(self):
         self.filterFrameHolder = Frame(self.window)
         self.filterFrameHolder.grid(row=0, column=2, sticky="n")
 
-        self.filterFrame = LabelFrame(self.filterFrameHolder, text="Filter")
+        self.filterFrame = LabelFrame(self.filterFrameHolder,width=14, text="Filter")
         self.filterFrame.grid(row=1, column=0, pady=5)
 
-        Label(self.filterFrame, text="Type").grid(row=1, column=0, sticky="w")
-        Label(self.filterFrame, text="Subtype").grid(row=2, column=0, sticky="w")
+        Label(self.filterFrame, text="Category").grid(row=1, column=0, sticky="w")
+        Label(self.filterFrame, text="Item type").grid(row=2, column=0, sticky="w")
+        Label(self.filterFrame, text="Sub type").grid(row=3, column=0, sticky="w")
 
+#Category
+        self.cat_type_for_filter = StringVar()
+        self.cat_type_for_filter.set("all")
+        OptionMenu(
+            self.filterFrame, self.cat_type_for_filter, *self.config.get_cat_types(),
+        ).grid(row=1, column=1,  sticky="w", padx=5)
+
+
+#Item_type
         self.type_for_filter = StringVar()
         self.type_for_filter.set("all")
         OptionMenu(
             self.filterFrame, self.type_for_filter, *self.config.get_types()
-        ).grid(row=1, column=1, sticky="w", padx=5)
+        ).grid(row=2, column=1, sticky="w", padx=5)
         
-        self.sub_type_combo_for_filter = ComboBoxManager(
-            self.filterFrame,
-            self.config.get_sub_types(),
-            highlightthickness=1,
-            width=15,
-        )
-        self.sub_type_combo_for_filter.grid(row=2, column=1, sticky="w", pady=5, padx=5)
+#Sub_type
+        self.sub_type_for_filter = StringVar()
+        self.sub_type_for_filter.set("all")
+        OptionMenu(
+            self.filterFrame, self.sub_type_for_filter, *self.config.get_sub_types()
+        ).grid(row=3, column=1, sticky="w", padx=5)
 
         Button(
             self.filterFrame, text="Filter", width=12, command=self.__filter_items
-        ).grid(columnspan=2, pady=5, padx=10, sticky="nesw")
+        ).grid(row=4, columnspan=2, pady=5, padx=10, sticky="nesw")
+
+
         self.buttons_frame = Frame(self.filterFrame)
-        self.buttons_frame.grid(row=4, columnspan=2)
-        # Button(self.buttons, text="view linked items", width=12).grid(row=3)
+        self.buttons_frame.grid(row=6, columnspan=2)
+    
         Button(
             self.buttons_frame,
             text="Search like Name",
             width=14,
             command=self.__search_like_name,
-        ).grid(row=4)
+        ).grid(row=1)
 #
 # This is were we have the test button
 #         
@@ -272,14 +313,18 @@ class GUI(object):
             text="Trader Editor",
             width=14,
             command=self.openTraderEditor,
-        ).grid(row=5)
-
+        ).grid(row=2)
+        """    
         Button(
             self.buttons_frame,
-            text="Distributor",
+            text="printmods",
             width=14,
-            command=self.Distributor,
-        ).grid(row=6)
+            command=self.printmods,
+        ).grid(row=3)"""
+
+    def __selectmodsfunction___(self,*args):
+        values = [(mod, var.get()) for mod, var in self.moddict.items()]
+        print(values)
 
 # Updated to loop through selected items in the grid.
     def __update_item(self):
@@ -321,7 +366,7 @@ class GUI(object):
             tiers = self.tiersListBox.curselection()
             tier_values = [self.tiersListBox.get(i) for i in tiers]
             tiers = ",".join(tier_values)
-            print("DEBUG: ", tiers)
+            #print("DEBUG: ", tiers)
             if tiers  != "":
                 setattr(item_to_update, "tier", tiers)
 
@@ -341,7 +386,7 @@ class GUI(object):
         if self.tree.get_children() != ():
             self.tree.delete(*self.tree.get_children())
         for i in items:
-            self.tree.insert("", "end", text=i[0], value=i[1:14])
+            self.tree.insert("", "end", text=i[0], value=i[1:19])
 
     def __search_by_name(self):
         if self.name.get() != "":
@@ -367,7 +412,6 @@ class GUI(object):
         tree_row = self.tree.item(self.tree.focus())
         id = tree_row["text"]
         item = self.database.get_item(id)
-#        print("DEBUG __fill_entry_frame: ",tree_row)
         self.id.set(id)
         self.name.set(item.name)
         self.nominal.set(-1)
@@ -392,45 +436,6 @@ class GUI(object):
         self.count_in_map.set(-1)
         self.count_in_player.set(-1)
 
-    """
-    def __fill_entry_frame(self, event):
-        tree_row = self.tree.item(self.tree.focus())
-        id = tree_row["text"]
-        item = self.database.get_item(id)
-        self.id.set(id)
-        self.name.set(item.name)
-        self.nominal.set(item.nominal)
-        self.min.set(item.min)
-        self.lifetime.set(item.lifetime)
-        self.restock.set(item.restock)
-        self.mod.set(item.mod)
-        self.trader.set(item.trader)
-        usages = self.config.get_usages()
-        _usages = str(item.usage).split(",")
-        for i in range(len(usages)):
-            self.usagesListBox.select_clear(i)
-        for i in range(len(usages)):
-            for j in _usages:
-                if usages[i] == j:
-                    self.usagesListBox.select_set(i)
-        tiers = self.config.get_tiers()
-        _tiers = str(item.tier).split(",")
-        for i in range(len(tiers)):
-            self.tiersListBox.select_clear(i)
-        for i in range(len(tiers)):
-            for j in _tiers:
-                if tiers[i] == j:
-                    self.tiersListBox.select_set(i)
-
-        self.rarity.set(item.rarity)
-        self.cat_type.set(item.cat_type)
-        self.type.set(item.item_type)
-        self.subtypeAutoComp.set_value(item.sub_type)
-        self.dynamic_event.set(item.dynamic_event)
-        self.count_in_hoarder.set(item.count_in_hoarder)
-        self.count_in_cargo.set(item.count_in_cargo)
-        self.count_in_map.set(item.count_in_map)
-        self.count_in_player.set(item.count_in_player) """
     """
     def __create_nominal_info(self):
         self.infoFrame = Frame(self.window)
@@ -470,19 +475,6 @@ class GUI(object):
                 #self.deltaupdateNominalInfoNom[i].set(nominal) """
 
 
-        # How to set
-    # def OnChange(value, name, *pargs):
-    #     self.update_dict[name] =  value.get()
-    #     print(self.update_dict)
-
-    # self.nominal.trace_add("write", lambda *pargs: OnChange(
-    #     self.nominal,"nominal",
-    #         *pargs))
-    # self.min.trace_add("write", lambda *pargs: OnChange(
-    #     self.min,
-    #     "min",
-    #         *pargs))
-
     def __open_db_window(self):
         DB(self.window)
 
@@ -510,9 +502,13 @@ class GUI(object):
             command=lambda _col=col: self.tree_view_sort_column(tv, _col, not reverse),
         )
 
-    def Distributor(self,):
+
+      
+
+    def Distributor(self):
         items = self.database.get_items()
-        Dist.distribute(items,1000,1000,1000,[1,1])    
+        
+        #Dist.distribute(items,1000,1000,1000,[1,1])    
 
     def openTraderEditor(self):
         TraderEditor(self.window,self.selectedMods)

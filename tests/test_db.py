@@ -17,7 +17,7 @@ def test_set_all():
   cat = "Category1"
   bprice = "200"
   sprice = "100"
-  exclude = "N"
+  exclude = 0
   rarity = "Very Rare"
   db.setSubtypeForTrader_fast(names, cat, bprice, sprice, exclude, rarity)
 
