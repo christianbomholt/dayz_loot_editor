@@ -240,14 +240,10 @@ class Dao(object):
         }, synchronize_session=False)
         self.session.commit()
 
-    # def setSubtypeForTrader(self, items):
-    #     db_connection = sqlite3.connect(self.db_name)
-    #     db_cursor = db_connection.cursor()
-    #     sql_set_items = f"UPDATE items SET traderCat = ?, buyprice = ?, sellprice= ?, traderExclude= ?, rarity= ? WHERE name = ?;", items"
-    #     db_cursor.executemany(sql_set_items, items)
-    #     db_connection.commit()
-    #     db_connection.close()              
-      
+
+    def filtertoselectedmods(self,selected_Mods):
+        self.session.query(Item).filter(Item.mod.in_ (selected_Mods))
+        self.session.commit()
 
     #******************Distributor*****************************
     def getDicts(self, items):

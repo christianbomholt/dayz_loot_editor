@@ -36,6 +36,12 @@ class GUI(object):
         #
         self.tree.bind("<ButtonRelease-1>", self.__fill_entry_frame)
 
+    def __modfilter__(self):
+        selected_Mods = ("Vanilla", "Mod 1")
+        print("DEBUG modfilter: ", selected_Mods)
+        self.database.filtertoselectedmods(selected_Mods)
+
+
     def __create_menu_bar(self):
         # file menus builder
         file_menu = Menu(self.menu_bar, tearoff=0)
@@ -47,18 +53,6 @@ class GUI(object):
         file_menu.add_command(label="Exit", command=self.window.destroy)
 
         # database menus builder
-        """
-        # mod menus builder
-        mods_menu = Menu(self.menu_bar, tearoff=0)
-        mods_menu.add_command(label="Deselect All")
-        mods_menu.add_command(label="Select All")
-        mods_menu.add_separator()
-        for mod in self.config.get_mods():
-            int_var = IntVar()
-
-            mods_menu.add_checkbutton(label=mod, variable=int_var)
-            int_var.set(1)
-        print("DEBUG mods_menu: ", int_var)"""
 
 # initializing mods menu
         mods_menu = Menu(self.menu_bar, tearoff=0)
@@ -74,7 +68,7 @@ class GUI(object):
                 int_var.set(1)
             int_var.trace("w", self.updateModSelection)
             modSelectionVars.append(int_var)
-            mods_menu.add_checkbutton(label=mod, variable=int_var)
+            mods_menu.add_checkbutton(label=mod, variable=int_var, command=self.__modfilter__)	
 
         # help menus builder
         help_menu = Menu(self.menu_bar, tearoff=0)
