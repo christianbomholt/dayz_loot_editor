@@ -242,8 +242,9 @@ class Dao(object):
 
 
     def filtertoselectedmods(self,selected_Mods):
-        self.session.query(Item).filter(Item.mod.in_ (selected_Mods))
+        result = self.session.query(Item).filter(Item.mod.in_ (selected_Mods))
         self.session.commit()
+        return result
 
     #******************Distributor*****************************
     def getDicts(self, items):

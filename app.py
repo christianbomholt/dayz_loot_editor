@@ -37,9 +37,10 @@ class GUI(object):
         self.tree.bind("<ButtonRelease-1>", self.__fill_entry_frame)
 
     def __modfilter__(self):
-        selected_Mods = ("Vanilla", "Mod 1")
-        print("DEBUG modfilter: ", selected_Mods)
+        selected_Mods = ("Vanilla")
+        #print("DEBUG modfilter: ", selected_Mods)
         self.database.filtertoselectedmods(selected_Mods)
+        self.__populate_items()
 
 
     def __create_menu_bar(self):
@@ -66,8 +67,9 @@ class GUI(object):
                 int_var.set(0)
             else:
                 int_var.set(1)
-            int_var.trace("w", self.updateModSelection)
+            int_var.trace("w", self.__updateModSelection__)
             modSelectionVars.append(int_var)
+
             mods_menu.add_checkbutton(label=mod, variable=int_var, command=self.__modfilter__)	
 
         # help menus builder
@@ -83,7 +85,8 @@ class GUI(object):
         self.window.config(menu=self.menu_bar)
 
 
-    def updateModSelection(self, *args):
+    def __updateModSelection__(self, *args):
+        print("DEBUG in __updateModSelection__")
         self.selectedMods = []
         print("DEBUG updateModSelection:", self.selectedMods)
         for i in range(len(self.config.get_mods())):
@@ -359,7 +362,7 @@ class GUI(object):
             tiers = self.tiersListBox.curselection()
             tier_values = [self.tiersListBox.get(i) for i in tiers]
             tiers = ",".join(tier_values)
-            print("DEBUG: ", tiers)
+            #print("DEBUG: ", tiers)
             if tiers  != "":
                 setattr(item_to_update, "tier", tiers)
 
