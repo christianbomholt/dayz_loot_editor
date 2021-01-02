@@ -17,7 +17,7 @@ def test_set_all():
   cat = "Category1"
   bprice = "200"
   sprice = "100"
-  exclude = 0
+  exclude = "N"
   rarity = "Very Rare"
   db.setSubtypeForTrader_fast(names, cat, bprice, sprice, exclude, rarity)
 
@@ -28,6 +28,7 @@ def test_set_all():
   
 def test_filter():
   selected_Mods = ("Vanilla", "Mod 1", "Mod 2")
-  items = db.session.query(Item).filter(Item.mod.in_ (selected_Mods))
+  items = db.session.query(Item).filter(Item.mod.in_ (selected_Mods)).all()
   print(set([u.__dict__["mod"] for u in items]))
-  assert items == 2
+
+  assert set([u.__dict__["mod"] for u in items]) == set(selected_Mods)

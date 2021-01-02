@@ -65,13 +65,14 @@ class Dao(object):
     def all_items(self):
         """items = self.session.query(Item).all()
         self.session.commit()"""
-        db_connection = sqlite3.connect(self.db_name)
-        sql_delete_items = "select * from items"
-        db_cursor = db_connection.cursor()
-        db_cursor.execute(sql_delete_items)
-        items = db_cursor.fetchall()
-        db_connection.commit()
-        db_connection.close()
+        # db_connection = sqlite3.connect(self.db_name)
+        # sql_delete_items = "select * from items"
+        # db_cursor = db_connection.cursor()
+        # db_cursor.execute(sql_delete_items)
+        # items = db_cursor.fetchall()
+        # db_connection.commit()
+        # db_connection.close()
+        items = self.session.query(Item).all()
         return items
 
     def get_items(self):
