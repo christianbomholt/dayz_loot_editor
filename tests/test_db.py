@@ -14,17 +14,18 @@ def test_config_getters():
 
 def test_set_all():
   names = ["Massppshbox",'Massppshdrum','MassPPSH41']
-  cat = "Category1"
-  bprice = "200"
-  sprice = "100"
-  exclude = "N"
+  cat = "W"
+  bprice = "2000"
+  sprice = "1000"
+  exclude = 0
   rarity = "Very Rare"
-  db.setSubtypeForTrader_fast(names, cat, bprice, sprice, exclude, rarity)
+   # traderCat, buyprice, sellprice, traderExclude, rarity, name
+  db.setSubtypeForTrader_fast(exclude, bprice, sprice, exclude, rarity, names)
 
   for item in db.fast_search_like_name("Massppsh"):
     print(item.get("name"))
     assert item.get("rarity") == 'Very Rare'
-    assert item.get("traderExclude") == "N"
+    assert item.get("traderExclude") == 0
   
 def test_filter():
   selected_Mods = ("Vanilla", "Mod 1", "Mod 2")

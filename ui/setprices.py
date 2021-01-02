@@ -196,7 +196,8 @@ class TraderEditor(object):
 
     def update(self):
         values = self.createValues()
-        Dao.setSubtypeForTrader(values)
+        print("DEBUG Values: ", values)
+        self.database.setTraderValues_fast(values)
 
     def createTrader(self):
         sub_type = self.subTypeListbox.get(ANCHOR)
@@ -204,6 +205,7 @@ class TraderEditor(object):
         newItems = []
         for item in items:
             newItem = [item[5], item[0], item[1], item[2], item[3], item[4]]
+            print("DEBUG NewItem: ", newItem)
             newItems.append(newItem)
         # name, traderCat, buyPrice, sellPrice, rarity
         createTrader(self.window, sub_type, newItems)

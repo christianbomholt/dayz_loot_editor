@@ -47,6 +47,13 @@ class ConfigManager(object):
             mods.append(i.attributes["value"].value)
         return mods
 
+    def get_traders(self):
+        trader_list = self.config_file.getElementsByTagName("trader")
+        traders = list()
+        for i in trader_list:
+            traders.append(i.attributes["value"].value)
+        return traders
+
     def get_rarities(self):
         rarity_list = self.config_file.getElementsByTagName("rarity")
         rarities = list()

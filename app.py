@@ -113,8 +113,8 @@ class GUI(object):
         self.dynamic_event = IntVar()
         self.count_in_cargo = IntVar()
         self.count_in_hoarder = IntVar()
-        self.count_in_map = IntVar()
         self.count_in_player = IntVar()
+        self.count_in_map = IntVar()
         # form fields
         self.nameField = Entry(self.entryFrame, textvariable=self.name)
         self.nameField.grid(row=0, column=1, sticky="w")
@@ -167,10 +167,16 @@ class GUI(object):
             self.entryFrame, self.rarity, *self.config.get_rarities()
         )
         self.rarityOption.grid(row=10, column=1, sticky="w", pady=5)
-        self.modField = Entry(self.entryFrame, textvariable=self.mod)
-        self.modField.grid(row=11, column=1, sticky="w", pady=5)
-        self.traderField = Entry(self.entryFrame, textvariable=self.trader)
-        self.traderField.grid(row=12, column=1, sticky="w")
+
+        self.modOption = OptionMenu(
+            self.entryFrame, self.mod, *self.config.get_mods()
+        )
+        self.modOption.grid(row=11, column=1, sticky="w", pady=5)
+
+        self.traderOption = OptionMenu(
+            self.entryFrame, self.trader, *self.config.get_traders()
+        )
+        self.traderOption.grid(row=12, column=1, sticky="w", pady=5)
 
         # check boxes frame
         self.checkBoxFrame = Frame(self.entryFrameHolder)
@@ -179,22 +185,28 @@ class GUI(object):
             self.checkBoxFrame, text="Dynamic Event", variable=self.dynamic_event, onvalue = 1, offvalue = 0
         )
         self.dynamic_event_check.grid(row=0, column=0, sticky="w")
-        self.count_in_cargo_check = Checkbutton(
-            self.checkBoxFrame, text="Count in Cargo", variable=self.count_in_cargo, onvalue = 1, offvalue = 0
-        )
-        self.count_in_cargo_check.grid(row=1, column=0, sticky="w")
+
         self.count_in_hoarder_check = Checkbutton(
             self.checkBoxFrame, text="Count in Hoarder", variable=self.count_in_hoarder, onvalue = 1, offvalue = 0
         )
-        self.count_in_hoarder_check.grid(row=2, column=0, sticky="w")
-        self.count_in_map_check = Checkbutton(
-            self.checkBoxFrame, text="Count in Map", variable=self.count_in_map, onvalue = 1, offvalue = 0
+        self.count_in_hoarder_check.grid(row=1, column=0, sticky="w")
+
+
+        self.count_in_cargo_check = Checkbutton(
+            self.checkBoxFrame, text="Count in Cargo", variable=self.count_in_cargo, onvalue = 1, offvalue = 0
         )
-        self.count_in_map_check.grid(row=3, column=0, sticky="w")
+        self.count_in_cargo_check.grid(row=2, column=0, sticky="w")
+        
         self.count_in_player_check = Checkbutton( 
             self.checkBoxFrame, text="Count in Player", variable=self.count_in_player, onvalue = 1, offvalue = 0
         )
-        self.count_in_player_check.grid(row=4, column=0, sticky="w")
+        self.count_in_player_check.grid(row=3, column=0, sticky="w")
+
+        self.count_in_map_check = Checkbutton(
+            self.checkBoxFrame, text="Count in Map", variable=self.count_in_map, onvalue = 1, offvalue = 0
+        )
+        self.count_in_map_check.grid(row=4, column=0, sticky="w")
+
 
         Button(
             self.checkBoxFrame, text="Update", width=8, command=self.__update_item
@@ -380,7 +392,7 @@ class GUI(object):
     def __populate_items(self, items=None):
         selected_mods = [x[0] for x in self.moddlist if x[1]==1]
         if len(selected_mods)>0:
-            print("DEBUG selected_mods: ",selected_mods)    
+            #print("DEBUG selected_mods: ",selected_mods)    
             items = self.database.session.query(Item).filter(Item.mod.in_ (selected_mods)).all()
             # items = [list(item.__dict__.values()) for item in items]
         if items is None:
@@ -390,8 +402,8 @@ class GUI(object):
         for i in items:
             self.tree.insert("", "end", text=i.id, value=[i.name,i.nominal,i.min,
             i.restock,i.lifetime,i.usage,i.tier,i.cat_type,i.item_type,i.sub_type,
-            i.rarity,i.mod,i.trader,i.dynamic_event,i.count_in_cargo,i.count_in_hoarder,
-            i.count_in_map,i.count_in_player])
+            i.rarity,i.mod,i.trader,i.dynamic_event,i.count_in_hoarder,i.count_in_cargo,
+            i.count_in_player,i.count_in_map])
         # for i in items:
         #     self.tree.insert("", "end", text=i[0], value=i[1:19])
 

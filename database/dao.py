@@ -163,26 +163,20 @@ class Dao(object):
         db_connection = sqlite3.connect(Dao.databasename)
         db_cursor = db_connection.cursor()
         query = f"SELECT sub_type, mod FROM items WHERE mod='{mod}' group by sub_type"
-        #print("DEBUG in GetSubtupesMods", query)
         db_cursor.execute(query)
         subtypes = db_cursor.fetchall()
         db_connection.commit()
         db_connection.close()
-        #print("DEBUG getSubtypesMods ",subtypes)
-        #print("DEBUG getSubtypesMods ",[_[0] for _ in subtypes])
         return [_[0] for _ in subtypes]
 
     def getTraderBySubtype(self, sub_type):
         db_connection = sqlite3.connect(Dao.databasename)
         db_cursor = db_connection.cursor()
-        #print("DEBUG in getTraderBySubtype", sub_type)
         query = f"SELECT trader FROM items WHERE sub_type = '{sub_type}' group by trader"
-        #print("DEBUG query in getTraderBySubtype", query)
         db_cursor.execute(query)
         raw_results = db_cursor.fetchall()
         db_connection.commit()
         db_connection.close()
-        #print("DEBUG - raw Trader_results", raw_results)
         results = [row[0] if row[0] is not None else "" for row in raw_results]
         return sorted(results)
  
@@ -191,9 +185,7 @@ class Dao(object):
     def getSubtypeForTrader(self, sub_type):
         db_connection = sqlite3.connect(Dao.databasename)
         db_cursor = db_connection.cursor()
-        #print("DEBUG getSubtypeForTrader ", sub_type)
         query = f"select name, sub_type, tradercat, buyprice, sellprice, rarity, nominal, traderexclude, mod from items where sub_type = '{sub_type}'"
-        #print("DEBUG getSubtypeForTrader ", query)
         db_cursor.execute(query)
         result = db_cursor.fetchall()
         db_connection.commit()
@@ -229,17 +221,31 @@ class Dao(object):
         results = [row[0] if row[0] is not None else "" for row in results]
         return sorted(results)
 
-    def setSubtypeForTrader_fast(self, names, cat, bprice, sprice, exclude, rarity):
+
+    # traderCat, buyprice, sellprice, traderExclude, rarity, name
+    def setSubtypeForTrader_fast(self, traderCat, buyprice, sellprice, traderExclude, rarity, name):
         self.session.query(Item).filter(
-            Item.name.in_(names)
+            Item.name.in_(name)
         ).update({
-            Item.traderCat: cat,
-            Item.buyprice: cat,
-            Item.sellprice: cat,
-            Item.traderExclude: exclude,
+            Item.traderCat: traderCat,
+            Item.buyprice: buyprice,
+            Item.sellprice: sellprice,
+            Item.traderExclude: traderExclude,
             Item.rarity: rarity
         }, synchronize_session=False)
         self.session.commit()
+
+    def setTraderValues_fast(self, values):
+        self.session.query(Item).filter(
+            Item.name.in_(values[5])
+        ).update({
+            Item.traderCat: values[0],
+            Item.buyprice: values[1],
+            Item.sellprice: values[2],
+            Item.traderExclude: values[3],
+            Item.rarity: values[4]
+        }, synchronize_session=False)
+        self.session.commit()        
 
 
     def filtertoselectedmods(self,selected_Mods):

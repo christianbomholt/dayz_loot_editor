@@ -32,6 +32,11 @@
         <sub_type value="Sub Type 1"/>
         <sub_type value="Sub Type 2"/>
     </sub_types>
+    <traders>
+	    <trader value="Trader 1"/>
+        <trader value="Trader 2"/>
+        <trader value="Trader 3"/>
+    </traders>
     <mods>
 	    <mod value="Vanilla"/>
         <mod value="Mod 1"/>
