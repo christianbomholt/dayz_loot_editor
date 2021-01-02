@@ -39,11 +39,6 @@ class GUI(object):
         #
         self.tree.bind("<ButtonRelease-1>", self.__fill_entry_frame)
 
-    def __modfilter__(self):
-        selected_Mods = ("Vanilla")
-        #print("DEBUG modfilter: ", selected_Mods)
-        self.database.filtertoselectedmods(selected_Mods)
-        self.__populate_items()
 
     def __create_menu_bar(self):
         # file menus builder
@@ -65,12 +60,6 @@ class GUI(object):
         
         for mod in self.config.get_mods():
             int_var = IntVar()
-            if mod == "removed":
-                int_var.set(0)
-            else:
-                int_var.set(1)
-            #int_var.trace("w", self.__updateModSelection__)
-            #mods_menu.add_checkbutton(label=mod, variable=int_var, command=self.__modfilter__)
             mods_menu.add_checkbutton(label=mod, variable=int_var, command=self.__selectmodsfunction___)
             self.moddict[mod] = int_var
 
@@ -262,7 +251,7 @@ class GUI(object):
         self.cat_type_for_filter = StringVar()
         self.cat_type_for_filter.set("all")
         OptionMenu(
-            self.filterFrame, self.cat_type_for_filter, *self.config.get_cat_types(),
+            self.filterFrame, self.cat_type_for_filter, *self.config.get_cat_types(), command = self.__CatFilter__
         ).grid(row=1, column=1,  sticky="w", padx=5)
 
 
@@ -270,14 +259,14 @@ class GUI(object):
         self.type_for_filter = StringVar()
         self.type_for_filter.set("all")
         OptionMenu(
-            self.filterFrame, self.type_for_filter, *self.config.get_types()
+            self.filterFrame, self.type_for_filter, *self.config.get_types(), command = self.__TypeFilter__
         ).grid(row=2, column=1, sticky="w", padx=5)
         
 #Sub_type
         self.sub_type_for_filter = StringVar()
         self.sub_type_for_filter.set("all")
         OptionMenu(
-            self.filterFrame, self.sub_type_for_filter, *self.config.get_sub_types()
+            self.filterFrame, self.sub_type_for_filter, *self.config.get_sub_types(), command = self.__SubTypeFilter__
         ).grid(row=3, column=1, sticky="w", padx=5)
 
         Button(
@@ -310,6 +299,23 @@ class GUI(object):
             width=14,
             command=self.printmods,
         ).grid(row=3)"""
+
+    def __CatFilter__(self, selection):
+        if selection != "all":
+            self.type_for_filter.set("all")
+            self.sub_type_for_filter.set("all")
+
+    def __TypeFilter__(self, selection):
+        if selection != "all":
+            self.cat_type_for_filter.set("all")
+            self.sub_type_for_filter.set("all")
+
+    def __SubTypeFilter__(self, selection):
+        if selection != "all":
+            self.cat_type_for_filter.set("all")
+            self.type_for_filter.set("all")
+
+
 
     def __selectmodsfunction___(self,*args):
         values = [(mod, var.get()) for mod, var in self.moddict.items()]
@@ -375,18 +381,19 @@ class GUI(object):
         if len(selected_mods)>0:
             print("DEBUG selected_mods: ",selected_mods)    
             items = self.database.session.query(Item).filter(Item.mod.in_ (selected_mods))
-            #items = [list(item.__dict__.values()) for item in items]
+            items = [list(item.__dict__.values()) for item in items]
         if items is None:
             items = self.database.all_items()
         if self.tree.get_children() != ():
             self.tree.delete(*self.tree.get_children())
+        """
         for i in items:
             self.tree.insert("", "end", text=i.id, value=[i.name,i.nominal,i.min,
             i.restock,i.lifetime,i.usages,i.tiers,i.cat_type,i.item_type,i.sub_type,
             i.rarity,i.mod,i.trader,i.dynamic_event,i.count_in_cargo,i.count_in_hoarder,
-            i.count_in_map,i.count_in_player])    
-        #for i in items:
-            #self.tree.insert("", "end", text=i[0], value=i[1:19])
+            i.count_in_map,i.count_in_player])    """
+        for i in items:
+            self.tree.insert("", "end", text=i[0], value=i[1:19])
 
     def __search_by_name(self):
         if self.name.get() != "":
