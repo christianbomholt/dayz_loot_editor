@@ -7,6 +7,7 @@ from database.dao import Dao
 from utility.categories import traderCatSwitcher
 from utility.exportTrader import createTrader, distribute
 from utility.exportTrader import rarityForTrader
+from config import ConfigManager
 from config.ini_manager import INIManager
 
 
@@ -17,22 +18,33 @@ class TraderEditor(object):
         self.window.grab_set()
         self.selectedMods = selectedMods
         self.traderVal = []
+        self.config = ConfigManager("config.xml")
         self.ini_manger = INIManager("app.ini")
         self.database = Dao(self.ini_manger.read_ini("Database", "Database_Name"))    
+        self.seltrader = ""
         self.main = Frame(self.window)
         self.main.grid()
-        self.createSubTypes()
+        self.createSubTypes("all")
         self.createTraderEditor(self.window, 0, 1, [])
         self.createTraderSetting(self.window, 1, 1)
         self.subTypeListbox.bind("<<ListboxSelect>>", self.fillTraderWindow)
+        
 
-        #windows.center(self.window)
+    def setseltrader(self,value):
+        self.seltrader = value    
 
-    def createSubTypes(self):
+    def createSubTypes(self, seltrader):
         subtypesFrame = Frame(self.main)
         subtypesFrame.grid()
+        self.seltrader = StringVar()
+        self.traderSel = OptionMenu(
+            subtypesFrame, self.seltrader, *self.config.get_traders(), command=self.setseltrader
+        )
+        self.traderSel.grid(row=0, column=1, sticky="w", pady=5)
+        self.seltrader.set(self.config.get_traders()[0])
+
         self.subTypeListbox = Listbox(subtypesFrame, width=35, height=30, exportselection=False)
-        self.subTypeListbox.grid(sticky="ns", padx=10)
+        self.subTypeListbox.grid(row = 1, column=1, sticky="ns", padx=10)
         subTypes = set()
 
         for mod in self.selectedMods:
@@ -69,8 +81,8 @@ class TraderEditor(object):
         self.canvFrame = Frame(self.canv, height=height, width=width)
         self.canv.create_window(0, 0, window=self.canvFrame, anchor='nw')
 
+
         for item in rows:
-            #print("DEBUG item in Rows", item)
             self.traderRow(self.canvFrame, *item)
 
         scrl = Scrollbar(self.frame, orient=VERTICAL)
@@ -171,6 +183,8 @@ class TraderEditor(object):
         selSubtype = "" if selSubtype == "UNASSIGNED" else selSubtype
 
         itemsOfSubtype = Dao.getSubtypeForTrader(self, selSubtype)
+        traderitemstupl = self.database.get_traderitemstupl(self.seltrader,selSubtype,self.selectedMods)
+        print("DEBUG selectedMods: ",traderitemstupl)
         itemsOfSubtypeOfSelectedMods = []
 
         for item in itemsOfSubtype:

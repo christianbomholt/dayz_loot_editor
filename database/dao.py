@@ -1,7 +1,6 @@
 import sqlite3
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, Column, Integer, String, and_
 from sqlalchemy.orm import sessionmaker
-
 from model.item import Item
 
 
@@ -29,8 +28,6 @@ class Dao(object):
             if self.session.query(Item).filter(Item.name == item.name).count() == 0:
                 self.session.add(item)
                 self.session.commit()
-
-
     """### 
     # update item
     def update_item(self, updated_item: Item):
@@ -198,7 +195,19 @@ class Dao(object):
                 result[i][4] = -1
             result[i] = list(result[i])
         return result
+    """    
+    def fast_search_like_name(self, item_name):
+        search = f'%{item_name}%'
+        results = self.session.query(Item).filter(Item.name.like(search)).all()
+        return [u.__dict__ for u in results]     """
 
+#result = self.session.query(Item).filter(Item.mod.in_ (selected_Mods))
+
+    def get_traderitemstupl(self, traderSel, sub_type, selected_Mods):
+        print("DEBUG sub_type:", sub_type)
+        results = self.session.query(Item).filter(and_(Item.trader==(traderSel),Item.sub_type==(sub_type),Item.mod.in_(selected_Mods))).all()
+        return [u.__dict__ for u in results]
+    
     def getItemDetailsByTraderLoc(self, sub_type, trader):
         db_connection = sqlite3.connect(Dao.databasename)
         db_cursor = db_connection.cursor()
