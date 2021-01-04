@@ -55,7 +55,6 @@
         <rarity value="All Over The Place"/>
     </rairties>
     <tree>
-        
         <node text="Name" width ="250" col_id="#1" stretch="YES"/>
         <node text="Nominal" width ="60" col_id="#2" stretch="YES"/>
         <node text="Min" width="50" col_id="#3" stretch="No"/>

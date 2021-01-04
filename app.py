@@ -392,20 +392,16 @@ class GUI(object):
     def __populate_items(self, items=None):
         selected_mods = [x[0] for x in self.moddlist if x[1]==1]
         if len(selected_mods)>0:
-            #print("DEBUG selected_mods: ",selected_mods)    
             items = self.database.session.query(Item).filter(Item.mod.in_ (selected_mods)).all()
-            # items = [list(item.__dict__.values()) for item in items]
         if items is None:
             items = self.database.all_items()
         if self.tree.get_children() != ():
             self.tree.delete(*self.tree.get_children())
         for i in items:
             self.tree.insert("", "end", text=i.id, value=[i.name,i.nominal,i.min,
-            i.restock,i.lifetime,i.usage,i.tier,i.cat_type,i.item_type,i.sub_type,
-            i.rarity,i.mod,i.trader,i.dynamic_event,i.count_in_hoarder,i.count_in_cargo,
+            i.restock,i.lifetime,i.usage,i.tier,i.rarity,i.cat_type,i.item_type,i.sub_type,
+            i.mod,i.trader,i.dynamic_event,i.count_in_hoarder,i.count_in_cargo,
             i.count_in_player,i.count_in_map])
-        # for i in items:
-        #     self.tree.insert("", "end", text=i[0], value=i[1:19])
 
     def __search_by_name(self):
         if self.name.get() != "":
