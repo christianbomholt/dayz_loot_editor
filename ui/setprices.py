@@ -14,6 +14,7 @@ from config.ini_manager import INIManager
 class TraderEditor(object):
     def __init__(self, root, selectedMods):
         self.window = Toplevel(root)
+
         self.window.wm_title("Set Prices for trader config")
         self.window.grab_set()
         self.selectedMods = selectedMods
@@ -25,7 +26,7 @@ class TraderEditor(object):
         self.main = Frame(self.window)
         self.main.grid()
         self.createSubTypes("all")
-        self.createTraderEditor(self.window, 0, 1, [])
+        self.createTraderEditor(self.window, 0, 1)
         self.createTraderSetting(self.window, 1, 1)
         self.subTypeListbox.bind("<<ListboxSelect>>", self.fillTraderWindow)
         
@@ -42,6 +43,15 @@ class TraderEditor(object):
         )
         self.traderSel.grid(row=0, column=1, sticky="w", pady=5)
         self.seltrader.set(self.config.get_traders()[0])
+        self.seltrader = self.config.get_traders()[0]
+        print("DEBUG: seltrader", self.seltrader)
+        """
+        Button(
+            subtypesFrame,
+            text="testbutton",
+            width=14,
+            command=self.testdef,
+        ).grid(row=0, column=2)"""
 
         self.subTypeListbox = Listbox(subtypesFrame, width=35, height=30, exportselection=False)
         self.subTypeListbox.grid(row = 1, column=1, sticky="ns", padx=10)
@@ -54,46 +64,18 @@ class TraderEditor(object):
         for subType in sorted(subTypes):
             if subType == "":
                 subType = "UNASSIGNED"
-
             self.subTypeListbox.insert(END, subType)
 
-    def createTraderEditor(self, root, row, column, rows):
-        self.drawEditor(root, row, column, self.setTraderCat(rows))
+    def createTraderEditor(self, root, row, column):    
+        self.fillTraderWindow(root)
 
-    def setTraderCat(self, rows):
-        for i in range(len(rows)):
-            traderCat = rows[i][2]
-            if traderCat == "" or traderCat == None:
-                rows[i][2] = traderCatSwitcher(rows[i][1])
-        return rows
-
-    def drawEditor(self, root, row, column, rows):
-        height = 480
-        width = 400
-        self.frame = Frame(root, height=height, width=width)
-        self.frame.grid(row=row, column=column, sticky="nw", pady=20)
-        self.frame.rowconfigure(0, weight=1)
-        self.frame.columnconfigure(0, weight=1)
-
-        self.canv = Canvas(self.frame, height=height, width=width)
-        self.canv.grid(row=0, column=0, sticky="nsew")
-
-        self.canvFrame = Frame(self.canv, height=height, width=width)
-        self.canv.create_window(0, 0, window=self.canvFrame, anchor='nw')
-
-
-        for item in rows:
-            self.traderRow(self.canvFrame, *item)
-
-        scrl = Scrollbar(self.frame, orient=VERTICAL)
-        scrl.config(command=self.canv.yview)
-        self.canv.config(yscrollcommand=scrl.set)
-        scrl.grid(row=0, column=1, sticky="ns")
-
-        root.rowconfigure(row, weight=1)
-        root.columnconfigure(column, weight=1)
-
-        self.canvFrame.bind("<Configure>", self.update_scrollregion)
+    # name-0, subtype-1, tradercat-2, buyprice-3, sellprice, rarity, nominal, traderexclude, mod
+    def setTraderCat(self,traderCat, subtype):
+        if traderCat == "" or traderCat == None:
+            print("DEBUG: in SetTraderCat before switch: ", traderCat)
+            traderCat = traderCatSwitcher(subtype)
+            print("DEBUG: in SetTraderCat after switch: ", traderCat)
+        return traderCat
 
     def createTraderSetting(self, root, row, column):
         radioFrame = Frame(root)
@@ -148,6 +130,8 @@ class TraderEditor(object):
         self.canv.configure(scrollregion=self.canv.bbox("all"))
 
     def traderRow(self, parent, name, sub_type, traderCat, buyPrice, sellPrice, rarity, nominal, exclude):
+
+        print("DEBUG: ",name, sub_type, traderCat, buyPrice, sellPrice, rarity, nominal, exclude)
         frame = Frame(parent)
         frame.grid(padx=5, pady=2, sticky="w")
         doExclude = IntVar()
@@ -173,25 +157,52 @@ class TraderEditor(object):
 
         self.traderVal.append(([traderCatEntry, buyPriceEntry, sellPriceEntry, doExclude], [rarity, name, nominal]))
 
-    def clearTraderWindow(self):
-        self.frame.grid_forget()
-        self.traderVal = []
-
-    def fillTraderWindow(self, event):
-        self.clearTraderWindow()
+    #def fillTraderWindow(self,parent, event):
+    def fillTraderWindow(self,parent):
+        root = self.window        
         selSubtype = self.subTypeListbox.get(ANCHOR)
         selSubtype = "" if selSubtype == "UNASSIGNED" else selSubtype
 
-        itemsOfSubtype = Dao.getSubtypeForTrader(self, selSubtype)
-        traderitemstupl = self.database.get_traderitemstupl(self.seltrader,selSubtype,self.selectedMods)
-        print("DEBUG selectedMods: ",traderitemstupl)
-        itemsOfSubtypeOfSelectedMods = []
+        items = self.database.get_traderitemstupl(self.seltrader,selSubtype,self.selectedMods)
 
-        for item in itemsOfSubtype:
-            if item[-1] in self.selectedMods:
-                itemsOfSubtypeOfSelectedMods.append(item[:-1])
+        height = 480
+        width = 400
+        #self.frame = Frame(self.window, height=height, width=width)
+        self.frame = Frame(root, height=height, width=width)
+        self.frame.grid_forget()
+        self.traderVal = []        
+        self.frame.grid(row=0, column=1, sticky="nw", pady=20)
+        self.frame.rowconfigure(0, weight=1)
+        self.frame.columnconfigure(0, weight=1)
+        self.canv = Canvas(self.frame, height=height, width=width)
+        self.canv.grid(row=0, column=0, sticky="nsew")
 
-        self.createTraderEditor(self.window, 0, 1, itemsOfSubtypeOfSelectedMods)
+        self.canvFrame = Frame(self.canv, height=height, width=width)
+        self.canv.create_window(0, 0, window=self.canvFrame, anchor='nw')
+
+        for i in items:
+            traderCat = i.get("traderCat")
+            subtype = i.get("sub_type")
+            traderCat = self.setTraderCat(traderCat,subtype)
+            print("DEBUG: ",traderCat,subtype)
+            self.traderRow(self.canvFrame, i.get("name"), subtype, traderCat, i.get("buyprice"), i.get("sellprice"), i.get("rarity"), i.get("nominal"), i.get("traderExclude"))
+
+#            self.traderRow(self.canvFrame, i.get("name"), i.get("sub_type"), traderswitch, i.get("buyprice"), i.get("sellprice"), i.get("rarity"), i.get("nominal"), i.get("traderExclude"))
+
+        #oLD   for item in rows: def traderRow(self, parent, name, sub_type, traderCat, buyPrice, sellPrice, rarity, nominal, exclude):
+#            self.traderRow(self.canvFrame, i.name,i.sub_type,i.traderCat,i.buyPrice,i.sellPrice,i.rarity,i.nominal,i.exclude)
+
+        scrl = Scrollbar(self.frame, orient=VERTICAL)
+        scrl.config(command=self.canv.yview)
+        self.canv.config(yscrollcommand=scrl.set)
+        scrl.grid(row=0, column=1, sticky="ns")
+
+        root.rowconfigure(0, weight=1)
+        root.columnconfigure(1, weight=1)
+
+        self.canvFrame.bind("<Configure>", self.update_scrollregion)
+
+    #OLD    self.createTraderEditor(self.window, 0, 1, itemsOfSubtypeOfSelectedMods)
 
     def createLabel(self, root, text, row, column, sticky="w", px=5, py=5):
         Label(root, text=text).grid(row=row, column=column, sticky=sticky, padx=px, pady=py)

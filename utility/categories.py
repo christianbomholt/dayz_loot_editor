@@ -147,6 +147,7 @@ allcats = appendKeys(vehicleSubTypesDict, allcats)
 
 
 def traderCatSwitcher(argument):
+    
     argument = argument.lower()
 
     if "magazine" in argument or "barrel_" in argument:
@@ -156,6 +157,7 @@ def traderCatSwitcher(argument):
         return "V"
 
     elif argument in weaponTraderCat:
+        print("DEBUG in weaponTraderCat: ", argument)
         return "W"
 
     elif "steakmeat" in argument:
