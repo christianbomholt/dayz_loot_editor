@@ -205,7 +205,7 @@ class Dao(object):
 
     def get_traderitemstupl(self, traderSel, sub_type, selected_Mods):
         print("DEBUG sub_type:", sub_type)
-        results = self.session.query(Item).filter(and_(Item.trader==(traderSel),Item.sub_type==(sub_type),Item.mod.in_(selected_Mods))).all()
+        results = self.session.query(Item).filter(and_(Item.trader==(traderSel.get()),Item.sub_type==(sub_type),Item.mod.in_(selected_Mods))).all()
         return [u.__dict__ for u in results]
     
     def getItemDetailsByTraderLoc(self, sub_type, trader):
@@ -245,16 +245,17 @@ class Dao(object):
         self.session.commit()
 
     def setTraderValues_fast(self, values):
-        self.session.query(Item).filter(
-            Item.name.in_(values[5])
-        ).update({
-            Item.traderCat: values[0],
-            Item.buyprice: values[1],
-            Item.sellprice: values[2],
-            Item.traderExclude: values[3],
-            Item.rarity: values[4]
-        }, synchronize_session=False)
-        self.session.commit()        
+        for value in values:
+            self.session.query(Item).filter(
+                Item.name.in_(value[5])
+            ).update({
+                Item.traderCat: value[0],
+                Item.buyprice: value[1],
+                Item.sellprice: value[2],
+                Item.traderExclude: value[3],
+                Item.rarity: value[4]
+            }, synchronize_session=False)
+            self.session.commit()        
 
 
     def filtertoselectedmods(self,selected_Mods):
