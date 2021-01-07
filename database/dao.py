@@ -245,7 +245,7 @@ class Dao(object):
     def setTraderValues_fast(self, values):
         for value in values:
             self.session.query(Item).filter(
-                Item.name.in_(value[5])
+                Item.name==value[5]
             ).update({
                 Item.traderCat: value[0],
                 Item.buyprice: value[1],
