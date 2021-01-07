@@ -156,26 +156,15 @@ class Dao(object):
                 f.write('%s\n' % line)
 
 #***********************Selects for Trader Prices ***************************************************
-    def getSubtypesMods(self, mod):
-        db_connection = sqlite3.connect(Dao.databasename)
-        db_cursor = db_connection.cursor()
-        query = f"SELECT sub_type, mod FROM items WHERE mod='{mod}' group by sub_type"
-        db_cursor.execute(query)
-        subtypes = db_cursor.fetchall()
-        db_connection.commit()
-        db_connection.close()
-        return [_[0] for _ in subtypes]
+    def get_tradersubtypetupl(self, traderSel,selected_Mods):
+        results = self.session.query(Item.sub_type).filter(and_(Item.trader==(traderSel),Item.mod.in_(selected_Mods))).group_by(Item.sub_type).order_by(Item.sub_type).all()
+        results=[sub_type[0] for sub_type in results]
+        return results
+        
+#        return [u.__dict__ for u in results]
 
-    def getTraderBySubtype(self, sub_type):
-        db_connection = sqlite3.connect(Dao.databasename)
-        db_cursor = db_connection.cursor()
-        query = f"SELECT trader FROM items WHERE sub_type = '{sub_type}' group by trader"
-        db_cursor.execute(query)
-        raw_results = db_cursor.fetchall()
-        db_connection.commit()
-        db_connection.close()
-        results = [row[0] if row[0] is not None else "" for row in raw_results]
-        return sorted(results)
+
+
  
 #Trying to make the setprices work...............
     # name, subtype, tradercat, buyprice, sellprice, rarity, nominal, traderexclude, mod
@@ -202,6 +191,15 @@ class Dao(object):
         return [u.__dict__ for u in results]     """
 
 #result = self.session.query(Item).filter(Item.mod.in_ (selected_Mods))
+
+    def get_traderpricingtupl(self, traderSel, sub_type, selected_Mods):
+        results = self.session.query(Item.name,Item.sub_type,Item.traderCat,Item.buyprice,Item.sellprice,Item.rarity,Item.nominal,Item.traderExclude,Item.mod).filter(and_(Item.trader==(traderSel),Item.sub_type==(sub_type),Item.mod.in_(selected_Mods))).all()
+    #    results=[sub_type[0] for sub_type in results]
+        return results
+        
+        
+        #return [u.__dict__ for u in results]
+
 
     def get_traderitemstupl(self, traderSel, sub_type, selected_Mods):
         print("DEBUG sub_type:", sub_type)
@@ -245,17 +243,17 @@ class Dao(object):
         self.session.commit()
 
     def setTraderValues_fast(self, values):
-        self.session.query(Item).filter(
-            Item.name.in_(values[5])
-        ).update({
-            Item.traderCat: values[0],
-            Item.buyprice: values[1],
-            Item.sellprice: values[2],
-            Item.traderExclude: values[3],
-            Item.rarity: values[4]
-        }, synchronize_session=False)
+        for value in values:
+            self.session.query(Item).filter(
+                Item.name.in_(value[5])
+            ).update({
+                Item.traderCat: value[0],
+                Item.buyprice: value[1],
+                Item.sellprice: value[2],
+                Item.traderExclude: value[3],
+                Item.rarity: value[4]
+            }, synchronize_session=False)
         self.session.commit()        
-
 
     def filtertoselectedmods(self,selected_Mods):
         result = self.session.query(Item).filter(Item.mod.in_ (selected_Mods))
