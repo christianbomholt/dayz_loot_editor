@@ -4,7 +4,6 @@ from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
-
 class Item(Base):
     __tablename__ = "items"
     id = Column(Integer, primary_key=True)
@@ -30,3 +29,12 @@ class Item(Base):
     sellprice = Column(Integer, nullable=True)
     traderExclude = Column(Integer, default=0)
     traderCat = Column(String, nullable=True)
+
+
+    def __repr__(self):
+        return f"Items(id={self.id},name={self.name},nominal={self.nominal},min={self.min},restock={self.restock},\
+        lifetime={self.lifetime},usage={self.usage},tier={self.tier},rarity={self.rarity},cat_type={self.cat_type},\
+        item_type={self.item_type},sub_type={self.sub_type},mod={self.mod},trader={self.trader},dynamic_event={self.dynamic_event},\
+        count_in_cargo={self.count_in_cargo},count_in_hourder={self.count_in_hourder},count_in_map={self.count_in_map},\
+        count_in_player={self.count_in_player},buyprice={self.buyprice},sellprice={self.sellprice},traderExclude={self.traderExclude},\
+        traderCat={self.traderCat})"
