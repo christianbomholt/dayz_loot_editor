@@ -29,6 +29,11 @@ class GUI(object):
         self.update_dict = {}
         self.moddict = {}
         self.moddlist = []
+        self.totalNomDisplayed = StringVar()
+        self.totalNomDisplayed.set(0)
+        self.start_nominal = []
+        self.nomVars = []
+        self.deltaNom = []
 
         #
         self.__create_menu_bar()
@@ -36,6 +41,7 @@ class GUI(object):
         self.__create_tree_view()
         self.__create_side_bar()
         self.__initiate_items()
+        self.__create_nominal_info()
         #
         self.tree.bind("<ButtonRelease-1>", self.__fill_entry_frame)
 
@@ -304,13 +310,13 @@ class GUI(object):
             width=14,
             command=self.openTraderEditor,
         ).grid(row=2)
-        """    
+        
         Button(
             self.buttons_frame,
-            text="printmods",
+            text="crateNominal_info",
             width=14,
-            command=self.printmods,
-        ).grid(row=3)"""
+            command=self.__create_nominal_info,
+        ).grid(row=3)
 
 
 
@@ -332,9 +338,9 @@ class GUI(object):
     def __selectmodsfunction___(self,*args):
         values = [(mod, var.get()) for mod, var in self.moddict.items()]
         self.moddlist = values
-        selected_mods = [x[0] for x in self.moddlist if x[1]==1]
-        if len(selected_mods)>0:
-            items = self.database.session.query(Item).filter(Item.mod.in_ (selected_mods)).all()
+        self.selected_mods = [x[0] for x in self.moddlist if x[1]==1]
+        if len(self.selected_mods)>0:
+            items = self.database.session.query(Item).filter(Item.mod.in_ (self.selected_mods)).all()
         self.__populate_items(items)  
 
 # Updated to loop through selected items in the grid.
@@ -399,11 +405,6 @@ class GUI(object):
         self.__populate_items(items)
 
     def __populate_items(self, items):
-#        selected_mods = [x[0] for x in self.moddlist if x[1]==1]
-#        if len(selected_mods)>0:
-#            items = self.database.session.query(Item).filter(Item.mod.in_ (selected_mods)).all()
-#        if items is None:
-#            items = self.database.all_items()
         if self.tree.get_children() != ():
             self.tree.delete(*self.tree.get_children())
         for i in items:
@@ -420,7 +421,6 @@ class GUI(object):
         if self.name.get() != "":
             self.__populate_items(self.database.search_like_name(self.name.get()))
 
-
     def __filter_items(self):
         item_type = self.type_for_filter.get()
         sub_type = self.sub_type_for_filter.get()
@@ -429,9 +429,9 @@ class GUI(object):
         if item_type != "all":
             self.__populate_items(self.database.filterbyitem_type(self.selected_mods,item_type))
         elif sub_type != "all":
-            self.__populate_items(self.database.all_items())
+            self.__populate_items(self.database.filterbysub_type(self.selected_mods,sub_type))
         elif cat_type != "all":
-            self.__populate_items(self.database.all_items())
+            self.__populate_items(self.database.filterbycat_type(self.selected_mods,cat_type))
         else:
             self.database.session.query(Item).filter(Item.mod.in_ (self.selected_mods)).all()
 
@@ -463,8 +463,9 @@ class GUI(object):
         self.count_in_map.set(-1)
         self.count_in_player.set(-1)
 
-    """
+
     def __create_nominal_info(self):
+        itemTypes = ["gun", "ammo", "optic", "mag", "attachment"]
         self.infoFrame = Frame(self.window)
         self.infoFrame.grid(row=1, column=1, sticky="s,w,e")
 
@@ -473,13 +474,12 @@ class GUI(object):
         Label(self.infoFrame, text="Displayed:").grid(row=0, column=1)
         Label(self.infoFrame, textvariable=self.totalNomDisplayed).grid(row=0, column=2)
         i = 3
-
         for item_type in itemTypes:
             var = StringVar()
             delta_start = StringVar()
 
-            self.start_nominal.append(Dao.getNominalByType(item_type))
-            var.set(dao.getNominalByType(item_type))
+            self.start_nominal.append(self.database.getNominalByType(self.selected_mods,item_type))
+            var.set(self.database.getNominalByType(self.selected_mods,item_type))
             self.nomVars.append(var)
             delta_start.set(0)
             self.deltaNom.append(delta_start)
@@ -493,13 +493,14 @@ class GUI(object):
 
     def __update_nominal_info(self):
         for i in range(len(self.nomVars)):
-            nominal = dao.getNominalByType(itemTypes[i])
+            nominal = self.database.getNominalByType(self.selected_mods,itemTypes[i])
+            dao.getNominalByType(itemTypes[i])
             self.nomVars[i].set(nominal)
             try:
                 self.deltaNom[i].set(nominal - self.start_nominal[i])
             except TypeError:
                 pass
-                #self.deltaupdateNominalInfoNom[i].set(nominal) """
+                #self.deltaupdateNominalInfoNom[i].set(nominal)
 
 
     def __open_db_window(self):

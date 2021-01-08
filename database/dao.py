@@ -1,5 +1,5 @@
 import sqlite3
-from sqlalchemy import create_engine, Column, Integer, String, and_
+from sqlalchemy import create_engine, Column, Integer, String, and_, func
 from sqlalchemy.orm import sessionmaker
 from model.item import Item
 
@@ -28,30 +28,6 @@ class Dao(object):
             if self.session.query(Item).filter(Item.name == item.name).count() == 0:
                 self.session.add(item)
                 self.session.commit()
-    """### 
-    # update item
-    def update_item(self, updated_item: Item):
-        item = self.session.query(Item).get(updated_item.id)
-        item.name = updated_item.name
-        item.nominal = updated_item.nominal
-        item.min = updated_item.min
-        item.restock = updated_item.restock
-        item.lifetime = updated_item.lifetime
-        item.usage = updated_item.usage
-        item.tier = updated_item.tier
-        item.rarity = updated_item.rarity
-        item.cat_type = updated_item.cat_type
-        item.item_type = updated_item.item_type
-        item.sub_type = updated_item.sub_type
-        item.mod = updated_item.mod
-        item.trader = updated_item.trader
-        item.dynamic_event = updated_item.dynamic_event
-        item.count_in_hoarder = updated_item.count_in_hoarder
-        item.count_in_cargo = updated_item.count_in_cargo
-        item.count_in_map = updated_item.count_in_map
-        item.count_in_player = updated_item.count_in_player
-        self.session.commit()#
-        """
     # get item
     def get_item(self, item_id):
         item = self.session.query(Item).get(item_id)
@@ -60,15 +36,6 @@ class Dao(object):
 
     # get items
     def all_items(self):
-        """items = self.session.query(Item).all()
-        self.session.commit()"""
-        # db_connection = sqlite3.connect(self.db_name)
-        # sql_delete_items = "select * from items"
-        # db_cursor = db_connection.cursor()
-        # db_cursor.execute(sql_delete_items)
-        # items = db_cursor.fetchall()
-        # db_connection.commit()
-        # db_connection.close()
         items = self.session.query(Item).all()
         return items
 
@@ -92,6 +59,20 @@ class Dao(object):
         db_connection.commit()
         db_connection.close()
 
+
+    def getNominalByType(self, selected_mods, item_type):
+        result = self.session\
+            .query(Item.item_type, func.sum(Item.nominal))\
+            .filter(Item.mod.in_ (selected_mods))\
+            .group_by(Item.item_type)\
+            .all()
+        self.session.commit()
+        print("DEBUG getNominalByType: ", item_type, result)
+        return result  
+
+
+
+    """
     def filter_items(self, item_type, item_sub_type=None):
         db_connection = sqlite3.connect(self.db_name)
         db_cursor = db_connection.cursor()
@@ -128,7 +109,23 @@ class Dao(object):
         items = db_cursor.fetchall()
         db_connection.commit()
         db_connection.close()
-        return items
+        return items"""
+
+#*******************Used for Filter section***********************************************
+    def filterbyitem_type(self, selected_mods, item_type):
+        result = self.session.query(Item).filter(and_(Item.mod.in_ (selected_mods)),Item.item_type==(item_type)).all()
+        self.session.commit()
+        return result        
+
+    def filterbycat_type(self, selected_mods, cat_type):
+        result = self.session.query(Item).filter(and_(Item.mod.in_ (selected_mods)),Item.cat_type==(cat_type)).all()
+        self.session.commit()
+        return result        
+
+    def filterbysub_type(self, selected_mods, sub_type):
+        result = self.session.query(Item).filter(and_(Item.mod.in_ (selected_mods)),Item.sub_type==(sub_type)).all()
+        self.session.commit()
+        return result        
 
 #*******************Used for PyTest***********************************************
     def fast_search_like_name(self, item_name):
@@ -160,11 +157,6 @@ class Dao(object):
         results = self.session.query(Item.sub_type).filter(and_(Item.trader==(traderSel),Item.mod.in_(selected_Mods))).group_by(Item.sub_type).order_by(Item.sub_type).all()
         results=[sub_type[0] for sub_type in results]
         return results
-        
-#        return [u.__dict__ for u in results]
-
-
-
  
 #Trying to make the setprices work...............
     # name, subtype, tradercat, buyprice, sellprice, rarity, nominal, traderexclude, mod
@@ -184,28 +176,15 @@ class Dao(object):
                 result[i][4] = -1
             result[i] = list(result[i])
         return result
-    """    
-    def fast_search_like_name(self, item_name):
-        search = f'%{item_name}%'
-        results = self.session.query(Item).filter(Item.name.like(search)).all()
-        return [u.__dict__ for u in results]     """
-
-#result = self.session.query(Item).filter(Item.mod.in_ (selected_Mods))
 
     def get_traderpricingtupl(self, traderSel, sub_type, selected_Mods):
         results = self.session.query(Item.name,Item.sub_type,Item.traderCat,Item.buyprice,Item.sellprice,Item.rarity,Item.nominal,Item.traderExclude,Item.mod).filter(and_(Item.trader==(traderSel),Item.sub_type==(sub_type),Item.mod.in_(selected_Mods))).all()
-    #    results=[sub_type[0] for sub_type in results]
         return results
-        
-        
-        #return [u.__dict__ for u in results]
-
 
     def get_traderitemstupl(self, traderSel, sub_type, selected_Mods):
-        print("DEBUG sub_type:", sub_type)
         results = self.session.query(Item).filter(and_(Item.trader==(traderSel),Item.sub_type==(sub_type),Item.mod.in_(selected_Mods))).all()
         return [u.__dict__ for u in results]
-    
+    """
     def getItemDetailsByTraderLoc(self, sub_type, trader):
         db_connection = sqlite3.connect(Dao.databasename)
         db_cursor = db_connection.cursor()
@@ -226,8 +205,7 @@ class Dao(object):
         db_connection.commit()
         db_connection.close()
         results = [row[0] if row[0] is not None else "" for row in results]
-        return sorted(results)
-
+        return sorted(results)"""
 
     # traderCat, buyprice, sellprice, traderExclude, rarity, name
     def setSubtypeForTrader_fast(self, traderCat, buyprice, sellprice, traderExclude, rarity, name):
