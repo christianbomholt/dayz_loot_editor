@@ -19,7 +19,7 @@ class GUI(object):
         self.config = ConfigManager("config.xml")
         self.ini_manger = INIManager("app.ini")
         self.database = Dao(self.ini_manger.read_ini("Database", "Database_Name"))
-        self.selectedMods = ['Vanilla','Mod 1']
+        self.selected_mods=[]
         #
         self.window = main_container
         self.window.wm_title("Loot Editor v0.98.7")
@@ -35,8 +35,7 @@ class GUI(object):
         self.__create_entry_frame()
         self.__create_tree_view()
         self.__create_side_bar()
-        self.__populate_items()
-        
+        self.__initiate_items()
         #
         self.tree.bind("<ButtonRelease-1>", self.__fill_entry_frame)
 
@@ -313,6 +312,8 @@ class GUI(object):
             command=self.printmods,
         ).grid(row=3)"""
 
+
+
     def __CatFilter__(self, selection):
         if selection != "all":
             self.type_for_filter.set("all")
@@ -328,12 +329,13 @@ class GUI(object):
             self.cat_type_for_filter.set("all")
             self.type_for_filter.set("all")
 
-
-
     def __selectmodsfunction___(self,*args):
         values = [(mod, var.get()) for mod, var in self.moddict.items()]
         self.moddlist = values
-        self.__populate_items()
+        selected_mods = [x[0] for x in self.moddlist if x[1]==1]
+        if len(selected_mods)>0:
+            items = self.database.session.query(Item).filter(Item.mod.in_ (selected_mods)).all()
+        self.__populate_items(items)  
 
 # Updated to loop through selected items in the grid.
     def __update_item(self):
@@ -389,12 +391,19 @@ class GUI(object):
             self.database.delete_item(itemid)
         self.__populate_items()
 
-    def __populate_items(self, items=None):
-        selected_mods = [x[0] for x in self.moddlist if x[1]==1]
-        if len(selected_mods)>0:
-            items = self.database.session.query(Item).filter(Item.mod.in_ (selected_mods)).all()
+
+    def __initiate_items(self, items=None):
+        self.selected_mods = [x[0] for x in self.moddlist if x[1]==1]
         if items is None:
             items = self.database.all_items()
+        self.__populate_items(items)
+
+    def __populate_items(self, items):
+#        selected_mods = [x[0] for x in self.moddlist if x[1]==1]
+#        if len(selected_mods)>0:
+#            items = self.database.session.query(Item).filter(Item.mod.in_ (selected_mods)).all()
+#        if items is None:
+#            items = self.database.all_items()
         if self.tree.get_children() != ():
             self.tree.delete(*self.tree.get_children())
         for i in items:
@@ -411,17 +420,20 @@ class GUI(object):
         if self.name.get() != "":
             self.__populate_items(self.database.search_like_name(self.name.get()))
 
+
     def __filter_items(self):
         item_type = self.type_for_filter.get()
-        if item_type == "all":
+        sub_type = self.sub_type_for_filter.get()
+        cat_type = self.cat_type_for_filter.get()
+        
+        if item_type != "all":
+            self.__populate_items(self.database.filterbyitem_type(self.selected_mods,item_type))
+        elif sub_type != "all":
+            self.__populate_items(self.database.all_items())
+        elif cat_type != "all":
             self.__populate_items(self.database.all_items())
         else:
-            if self.sub_type_combo_for_filter.get() != "":
-                sub_type = self.sub_type_combo_for_filter.get()
-            else:
-                sub_type = None
-            self.__populate_items(self.database.filter_items(item_type, sub_type))    
-          #  self.__populate_items(self.database.search_by_name(item_type, sub_type))
+            self.database.session.query(Item).filter(Item.mod.in_ (self.selected_mods)).all()
 
     def __fill_entry_frame(self, event):
         tree_row = self.tree.item(self.tree.focus())
