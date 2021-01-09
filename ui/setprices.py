@@ -65,8 +65,7 @@ class TraderEditor(object):
 
     def testdef(self):
         traderitem = self.database.get_traderpricingtupl(self.seltrader,"Rifles",self.selectedMods)
-        for i in traderitem:
-            print("DEBUG traderitem: ",i)
+        
     
 
     def createTraderEditor(self, root, row, column):    

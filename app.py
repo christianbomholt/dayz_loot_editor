@@ -47,7 +47,7 @@ class GUI(object):
 
 
     def __create_menu_bar(self):
-        # file menus builder
+# file menus builder
         file_menu = Menu(self.menu_bar, tearoff=0)
         file_menu.add_command(label="Setup Database", command=self.__open_db_window)
         file_menu.add_separator()
@@ -56,24 +56,23 @@ class GUI(object):
         file_menu.add_separator()
         file_menu.add_command(label="Exit", command=self.window.destroy)
 
-        # database menus builder
+# database menus builder
 
 # initializing mods menu
         mods_menu = Menu(self.menu_bar, tearoff=0)
         mods_menu.add_command(label="Deselect All" ) #command=self.deselectAllMods)
         mods_menu.add_command(label="Select All") # command=self.selectAllMods)
         mods_menu.add_separator()
-        
-        for mod in self.config.get_mods():
+        for mod in self.database.get_allmods():
             int_var = IntVar()
             mods_menu.add_checkbutton(label=mod, variable=int_var, command=self.__selectmodsfunction___)
             self.moddict[mod] = int_var
 
-        # help menus builder
+# help menus builder
         help_menu = Menu(self.menu_bar, tearoff=0)
         help_menu.add_command(label="You are totally on your own")
 
-        # building menu bar
+#building menu bar
         self.menu_bar.add_cascade(label="File", menu=file_menu)
         self.menu_bar.add_cascade(label="Mods In Use", menu=mods_menu)
         self.menu_bar.add_cascade(label="Help", menu=help_menu)
@@ -81,6 +80,7 @@ class GUI(object):
         # configuring menu bar
         self.window.config(menu=self.menu_bar)
 
+#Create Left side entry frame  *************************************************
     def __create_entry_frame(self):
         self.entryFrameHolder = Frame(self.window)
         self.entryFrameHolder.grid(row=0, column=0, sticky="nw")
@@ -154,17 +154,17 @@ class GUI(object):
             self.tiersListBox.insert(END, i)
 
         self.cat_typeOption = OptionMenu(
-            self.entryFrame, self.cat_type, *self.config.get_cat_types()[1:]
+            self.entryFrame, self.cat_type, *self.database.get_allcat_types()[1:]
         )
         self.cat_typeOption.grid(row=7, column=1, sticky="w", pady=5)
 
         self.item_typeOption = OptionMenu(
-            self.entryFrame, self.item_type, *self.config.get_types()[1:]
+            self.entryFrame, self.item_type, *self.database.get_allitem_types()[1:]
         )
         self.item_typeOption.grid(row=8, column=1, sticky="w", pady=5)
 
         self.sub_typeOption = OptionMenu(
-            self.entryFrame, self.sub_type, *self.config.get_sub_types()
+            self.entryFrame, self.sub_type, *self.database.get_allsub_types()
         )
         self.sub_typeOption.grid(row=9, column=1, sticky="w", pady=5)
 
@@ -174,7 +174,7 @@ class GUI(object):
         self.rarityOption.grid(row=10, column=1, sticky="w", pady=5)
 
         self.modOption = OptionMenu(
-            self.entryFrame, self.mod, *self.config.get_mods()
+            self.entryFrame, self.mod, *self.database.get_allmods()
         )
         self.modOption.grid(row=11, column=1, sticky="w", pady=5)
 
@@ -183,7 +183,6 @@ class GUI(object):
         )
         self.traderOption.grid(row=12, column=1, sticky="w", pady=5)
 
-        # check boxes frame
         self.checkBoxFrame = Frame(self.entryFrameHolder)
         self.checkBoxFrame.grid(row=1, column=0, columnspan=2, sticky="w")
         self.dynamic_event_check = Checkbutton( 
@@ -221,6 +220,7 @@ class GUI(object):
             self.checkBoxFrame, text="Delete", width=8, command=self.__delete_item
         ).grid(row=5, column=1, pady=5, sticky="w")
 
+#**********************Create tree view ************************************************************        
     def __create_tree_view(self):
         self.treeFrame = Frame(self.window)
         self.treeFrame.grid(row=0, column=1, sticky="nsew")
@@ -269,7 +269,7 @@ class GUI(object):
         self.cat_type_for_filter = StringVar()
         self.cat_type_for_filter.set("all")
         OptionMenu(
-            self.filterFrame, self.cat_type_for_filter, *self.config.get_cat_types(), command = self.__CatFilter__
+            self.filterFrame, self.cat_type_for_filter, *self.database.get_allcat_types(), command = self.__CatFilter__
         ).grid(row=1, column=1,  sticky="w", padx=5)
 
 
@@ -277,14 +277,14 @@ class GUI(object):
         self.type_for_filter = StringVar()
         self.type_for_filter.set("all")
         OptionMenu(
-            self.filterFrame, self.type_for_filter, *self.config.get_types(), command = self.__TypeFilter__
+            self.filterFrame, self.type_for_filter, *self.database.get_allitem_types(), command = self.__TypeFilter__
         ).grid(row=2, column=1, sticky="w", padx=5)
         
 #Sub_type
         self.sub_type_for_filter = StringVar()
         self.sub_type_for_filter.set("all")
         OptionMenu(
-            self.filterFrame, self.sub_type_for_filter, *self.config.get_sub_types(), command = self.__SubTypeFilter__
+            self.filterFrame, self.sub_type_for_filter, *self.database.get_allsub_types(), command = self.__SubTypeFilter__
         ).grid(row=3, column=1, sticky="w", padx=5)
 
         Button(
@@ -313,10 +313,16 @@ class GUI(object):
         
         Button(
             self.buttons_frame,
-            text="crateNominal_info",
+            text="Test Button",
             width=14,
-            command=self.__create_nominal_info,
+            command=self.testfunc,
         ).grid(row=3)
+
+    def testfunc(self):
+        print("DEBUG We are testing :", )
+        mods = self.database.get_allmods()
+        for i in mods:
+            print("DEBUG traderitem: ",i)    
 
 
 
@@ -508,7 +514,8 @@ class GUI(object):
 
     def __open_items_window(self):
         NewItems(self.window)
-        self.__populate_items()
+        postNewitems = self.database.session.query(Item).filter(Item.mod.in_ (self.selected_mods)).all()
+        self.__populate_items(postNewitems)
 
     def __export_xml(self):
         file = filedialog.asksaveasfile(mode="a", defaultextension=".xml")

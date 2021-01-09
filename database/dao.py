@@ -44,6 +44,34 @@ class Dao(object):
         self.session.commit()
         return items
 
+    def get_allmods(self):
+        result = self.session.query(Item.mod.distinct().label("mods"))
+        self.session.commit()
+        result=[mod[0] for mod in result if mod[0] is not None] 
+        result.append("all")
+        return result
+
+    def get_allcat_types(self):
+        result = self.session.query(Item.cat_type.distinct().label("cat_types"))
+        self.session.commit()
+        result=[cat_type[0] for cat_type in result if cat_type[0] is not None]
+        result.append("all")
+        return result
+
+    def get_allitem_types(self):
+        result = self.session.query(Item.item_type.distinct().label("cat_types"))
+        self.session.commit()
+        result=[item_type[0] for item_type in result if item_type[0] is not None]
+        result.append("all")
+        return result
+
+    def get_allsub_types(self):
+        result = self.session.query(Item.sub_type.distinct().label("sub_type"))
+        self.session.commit()
+        result= [sub_type[0] for sub_type in result if sub_type[0] is not None]
+        result.append("all")
+        return result
+
     # delete item
     def delete_item(self, item_id):
         item = self.session.query(Item).get(item_id)

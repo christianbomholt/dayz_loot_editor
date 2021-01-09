@@ -6,7 +6,7 @@ ini_manger = INIManager("app.ini")
 dbtest = Dao("test.db")
 
 def test_config_getters():
-  assert dbtest.search_like_name("MassBlack")[0][1] == 'MassBlackYellowMB'
+  assert dbtest.fast_search_like_name("MassBlack")[0][1] == 'MassBlackYellowMB'
   
   for item in dbtest.fast_search_like_name("MassBlackY"):
     assert item.get("name") in ['MassBlackYellowMB']
