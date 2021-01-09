@@ -59,58 +59,14 @@ class Dao(object):
         db_connection.commit()
         db_connection.close()
 
-
     def getNominalByType(self, selected_mods, item_type):
         result = self.session\
-            .query(Item.item_type, func.sum(Item.nominal))\
-            .filter(Item.mod.in_ (selected_mods))\
-            .group_by(Item.item_type)\
+            .query(func.sum(Item.nominal))\
+            .filter(and_(Item.mod.in_ (selected_mods))\
+            ,Item.item_type==(item_type))\
             .all()
         self.session.commit()
-        print("DEBUG getNominalByType: ", item_type, result)
         return result  
-
-
-
-    """
-    def filter_items(self, item_type, item_sub_type=None):
-        db_connection = sqlite3.connect(self.db_name)
-        db_cursor = db_connection.cursor()
-        if item_sub_type is not None:
-            sql_filter_items = f"select * from items where sub_type='{item_sub_type}'" # Update to filter on Sub_type
-            #sql_filter_items = f"select * from items where item_type = '{item_type}' AND sub_type='{item_sub_type}'"
-            db_cursor.execute(sql_filter_items)
-        else:
-            sql_filter_items = f"select * from items where item_type = '{item_type}'"
-            db_cursor.execute(sql_filter_items)
-        items = db_cursor.fetchall()
-        db_connection.commit()
-        db_connection.close()
-        print("DEBUG :", sql_filter_items)
-        return items
-
-    def search_by_name(self, item_name):
-        db_connection = sqlite3.connect(self.db_name)
-        db_cursor = db_connection.cursor()
-        sql_filter_items = f"select * from items where name = '{item_name}'"
-        db_cursor.execute(sql_filter_items)
-        items = db_cursor.fetchall()
-        db_connection.commit()
-        db_connection.close()
-        return items
-
-
-    def search_like_name(self, item_name):
-        db_connection = sqlite3.connect(self.db_name)
-        db_cursor = db_connection.cursor()
-        sql_filter_items = f"select * from items where name like '%{item_name}%'"
-        #print("DEBUG :", sql_filter_items)        
-        db_cursor.execute(sql_filter_items)
-        items = db_cursor.fetchall()
-        db_connection.commit()
-        db_connection.close()
-        return items"""
-
 #*******************Used for Filter section***********************************************
     def filterbyitem_type(self, selected_mods, item_type):
         result = self.session.query(Item).filter(and_(Item.mod.in_ (selected_mods)),Item.item_type==(item_type)).all()

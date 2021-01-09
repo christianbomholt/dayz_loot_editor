@@ -29,11 +29,11 @@ class GUI(object):
         self.update_dict = {}
         self.moddict = {}
         self.moddlist = []
-        self.totalNomDisplayed = StringVar()
-        self.totalNomDisplayed.set(0)
+        self.totalNomDisplayed = int()
         self.start_nominal = []
         self.nomVars = []
         self.deltaNom = []
+        self.weaponNomTypes = ["gun", "ammo", "optic", "mag", "attachment"]
 
         #
         self.__create_menu_bar()
@@ -407,11 +407,14 @@ class GUI(object):
     def __populate_items(self, items):
         if self.tree.get_children() != ():
             self.tree.delete(*self.tree.get_children())
+            self.totalNomDisplayed = 0
         for i in items:
             self.tree.insert("", "end", text=i.id, value=[i.name,i.nominal,i.min,
             i.restock,i.lifetime,i.usage,i.tier,i.rarity,i.cat_type,i.item_type,i.sub_type,
             i.mod,i.trader,i.dynamic_event,i.count_in_hoarder,i.count_in_cargo,
             i.count_in_player,i.count_in_map])
+            self.totalNomDisplayed += i.nominal
+        print("Debug: ",self.totalNomDisplayed)
 
     def __search_by_name(self):
         if self.name.get() != "":
@@ -465,36 +468,33 @@ class GUI(object):
 
 
     def __create_nominal_info(self):
-        itemTypes = ["gun", "ammo", "optic", "mag", "attachment"]
+
         self.infoFrame = Frame(self.window)
         self.infoFrame.grid(row=1, column=1, sticky="s,w,e")
-
-        Label(self.infoFrame, text="overall nominal / delta:").grid(row=0, column=0)
-
+        Label(self.infoFrame, text="Nominal counts: ").grid(row=0, column=0)
+        strtotalNomDisplayed = StringVar()
+        strtotalNomDisplayed.set(str(self.totalNomDisplayed))
         Label(self.infoFrame, text="Displayed:").grid(row=0, column=1)
-        Label(self.infoFrame, textvariable=self.totalNomDisplayed).grid(row=0, column=2)
+        Label(self.infoFrame, textvariable=strtotalNomDisplayed).grid(row=0, column=2)
         i = 3
-        for item_type in itemTypes:
+        for item_type in self.weaponNomTypes:
             var = StringVar()
-            delta_start = StringVar()
-
-            self.start_nominal.append(self.database.getNominalByType(self.selected_mods,item_type))
+#            self.start_nominal.append(self.database.getNominalByType(self.selected_mods,item_type))
             var.set(self.database.getNominalByType(self.selected_mods,item_type))
-            self.nomVars.append(var)
-            delta_start.set(0)
-            self.deltaNom.append(delta_start)
+#            self.nomVars.append(var)
+#            delta_start.set(0)
+#            self.deltaNom.append(delta_start)
 
             Label(self.infoFrame, text=item_type.capitalize() + ":").grid(row=0, column=i)
             Label(self.infoFrame, textvariable=var).grid(row=0, column=i + 1)
-            Label(self.infoFrame, text="/").grid(row=0, column=i + 2)
-            Label(self.infoFrame, textvariable=delta_start).grid(row=0, column=i + 3)
-
+#            Label(self.infoFrame, text="/").grid(row=0, column=i + 2)
+#            Label(self.infoFrame, textvariable=delta_start).grid(row=0, column=i + 3)
             i += 4
 
     def __update_nominal_info(self):
         for i in range(len(self.nomVars)):
-            nominal = self.database.getNominalByType(self.selected_mods,itemTypes[i])
-            dao.getNominalByType(itemTypes[i])
+            nominal = self.database.getNominalByType(self.selected_mods,self.weaponNomTypes[i])
+            dao.getNominalByType(self.weaponNomTypes[i])
             self.nomVars[i].set(nominal)
             try:
                 self.deltaNom[i].set(nominal - self.start_nominal[i])

@@ -23,9 +23,11 @@
 	</categoryes>	
     <types>
         <type value="all"/>
-        <type value="type"/>
-        <type value="type1"/>
-        <type value="type2"/>
+        <type value="gun"/>
+        <type value="ammo"/>
+        <type value="optic"/>
+        <type value="mag"/>
+        <type value="attachment"/>
     </types>
     <sub_types>
         <sub_type value="all"/>
