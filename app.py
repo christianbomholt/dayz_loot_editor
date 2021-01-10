@@ -493,17 +493,17 @@ class GUI(object):
 #            Label(self.infoFrame, text="/").grid(row=0, column=i + 2)
 #            Label(self.infoFrame, textvariable=delta_start).grid(row=0, column=i + 3)
             i += 4
-
+    """
     def __update_nominal_info(self):
         for i in range(len(self.nomVars)):
             nominal = self.database.getNominalByType(self.selected_mods,self.weaponNomTypes[i])
-            dao.getNominalByType(self.weaponNomTypes[i])
+            self.database.getNominalByType(self.weaponNomTypes[i])
             self.nomVars[i].set(nominal)
             try:
                 self.deltaNom[i].set(nominal - self.start_nominal[i])
             except TypeError:
                 pass
-                #self.deltaupdateNominalInfoNom[i].set(nominal)
+                #self.deltaupdateNominalInfoNom[i].set(nominal)"""
 
 
     def __open_db_window(self):
