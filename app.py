@@ -320,11 +320,8 @@ class GUI(object):
 
     def testfunc(self):
         print("DEBUG We are testing :", )
-        mods = self.database.get_allmods()
-        for i in mods:
-            print("DEBUG traderitem: ",i)    
-
-
+        debug = self.database.fast_search_like_name("MassBlack")
+        print("DEBUG  :", debug)
 
     def __CatFilter__(self, selection):
         if selection != "all":
