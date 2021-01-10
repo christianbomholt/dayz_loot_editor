@@ -344,8 +344,9 @@ class GUI(object):
         self.moddlist = values
         self.selected_mods = [x[0] for x in self.moddlist if x[1]==1]
         if len(self.selected_mods)>0:
-            items = self.database.session.query(Item).filter(Item.mod.in_ (self.selected_mods)).all()
-        self.__populate_items(items)
+            items = self.database.session.query(Item).filter(Item.mod.in_ (self.selected_mods))
+        self.gridItems = items
+        self.__populate_items(items.all())
         self.__create_nominal_info()
 
 
@@ -408,8 +409,8 @@ class GUI(object):
 #        self.selected_mods = [x[0] for x in self.moddlist if x[1]==1]
         if items is None:
             items = self.database.all_items()
-        self.__populate_items(items)
-        self.gridItems = items
+            self.gridItems = items
+        self.__populate_items(items.all())
 
     def __populate_items(self, items):
         if self.tree.get_children() != ():
@@ -440,21 +441,17 @@ class GUI(object):
         cat_type = self.cat_type_for_filter.get()
         
         if item_type != "all":
-            items = self.database.filterbyitem_type(self.selected_mods,item_type)
-            self.__populate_items(items)
-            self.gridItems = items
+            items = self.database.filterby_type(self, selected_mods, 'item_type',item_type)
         elif sub_type != "all":
-            items = (self.database.filterbysub_type(self.selected_mods,sub_type))
-            self.__populate_items(items)
-            self.gridItems = items
+            items = self.database.filterby_type(self, selected_mods, 'sub_type',sub_type)
         elif cat_type != "all":
-            items = (self.database.filterbycat_type(self.selected_mods,cat_type))
-            self.__populate_items(items)
-            self.gridItems = items
+            items = self.database.filterby_type(self, selected_mods, 'cat_type',cat_type)
         else:
-            items = self.database.session.query(Item).filter(Item.mod.in_ (self.selected_mods)).all()
-            self.__populate_items(items)
-            self.gridItems = items
+            items = self.database.session.query(Item).filter(Item.mod.in_ (self.selected_mods))
+        
+        self.gridItems = items
+        self.__populate_items(items.all())
+        
 
     def __fill_entry_frame(self, event):
         tree_row = self.tree.item(self.tree.focus())
@@ -496,9 +493,10 @@ class GUI(object):
         Label(self.infoFrame, text="Displayed:").grid(row=0, column=1)
         Label(self.infoFrame, textvariable=strtotalNomDisplayed).grid(row=0, column=2)
         i = 3
+        self.weaponNomTypes = {"gun":0, "ammo":0, "optic":0, "mag":0, "attachment":0}
         for item_type in list(self.weaponNomTypes):
             var = StringVar()
-            nomvar = (self.database.getNominalByType(self.selected_mods,item_type))
+            nomvar = (self.database.getNominalByType(self.gridItems,item_type))
             self.weaponNomTypes.update(nomvar)
             var.set(self.weaponNomTypes.get(item_type))
             self.nomVars.append(var)
@@ -527,14 +525,15 @@ class GUI(object):
 
     def __open_items_window(self):
         NewItems(self.window)
-        items = self.database.session.query(Item).filter(Item.mod.in_ (self.selected_mods)).all()
-        self.__populate_items(items)
+        items = self.database.session.query(Item).filter(Item.mod.in_ (self.selected_mods))
         self.gridItems = items
+        self.__populate_items(items.all())
+        
 
     def __export_xml(self):
         file = filedialog.asksaveasfile(mode="a", defaultextension=".xml")
         xml_writer = XMLWriter(filename=file.name)
-        items = self.database.get_items()
+        items = self.database.all_items().all()
         xml_writer.export_xml(items)
 
     def tree_view_sort_column(self, tv, col, reverse):

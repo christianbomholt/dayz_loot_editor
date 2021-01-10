@@ -36,13 +36,7 @@ class Dao(object):
 
     # get items
     def all_items(self):
-        items = self.session.query(Item).all()
-        return items
-
-    def get_items(self):
-        items = self.session.query(Item).all()
-        self.session.commit()
-        return items
+        return self.session.query(Item)
 
     def get_allmods(self):
         result = self.session.query(Item.mod.distinct().label("mods"))
@@ -87,28 +81,35 @@ class Dao(object):
         db_connection.commit()
         db_connection.close()
 
-    def getNominalByType(self, selected_mods, item_type):
+    def getNominalByType(self, grid_items, item_type):
+        
+        grid_items = grid_items.subquery()
         result = self.session\
             .query(Item.item_type, func.sum(Item.nominal))\
-            .filter(Item.mod.in_ (selected_mods))\
+            .join(grid_items, Item.id == grid_items.c.id)\
             .group_by(Item.item_type)\
             .all()
-        self.session.commit()
         return result 
 #*******************Used for Filter section***********************************************
     def filterbyitem_type(self, selected_mods, item_type):
-        result = self.session.query(Item).filter(and_(Item.mod.in_ (selected_mods)),Item.item_type==(item_type)).all()
-        self.session.commit()
+        result = self.session.query(Item).filter(and_(Item.mod.in_ (selected_mods)),Item.item_type==(item_type))
         return result        
 
     def filterbycat_type(self, selected_mods, cat_type):
-        result = self.session.query(Item).filter(and_(Item.mod.in_ (selected_mods)),Item.cat_type==(cat_type)).all()
-        self.session.commit()
+        result = self.session.query(Item).filter(and_(Item.mod.in_ (selected_mods)),Item.cat_type==(cat_type))
         return result        
 
     def filterbysub_type(self, selected_mods, sub_type):
-        result = self.session.query(Item).filter(and_(Item.mod.in_ (selected_mods)),Item.sub_type==(sub_type)).all()
-        self.session.commit()
+        result = self.session.query(Item).filter(and_(Item.mod.in_ (selected_mods)),Item.sub_type==(sub_type))
+        return result    
+
+    def filterby_type(self, selected_mods, col,value):
+        result = self.session.query(Item)\
+            .filter(
+                and_(
+                    Item.mod.in_ (selected_mods)),
+                    getattr(Notice, col_name)==sub_type
+                )
         return result        
 
 #*******************Used for PyTest***********************************************
