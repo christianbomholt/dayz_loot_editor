@@ -89,12 +89,13 @@ class Dao(object):
 
     def getNominalByType(self, selected_mods, item_type):
         result = self.session\
-            .query(func.sum(Item.nominal))\
-            .filter(and_(Item.mod.in_ (selected_mods))\
-            ,Item.item_type==(item_type))\
+            .query(Item.item_type, func.sum(Item.nominal))\
+            .filter(Item.mod.in_ (selected_mods))\
+            .group_by(Item.item_type)\
             .all()
         self.session.commit()
-        return result  
+        print("DEBUG getNominalByType: ",selected_mods, item_type, result)
+        return result 
 #*******************Used for Filter section***********************************************
     def filterbyitem_type(self, selected_mods, item_type):
         result = self.session.query(Item).filter(and_(Item.mod.in_ (selected_mods)),Item.item_type==(item_type)).all()

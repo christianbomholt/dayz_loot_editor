@@ -32,8 +32,8 @@ class GUI(object):
         self.totalNomDisplayed = int()
         self.start_nominal = []
         self.nomVars = []
-        self.deltaNom = []
-        self.weaponNomTypes = ["gun", "ammo", "optic", "mag", "attachment"]
+        ```py
+self.weaponNomTypes = {"gun":0, "ammo":0, "optic":0, "mag":0, "attachment":0} ```
 
         #
         self.__create_menu_bar()
@@ -41,6 +41,7 @@ class GUI(object):
         self.__create_tree_view()
         self.__create_side_bar()
         self.__initiate_items()
+        print("DEBUG init :",self.selected_mods)
         self.__create_nominal_info()
         #
         self.tree.bind("<ButtonRelease-1>", self.__fill_entry_frame)
@@ -64,13 +65,15 @@ class GUI(object):
         mods_menu.add_command(label="Select All") # command=self.selectAllMods)
         mods_menu.add_separator()
         for mod in self.database.get_allmods():
-            int_var = IntVar()
-            mods_menu.add_checkbutton(label=mod, variable=int_var, command=self.__selectmodsfunction___)
-            self.moddict[mod] = int_var
-
+            if mod != "all":
+                int_var = IntVar(value=1)
+                mods_menu.add_checkbutton(label=mod, variable=int_var, command=self.__selectmodsfunction___)
+                self.moddict[mod] = int_var
+                self.selected_mods.append(mod) 
+        print("DEBUG mod selection :",self.selected_mods)
 # help menus builder
         help_menu = Menu(self.menu_bar, tearoff=0)
-        help_menu.add_command(label="You are totally on your own")
+        help_menu.add_command(label="You'll never walk alone")
 
 #building menu bar
         self.menu_bar.add_cascade(label="File", menu=file_menu)
@@ -319,9 +322,9 @@ class GUI(object):
         ).grid(row=3)
 
     def testfunc(self):
-        print("DEBUG We are testing :", )
-        debug = self.database.fast_search_like_name("MassBlack")
-        print("DEBUG  :", debug)
+        for i in list(self.weaponNomTypes):
+            result = self.database.getNominalByType(self.selected_mods,i)
+        
 
     def __CatFilter__(self, selection):
         if selection != "all":
@@ -342,9 +345,12 @@ class GUI(object):
         values = [(mod, var.get()) for mod, var in self.moddict.items()]
         self.moddlist = values
         self.selected_mods = [x[0] for x in self.moddlist if x[1]==1]
+        print("DEBUG __selectmodsfunction___: ", self.selected_mods)
         if len(self.selected_mods)>0:
             items = self.database.session.query(Item).filter(Item.mod.in_ (self.selected_mods)).all()
-        self.__populate_items(items)  
+        self.__populate_items(items)
+        self.__create_nominal_info()
+
 
 # Updated to loop through selected items in the grid.
     def __update_item(self):
@@ -402,7 +408,7 @@ class GUI(object):
 
 
     def __initiate_items(self, items=None):
-        self.selected_mods = [x[0] for x in self.moddlist if x[1]==1]
+#        self.selected_mods = [x[0] for x in self.moddlist if x[1]==1]
         if items is None:
             items = self.database.all_items()
         self.__populate_items(items)
@@ -480,20 +486,15 @@ class GUI(object):
         Label(self.infoFrame, text="Displayed:").grid(row=0, column=1)
         Label(self.infoFrame, textvariable=strtotalNomDisplayed).grid(row=0, column=2)
         i = 3
-        for item_type in self.weaponNomTypes:
+        for item_type in list(self.weaponNomTypes):
             var = StringVar()
-#            self.start_nominal.append(self.database.getNominalByType(self.selected_mods,item_type))
             var.set(self.database.getNominalByType(self.selected_mods,item_type))
-#            self.nomVars.append(var)
-#            delta_start.set(0)
-#            self.deltaNom.append(delta_start)
-
+            #var = (self.database.getNominalByType(self.selected_mods,item_type))
+            self.nomVars.append(var)
             Label(self.infoFrame, text=item_type.capitalize() + ":").grid(row=0, column=i)
             Label(self.infoFrame, textvariable=var).grid(row=0, column=i + 1)
-#            Label(self.infoFrame, text="/").grid(row=0, column=i + 2)
-#            Label(self.infoFrame, textvariable=delta_start).grid(row=0, column=i + 3)
             i += 4
-    """
+    
     def __update_nominal_info(self):
         for i in range(len(self.nomVars)):
             nominal = self.database.getNominalByType(self.selected_mods,self.weaponNomTypes[i])
@@ -504,7 +505,6 @@ class GUI(object):
             except TypeError:
                 pass
                 #self.deltaupdateNominalInfoNom[i].set(nominal)"""
-
 
     def __open_db_window(self):
         DB(self.window)
