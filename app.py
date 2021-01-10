@@ -441,15 +441,17 @@ class GUI(object):
         cat_type = self.cat_type_for_filter.get()
         
         if item_type != "all":
-            items = self.database.filterby_type(self, selected_mods, 'item_type',item_type)
+            items = self.database.filterby_type(self.selected_mods, 'item_type',item_type)
         elif sub_type != "all":
-            items = self.database.filterby_type(self, selected_mods, 'sub_type',sub_type)
+            items = self.database.filterby_type(self.selected_mods, 'sub_type',sub_type)
         elif cat_type != "all":
-            items = self.database.filterby_type(self, selected_mods, 'cat_type',cat_type)
+            items = self.database.filterby_type(self.selected_mods, 'cat_type',cat_type)
         else:
             items = self.database.session.query(Item).filter(Item.mod.in_ (self.selected_mods))
         
+        
         self.gridItems = items
+        self.__create_nominal_info()
         self.__populate_items(items.all())
         
 

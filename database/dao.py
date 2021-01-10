@@ -91,24 +91,13 @@ class Dao(object):
             .all()
         return result 
 #*******************Used for Filter section***********************************************
-    def filterbyitem_type(self, selected_mods, item_type):
-        result = self.session.query(Item).filter(and_(Item.mod.in_ (selected_mods)),Item.item_type==(item_type))
-        return result        
-
-    def filterbycat_type(self, selected_mods, cat_type):
-        result = self.session.query(Item).filter(and_(Item.mod.in_ (selected_mods)),Item.cat_type==(cat_type))
-        return result        
-
-    def filterbysub_type(self, selected_mods, sub_type):
-        result = self.session.query(Item).filter(and_(Item.mod.in_ (selected_mods)),Item.sub_type==(sub_type))
-        return result    
 
     def filterby_type(self, selected_mods, col,value):
         result = self.session.query(Item)\
             .filter(
                 and_(
                     Item.mod.in_ (selected_mods)),
-                    getattr(Notice, col_name)==sub_type
+                    getattr(Item, col)==value
                 )
         return result        
 
