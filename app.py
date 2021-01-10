@@ -20,6 +20,7 @@ class GUI(object):
         self.ini_manger = INIManager("app.ini")
         self.database = Dao(self.ini_manger.read_ini("Database", "Database_Name"))
         self.selected_mods=[]
+        self.gridItems = []
         #
         self.window = main_container
         self.window.wm_title("Loot Editor v0.98.7")
@@ -68,7 +69,6 @@ class GUI(object):
                 mods_menu.add_checkbutton(label=mod, variable=int_var, command=self.__selectmodsfunction___)
                 self.moddict[mod] = int_var
                 self.selected_mods.append(mod) 
-        print("DEBUG mod selection :",self.selected_mods)
 # help menus builder
         help_menu = Menu(self.menu_bar, tearoff=0)
         help_menu.add_command(label="You'll never walk alone")
@@ -165,7 +165,7 @@ class GUI(object):
         self.item_typeOption.grid(row=8, column=1, sticky="w", pady=5)
 
         self.sub_typeOption = OptionMenu(
-            self.entryFrame, self.sub_type, *self.database.get_allsub_types()
+            self.entryFrame, self.sub_type, *self.database.get_allsub_types()[1:]
         )
         self.sub_typeOption.grid(row=9, column=1, sticky="w", pady=5)
 
@@ -409,6 +409,7 @@ class GUI(object):
         if items is None:
             items = self.database.all_items()
         self.__populate_items(items)
+        self.gridItems = items
 
     def __populate_items(self, items):
         if self.tree.get_children() != ():
@@ -420,15 +421,18 @@ class GUI(object):
             i.mod,i.trader,i.dynamic_event,i.count_in_hoarder,i.count_in_cargo,
             i.count_in_player,i.count_in_map])
             self.totalNomDisplayed += i.nominal
-        print("Debug: ",self.totalNomDisplayed)
 
     def __search_by_name(self):
         if self.name.get() != "":
-            self.__populate_items(self.database.search_by_name(self.name.get()))
+            items = self.database.search_by_name(self.name.get())
+            self.__populate_items(items)
+            self.gridItems = items
 
     def __search_like_name(self):
         if self.name.get() != "":
-            self.__populate_items(self.database.search_like_name(self.name.get()))
+            items = self.database.search_like_name(self.name.get())
+            self.__populate_items(items)
+            self.gridItems = items
 
     def __filter_items(self):
         item_type = self.type_for_filter.get()
@@ -436,41 +440,50 @@ class GUI(object):
         cat_type = self.cat_type_for_filter.get()
         
         if item_type != "all":
-            self.__populate_items(self.database.filterbyitem_type(self.selected_mods,item_type))
+            items = self.database.filterbyitem_type(self.selected_mods,item_type)
+            self.__populate_items(items)
+            self.gridItems = items
         elif sub_type != "all":
-            self.__populate_items(self.database.filterbysub_type(self.selected_mods,sub_type))
+            items = (self.database.filterbysub_type(self.selected_mods,sub_type))
+            self.__populate_items(items)
+            self.gridItems = items
         elif cat_type != "all":
-            self.__populate_items(self.database.filterbycat_type(self.selected_mods,cat_type))
+            items = (self.database.filterbycat_type(self.selected_mods,cat_type))
+            self.__populate_items(items)
+            self.gridItems = items
         else:
-            self.database.session.query(Item).filter(Item.mod.in_ (self.selected_mods)).all()
+            items = self.database.session.query(Item).filter(Item.mod.in_ (self.selected_mods)).all()
+            self.__populate_items(items)
+            self.gridItems = items
 
     def __fill_entry_frame(self, event):
         tree_row = self.tree.item(self.tree.focus())
         id = tree_row["text"]
         item = self.database.get_item(id)
-        self.id.set(id)
-        self.name.set(item.name)
-        self.nominal.set(-1)
-        self.min.set(-1)
-        self.lifetime.set(-1)
-        self.restock.set(-1)
-        self.mod.set("")
-        self.trader.set("")
-        usages = tree_row['values'][5]
-        for i in range(len(usages)):
-            self.usagesListBox.select_clear(i)
-        tiers = tree_row['values'][6]    
-        for i in range(len(tiers)):
-            self.tiersListBox.select_clear(i)
-        self.rarity.set("")
-        self.cat_type.set("")
-        self.item_type.set("")
-        self.sub_type.set("")
-        self.dynamic_event.set(-1)
-        self.count_in_hoarder.set(-1)
-        self.count_in_cargo.set(-1)
-        self.count_in_map.set(-1)
-        self.count_in_player.set(-1)
+        if item:
+            self.id.set(id)
+            self.name.set(item.name)
+            self.nominal.set(-1)
+            self.min.set(-1)
+            self.lifetime.set(-1)
+            self.restock.set(-1)
+            self.mod.set("")
+            self.trader.set("")
+            usages = tree_row['values'][5]
+            for i in range(len(usages)):
+                self.usagesListBox.select_clear(i)
+            tiers = tree_row['values'][6]    
+            for i in range(len(tiers)):
+                self.tiersListBox.select_clear(i)
+            self.rarity.set("")
+            self.cat_type.set("")
+            self.item_type.set("")
+            self.sub_type.set("")
+            self.dynamic_event.set(-1)
+            self.count_in_hoarder.set(-1)
+            self.count_in_cargo.set(-1)
+            self.count_in_map.set(-1)
+            self.count_in_player.set(-1)
 
 
     def __create_nominal_info(self):
@@ -495,24 +508,28 @@ class GUI(object):
 
 
 
-    def __update_nominal_info(self):
-        for i in range(len(self.nomVars)):
-            nominal = self.database.getNominalByType(self.selected_mods,self.weaponNomTypes[i])
-            self.database.getNominalByType(self.weaponNomTypes[i])
-            self.nomVars[i].set(nominal)
-            try:
-                self.deltaNom[i].set(nominal - self.start_nominal[i])
-            except TypeError:
-                pass
-                #self.deltaupdateNominalInfoNom[i].set(nominal)"""
+    def __update_nominal_items(self, items):
+        pass
+        """
+        i = 3
+        for item_type in list(self.weaponNomTypes):
+            var = StringVar()
+            nomitem = (self.database.getNominalByType(self.selected_mods,item_type))
+            self.weaponNomTypes.update(nomvar)
+            var.set(self.weaponNomTypes.get(item_type))
+            self.nomVars.append(var)
+            Label(self.infoFrame, text=item_type.capitalize() + ":").grid(row=0, column=i)
+            Label(self.infoFrame, textvariable=var).grid(row=0, column=i + 1)
+            i += 4"""
 
     def __open_db_window(self):
         DB(self.window)
 
     def __open_items_window(self):
         NewItems(self.window)
-        postNewitems = self.database.session.query(Item).filter(Item.mod.in_ (self.selected_mods)).all()
-        self.__populate_items(postNewitems)
+        items = self.database.session.query(Item).filter(Item.mod.in_ (self.selected_mods)).all()
+        self.__populate_items(items)
+        self.gridItems = items
 
     def __export_xml(self):
         file = filedialog.asksaveasfile(mode="a", defaultextension=".xml")
@@ -534,11 +551,8 @@ class GUI(object):
             command=lambda _col=col: self.tree_view_sort_column(tv, _col, not reverse),
         )
 
-
-      
-
     def Distributor(self):
-        items = self.database.get_items()
+        pass
         #Dist.distribute(items,1000,1000,1000,[1,1])    
 
     def openTraderEditor(self):
