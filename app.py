@@ -32,8 +32,7 @@ class GUI(object):
         self.totalNomDisplayed = int()
         self.start_nominal = []
         self.nomVars = []
-        ```py
-self.weaponNomTypes = {"gun":0, "ammo":0, "optic":0, "mag":0, "attachment":0} ```
+        self.weaponNomTypes = {"gun":0, "ammo":0, "optic":0, "mag":0, "attachment":0}
 
         #
         self.__create_menu_bar()
@@ -41,7 +40,6 @@ self.weaponNomTypes = {"gun":0, "ammo":0, "optic":0, "mag":0, "attachment":0} ``
         self.__create_tree_view()
         self.__create_side_bar()
         self.__initiate_items()
-        print("DEBUG init :",self.selected_mods)
         self.__create_nominal_info()
         #
         self.tree.bind("<ButtonRelease-1>", self.__fill_entry_frame)
@@ -345,7 +343,6 @@ self.weaponNomTypes = {"gun":0, "ammo":0, "optic":0, "mag":0, "attachment":0} ``
         values = [(mod, var.get()) for mod, var in self.moddict.items()]
         self.moddlist = values
         self.selected_mods = [x[0] for x in self.moddlist if x[1]==1]
-        print("DEBUG __selectmodsfunction___: ", self.selected_mods)
         if len(self.selected_mods)>0:
             items = self.database.session.query(Item).filter(Item.mod.in_ (self.selected_mods)).all()
         self.__populate_items(items)
@@ -488,13 +485,16 @@ self.weaponNomTypes = {"gun":0, "ammo":0, "optic":0, "mag":0, "attachment":0} ``
         i = 3
         for item_type in list(self.weaponNomTypes):
             var = StringVar()
-            var.set(self.database.getNominalByType(self.selected_mods,item_type))
-            #var = (self.database.getNominalByType(self.selected_mods,item_type))
+            nomvar = (self.database.getNominalByType(self.selected_mods,item_type))
+            self.weaponNomTypes.update(nomvar)
+            var.set(self.weaponNomTypes.get(item_type))
             self.nomVars.append(var)
             Label(self.infoFrame, text=item_type.capitalize() + ":").grid(row=0, column=i)
             Label(self.infoFrame, textvariable=var).grid(row=0, column=i + 1)
             i += 4
-    
+
+
+
     def __update_nominal_info(self):
         for i in range(len(self.nomVars)):
             nominal = self.database.getNominalByType(self.selected_mods,self.weaponNomTypes[i])
@@ -539,17 +539,10 @@ self.weaponNomTypes = {"gun":0, "ammo":0, "optic":0, "mag":0, "attachment":0} ``
 
     def Distributor(self):
         items = self.database.get_items()
-        
         #Dist.distribute(items,1000,1000,1000,[1,1])    
 
     def openTraderEditor(self):
-        TraderEditor(self.window,self.selectedMods)
-
-"""     def OnChange(value, name, *pargs):
-        self.update_dict[name] =  value.get()
-        print(self.update_dict)
-#        do more. set av value based on omv value
-        self.nominal.trace_add("write", lambda *pargs: OnChange(self.nominal,"nominal",*pargs))"""
+        TraderEditor(self.window,self.selected_mods)
 
 window = Tk()
 GUI(window)

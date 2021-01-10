@@ -94,7 +94,6 @@ class Dao(object):
             .group_by(Item.item_type)\
             .all()
         self.session.commit()
-        print("DEBUG getNominalByType: ",selected_mods, item_type, result)
         return result 
 #*******************Used for Filter section***********************************************
     def filterbyitem_type(self, selected_mods, item_type):
