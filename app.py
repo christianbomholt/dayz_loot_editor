@@ -30,7 +30,7 @@ class GUI(object):
         self.update_dict = {}
         self.moddict = {}
         self.moddlist = []
-        self.totalNomDisplayed = int()
+        #self.totalNomDisplayed = int()
         self.start_nominal = []
         self.nomVars = []
         self.weaponNomTypes = {"gun":0, "ammo":0, "optic":0, "mag":0, "attachment":0}
@@ -63,7 +63,7 @@ class GUI(object):
         mods_menu.add_command(label="Deselect All" ) #command=self.deselectAllMods)
         mods_menu.add_command(label="Select All") # command=self.selectAllMods)
         mods_menu.add_separator()
-        for mod in self.database.get_allmods():
+        for mod in self.database.get_all_types("mod"):
             if mod != "all":
                 int_var = IntVar(value=1)
                 mods_menu.add_checkbutton(label=mod, variable=int_var, command=self.__selectmodsfunction___)
@@ -155,17 +155,20 @@ class GUI(object):
             self.tiersListBox.insert(END, i)
 
         self.cat_typeOption = OptionMenu(
-            self.entryFrame, self.cat_type, *self.database.get_allcat_types()[1:]
+            self.entryFrame, self.cat_type, *self.database.get_all_types("cat_type")[1:]
+            #self.entryFrame, self.cat_type, *self.database.get_allcat_types()[1:]
         )
         self.cat_typeOption.grid(row=7, column=1, sticky="w", pady=5)
 
         self.item_typeOption = OptionMenu(
-            self.entryFrame, self.item_type, *self.database.get_allitem_types()[1:]
+            self.entryFrame, self.item_type, *self.database.get_all_types("item_type")[1:]
+            #self.entryFrame, self.item_type, *self.database.get_allitem_types()[1:]
         )
         self.item_typeOption.grid(row=8, column=1, sticky="w", pady=5)
 
         self.sub_typeOption = OptionMenu(
-            self.entryFrame, self.sub_type, *self.database.get_allsub_types()[1:]
+            self.entryFrame, self.sub_type, *self.database.get_all_types("sub_type")[1:]
+            #self.entryFrame, self.sub_type, *self.database.get_allsub_types()[1:]
         )
         self.sub_typeOption.grid(row=9, column=1, sticky="w", pady=5)
 
@@ -175,7 +178,7 @@ class GUI(object):
         self.rarityOption.grid(row=10, column=1, sticky="w", pady=5)
 
         self.modOption = OptionMenu(
-            self.entryFrame, self.mod, *self.database.get_allmods()
+            self.entryFrame, self.mod, *self.database.get_all_types("mod")[1:]
         )
         self.modOption.grid(row=11, column=1, sticky="w", pady=5)
 
@@ -270,7 +273,8 @@ class GUI(object):
         self.cat_type_for_filter = StringVar()
         self.cat_type_for_filter.set("all")
         OptionMenu(
-            self.filterFrame, self.cat_type_for_filter, *self.database.get_allcat_types(), command = self.__CatFilter__
+            self.filterFrame, self.cat_type_for_filter, *self.database.get_all_types("cat_type"), command = self.__CatFilter__
+            #self.filterFrame, self.cat_type_for_filter, *self.database.get_allcat_types(), command = self.__CatFilter__
         ).grid(row=1, column=1,  sticky="w", padx=5)
 
 
@@ -278,14 +282,16 @@ class GUI(object):
         self.type_for_filter = StringVar()
         self.type_for_filter.set("all")
         OptionMenu(
-            self.filterFrame, self.type_for_filter, *self.database.get_allitem_types(), command = self.__TypeFilter__
+            self.filterFrame, self.type_for_filter, *self.database.get_all_types("item_type"), command = self.__TypeFilter__
+            #self.filterFrame, self.type_for_filter, *self.database.get_allitem_types(), command = self.__TypeFilter__
         ).grid(row=2, column=1, sticky="w", padx=5)
         
 #Sub_type
         self.sub_type_for_filter = StringVar()
         self.sub_type_for_filter.set("all")
         OptionMenu(
-            self.filterFrame, self.sub_type_for_filter, *self.database.get_allsub_types(), command = self.__SubTypeFilter__
+            self.filterFrame, self.sub_type_for_filter, *self.database.get_all_types("sub_type"), command = self.__SubTypeFilter__
+            #self.filterFrame, self.sub_type_for_filter, *self.database.get_allsub_types(), command = self.__SubTypeFilter__
         ).grid(row=3, column=1, sticky="w", padx=5)
 
         Button(
@@ -320,15 +326,15 @@ class GUI(object):
         ).grid(row=3)
 
     def testfunc(self):
-        for i in list(self.weaponNomTypes):
-            result = self.database.getNominalByType(self.selected_mods,i)
+        result = self.database.getNominal(self.gridItems)
+        print("DEBUG  testfunc: ",result )
         
 
     def __CatFilter__(self, selection):
         if selection != "all":
             self.type_for_filter.set("all")
             self.sub_type_for_filter.set("all")
-
+            
     def __TypeFilter__(self, selection):
         if selection != "all":
             self.cat_type_for_filter.set("all")
@@ -348,6 +354,9 @@ class GUI(object):
         self.gridItems = items
         self.__populate_items(items.all())
         self.__create_nominal_info()
+        self.type_for_filter.set("all")
+        self.sub_type_for_filter.set("all")
+        self.cat_type_for_filter.set("all")
 
 
 # Updated to loop through selected items in the grid.
@@ -406,22 +415,22 @@ class GUI(object):
 
 
     def __initiate_items(self, items=None):
-#        self.selected_mods = [x[0] for x in self.moddlist if x[1]==1]
         if items is None:
-            items = self.database.all_items()
+            items = self.database.session.query(Item).filter(Item.mod.in_ (self.selected_mods))
             self.gridItems = items
         self.__populate_items(items.all())
 
     def __populate_items(self, items):
         if self.tree.get_children() != ():
             self.tree.delete(*self.tree.get_children())
-            self.totalNomDisplayed = 0
+           # self.totalNomDisplayed = 0
         for i in items:
             self.tree.insert("", "end", text=i.id, value=[i.name,i.nominal,i.min,
             i.restock,i.lifetime,i.usage,i.tier,i.rarity,i.cat_type,i.item_type,i.sub_type,
             i.mod,i.trader,i.dynamic_event,i.count_in_hoarder,i.count_in_cargo,
             i.count_in_player,i.count_in_map])
-            self.totalNomDisplayed += i.nominal
+       # self.totalNomDisplayed = self.database.getNominal(self.gridItems)
+
 
     def __search_by_name(self):
         if self.name.get() != "":
@@ -448,8 +457,6 @@ class GUI(object):
             items = self.database.filterby_type(self.selected_mods, 'cat_type',cat_type)
         else:
             items = self.database.session.query(Item).filter(Item.mod.in_ (self.selected_mods))
-        
-        
         self.gridItems = items
         self.__create_nominal_info()
         self.__populate_items(items.all())
@@ -486,12 +493,11 @@ class GUI(object):
 
 
     def __create_nominal_info(self):
-
         self.infoFrame = Frame(self.window)
         self.infoFrame.grid(row=1, column=1, sticky="s,w,e")
         Label(self.infoFrame, text="Nominal counts: ").grid(row=0, column=0)
         strtotalNomDisplayed = StringVar()
-        strtotalNomDisplayed.set(str(self.totalNomDisplayed))
+        strtotalNomDisplayed.set(self.database.getNominal(self.gridItems))
         Label(self.infoFrame, text="Displayed:").grid(row=0, column=1)
         Label(self.infoFrame, textvariable=strtotalNomDisplayed).grid(row=0, column=2)
         i = 3
@@ -506,22 +512,6 @@ class GUI(object):
             Label(self.infoFrame, textvariable=var).grid(row=0, column=i + 1)
             i += 4
 
-
-
-    def __update_nominal_items(self, items):
-        pass
-        """
-        i = 3
-        for item_type in list(self.weaponNomTypes):
-            var = StringVar()
-            nomitem = (self.database.getNominalByType(self.selected_mods,item_type))
-            self.weaponNomTypes.update(nomvar)
-            var.set(self.weaponNomTypes.get(item_type))
-            self.nomVars.append(var)
-            Label(self.infoFrame, text=item_type.capitalize() + ":").grid(row=0, column=i)
-            Label(self.infoFrame, textvariable=var).grid(row=0, column=i + 1)
-            i += 4"""
-
     def __open_db_window(self):
         DB(self.window)
 
@@ -535,18 +525,18 @@ class GUI(object):
     def __export_xml(self):
         file = filedialog.asksaveasfile(mode="a", defaultextension=".xml")
         xml_writer = XMLWriter(filename=file.name)
-        items = self.database.all_items().all()
+        items = self.database.session.query(Item).filter(Item.mod.in_ (self.selected_mods))
         xml_writer.export_xml(items)
 
     def tree_view_sort_column(self, tv, col, reverse):
         l = [(tv.set(k, col), k) for k in tv.get_children("")]
         l.sort(reverse=reverse)
 
-        # rearrange items in sorted positions
+# rearrange items in sorted positions
         for index, (val, k) in enumerate(l):
             tv.move(k, "", index)
 
-        # reverse sort next time
+# reverse sort next time
         tv.heading(
             col,
             command=lambda _col=col: self.tree_view_sort_column(tv, _col, not reverse),
@@ -554,7 +544,6 @@ class GUI(object):
 
     def Distributor(self):
         pass
-        #Dist.distribute(items,1000,1000,1000,[1,1])    
 
     def openTraderEditor(self):
         TraderEditor(self.window,self.selected_mods)

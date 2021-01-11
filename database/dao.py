@@ -28,15 +28,15 @@ class Dao(object):
             if self.session.query(Item).filter(Item.name == item.name).count() == 0:
                 self.session.add(item)
                 self.session.commit()
-    # get item
+    # get item used for __fill_entry_frame
     def get_item(self, item_id):
         item = self.session.query(Item).get(item_id)
         self.session.commit()
         return item
-
+    """
     # get items
     def all_items(self):
-        return self.session.query(Item)
+        return self.session.query(Item)"""
 
     def get_allmods(self):
         result = self.session.query(Item.mod.distinct().label("mods"))
@@ -45,6 +45,12 @@ class Dao(object):
         result.append("all")
         return result
 
+    def get_all_types(self, col):
+        result = self.session.query(getattr(Item, col).distinct().label(col+"s"))
+        result=[c[0] for c in result if c[0] is not None]
+        result.append("all")
+        return result
+    """    
     def get_allcat_types(self):
         result = self.session.query(Item.cat_type.distinct().label("cat_types"))
         self.session.commit()
@@ -60,11 +66,11 @@ class Dao(object):
         return result
 
     def get_allsub_types(self):
-        result = self.session.query(Item.sub_type.distinct().label("sub_type"))
+        result = self.session.query(Item.sub_type.distinct().label("sub_types"))
         self.session.commit()
         result= [sub_type[0] for sub_type in result if sub_type[0] is not None]
         result.append("all")
-        return result
+        return result"""
 
     # delete item
     def delete_item(self, item_id):
@@ -81,8 +87,16 @@ class Dao(object):
         db_connection.commit()
         db_connection.close()
 
+    def getNominal(self, grid_items):
+        grid_items = grid_items.subquery()
+        result = self.session\
+            .query(func.sum(Item.nominal))\
+            .join(grid_items, Item.id == grid_items.c.id)\
+            .all()
+        result = [x[0] for x in result]    
+        return result       
+
     def getNominalByType(self, grid_items, item_type):
-        
         grid_items = grid_items.subquery()
         result = self.session\
             .query(Item.item_type, func.sum(Item.nominal))\
@@ -131,7 +145,7 @@ class Dao(object):
         results = self.session.query(Item.sub_type).filter(and_(Item.trader==(traderSel),Item.mod.in_(selected_Mods))).group_by(Item.sub_type).order_by(Item.sub_type).all()
         results=[sub_type[0] for sub_type in results]
         return results
- 
+    """
 #Trying to make the setprices work...............
     # name, subtype, tradercat, buyprice, sellprice, rarity, nominal, traderexclude, mod
     def getSubtypeForTrader(self, sub_type):
@@ -149,7 +163,7 @@ class Dao(object):
             if result[i][4] is None:
                 result[i][4] = -1
             result[i] = list(result[i])
-        return result
+        return result"""
 
     def get_traderpricingtupl(self, traderSel, sub_type, selected_Mods):
         results = self.session.query(Item.name,Item.sub_type,Item.traderCat,Item.buyprice,Item.sellprice,Item.rarity,Item.nominal,Item.traderExclude,Item.mod).filter(and_(Item.trader==(traderSel),Item.sub_type==(sub_type),Item.mod.in_(selected_Mods))).all()
