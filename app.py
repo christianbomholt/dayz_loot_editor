@@ -1,4 +1,4 @@
-from tkinter import Tk, Menu, IntVar, Frame, Label, StringVar, Entry, Listbox, END, OptionMenu, Checkbutton, Button
+from tkinter import Tk, Menu, IntVar, Frame, Label, StringVar, Entry, Listbox, END, OptionMenu, Checkbutton, Button, Radiobutton
 from tkinter import ttk, VERTICAL, HORIZONTAL, LabelFrame
 from config import ConfigManager
 from database.dao import Dao
@@ -30,7 +30,7 @@ class GUI(object):
         self.update_dict = {}
         self.moddict = {}
         self.moddlist = []
-        #self.totalNomDisplayed = int()
+        self.totalNumDisplayed = StringVar()
         self.start_nominal = []
         self.nomVars = []
         self.weaponNomTypes = {"gun":0, "ammo":0, "optic":0, "mag":0, "attachment":0}
@@ -41,6 +41,7 @@ class GUI(object):
         self.__create_tree_view()
         self.__create_side_bar()
         self.__initiate_items()
+        self.__create_distribution_block()        
         self.__create_nominal_info()
         #
         self.tree.bind("<ButtonRelease-1>", self.__fill_entry_frame)
@@ -308,6 +309,31 @@ class GUI(object):
             width=14,
             command=self.__search_like_name,
         ).grid(row=1)
+
+
+# Distribution block
+    def __create_distribution_block(self):
+        self.distribution = LabelFrame(self.filterFrameHolder, text="Nominal Distribution")
+        self.distribution.grid(row=6, column=0, padx=20, pady=20)
+
+        Label(self.distribution, text="By Displayed Items").grid(row=0, columnspan=2)
+
+        Label(self.distribution, text="Target Nominal").grid(row=1, columnspan=2)
+
+        self.desiredNomEntry = Entry(
+            self.distribution, textvariable=self.totalNumDisplayed, width=14
+        ).grid(row=2, columnspan=2, pady=7)
+
+        MODES = [("Use Rarity", "rar"), ("Use Nominal", "nom")]
+        self.v = StringVar()
+        self.v.set("rar")
+        Radiobutton(self.distribution, text=MODES[0][0], variable=self.v, value=MODES[0][1]).grid(row=3, column=0,sticky="w")
+        Radiobutton(self.distribution, text=MODES[1][0], variable=self.v, value=MODES[1][1]).grid(row=4, column=0,sticky="w")
+
+        Button(
+            self.distribution, text="Distribute", width=12, command=self.Distributor()
+        ).grid(row=5, columnspan=2, pady=10)
+
 #
 # This is were we have the test button
 #         
@@ -326,7 +352,7 @@ class GUI(object):
         ).grid(row=3)
 
     def testfunc(self):
-        result = self.database.getNominal(self.gridItems)
+        result = (self.database.getNominalByType(self.gridItems,"ammo"))
         print("DEBUG  testfunc: ",result )
         
 
@@ -399,7 +425,6 @@ class GUI(object):
             tiers = self.tiersListBox.curselection()
             tier_values = [self.tiersListBox.get(i) for i in tiers]
             tiers = ",".join(tier_values)
-            #print("DEBUG: ", tiers)
             if tiers  != "":
                 setattr(item_to_update, "tier", tiers)
 
@@ -496,10 +521,9 @@ class GUI(object):
         self.infoFrame = Frame(self.window)
         self.infoFrame.grid(row=1, column=1, sticky="s,w,e")
         Label(self.infoFrame, text="Nominal counts: ").grid(row=0, column=0)
-        strtotalNomDisplayed = StringVar()
-        strtotalNomDisplayed.set(self.database.getNominal(self.gridItems))
+        self.totalNumDisplayed.set(self.database.getNominal(self.gridItems))
         Label(self.infoFrame, text="Displayed:").grid(row=0, column=1)
-        Label(self.infoFrame, textvariable=strtotalNomDisplayed).grid(row=0, column=2)
+        Label(self.infoFrame, textvariable=self.totalNumDisplayed).grid(row=0, column=2)
         i = 3
         self.weaponNomTypes = {"gun":0, "ammo":0, "optic":0, "mag":0, "attachment":0}
         for item_type in list(self.weaponNomTypes):

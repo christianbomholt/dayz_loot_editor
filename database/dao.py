@@ -28,6 +28,7 @@ class Dao(object):
             if self.session.query(Item).filter(Item.name == item.name).count() == 0:
                 self.session.add(item)
                 self.session.commit()
+                
     # get item used for __fill_entry_frame
     def get_item(self, item_id):
         item = self.session.query(Item).get(item_id)
@@ -95,11 +96,21 @@ class Dao(object):
             .all()
         result = [x[0] for x in result]    
         return result       
+    """
+    def getNominalByType(self, grid_items, item_type):
+        grid_items = grid_items.subquery()
+        result = self.session\
+            .query(Item.item_type, func.sum(Item.nominal))\
+            .join(grid_items, Item.id == grid_items.c.id)\
+            .group_by(Item.item_type)\
+            .all()
+        return result """
 
     def getNominalByType(self, grid_items, item_type):
         grid_items = grid_items.subquery()
         result = self.session\
             .query(Item.item_type, func.sum(Item.nominal))\
+            .filter(Item.item_type==item_type)\
             .join(grid_items, Item.id == grid_items.c.id)\
             .group_by(Item.item_type)\
             .all()
