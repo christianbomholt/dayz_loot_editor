@@ -68,9 +68,9 @@ class XMLParser(object):
                 elif i.tag == "category":
                     category = i.attrib["name"]
                     if category != "weapons":
-                        item.item_type = category
+                        item.cat_type = category
                     else:
-                        item.item_type = self.__get_type(name=item.name)
+                        item.cat_type = self.__get_type(name=item.name)
                 elif i.tag == "lifetime":
                     item.lifetime = i.text
                 elif i.tag == "usage":

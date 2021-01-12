@@ -34,6 +34,7 @@ class GUI(object):
         self.start_nominal = []
         self.nomVars = []
         self.weaponNomTypes = {"gun":0, "ammo":0, "optic":0, "mag":0, "attachment":0}
+        self.distributorValue = StringVar()
 
         #
         self.__create_menu_bar()
@@ -41,8 +42,8 @@ class GUI(object):
         self.__create_tree_view()
         self.__create_side_bar()
         self.__initiate_items()
-        self.__create_distribution_block()        
         self.__create_nominal_info()
+        self.__create_distribution_block()        
         #
         self.tree.bind("<ButtonRelease-1>", self.__fill_entry_frame)
 
@@ -324,14 +325,13 @@ class GUI(object):
             self.distribution, textvariable=self.totalNumDisplayed, width=14
         ).grid(row=2, columnspan=2, pady=7)
 
-        MODES = [("Use Rarity", "rar"), ("Use Nominal", "nom")]
-        self.v = StringVar()
-        self.v.set("rar")
-        Radiobutton(self.distribution, text=MODES[0][0], variable=self.v, value=MODES[0][1]).grid(row=3, column=0,sticky="w")
-        Radiobutton(self.distribution, text=MODES[1][0], variable=self.v, value=MODES[1][1]).grid(row=4, column=0,sticky="w")
+        print("DEBUG  self.desiredNomValue:", self.totalNumDisplayed)
+        self.distributorValue.set("Use Rarity")
+        Radiobutton(self.distribution, text="Use Rarity", variable=self.distributorValue, value="Use Rarity") .grid(row=3, column=0,sticky="w")
+        Radiobutton(self.distribution, text="Use Nominal", variable=self.distributorValue, value="Use Nominal").grid(row=4, column=0,sticky="w")
 
         Button(
-            self.distribution, text="Distribute", width=12, command=self.Distributor()
+            self.distribution, text="Distribute", width=12, command=self.Distributor(self.totalNumDisplayed)
         ).grid(row=5, columnspan=2, pady=10)
 
 #
@@ -352,7 +352,7 @@ class GUI(object):
         ).grid(row=3)
 
     def testfunc(self):
-        result = (self.database.getNominalByType(self.gridItems,"ammo"))
+        result = self.DistributorValue.get() 
         print("DEBUG  testfunc: ",result )
         
 
@@ -566,8 +566,19 @@ class GUI(object):
             command=lambda _col=col: self.tree_view_sort_column(tv, _col, not reverse),
         )
 
-    def Distributor(self):
-        pass
+    def Distributor(self, totalNumDisplayed):
+        test =   totalNumDisplayed
+        test1 =   self.distributorValue.get()
+        test2 = self.totalNumDisplayed.get()
+        print("DEBUG Distributor:",test, test1, test2)
+
+        """
+        targetNominal = self.totalNumDisplayed.get()
+        if self.distributorValue.get() =="Use Nominal":
+            currentNominal = self.database.getNominal(self.gridItems)
+            ratio = currentNominal/targetNominal
+            print("DEBUG Distributor:",ratio,currentNominal,targetNominal)"""
+
 
     def openTraderEditor(self):
         TraderEditor(self.window,self.selected_mods)
