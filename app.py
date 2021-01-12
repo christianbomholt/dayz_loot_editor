@@ -30,7 +30,7 @@ class GUI(object):
         self.update_dict = {}
         self.moddict = {}
         self.moddlist = []
-        self.totalNumDisplayed = StringVar()
+        self.totalNumDisplayed = IntVar()
         self.start_nominal = []
         self.nomVars = []
         self.weaponNomTypes = {"gun":0, "ammo":0, "optic":0, "mag":0, "attachment":0}
@@ -324,13 +324,13 @@ class GUI(object):
         self.desiredNomEntry = Entry(
             self.distribution, textvariable=self.totalNumDisplayed, width=14
         ).grid(row=2, columnspan=2, pady=7)
-        print("DEBUG  self.desiredNomValue:", self.totalNumDisplayed.get())
+        # print("DEBUG  self.desiredNomValue:", self.totalNumDisplayed.get())
         self.distributorValue.set("Use Rarity")
         Radiobutton(self.distribution, text="Use Rarity", variable=self.distributorValue, value="Use Rarity") .grid(row=3, column=0,sticky="w")
         Radiobutton(self.distribution, text="Use Nominal", variable=self.distributorValue, value="Use Nominal").grid(row=4, column=0,sticky="w")
 
         Button(
-            self.distribution, text="Distribute", width=12, command=self.Distributor(self.totalNumDisplayed.get())
+            self.distribution, text="Distribute", width=12, command=self.Distributor
         ).grid(row=5, columnspan=2, pady=10)
 
 #
@@ -520,7 +520,7 @@ class GUI(object):
         self.infoFrame = Frame(self.window)
         self.infoFrame.grid(row=1, column=1, sticky="s,w,e")
         Label(self.infoFrame, text="Nominal counts: ").grid(row=0, column=0)
-        self.totalNumDisplayed.set(self.database.getNominal(self.gridItems))
+        self.totalNumDisplayed.set(self.database.getNominal(self.gridItems)[0])
         Label(self.infoFrame, text="Displayed:").grid(row=0, column=1)
         Label(self.infoFrame, textvariable=self.totalNumDisplayed).grid(row=0, column=2)
         i = 3
@@ -565,30 +565,45 @@ class GUI(object):
             command=lambda _col=col: self.tree_view_sort_column(tv, _col, not reverse),
         )
 
-    def Distributor(self, totalNumDisplayed):
-        rarities9 = {0: "undefined",
-             50: "Legendary",
-             45: "Extremely Rare",
-             40: "Very Rare",
-             35: "Rare",
-             30: "Somewhat Rare",
-             25: "Uncommon",
-             20: "Common",
-             15: "Very Common",
-             10: "All Over The Place"}
+    def Distributor(self):
+        rarities = {
+            "undefined": 1,
+            "Legendary": 1,
+            "Extremely Rare": 1.5,
+            "Very Rare": 2,
+            "Rare": 2.5,
+            "Somewhat Rare": 3,
+            "Uncommon": 5,
+            "Common": 8,
+            "Very Common": 12,
+            "All Over The Place": 20
+            }
 
-        rarityMultiplier = {50: 1, 45: 1.5, 40: 2, 35: 2.5, 30: 3, 25: 5, 20: 8, 15: 12, 10: 20}
-        
-        test =   totalNumDisplayed
-        test1 =   self.distributorValue.get()
+        test1 = self.distributorValue.get()
         test2 = self.totalNumDisplayed.get()
-
-        """
-        targetNominal = self.totalNumDisplayed.get()
+        print(test1, test2)
+        print(self.database.getNominal(self.gridItems))
+        
+        targetNominal = int(self.totalNumDisplayed.get())
         if self.distributorValue.get() =="Use Nominal":
-            currentNominal = self.database.getNominal(self.gridItems)
-            ratio = currentNominal/targetNominal
-            print("DEBUG Distributor:",ratio,currentNominal,targetNominal)"""
+            currentNominal = self.database.getNominal(self.gridItems)[0]
+            ratio = targetNominal/currentNominal
+            print("DEBUG Distributor:",ratio,currentNominal,targetNominal)
+
+            for item in self.gridItems:
+                print(item.nominal)
+                item.nominal= max(round(item.nominal*ratio),1)
+
+        if self.distributorValue.get() =="Use Rarity":
+            for item in self.gridItems:
+                print(item.rarity)
+                multiplier = rarities.get(item.rarity)
+                item.nominal= round(item.nominal*multiplier)
+                
+        self.database.session.commit()
+        
+        self.__populate_items(self.gridItems)
+            
 
 
     def openTraderEditor(self):
