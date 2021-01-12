@@ -13,7 +13,6 @@ class Dao(object):
         session_maker = sessionmaker()
         session_maker.configure(bind=engine)
         self.session = session_maker()
-        #print("DEBUG the database is connected and session made")
 
     """
     CRUD Operations related to items
@@ -28,7 +27,7 @@ class Dao(object):
             if self.session.query(Item).filter(Item.name == item.name).count() == 0:
                 self.session.add(item)
                 self.session.commit()
-                
+
     # get item used for __fill_entry_frame
     def get_item(self, item_id):
         item = self.session.query(Item).get(item_id)
@@ -133,7 +132,6 @@ class Dao(object):
         return [u.__dict__ for u in results]        
 
     def items_table_exist(self):
-        #print("DEBUG checking if table exist ", self.db_name)
         db_connection = sqlite3.connect(self.db_name)
         db_cursor = db_connection.cursor()
         sql_filter_items = f"SELECT name FROM sqlite_master WHERE type='table' AND name='items'"

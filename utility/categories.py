@@ -157,7 +157,6 @@ def traderCatSwitcher(argument):
         return "V"
 
     elif argument in weaponTraderCat:
-        print("DEBUG in weaponTraderCat: ", argument)
         return "W"
 
     elif "steakmeat" in argument:

@@ -324,14 +324,13 @@ class GUI(object):
         self.desiredNomEntry = Entry(
             self.distribution, textvariable=self.totalNumDisplayed, width=14
         ).grid(row=2, columnspan=2, pady=7)
-
-        print("DEBUG  self.desiredNomValue:", self.totalNumDisplayed)
+        print("DEBUG  self.desiredNomValue:", self.totalNumDisplayed.get())
         self.distributorValue.set("Use Rarity")
         Radiobutton(self.distribution, text="Use Rarity", variable=self.distributorValue, value="Use Rarity") .grid(row=3, column=0,sticky="w")
         Radiobutton(self.distribution, text="Use Nominal", variable=self.distributorValue, value="Use Nominal").grid(row=4, column=0,sticky="w")
 
         Button(
-            self.distribution, text="Distribute", width=12, command=self.Distributor(self.totalNumDisplayed)
+            self.distribution, text="Distribute", width=12, command=self.Distributor(self.totalNumDisplayed.get())
         ).grid(row=5, columnspan=2, pady=10)
 
 #
@@ -352,7 +351,7 @@ class GUI(object):
         ).grid(row=3)
 
     def testfunc(self):
-        result = self.DistributorValue.get() 
+        result = self.distributorValue.get() 
         print("DEBUG  testfunc: ",result )
         
 
@@ -570,7 +569,6 @@ class GUI(object):
         test =   totalNumDisplayed
         test1 =   self.distributorValue.get()
         test2 = self.totalNumDisplayed.get()
-        print("DEBUG Distributor:",test, test1, test2)
 
         """
         targetNominal = self.totalNumDisplayed.get()
