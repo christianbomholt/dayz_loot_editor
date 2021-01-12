@@ -566,6 +566,19 @@ class GUI(object):
         )
 
     def Distributor(self, totalNumDisplayed):
+        rarities9 = {0: "undefined",
+             50: "Legendary",
+             45: "Extremely Rare",
+             40: "Very Rare",
+             35: "Rare",
+             30: "Somewhat Rare",
+             25: "Uncommon",
+             20: "Common",
+             15: "Very Common",
+             10: "All Over The Place"}
+
+        rarityMultiplier = {50: 1, 45: 1.5, 40: 2, 35: 2.5, 30: 3, 25: 5, 20: 8, 15: 12, 10: 20}
+        
         test =   totalNumDisplayed
         test1 =   self.distributorValue.get()
         test2 = self.totalNumDisplayed.get()
