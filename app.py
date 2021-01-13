@@ -379,7 +379,6 @@ class GUI(object):
             items = self.database.session.query(Item).filter(Item.mod.in_ (self.selected_mods))
             self.gridItems = items
             self.__populate_items(self.gridItems)
-            #self.__populate_items(items.all())
         else:
             self.treeview.clear()
 

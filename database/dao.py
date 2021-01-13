@@ -155,6 +155,15 @@ class Dao(object):
         results = self.session.query(Item.sub_type).filter(and_(Item.trader==(traderSel),Item.mod.in_(selected_Mods))).group_by(Item.sub_type).order_by(Item.sub_type).all()
         results=[sub_type[0] for sub_type in results]
         return results
+
+    def get_traderpricingtupl(self, traderSel, sub_type, selected_Mods):
+        results = self.session.query(Item.name,Item.sub_type,Item.traderCat,Item.buyprice,Item.sellprice,Item.rarity,Item.nominal,Item.traderExclude,Item.mod).filter(and_(Item.trader==(traderSel),Item.sub_type==(sub_type),Item.mod.in_(selected_Mods))).all()
+        return results
+
+    def get_traderitemstupl(self, traderSel, sub_type, selected_Mods):
+        results = self.session.query(Item).filter(and_(Item.trader==(traderSel),Item.sub_type==(sub_type),Item.mod.in_(selected_Mods))).all()
+        return [u.__dict__ for u in results]
+
     """
     def getItemDetailsByTraderLoc(self, sub_type, trader):
         db_connection = sqlite3.connect(Dao.databasename)
