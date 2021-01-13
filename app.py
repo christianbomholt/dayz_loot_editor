@@ -48,6 +48,14 @@ class GUI(object):
         self.tree.bind("<ButtonRelease-1>", self.__fill_entry_frame)
 
 
+    def deselectAllMods(self):
+        int_var=IntVar(value=1)
+        self.moddict = {x: int_var for x in self.moddict if x != "Vanilla"}
+        self.__selectmodsfunction___
+
+    def selectAllMods(self):
+        self.moddict = {x: 1 for x in self.moddict}
+
     def __create_menu_bar(self):
 # file menus builder
         file_menu = Menu(self.menu_bar, tearoff=0)
@@ -62,8 +70,8 @@ class GUI(object):
 
 # initializing mods menu
         mods_menu = Menu(self.menu_bar, tearoff=0)
-        mods_menu.add_command(label="Deselect All" ) #command=self.deselectAllMods)
-        mods_menu.add_command(label="Select All") # command=self.selectAllMods)
+        mods_menu.add_command(label="Deselect All" , command=self.deselectAllMods)
+        mods_menu.add_command(label="Select All", command=self.selectAllMods)
         mods_menu.add_separator()
         for mod in self.database.get_all_types("mod"):
             if mod != "all":
@@ -80,7 +88,7 @@ class GUI(object):
         self.menu_bar.add_cascade(label="Mods In Use", menu=mods_menu)
         self.menu_bar.add_cascade(label="Help", menu=help_menu)
 
-        # configuring menu bar
+#configuring menu bar
         self.window.config(menu=self.menu_bar)
 
 #Create Left side entry frame  *************************************************
@@ -158,19 +166,16 @@ class GUI(object):
 
         self.cat_typeOption = OptionMenu(
             self.entryFrame, self.cat_type, *self.database.get_all_types("cat_type")[1:]
-            #self.entryFrame, self.cat_type, *self.database.get_allcat_types()[1:]
         )
         self.cat_typeOption.grid(row=7, column=1, sticky="w", pady=5)
 
         self.item_typeOption = OptionMenu(
             self.entryFrame, self.item_type, *self.database.get_all_types("item_type")[1:]
-            #self.entryFrame, self.item_type, *self.database.get_allitem_types()[1:]
         )
         self.item_typeOption.grid(row=8, column=1, sticky="w", pady=5)
 
         self.sub_typeOption = OptionMenu(
             self.entryFrame, self.sub_type, *self.database.get_all_types("sub_type")[1:]
-            #self.entryFrame, self.sub_type, *self.database.get_allsub_types()[1:]
         )
         self.sub_typeOption.grid(row=9, column=1, sticky="w", pady=5)
 
@@ -276,7 +281,6 @@ class GUI(object):
         self.cat_type_for_filter.set("all")
         OptionMenu(
             self.filterFrame, self.cat_type_for_filter, *self.database.get_all_types("cat_type"), command = self.__CatFilter__
-            #self.filterFrame, self.cat_type_for_filter, *self.database.get_allcat_types(), command = self.__CatFilter__
         ).grid(row=1, column=1,  sticky="w", padx=5)
 
 
@@ -285,7 +289,6 @@ class GUI(object):
         self.type_for_filter.set("all")
         OptionMenu(
             self.filterFrame, self.type_for_filter, *self.database.get_all_types("item_type"), command = self.__TypeFilter__
-            #self.filterFrame, self.type_for_filter, *self.database.get_allitem_types(), command = self.__TypeFilter__
         ).grid(row=2, column=1, sticky="w", padx=5)
         
 #Sub_type
@@ -293,7 +296,6 @@ class GUI(object):
         self.sub_type_for_filter.set("all")
         OptionMenu(
             self.filterFrame, self.sub_type_for_filter, *self.database.get_all_types("sub_type"), command = self.__SubTypeFilter__
-            #self.filterFrame, self.sub_type_for_filter, *self.database.get_allsub_types(), command = self.__SubTypeFilter__
         ).grid(row=3, column=1, sticky="w", padx=5)
 
         Button(
@@ -324,7 +326,6 @@ class GUI(object):
         self.desiredNomEntry = Entry(
             self.distribution, textvariable=self.totalNumDisplayed, width=14
         ).grid(row=2, columnspan=2, pady=7)
-        # print("DEBUG  self.desiredNomValue:", self.totalNumDisplayed.get())
         self.distributorValue.set("Use Rarity")
         Radiobutton(self.distribution, text="Use Rarity", variable=self.distributorValue, value="Use Rarity") .grid(row=3, column=0,sticky="w")
         Radiobutton(self.distribution, text="Use Nominal", variable=self.distributorValue, value="Use Nominal").grid(row=4, column=0,sticky="w")
@@ -376,8 +377,12 @@ class GUI(object):
         self.selected_mods = [x[0] for x in self.moddlist if x[1]==1]
         if len(self.selected_mods)>0:
             items = self.database.session.query(Item).filter(Item.mod.in_ (self.selected_mods))
-        self.gridItems = items
-        self.__populate_items(items.all())
+            self.gridItems = items
+            self.__populate_items(self.gridItems)
+            #self.__populate_items(items.all())
+        else:
+            self.treeview.clear()
+
         self.__create_nominal_info()
         self.type_for_filter.set("all")
         self.sub_type_for_filter.set("all")
@@ -386,9 +391,7 @@ class GUI(object):
 
 # Updated to loop through selected items in the grid.
     def __update_item(self):
-        
         def __update_helper(item, field, default_value):
-            
             value_from_update_form = getattr(self, field).get()
             if value_from_update_form != default_value:
                 setattr(item, field, value_from_update_form)
@@ -396,9 +399,7 @@ class GUI(object):
         for items in self.treeView.selection():
             item = self.treeView.item(items)
             id_of_interest = item["text"]
-            
             item_to_update = self.database.session.query(Item).get(id_of_interest)
-
             __update_helper(item_to_update, "nominal", -1)
             __update_helper(item_to_update, "min", -1)
             __update_helper(item_to_update, "restock", -1)
@@ -428,14 +429,14 @@ class GUI(object):
                 setattr(item_to_update, "tier", tiers)
 
             self.database.session.commit()
-        self.__populate_items()
+        self.__populate_items(self.gridItems)
 
     def __delete_item(self):
         for items in self.treeView.selection():
             item = self.treeView.item(items)
             itemid = item["text"]
             self.database.delete_item(itemid)
-        self.__populate_items()
+        self.__populate_items(self.gridItems)
 
 
     def __initiate_items(self, items=None):
@@ -447,13 +448,12 @@ class GUI(object):
     def __populate_items(self, items):
         if self.tree.get_children() != ():
             self.tree.delete(*self.tree.get_children())
-           # self.totalNomDisplayed = 0
         for i in items:
             self.tree.insert("", "end", text=i.id, value=[i.name,i.nominal,i.min,
             i.restock,i.lifetime,i.usage,i.tier,i.rarity,i.cat_type,i.item_type,i.sub_type,
             i.mod,i.trader,i.dynamic_event,i.count_in_hoarder,i.count_in_cargo,
             i.count_in_player,i.count_in_map])
-       # self.totalNomDisplayed = self.database.getNominal(self.gridItems)
+
 
 
     def __search_by_name(self):
@@ -579,29 +579,24 @@ class GUI(object):
             "All Over The Place": 20
             }
 
-        test1 = self.distributorValue.get()
-        test2 = self.totalNumDisplayed.get()
-        print(test1, test2)
-        print(self.database.getNominal(self.gridItems))
-        
         targetNominal = int(self.totalNumDisplayed.get())
+
         if self.distributorValue.get() =="Use Nominal":
             currentNominal = self.database.getNominal(self.gridItems)[0]
             ratio = targetNominal/currentNominal
-            print("DEBUG Distributor:",ratio,currentNominal,targetNominal)
-
             for item in self.gridItems:
-                print(item.nominal)
                 item.nominal= max(round(item.nominal*ratio),1)
 
         if self.distributorValue.get() =="Use Rarity":
             for item in self.gridItems:
-                print(item.rarity)
                 multiplier = rarities.get(item.rarity)
                 item.nominal= round(item.nominal*multiplier)
-                
+            #self.database.session.commit()
+            currentNominal = self.database.getNominal(self.gridItems)[0]
+            ratio = targetNominal/currentNominal
+            for item in self.gridItems:
+                item.nominal= max(round(item.nominal*ratio),1)
         self.database.session.commit()
-        
         self.__populate_items(self.gridItems)
             
 

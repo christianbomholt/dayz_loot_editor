@@ -95,15 +95,7 @@ class Dao(object):
             .all()
         result = [x[0] for x in result]    
         return result       
-    """
-    def getNominalByType(self, grid_items, item_type):
-        grid_items = grid_items.subquery()
-        result = self.session\
-            .query(Item.item_type, func.sum(Item.nominal))\
-            .join(grid_items, Item.id == grid_items.c.id)\
-            .group_by(Item.item_type)\
-            .all()
-        return result """
+
 
     def getNominalByType(self, grid_items, item_type):
         grid_items = grid_items.subquery()
@@ -123,13 +115,22 @@ class Dao(object):
                     Item.mod.in_ (selected_mods)),
                     getattr(Item, col)==value
                 )
-        return result        
+        return result 
+
+    def search_like_name(self, item_name):
+        search = f'%{item_name}%'
+        results = self.session.query(Item).filter(Item.name.like(search)).all()
+        return results
 
 #*******************Used for PyTest***********************************************
+    
+
+
+
     def fast_search_like_name(self, item_name):
         search = f'%{item_name}%'
         results = self.session.query(Item).filter(Item.name.like(search)).all()
-        return [u.__dict__ for u in results]        
+        return [u.__dict__ for u in results]
 
     def items_table_exist(self):
         db_connection = sqlite3.connect(self.db_name)
@@ -155,33 +156,6 @@ class Dao(object):
         results=[sub_type[0] for sub_type in results]
         return results
     """
-#Trying to make the setprices work...............
-    # name, subtype, tradercat, buyprice, sellprice, rarity, nominal, traderexclude, mod
-    def getSubtypeForTrader(self, sub_type):
-        db_connection = sqlite3.connect(Dao.databasename)
-        db_cursor = db_connection.cursor()
-        query = f"select name, sub_type, tradercat, buyprice, sellprice, rarity, nominal, traderexclude, mod from items where sub_type = '{sub_type}'"
-        db_cursor.execute(query)
-        result = db_cursor.fetchall()
-        db_connection.commit()
-        db_connection.close()
-        result =  [list(elem) for elem in result]
-        for i in range(len(result)):
-            if result[i][3] is None:
-                result[i][3] = -1
-            if result[i][4] is None:
-                result[i][4] = -1
-            result[i] = list(result[i])
-        return result"""
-
-    def get_traderpricingtupl(self, traderSel, sub_type, selected_Mods):
-        results = self.session.query(Item.name,Item.sub_type,Item.traderCat,Item.buyprice,Item.sellprice,Item.rarity,Item.nominal,Item.traderExclude,Item.mod).filter(and_(Item.trader==(traderSel),Item.sub_type==(sub_type),Item.mod.in_(selected_Mods))).all()
-        return results
-
-    def get_traderitemstupl(self, traderSel, sub_type, selected_Mods):
-        results = self.session.query(Item).filter(and_(Item.trader==(traderSel),Item.sub_type==(sub_type),Item.mod.in_(selected_Mods))).all()
-        return [u.__dict__ for u in results]
-    """
     def getItemDetailsByTraderLoc(self, sub_type, trader):
         db_connection = sqlite3.connect(Dao.databasename)
         db_cursor = db_connection.cursor()
@@ -203,57 +177,3 @@ class Dao(object):
         db_connection.close()
         results = [row[0] if row[0] is not None else "" for row in results]
         return sorted(results)"""
-
-    # traderCat, buyprice, sellprice, traderExclude, rarity, name
-    def setSubtypeForTrader_fast(self, traderCat, buyprice, sellprice, traderExclude, rarity, name):
-        self.session.query(Item).filter(
-            Item.name.in_(name)
-        ).update({
-            Item.traderCat: traderCat,
-            Item.buyprice: buyprice,
-            Item.sellprice: sellprice,
-            Item.traderExclude: traderExclude,
-            Item.rarity: rarity
-        }, synchronize_session=False)
-        self.session.commit()
-
-    def setTraderValues_fast(self, values):
-        for value in values:
-            self.session.query(Item).filter(
-                Item.name==value[5]
-            ).update({
-                Item.traderCat: value[0],
-                Item.buyprice: value[1],
-                Item.sellprice: value[2],
-                Item.traderExclude: value[3],
-                Item.rarity: value[4]
-            }, synchronize_session=False)
-        self.session.commit()        
-
-    def filtertoselectedmods(self,selected_Mods):
-        result = self.session.query(Item).filter(Item.mod.in_ (selected_Mods))
-        self.session.commit()
-        return result
-
-    #******************Distributor*****************************
-    def getDicts(self, items):
-        itemsListOfDicts = []
-        for item in items:
-            itemsListOfDicts.append(Dao.getDict(item))
-        return itemsListOfDicts
-
-
-    def getDict(self, item):
-        dict = {}
-        keys = Dao.getCoulumNames(item)
-        for k in range(len(item)):
-            key = keys[k]
-            if key == "mods":
-                key = "mod"
-            if key.startswith("count_in_"):
-                key = key[9:]
-            dict[key] = item[k]
-        return dict
-
-    def getCoulumNames(self, item):
-        return item.__table__.columns.keys()

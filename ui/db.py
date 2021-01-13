@@ -1,4 +1,8 @@
 from tkinter import Tk, Toplevel, Frame, StringVar, Radiobutton, Label, Entry, Button, filedialog
+import sqlite3
+from sqlalchemy import create_engine, Column, Integer, String, and_, func
+from sqlalchemy.orm import sessionmaker
+from model.item import Item
 
 from database.init_db import InitDatabase
 from config.ini_manager import INIManager
@@ -32,9 +36,6 @@ class DB(object):
         self.db_name = self.db_status
         button_frame = Frame(self.window)
         button_frame.grid(row=2, column=0, columnspan=3, pady=10)
-       # Button(
-       #     button_frame, text="Init Database", width=12, command=self.__init_db
-       # ).grid(row=0, column=2, sticky="w", padx=5)
         Button(
             button_frame, text="Open DB", width=12, command=self.openDB
         ).grid(row=0, column=0, sticky="w", padx=5)
@@ -42,7 +43,6 @@ class DB(object):
             button_frame, text="New DB", width=12, command=self.newDB
         ).grid(row=0, column=1, sticky="w", padx=5)
 
-        # windows.center(self.window)
         self.window.wait_window()
 
     def openDB(self):
@@ -58,6 +58,7 @@ class DB(object):
             db_name = db_path_name.split("/")[-1]
         newDataBase = True
         self.__start_db(newDataBase, db_name)
+        
 
     def __start_db(self, newDataBase, db_name):
         if newDataBase:
