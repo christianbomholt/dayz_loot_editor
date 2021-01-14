@@ -379,6 +379,7 @@ class GUI(object):
             items = self.database.session.query(Item).filter(Item.mod.in_ (self.selected_mods))
             self.gridItems = items
             self.__populate_items(self.gridItems)
+            
         else:
             self.treeview.clear()
 
@@ -579,7 +580,16 @@ class GUI(object):
             }
 
         targetNominal = int(self.totalNumDisplayed.get())
-
+        currentNominal = self.database.getNominal(self.gridItems)[0]
+        ratio = targetNominal/currentNominal
+        for item in self.gridItems:
+            if self.distributorValue.get() =="Use Rarity":
+                multiplier = rarities.get(item.rarity)
+                item.nominal= round(item.nominal*multiplier)
+            currentNominal = self.database.getNominal(self.gridItems)[0]
+            ratio = targetNominal/currentNominal
+            item.nominal= max(round(item.nominal*ratio),1)
+        """
         if self.distributorValue.get() =="Use Nominal":
             currentNominal = self.database.getNominal(self.gridItems)[0]
             ratio = targetNominal/currentNominal
@@ -594,7 +604,7 @@ class GUI(object):
             currentNominal = self.database.getNominal(self.gridItems)[0]
             ratio = targetNominal/currentNominal
             for item in self.gridItems:
-                item.nominal= max(round(item.nominal*ratio),1)
+                item.nominal= max(round(item.nominal*ratio),1)"""
         self.database.session.commit()
         self.__populate_items(self.gridItems)
             
