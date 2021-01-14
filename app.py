@@ -6,8 +6,6 @@ from model.item import Item
 from ui.db import DB
 from ui.new_items import NewItems
 from ui.setprices import TraderEditor
-from utility.combo_box_manager import ComboBoxManager
-#from utility.distibutor import Dist
 from config.ini_manager import INIManager
 from xml_manager.xml_writer import XMLWriter
 import tkinter.filedialog as filedialog
@@ -27,11 +25,9 @@ class GUI(object):
         self.window.grid_rowconfigure(0, weight=1)
         self.window.grid_columnconfigure(1, weight=1)
         self.menu_bar = Menu(self.window)
-        self.update_dict = {}
         self.moddict = {}
         self.moddlist = []
         self.totalNumDisplayed = IntVar()
-        self.start_nominal = []
         self.nomVars = []
         self.weaponNomTypes = {"gun":0, "ammo":0, "optic":0, "mag":0, "attachment":0}
         self.distributorValue = StringVar()
@@ -323,7 +319,7 @@ class GUI(object):
         Label(self.distribution, text="By Displayed Items").grid(row=0, columnspan=2)
 
         Label(self.distribution, text="Target Nominal").grid(row=1, columnspan=2)
-
+            
         self.desiredNomEntry = Entry(
             self.distribution, textvariable=self.totalNumDisplayed, width=14
         ).grid(row=2, columnspan=2, pady=7)
@@ -372,7 +368,7 @@ class GUI(object):
             self.cat_type_for_filter.set("all")
             self.type_for_filter.set("all")
 
-    def __selectmodsfunction___(self,*args):
+    def __selectmodsfunction___(self):        
         
         values = [(mod, var.get()) for mod, var in self.moddict.items()]
         self.moddlist = values
@@ -453,14 +449,6 @@ class GUI(object):
             i.mod,i.trader,i.dynamic_event,i.count_in_hoarder,i.count_in_cargo,
             i.count_in_player,i.count_in_map])
 
-
-
-    def __search_by_name(self):
-        if self.name.get() != "":
-            items = self.database.search_by_name(self.name.get())
-            self.__populate_items(items)
-            self.gridItems = items
-
     def __search_like_name(self):
         if self.name.get() != "":
             items = self.database.search_like_name(self.name.get())
@@ -484,8 +472,7 @@ class GUI(object):
         self.__create_nominal_info()
         self.__populate_items(items.all())
         
-
-    def __fill_entry_frame(self, event):
+    def __fill_entry_frame(self, event):        
         tree_row = self.tree.item(self.tree.focus())
         id = tree_row["text"]
         item = self.database.get_item(id)
@@ -588,26 +575,8 @@ class GUI(object):
             currentNominal = self.database.getNominal(self.gridItems)[0]
             ratio = targetNominal/currentNominal
             item.nominal= max(round(item.nominal*ratio),1)
-        """
-        if self.distributorValue.get() =="Use Nominal":
-            currentNominal = self.database.getNominal(self.gridItems)[0]
-            ratio = targetNominal/currentNominal
-            for item in self.gridItems:
-                item.nominal= max(round(item.nominal*ratio),1)
-
-        if self.distributorValue.get() =="Use Rarity":
-            for item in self.gridItems:
-                multiplier = rarities.get(item.rarity)
-                item.nominal= round(item.nominal*multiplier)
-            #self.database.session.commit()
-            currentNominal = self.database.getNominal(self.gridItems)[0]
-            ratio = targetNominal/currentNominal
-            for item in self.gridItems:
-                item.nominal= max(round(item.nominal*ratio),1)"""
         self.database.session.commit()
         self.__populate_items(self.gridItems)
-            
-
 
     def openTraderEditor(self):
         TraderEditor(self.window,self.selected_mods)
