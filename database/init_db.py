@@ -1,3 +1,4 @@
+"""
 from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String
 
 
@@ -31,8 +32,7 @@ class InitDatabase(object):
         Column("traderCat", String, nullable=True),
         
     )
-
     def __init__(self, db_name):
         engine = create_engine(f"sqlite:///{db_name}")
-        self.meta.create_all(engine)
+        self.meta.create_all(engine)"""
         

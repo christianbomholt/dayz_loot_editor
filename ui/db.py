@@ -4,7 +4,8 @@ from sqlalchemy import create_engine, Column, Integer, String, and_, func
 from sqlalchemy.orm import sessionmaker
 from model.item import Item
 
-from database.init_db import InitDatabase
+#from database.init_db import InitDatabase
+
 from config.ini_manager import INIManager
 from database.dao import Dao
 
@@ -62,7 +63,8 @@ class DB(object):
 
     def __start_db(self, newDataBase, db_name):
         if newDataBase:
-            InitDatabase(db_name)
+            #InitDatabase(db_name)
+            Item(db_name)
             self.manage_ini.write_ini(
                 section="Database",
                 sub_section="Database_Name",

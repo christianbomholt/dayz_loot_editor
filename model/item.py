@@ -32,6 +32,11 @@ class Item(Base):
     traderCat = Column(String, nullable=True)
 
 
+    def __init__(self, db_name):
+        engine = create_engine(f"sqlite:///{db_name}")
+        self.meta.create_all(engine)
+        
+
     def __repr__(self):
         return f"Items(id={self.id},name={self.name},nominal={self.nominal},min={self.min},restock={self.restock},\
         lifetime={self.lifetime},usage={self.usage},tier={self.tier},rarity={self.rarity},cat_type={self.cat_type},\
