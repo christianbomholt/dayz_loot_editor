@@ -49,12 +49,13 @@ class GUI(object):
 
 
     def deselectAllMods(self):
-        int_var=IntVar(value=1)
-        self.moddict = {x: int_var for x in self.moddict if x != "Vanilla"}
-        self.__selectmodsfunction___
+        for k in self.moddict: self.moddict[k].set(0)
+
+        self.__selectmodsfunction___()
 
     def selectAllMods(self):
-        self.moddict = {x: 1 for x in self.moddict}
+        for k in self.moddict: self.moddict[k].set(1)
+        self.__selectmodsfunction___()  
 
     def __create_menu_bar(self):
 # file menus builder
@@ -372,16 +373,14 @@ class GUI(object):
             self.type_for_filter.set("all")
 
     def __selectmodsfunction___(self,*args):
+        
         values = [(mod, var.get()) for mod, var in self.moddict.items()]
         self.moddlist = values
         self.selected_mods = [x[0] for x in self.moddlist if x[1]==1]
-        if len(self.selected_mods)>0:
-            items = self.database.session.query(Item).filter(Item.mod.in_ (self.selected_mods))
-            self.gridItems = items
-            self.__populate_items(self.gridItems)
             
-        else:
-            self.treeview.clear()
+        items = self.database.session.query(Item).filter(Item.mod.in_ (self.selected_mods))
+        self.gridItems = items
+        self.__populate_items(self.gridItems)
 
         self.__create_nominal_info()
         self.type_for_filter.set("all")
