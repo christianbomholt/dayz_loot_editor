@@ -120,3 +120,15 @@ class Dao(object):
         db_connection.commit()
         db_connection.close()
         return len(tables) == 1
+        
+    def setSubtypeForTrader_fast(self, names, cat, bprice, sprice, exclude, rarity):
+        self.session.query(Item).filter(
+            Item.name.in_(names)
+        ).update({
+            Item.traderCat: cat,
+            Item.buyprice: cat,
+            Item.sellprice: cat,
+            Item.traderExclude: exclude,
+            Item.rarity: rarity
+        }, synchronize_session=False)
+        self.session.commit()        
