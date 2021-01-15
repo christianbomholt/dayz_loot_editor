@@ -1,52 +1,18 @@
 <config>
-    <usages>
-        <usage value="Town"/>
-        <usage value="Police"/>
-        <usage value="Military"/>
-        <usage value="item4"/>
-    </usages>
-    <!--traders are used in app.py-->  
+    <!--tiers are used in app.py-->  
     <tiers>
         <tier value="Tier1"/>
         <tier value="Tier2"/>
         <tier value="Tier3"/>
         <tier value="Tier4"/>
     </tiers>
-	<categoryes>
-	    <category value="all"/>
-        <category value="other"/>	
-	    <category value="clothes"/>
-        <category value="containers"/>
-        <category value="explosives"/>
-        <category value="food"/>
-        <category value="tools"/>
-        <category value="weapons"/>
-	</categoryes>	
-    <types>
-        <type value="all"/>
-        <type value="gun"/>
-        <type value="ammo"/>
-        <type value="optic"/>
-        <type value="mag"/>
-        <type value="attachment"/>
-    </types>
-    <sub_types>
-        <sub_type value="all"/>
-        <sub_type value="Sub Type 1"/>
-        <sub_type value="Sub Type 2"/>
-    </sub_types>
     <!--traders are used in app.py-->  
     <traders>
 	    <trader value="Trader 1"/>
         <trader value="Trader 2"/>
         <trader value="Trader 3"/>
     </traders>
-    <mods>
-	    <mod value="Vanilla"/>
-        <mod value="Mod 1"/>
-        <mod value="Mod 2"/>
-    </mods>
-    <!--rarities are used in app.py-->  
+    <!--rarities are used in app.py Is so fixed in the app that it should not be config ??? -->
     <rairties> 
         <rarity value="undefined"/>
         <rarity value="Legendary"/>
@@ -59,6 +25,7 @@
         <rarity value="Very Common"/>
         <rarity value="All Over The Place"/>
     </rairties>
+    <!--Is so fixed in the app that it should not be config ??? app.py-->  
     <tree>
         <node text="Name" width ="250" col_id="#1" stretch="YES"/>
         <node text="Nominal" width ="60" col_id="#2" stretch="YES"/>
