@@ -34,8 +34,11 @@ class Item(Base):
 
     def __init__(self, db_name):
         engine = create_engine(f"sqlite:///{db_name}")
-        self.meta.create_all(engine)
-        
+        Base.metadata.create_all(engine)
+        Session = sessionmaker(bind=engine)
+        session = Session()
+
+       
 
     def __repr__(self):
         return f"Items(id={self.id},name={self.name},nominal={self.nominal},min={self.min},restock={self.restock},\

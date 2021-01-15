@@ -5,6 +5,7 @@
         <usage value="Military"/>
         <usage value="item4"/>
     </usages>
+    <!--traders are used in app.py-->  
     <tiers>
         <tier value="Tier1"/>
         <tier value="Tier2"/>
@@ -34,6 +35,7 @@
         <sub_type value="Sub Type 1"/>
         <sub_type value="Sub Type 2"/>
     </sub_types>
+    <!--traders are used in app.py-->  
     <traders>
 	    <trader value="Trader 1"/>
         <trader value="Trader 2"/>
@@ -44,7 +46,8 @@
         <mod value="Mod 1"/>
         <mod value="Mod 2"/>
     </mods>
-    <rairties>
+    <!--rarities are used in app.py-->  
+    <rairties> 
         <rarity value="undefined"/>
         <rarity value="Legendary"/>
         <rarity value="Extremely Rare"/>
