@@ -6,29 +6,27 @@ from model.item import Item
 
 #from database.init_db import InitDatabase
 
-from config.ini_manager import INIManager
+from config import ConfigManager
 from database.dao import Dao
 
 
 class DB(object):
-    DATABASE_NAME = "dayz_items"
-    INI_FILE = "app.ini"
-    manage_ini = INIManager(INI_FILE)
 
     def __init__(self, root):
         self.window = Toplevel(root)
         self.window.grab_set()
+        self.config = ConfigManager("config.xml")
+        self.database_name = self.config.get_database()
 
         self.configFrame = Frame(self.window)
         self.configFrame.grid(row=1, column=0, sticky="n,w,e", padx=30)
 
         Label(self.configFrame, text="Database Name").grid(row=7, column=0, sticky="w")
         self.db_name = StringVar()
-        self.db_name.set(self.manage_ini.read_ini("Database", "Database_Name"))
+        self.db_name.set(self.database_name)
         self.db_status = StringVar()
         self.db_status.set(
-            "Database Connected to: "
-            + self.manage_ini.read_ini("Database", "Database_Name")
+            f"Database Connected to: {self.database_name}"
         )
 
         Label(self.configFrame, textvariable=self.db_status).grid(
@@ -47,16 +45,18 @@ class DB(object):
         self.window.wait_window()
 
     def openDB(self):
-        db_path_name = filedialog.askopenfilename(filetypes=[("Sqlite db's", ".db")])
-        if "/" in db_path_name:
-            db_name = db_path_name.split("/")[-1]
+        db_name = filedialog.askopenfilename(filetypes=[("Sqlite db's", ".db")])
+        if "/" in db_name:
+            db_name = db_name.split("/")[-1]       
+            self.db_status.set("Database connected to: " + db_name)
+
         newDataBase = False
         self.__start_db(newDataBase, db_name)
 
     def newDB(self):
-        db_path_name = filedialog.asksaveasfilename(filetypes=[("Sqlite db's", ".db")])
-        if "/" in db_path_name:
-            db_name = db_path_name.split("/")[-1]
+        db_name = filedialog.asksaveasfilename(filetypes=[("Sqlite db's", ".db")])
+        if "/" in db_name:
+            db_name = db_name.split("/")[-1]
         newDataBase = True
         self.__start_db(newDataBase, db_name)
         
@@ -65,22 +65,26 @@ class DB(object):
         if newDataBase:
             #InitDatabase(db_name)
             Item(db_name)
-            self.manage_ini.write_ini(
-                section="Database",
-                sub_section="Database_Name",
-                value = db_name
-            )
+
+            self.config.set_database(db_name)
+            # self.manage_ini.write_ini(
+            #     section="Database",
+            #     sub_section="Database_Name",
+            #     value = db_name
+            # )
             self.db_status.set("Database connected to: " + db_name)
         else:
             if Dao(db_name).items_table_exist():
-                self.manage_ini.write_ini(
-                    section="Database",
-                    sub_section="Database_Name",
-                    value = db_name
-                )
+
+                self.config.set_database(db_name)
+                # self.manage_ini.write_ini(
+                #     section="Database",
+                #     sub_section="Database_Name",
+                #     value = db_name
+                # )
                 self.db_status.set(
                 "Database connected to: " + db_name
-            )
+                )
             else:
                 self.db_status.set(
                     "items table doesn't exist! Please initialize your Database."

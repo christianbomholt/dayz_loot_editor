@@ -1,8 +1,9 @@
 from xml.dom import minidom
-
+import xml.etree.ElementTree as ET 
 
 class ConfigManager(object):
     def __init__(self, config_file):
+        self.cofig_name = config_file 
         self.config_file = minidom.parse(config_file)
 
     def get_usages(self):
@@ -11,6 +12,11 @@ class ConfigManager(object):
         for i in usage_list:
             usages.append(i.attributes["value"].value)
         return usages
+
+    def get_database(self):
+        database = self.config_file.getElementsByTagName("database")
+        
+        return database[0].attributes["value"].value
 
     def get_cat_types(self):
         cat_type_list = self.config_file.getElementsByTagName("category")
@@ -76,3 +82,13 @@ class ConfigManager(object):
             )
             columns.append(i.attributes["text"].value)
         return columns, columns_info
+
+    def set_database(self, name):
+        tree = ET.parse(self.cofig_name)
+        root = tree.getroot()
+        
+        elems = tree.findall('databasefile')
+        for elem in elems:
+            list(elem)[0].set("value",name)
+        
+        tree.write(self.cofig_name)

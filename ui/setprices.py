@@ -8,8 +8,6 @@ from utility.categories import traderCatSwitcher
 from utility.exportTrader import createTrader, distribute
 from utility.exportTrader import rarityForTrader
 from config import ConfigManager
-from config.ini_manager import INIManager
-
 
 class TraderEditor(object):
     def __init__(self, root, selectedMods):
@@ -20,8 +18,7 @@ class TraderEditor(object):
         self.selectedMods = selectedMods
         self.traderVal = []
         self.config = ConfigManager("config.xml")
-        self.ini_manger = INIManager("app.ini")
-        self.database = Dao(self.ini_manger.read_ini("Database", "Database_Name"))    
+        self.database = Dao(self.config.get_databsase())
         self.seltrader = ""
         self.main = Frame(self.window)
         self.main.grid()

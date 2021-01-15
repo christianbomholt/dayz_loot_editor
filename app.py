@@ -6,7 +6,6 @@ from model.item import Item
 from ui.db import DB
 from ui.new_items import NewItems
 from ui.setprices import TraderEditor
-from config.ini_manager import INIManager
 from xml_manager.xml_writer import XMLWriter
 import tkinter.filedialog as filedialog
 
@@ -15,8 +14,7 @@ class GUI(object):
     def __init__(self, main_container: Tk):
         #
         self.config = ConfigManager("config.xml")
-        self.ini_manger = INIManager("app.ini")
-        self.database = Dao(self.ini_manger.read_ini("Database", "Database_Name"))
+        self.database = Dao(self.config.get_database())
         self.selected_mods=[]
         self.gridItems = []
         #
@@ -162,17 +160,17 @@ class GUI(object):
             self.tiersListBox.insert(END, i)
 
         self.cat_typeOption = OptionMenu(
-            self.entryFrame, self.cat_type, *self.database.get_all_types("cat_type")[1:]
+            self.entryFrame, self.cat_type, *self.database.get_all_types("cat_type")[:-1]
         )
         self.cat_typeOption.grid(row=7, column=1, sticky="w", pady=5)
 
         self.item_typeOption = OptionMenu(
-            self.entryFrame, self.item_type, *self.database.get_all_types("item_type")[1:]
+            self.entryFrame, self.item_type, *self.database.get_all_types("item_type")[:-1]
         )
         self.item_typeOption.grid(row=8, column=1, sticky="w", pady=5)
 
         self.sub_typeOption = OptionMenu(
-            self.entryFrame, self.sub_type, *self.database.get_all_types("sub_type")[1:]
+            self.entryFrame, self.sub_type, *self.database.get_all_types("sub_type")[:-1]
         )
         self.sub_typeOption.grid(row=9, column=1, sticky="w", pady=5)
 
@@ -182,7 +180,7 @@ class GUI(object):
         self.rarityOption.grid(row=10, column=1, sticky="w", pady=5)
 
         self.modOption = OptionMenu(
-            self.entryFrame, self.mod, *self.database.get_all_types("mod")[1:]
+            self.entryFrame, self.mod, *self.database.get_all_types("mod")[:-1]
         )
         self.modOption.grid(row=11, column=1, sticky="w", pady=5)
 
@@ -349,7 +347,7 @@ class GUI(object):
         ).grid(row=3)
 
     def testfunc(self):
-        result = self.database.get_all_types("cat_type")[1:] 
+        result = self.database.get_all_types("cat_type")[:-1]
         print("DEBUG  testfunc: ",result )
         
 
@@ -435,6 +433,7 @@ class GUI(object):
 
 
     def __initiate_items(self, items=None):
+        print(self.database.get_all_types("cat_type"))
         if items is None:
             items = self.database.session.query(Item).filter(Item.mod.in_ (self.selected_mods))
             self.gridItems = items

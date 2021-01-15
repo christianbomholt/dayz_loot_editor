@@ -1,49 +1,52 @@
 <config>
-    <!--tiers are used in app.py-->  
+    <databasefile>
+        <database value="dayz_items_4.db" />
+    </databasefile>
+      
     <tiers>
-        <tier value="Tier1"/>
-        <tier value="Tier2"/>
-        <tier value="Tier3"/>
-        <tier value="Tier4"/>
+        <tier value="Tier1" />
+        <tier value="Tier2" />
+        <tier value="Tier3" />
+        <tier value="Tier4" />
     </tiers>
-    <!--traders are used in app.py-->  
+      
     <traders>
-	    <trader value="Trader 1"/>
-        <trader value="Trader 2"/>
-        <trader value="Trader 3"/>
+	    <trader value="Trader 1" />
+        <trader value="Trader 2" />
+        <trader value="Trader 3" />
     </traders>
-    <!--rarities are used in app.py Is so fixed in the app that it should not be config ??? -->
+    
     <rairties> 
-        <rarity value="undefined"/>
-        <rarity value="Legendary"/>
-        <rarity value="Extremely Rare"/>
-        <rarity value="Very Rare"/>
-        <rarity value="Rare"/>
-        <rarity value="Somewhat Rare"/>
-        <rarity value="Uncommon"/>
-        <rarity value="Common"/>
-        <rarity value="Very Common"/>
-        <rarity value="All Over The Place"/>
+        <rarity value="undefined" />
+        <rarity value="Legendary" />
+        <rarity value="Extremely Rare" />
+        <rarity value="Very Rare" />
+        <rarity value="Rare" />
+        <rarity value="Somewhat Rare" />
+        <rarity value="Uncommon" />
+        <rarity value="Common" />
+        <rarity value="Very Common" />
+        <rarity value="All Over The Place" />
     </rairties>
-    <!--Is so fixed in the app that it should not be config ??? app.py-->  
+      
     <tree>
-        <node text="Name" width ="250" col_id="#1" stretch="YES"/>
-        <node text="Nominal" width ="60" col_id="#2" stretch="YES"/>
-        <node text="Min" width="50" col_id="#3" stretch="No"/>
-        <node text="Restock" width="60" col_id="#4" stretch="YES"/>
-        <node text="Lifetime" width="60" col_id="#5" stretch="YES"/>
-        <node text="Usage" width="200" col_id="#6" stretch="YES"/>
-        <node text="Tier" width="200" col_id="#7" stretch="YES"/>
-        <node text="Rarity" width="60" col_id="#8" stretch="YES"/>
-		<node text="Category" width="60" col_id="#9" stretch="YES"/>
-        <node text="Type" width="60" col_id="#10" stretch="YES"/>
-        <node text="Sub Type" width="60" col_id="#11" stretch="YES"/>
-        <node text="Mod" width="60" col_id="#12" stretch="YES"/>
-        <node text="Trader" width="60" col_id="#13" stretch="YES"/>
-        <node text="D" width="20" col_id="#14" stretch="NO"/>
-        <node text="H" width="20" col_id="#15" stretch="NO"/>
-        <node text="C" width="20" col_id="#16" stretch="NO"/>
-        <node text="P" width="20" col_id="#17" stretch="NO"/>
-        <node text="M" width="20" col_id="#18" stretch="NO"/>
+        <node text="Name" width="250" col_id="#1" stretch="YES" />
+        <node text="Nominal" width="60" col_id="#2" stretch="YES" />
+        <node text="Min" width="50" col_id="#3" stretch="No" />
+        <node text="Restock" width="60" col_id="#4" stretch="YES" />
+        <node text="Lifetime" width="60" col_id="#5" stretch="YES" />
+        <node text="Usage" width="200" col_id="#6" stretch="YES" />
+        <node text="Tier" width="200" col_id="#7" stretch="YES" />
+        <node text="Rarity" width="60" col_id="#8" stretch="YES" />
+		<node text="Category" width="60" col_id="#9" stretch="YES" />
+        <node text="Type" width="60" col_id="#10" stretch="YES" />
+        <node text="Sub Type" width="60" col_id="#11" stretch="YES" />
+        <node text="Mod" width="60" col_id="#12" stretch="YES" />
+        <node text="Trader" width="60" col_id="#13" stretch="YES" />
+        <node text="D" width="20" col_id="#14" stretch="NO" />
+        <node text="H" width="20" col_id="#15" stretch="NO" />
+        <node text="C" width="20" col_id="#16" stretch="NO" />
+        <node text="P" width="20" col_id="#17" stretch="NO" />
+        <node text="M" width="20" col_id="#18" stretch="NO" />
     </tree>
 </config>
