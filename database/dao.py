@@ -127,8 +127,8 @@ class Dao(object):
             Item.name.in_(names)
         ).update({
             Item.traderCat: cat,
-            Item.buyprice: cat,
-            Item.sellprice: cat,
+            Item.buyprice: bprice,
+            Item.sellprice: sprice,
             Item.traderExclude: exclude,
             Item.rarity: rarity
         }, synchronize_session=False)
