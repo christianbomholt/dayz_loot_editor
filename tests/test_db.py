@@ -16,8 +16,8 @@ def test_config_getters():
 def test_set_all():
   names = ["Massppshbox",'Massppshdrum','MassPPSH41']
   cat = "W"
-  bprice = "2000"
-  sprice = "1000"
+  bprice = 2000
+  sprice = 1000
   exclude = 0
   rarity = "Very Rare"
    # traderCat, buyprice, sellprice, traderExclude, rarity, name
