@@ -1,10 +1,10 @@
 from config import ConfigManager, INIManager
 from database import Dao
 from model import Item
-ini_manger = INIManager("app.ini")
-# db = Dao(ini_manger.read_ini("Database", "Database_Name"))
 dbtest = Dao("test.db")
 
+# config = ConfigManager("config.xml")
+# config.set_database("dayz_items_4.db")
 
 def test_config_getters():
   #assert dbtest.fast_search_like_name("MassBlack")[0][1] == 'MassBlackYellowMB'

@@ -6,7 +6,6 @@ from model.item import Item
 from ui.db import DB
 from ui.new_items import NewItems
 from ui.setprices import TraderEditor
-from config.ini_manager import INIManager
 from xml_manager.xml_writer import XMLWriter
 import tkinter.filedialog as filedialog
 
@@ -15,8 +14,7 @@ class GUI(object):
     def __init__(self, main_container: Tk):
         #
         self.config = ConfigManager("config.xml")
-        self.ini_manger = INIManager("app.ini")
-        self.database = Dao(self.ini_manger.read_ini("Database", "Database_Name"))
+        self.database = Dao(self.config.get_database())
         self.selected_mods=[]
         self.gridItems = []
         #
@@ -435,6 +433,7 @@ class GUI(object):
 
 
     def __initiate_items(self, items=None):
+        print(self.database.get_all_types("cat_type"))
         if items is None:
             items = self.database.session.query(Item).filter(Item.mod.in_ (self.selected_mods))
             self.gridItems = items
