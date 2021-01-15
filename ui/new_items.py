@@ -13,15 +13,16 @@ class NewItems(object):
         self.window.wm_title("Paste types")
         self.window.grab_set()
         self.config = ConfigManager("config.xml")
+        self.database = Dao(self.config.get_database())
         self.mod_frame = Frame(self.window)
         self.mod_frame.grid(row=2, pady=3, sticky="w")
         Label(self.mod_frame, text="Enter Mod name:").grid(
             row=0, column=0, padx=3, pady=3
         )
-        self.modSelector = ttk.Combobox(self.mod_frame, values=self.config.get_mods())
-        self.modSelector.set(self.config.get_mods()[0])
+        self.modSelector = ttk.Combobox(self.mod_frame, values=self.database.get_all_types("mod"))
+        self.modSelector.set(self.database.get_all_types("mod")[0])
         self.modSelector.grid(row=0, column=1)
-        self.database = Dao(self.config.get_database())
+        #self.database = Dao(self.config.get_database())
         self.duplicate = IntVar()
         self.duplicate.set(0)
 
