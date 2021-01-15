@@ -21,7 +21,7 @@ def test_set_all():
   exclude = 0
   rarity = "Very Rare"
    # traderCat, buyprice, sellprice, traderExclude, rarity, name
-  dbtest.setSubtypeForTrader_fast(exclude, bprice, sprice, exclude, rarity, names)
+  dbtest.setSubtypeForTrader_fast(cat, bprice, sprice, exclude, rarity, names)
 
   for item in dbtest.fast_search_like_name("Massppsh"):
     print(item.get("name"))
