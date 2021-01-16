@@ -9,6 +9,7 @@ from ui.setprices import TraderEditor
 from xml_manager.xml_writer import XMLWriter
 import tkinter.filedialog as filedialog
 
+from utility import assign_rarity
 
 class GUI(object):
     def __init__(self, main_container: Tk):
@@ -347,8 +348,11 @@ class GUI(object):
         ).grid(row=3)
 
     def testfunc(self):
-        result = self.database.get_all_types("cat_type")[:-1]
-        print("DEBUG  testfunc: ",result )
+        items = self.database.session.query(Item).filter(Item.nominal>0).all()
+        assign_rarity(items, self.database.session)
+
+        # result = self.database.get_all_types("cat_type")[:-1]
+        # print("DEBUG  testfunc: ",result )
         
 
     def __CatFilter__(self, selection):
