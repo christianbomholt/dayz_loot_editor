@@ -6,11 +6,10 @@ from model.item import Item
 from ui.db import DB
 from ui.new_items import NewItems
 from ui.setprices import TraderEditor
-from utility.distributor import Distribute
 from xml_manager.xml_writer import XMLWriter
 import tkinter.filedialog as filedialog
 #from utility.combo_box_manager import ComboBoxManager
-
+from utility import assign_rarity, distribute_nominal, column_definition
 
 class GUI(object):
     def __init__(self, main_container: Tk):
@@ -246,15 +245,26 @@ class GUI(object):
         self.column_info = self.config.get_tree_heading()
         self.tree = ttk.Treeview(self.treeFrame, columns=self.column_info[0], height=40)
         for col in self.column_info[1]:
+            # self.tree.heading(
+            #     col[2],
+            #     text=col[0],
+            #     command=lambda _col=col[0]: self.tree_view_sort_column(
+            #         self.tree, _col, False
+            #     ),
+            # )
             self.tree.heading(
-                col[2],
-                text=col[0],
-                command=lambda _col=col[0]: self.tree_view_sort_column(
+                column_definition.get("col_id"),
+                text=column_definition.get("text"),
+                command=lambda _col=column_definition.get("text"): self.tree_view_sort_column(
                     self.tree, _col, False
                 ),
             )
+            self.tree.column(
+                column_definition.get("col_id"), 
+                width=column_definition.get("width"), 
+                stretch=column_definition.get("stretch")
+            )
             self.tree.column(col[2], width=col[1], stretch=col[3])
-
         self.tree.grid(row=0, column=0, sticky="nsew")
         self.tree.heading('#0', text='ID')
 
@@ -337,7 +347,7 @@ class GUI(object):
         Radiobutton(self.distribution, text="Use Nominal", variable=self.distributorValue, value="Use Nominal").grid(row=4, column=0,sticky="w")
 
         Button(
-            self.distribution, text="Distribute", width=12, command=Distribute.Distributor
+            self.distribution, text="Distribute", width=12, command=self.__distribute_nominal
         ).grid(row=5, columnspan=2, pady=10)
 
 #
@@ -358,12 +368,14 @@ class GUI(object):
         ).grid(row=3)
 
     def testfunc(self):
-        for item in self.gridItems:
-            pass
-            #if  item.name 
-        result = self.database.get_all_types("cat_type")[:-1]
-        print("DEBUG  testfunc: ",result )
-        
+        for item in self.griditems:
+            pass   
+            #weaponSubTypesDict.get(item.itemname)
+
+
+
+
+
 
     def __CatFilter__(self, selection):
         if selection != "all":
@@ -563,33 +575,16 @@ class GUI(object):
             col,
             command=lambda _col=col: self.tree_view_sort_column(tv, _col, not reverse),
         )
-    """
-    def Distributor(self):
-        rarities = {
-            "undefined": 1,
-            "Legendary": 1,
-            "Extremely Rare": 1.5,
-            "Very Rare": 2,
-            "Rare": 2.5,
-            "Somewhat Rare": 3,
-            "Uncommon": 5,
-            "Common": 8,
-            "Very Common": 12,
-            "All Over The Place": 20
-            }
+    
+    def __distribute_nominal(self):
 
-        targetNominal = int(self.totalNumDisplayed.get())
-        currentNominal = self.database.getNominal(self.gridItems)[0]
-        ratio = targetNominal/currentNominal
-        for item in self.gridItems:
-            if self.distributorValue.get() =="Use Rarity":
-                multiplier = rarities.get(item.rarity)
-                item.nominal= round(item.nominal*multiplier)
-            currentNominal = self.database.getNominal(self.gridItems)[0]
-            ratio = targetNominal/currentNominal
-            item.nominal= max(round(item.nominal*ratio),1)
-        self.database.session.commit()
-        self.__populate_items(self.gridItems)"""
+        distribute_nominal(
+            self.database, 
+            self.gridItems.filter(Item.nominal>0), 
+            self.totalNumDisplayed.get(), 
+            self.distributorValue.get()
+        )
+        self.__populate_items(self.gridItems)
 
     def openTraderEditor(self):
         TraderEditor(self.window,self.selected_mods)

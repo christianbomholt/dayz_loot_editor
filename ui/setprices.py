@@ -18,7 +18,7 @@ class TraderEditor(object):
         self.selectedMods = selectedMods
         self.traderVal = []
         self.config = ConfigManager("config.xml")
-        self.database = Dao(self.config.get_databsase())
+        self.database = Dao(self.config.get_database())
         self.seltrader = ""
         self.main = Frame(self.window)
         self.main.grid()

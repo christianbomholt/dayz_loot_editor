@@ -1,3 +1,24 @@
+column_definition = [
+    {"text": "Name", "width": 250, "col_id": "#1", "stretch": "YES" },
+    {"text": "Nominal", "width": 60, "col_id": "#2", "stretch": "YES" },
+    {"text": "Min", "width": 50, "col_id": "#3", "stretch": "NO" },
+    {"text": "Restock", "width": 60, "col_id": "#4", "stretch": "YES" },
+    {"text": "Lifetime", "width": 60, "col_id": "#5", "stretch": "YES" },
+    {"text": "Usage", "width": 200, "col_id": "#6", "stretch": "YES" },
+    {"text": "Tier", "width": 200, "col_id": "#7", "stretch": "YES" },
+    {"text": "Rarity", "width": 60, "col_id": "#8", "stretch": "YES" },
+    {"text": "Category", "width": 60, "col_id": "#9", "stretch": "YES" },
+    {"text": "Type", "width": 60, "col_id": "#10", "stretch": "YES" },
+    {"text": "Sub Type", "width": 60, "col_id": "#11", "stretch": "YES" },
+    {"text": "Mod", "width": 60, "col_id": "#12", "stretch": "YES" },
+    {"text": "Trader", "width": 60, "col_id": "#13", "stretch": "YES" },
+    {"text": "D", "width": 20, "col_id": "#14", "stretch": "NO" },
+    {"text": "H", "width": 20, "col_id": "#15", "stretch": "NO" },
+    {"text": "C", "width": 20, "col_id": "#16", "stretch": "NO" },
+    {"text": "P", "width": 20, "col_id": "#17", "stretch": "NO" },
+    {"text": "M", "width": 20, "col_id": "#18", "stretch": "NO" }
+]
+
 gunSubTypesDict = {
     "Sidearms": [],
     "pistols": [],
@@ -70,20 +91,32 @@ miscSubTypesDict = {
     "Melee": ["cattleprod", "BrassKnuckles", "NailedBaseba", "stunbat"]
 }
 
+# weaponSubTypesDict = {
+#     "ranged": gunSubTypesDict,
+#     "melee":{"knife": ["knife"],
+#             "axe": ["axe"],
+#             "melee": ["bat"]
+#             },
+#     "ammo": {"ammunition": ["ammo"]},
+#     "optic": {"scopes": ["optic", "LRS", "scope"]},
+#     "mag": {"magazines": ["mag"]},
+#     "attachment": {"attachments": [""],
+#                    "handguards": ["hndgrd", "handguard"],
+#                    "bayonets": ["bayonet"],
+#                    "buttstocks": ["bttstck", "buttstock"]}
+
+
+
 weaponSubTypesDict = {
-    "ranged": gunSubTypesDict,
-    "melee":{"knife": ["knife"],
-            "axe": ["axe"],
-            "melee": ["bat"]
-            },
-    "ammo": {"ammunition": ["ammo"]},
-    "optic": {"scopes": ["optic", "LRS", "scope"]},
-    "mag": {"magazines": ["mag"]},
-    "attachment": {"attachments": [""],
-                   "handguards": ["hndgrd", "handguard"],
-                   "bayonets": ["bayonet"],
-                   "buttstocks": ["bttstck", "buttstock"]}
+"bttstck": {"sub_type": "buttstocks", "item_type": "attatchment"},
+
 }
+
+
+
+
+
+
 
 vehicleSubTypesDict = {
     "Vehicle": ["OffroadHatchback", "CivilianSedan", "chassis"],
