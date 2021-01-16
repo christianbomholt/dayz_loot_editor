@@ -1,3 +1,24 @@
+column_definition = [
+    {
+    "text": "Name",
+    "width": 250,
+    "col_id": "#1",
+    "stretch": "YES"
+    },
+    {
+    "text": "Name",
+    "width": 250,
+    "col_id": "#1",
+    "stretch": "YES"
+    },
+    {
+    "text": "Name",
+    "width": 250,
+    "col_id": "#1",
+    "stretch": "YES"
+    },
+]
+
 gunSubTypesDict = {
     "Sidearms": [],
     "pistols": [],

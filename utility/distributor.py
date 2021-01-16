@@ -45,10 +45,36 @@ def assign_rarity(items, session):
 
     derived_rarities = [ rarities[mapping[x]] for x in kmeans.labels_]
     
-    # for item, rarity in zip(items, derived_rarities):
-    #     item.rarity = rarity
+    for item, rarity in zip(items, derived_rarities):
+        item.rarity = rarity
 
-    # session.commit()
+    session.commit()
 
 
+def distribute_nominal(database, items, totalNumDisplayed, distributorValue):
+    rarities = {
+        "undefined": 1,
+        "Legendary": 1,
+        "Extremely Rare": 1.5,
+        "Very Rare": 2,
+        "Rare": 2.5,
+        "Somewhat Rare": 3,
+        "Uncommon": 5,
+        "Common": 8,
+        "Very Common": 12,
+        "All Over The Place": 20
+        }
 
+    targetNominal = int(totalNumDisplayed)
+
+    if distributorValue =="Use Rarity":
+
+        for item in items:
+                multiplier = rarities.get(item.rarity)
+                item.nominal= round(item.nominal*multiplier)
+
+    currentNominal = database.getNominal(items)[0]
+    ratio = targetNominal/currentNominal
+    for item in items:
+        item.nominal= max(round(item.nominal*ratio),1)
+    database.session.commit()
