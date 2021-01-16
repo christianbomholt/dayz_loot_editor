@@ -8,6 +8,7 @@ from ui.new_items import NewItems
 from ui.setprices import TraderEditor
 from xml_manager.xml_writer import XMLWriter
 import tkinter.filedialog as filedialog
+#from utility.combo_box_manager import ComboBoxManager
 
 
 class GUI(object):
@@ -163,16 +164,25 @@ class GUI(object):
             self.entryFrame, self.cat_type, *self.database.get_all_types("cat_type")[:-1]
         )
         self.cat_typeOption.grid(row=7, column=1, sticky="w", pady=5)
-
+        """
         self.item_typeOption = OptionMenu(
             self.entryFrame, self.item_type, *self.database.get_all_types("item_type")[:-1]
         )
-        self.item_typeOption.grid(row=8, column=1, sticky="w", pady=5)
+        self.item_typeOption.grid(row=8, column=1, sticky="w", pady=5)"""
 
+        self.itemtypeAutoComp = ttk.Combobox(
+            self.entryFrame, textvariable=self.item_type, values=self.database.get_all_types("item_type")[:-1] 
+        )
+        self.itemtypeAutoComp.grid(row=8, column=1, sticky="w", pady=5)
+        """
         self.sub_typeOption = OptionMenu(
             self.entryFrame, self.sub_type, *self.database.get_all_types("sub_type")[:-1]
         )
-        self.sub_typeOption.grid(row=9, column=1, sticky="w", pady=5)
+        self.sub_typeOption.grid(row=9, column=1, sticky="w", pady=5)"""
+        self.subtypeAutoComp = ttk.Combobox(
+            self.entryFrame, textvariable=self.sub_type, values=self.database.get_all_types("sub_type")[:-1]
+        )
+        self.subtypeAutoComp .grid(row=9, column=1, sticky="w", pady=5)
 
         self.rarityOption = OptionMenu(
             self.entryFrame, self.rarity, *self.config.get_rarities()

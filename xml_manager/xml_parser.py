@@ -59,9 +59,11 @@ class XMLParser(object):
             usages = list()
             tiers = list()
             item.name = item_value.attrib["name"]
-            cat = item_value.find('category')
+            """cat = item_value.find('category')
             if cat is None:
-                item.cat_type ='object'
+                item.cat_type ='object'"""
+            if item_value.find('category') is None:
+                item.cat_type ='object'    
                 print("DEBUG get_items:",item.name )
             for i in item_value:
                 if i.tag == "nominal":
