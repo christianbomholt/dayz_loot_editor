@@ -368,6 +368,7 @@ class GUI(object):
         ).grid(row=3)
 
     def testfunc(self):
+<<<<<<< HEAD
         for item in self.griditems:
             pass   
             #weaponSubTypesDict.get(item.itemname)
@@ -376,6 +377,10 @@ class GUI(object):
 
 
 
+=======
+        items = self.database.session.query(Item).filter(Item.nominal>0).all()
+        assign_rarity(items, self.database.session)        
+>>>>>>> ab096dd803e8b554d771a7cddb32e19eb6284ab0
 
     def __CatFilter__(self, selection):
         if selection != "all":
