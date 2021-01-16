@@ -6,8 +6,10 @@ from model.item import Item
 from ui.db import DB
 from ui.new_items import NewItems
 from ui.setprices import TraderEditor
+from utility.distributor import Distribute
 from xml_manager.xml_writer import XMLWriter
 import tkinter.filedialog as filedialog
+#from utility.combo_box_manager import ComboBoxManager
 
 from utility import assign_rarity
 
@@ -164,16 +166,25 @@ class GUI(object):
             self.entryFrame, self.cat_type, *self.database.get_all_types("cat_type")[:-1]
         )
         self.cat_typeOption.grid(row=7, column=1, sticky="w", pady=5)
-
+        """
         self.item_typeOption = OptionMenu(
             self.entryFrame, self.item_type, *self.database.get_all_types("item_type")[:-1]
         )
-        self.item_typeOption.grid(row=8, column=1, sticky="w", pady=5)
+        self.item_typeOption.grid(row=8, column=1, sticky="w", pady=5)"""
 
+        self.itemtypeAutoComp = ttk.Combobox(
+            self.entryFrame, textvariable=self.item_type, values=self.database.get_all_types("item_type")[:-1] 
+        )
+        self.itemtypeAutoComp.grid(row=8, column=1, sticky="w", pady=5)
+        """
         self.sub_typeOption = OptionMenu(
             self.entryFrame, self.sub_type, *self.database.get_all_types("sub_type")[:-1]
         )
-        self.sub_typeOption.grid(row=9, column=1, sticky="w", pady=5)
+        self.sub_typeOption.grid(row=9, column=1, sticky="w", pady=5)"""
+        self.subtypeAutoComp = ttk.Combobox(
+            self.entryFrame, textvariable=self.sub_type, values=self.database.get_all_types("sub_type")[:-1]
+        )
+        self.subtypeAutoComp .grid(row=9, column=1, sticky="w", pady=5)
 
         self.rarityOption = OptionMenu(
             self.entryFrame, self.rarity, *self.config.get_rarities()
@@ -327,7 +338,7 @@ class GUI(object):
         Radiobutton(self.distribution, text="Use Nominal", variable=self.distributorValue, value="Use Nominal").grid(row=4, column=0,sticky="w")
 
         Button(
-            self.distribution, text="Distribute", width=12, command=self.Distributor
+            self.distribution, text="Distribute", width=12, command=Distribute.Distributor
         ).grid(row=5, columnspan=2, pady=10)
 
 #
@@ -349,11 +360,7 @@ class GUI(object):
 
     def testfunc(self):
         items = self.database.session.query(Item).filter(Item.nominal>0).all()
-        assign_rarity(items, self.database.session)
-
-        # result = self.database.get_all_types("cat_type")[:-1]
-        # print("DEBUG  testfunc: ",result )
-        
+        assign_rarity(items, self.database.session)        
 
     def __CatFilter__(self, selection):
         if selection != "all":
@@ -553,7 +560,7 @@ class GUI(object):
             col,
             command=lambda _col=col: self.tree_view_sort_column(tv, _col, not reverse),
         )
-
+    """
     def Distributor(self):
         rarities = {
             "undefined": 1,
@@ -579,7 +586,7 @@ class GUI(object):
             ratio = targetNominal/currentNominal
             item.nominal= max(round(item.nominal*ratio),1)
         self.database.session.commit()
-        self.__populate_items(self.gridItems)
+        self.__populate_items(self.gridItems)"""
 
     def openTraderEditor(self):
         TraderEditor(self.window,self.selected_mods)

@@ -1,24 +1,34 @@
 gunSubTypesDict = {
     "Sidearms": [],
-    "Pistols": [],
-    "Rifles": [],
-    "Shotguns": [],
-    "Submachine Guns": [],
-    "Assault Rifles": [],
-    "Light Machine Guns": [],
-    "Sniper Rifles": [],
-    "Anti Material Rifles": []
+    "pistols": [],
+    "rifles": [],
+    "shotguns": [],
+    "submachine guns": [],
+    "assault rifles": [],
+    "light machine guns": [],
+    "sniper rifles": [],
+    "anti material rifles": []
 }
 
 clothingSubTypesDict = {
-    "Glasses": ["glasses", "goggles"],
-    "Armbands": ["armband"],
-    "Gloves": ["gloves"],
-    "Hats": ["hat"],
-    "Caps": ["cap"],
-    "Bandanas": ["bandana"],
-    "Helmets": ["helm"],
-    "Masks": ["mask"],
+    
+    "eyewear":{ "glases": ["glasses"],
+                "nightvision": ["nvg"],
+                "melee": ["bat"]
+                },
+    "masks":{ "masks": ["mask"],
+                "gas masks": ["gas"],
+                "fun": ["Santa Beard"]
+                },
+    "gloves":{ "gloves": ["gloves"]
+                },
+
+    "headwear": ["hat"],
+    "footwear": ["cap"],
+    "pants": ["bandana"],
+    "shirts": ["helm"],
+    "vests": ["mask"],
+
     "Balaclava": ["balaclava"],
     "Shirts": ["shirt", "blouse"],
     "Hoodies": ["hoodie"],
@@ -61,14 +71,18 @@ miscSubTypesDict = {
 }
 
 weaponSubTypesDict = {
-    "gun": gunSubTypesDict,
-    "ammo": {"Ammunition": ["ammo"]},
-    "optic": {"Scopes": ["optic", "LRS", "scope"]},
+    "ranged": gunSubTypesDict,
+    "melee":{"knife": ["knife"],
+            "axe": ["axe"],
+            "melee": ["bat"]
+            },
+    "ammo": {"ammunition": ["ammo"]},
+    "optic": {"scopes": ["optic", "LRS", "scope"]},
     "mag": {"magazines": ["mag"]},
-    "attachment": {"Attachments": [""],
-                   "Handguards": ["hndgrd", "handguard"],
-                   "Bayonets": ["bayonet"],
-                   "Buttstocks": ["bttstck", "buttstock"]}
+    "attachment": {"attachments": [""],
+                   "handguards": ["hndgrd", "handguard"],
+                   "bayonets": ["bayonet"],
+                   "buttstocks": ["bttstck", "buttstock"]}
 }
 
 vehicleSubTypesDict = {

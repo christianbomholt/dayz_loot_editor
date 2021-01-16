@@ -18,6 +18,7 @@
     
     <rairties> 
         <rarity value="undefined" />
+        <rarity value="Not in CE" />
         <rarity value="Legendary" />
         <rarity value="Extremely Rare" />
         <rarity value="Very Rare" />

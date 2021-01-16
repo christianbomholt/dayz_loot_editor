@@ -3,7 +3,7 @@ from tkinter import ttk
 from config import ConfigManager
 from xml_manager.xml_parser import XMLParser
 from database.dao import Dao
-from config import INIManager
+#from config import INIManager
 from tkinter import messagebox
 
 
