@@ -358,6 +358,9 @@ class GUI(object):
         ).grid(row=3)
 
     def testfunc(self):
+        for item in self.gridItems:
+            pass
+            #if  item.name 
         result = self.database.get_all_types("cat_type")[:-1]
         print("DEBUG  testfunc: ",result )
         
