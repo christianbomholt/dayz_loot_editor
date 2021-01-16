@@ -1,2 +1,2 @@
 from utility.distributor import assign_rarity, distribute_nominal
-from utility.categories import column_definition
+from utility.categories import column_definition, weaponSubTypesDict

@@ -1,5 +1,4 @@
 column_definition = [
-<<<<<<< HEAD
     {"text": "Name", "width": 250, "col_id": "#1", "stretch": "YES" },
     {"text": "Nominal", "width": 60, "col_id": "#2", "stretch": "YES" },
     {"text": "Min", "width": 50, "col_id": "#3", "stretch": "NO" },
@@ -18,26 +17,6 @@ column_definition = [
     {"text": "C", "width": 20, "col_id": "#16", "stretch": "NO" },
     {"text": "P", "width": 20, "col_id": "#17", "stretch": "NO" },
     {"text": "M", "width": 20, "col_id": "#18", "stretch": "NO" }
-=======
-    {
-    "text": "Name",
-    "width": 250,
-    "col_id": "#1",
-    "stretch": "YES"
-    },
-    {
-    "text": "Name",
-    "width": 250,
-    "col_id": "#1",
-    "stretch": "YES"
-    },
-    {
-    "text": "Name",
-    "width": 250,
-    "col_id": "#1",
-    "stretch": "YES"
-    },
->>>>>>> ab096dd803e8b554d771a7cddb32e19eb6284ab0
 ]
 
 gunSubTypesDict = {
@@ -112,30 +91,26 @@ miscSubTypesDict = {
     "Melee": ["cattleprod", "BrassKnuckles", "NailedBaseba", "stunbat"]
 }
 
-# weaponSubTypesDict = {
-#     "ranged": gunSubTypesDict,
-#     "melee":{"knife": ["knife"],
-#             "axe": ["axe"],
-#             "melee": ["bat"]
-#             },
-#     "ammo": {"ammunition": ["ammo"]},
-#     "optic": {"scopes": ["optic", "LRS", "scope"]},
-#     "mag": {"magazines": ["mag"]},
-#     "attachment": {"attachments": [""],
-#                    "handguards": ["hndgrd", "handguard"],
-#                    "bayonets": ["bayonet"],
-#                    "buttstocks": ["bttstck", "buttstock"]}
-
-
-
 weaponSubTypesDict = {
-"bttstck": {"sub_type": "buttstocks", "item_type": "attatchment"},
-
+    "ranged": gunSubTypesDict,
+    "melee":{"knife": ["knife"],
+            "axe": ["axe"],
+            "melee": ["bat"]
+            },
+    "ammo": {"ammunition": ["ammo"]},
+    "optic": {"scopes": ["optic", "LRS", "scope"]},
+    "mag": {"magazines": ["mag"]},
+    "attachment": {"attachments": [""],
+                   "handguards": ["hndgrd", "handguard"],
+                   "bayonets": ["bayonet"],
+                   "buttstocks": ["bttstck", "buttstock"]}
 }
 
+    
+    # weaponSubTypesDict = {
+    # "bttstck": {"sub_type": "buttstocks", "item_type": "attatchment"},
 
-
-
+    # }
 
 
 
