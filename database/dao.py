@@ -35,7 +35,6 @@ class Dao(object):
 #Used in a different filters
     def get_all_types(self, col):
         result = self.session.query(getattr(Item, col).distinct().label(col+"s"))
-        print("DEBUG get_all_types :", result)
         result=[c[0] for c in result if c[0] is not None]
         result.append("all")
         return result

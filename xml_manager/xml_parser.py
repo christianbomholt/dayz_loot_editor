@@ -2,6 +2,7 @@ import xml.etree.ElementTree as ET
 from model.item import Item
 
 
+
 def is_mag(name):
     if "mag" in name.lower():
         return True
@@ -51,13 +52,17 @@ class XMLParser(object):
             "hndgrd",
         ]
 
-    def get_items(self):
+    def get_items(self, dbname):
         items = list()
         for item_value in self.xml.iter("type"):
-            item = Item()
+            item = Item(dbname)
             usages = list()
             tiers = list()
             item.name = item_value.attrib["name"]
+            cat = item_value.find('category')
+            if cat is None:
+                item.cat_type ='object'
+                print("DEBUG get_items:",item.name )
             for i in item_value:
                 if i.tag == "nominal":
                     item.nominal = i.text
@@ -79,6 +84,7 @@ class XMLParser(object):
                     item.count_in_cargo = i.attrib["count_in_cargo"]
                     item.count_in_player = i.attrib["count_in_player"]
                     item.count_in_map = i.attrib["count_in_map"]
+
             item.usage = ",".join(usages)
             item.tier = ",".join(tiers)
             items.append(item)

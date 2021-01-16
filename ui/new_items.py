@@ -22,7 +22,6 @@ class NewItems(object):
         self.modSelector = ttk.Combobox(self.mod_frame, values=self.database.get_all_types("mod"))
         self.modSelector.set(self.database.get_all_types("mod")[0])
         self.modSelector.grid(row=0, column=1)
-        #self.database = Dao(self.config.get_database())
         self.duplicate = IntVar()
         self.duplicate.set(0)
 
@@ -67,7 +66,7 @@ class NewItems(object):
                 if string_data.startswith("<type n"):
                     string_data = "<types>\n  " + string_data + "\n</types>"
                 xml_parser = XMLParser(string_data)
-                items = xml_parser.get_items()
+                items = xml_parser.get_items(self.config.get_database())
                 for i in items:
                     i.mod = self.modSelector.get()
                     self.database.create_item(item=i, duplicate=self.duplicate.get())
