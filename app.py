@@ -371,13 +371,15 @@ class GUI(object):
 
     def testfunc(self):
         for Item in self.gridItems:
-            for item_type, subtypes in weaponSubTypesDict.items():
-                for subtype, substrings in subtypes.items():
-                    for item_substring in substrings:
-                        if item_substring in Item.name and item_substring !="":
-                            Item.sub_type  = subtypes
-                            Item.item_type = item_type
-                            print("DEBUG testfunc :",item_substring, Item.name )
+            if Item.cat_type == "weapons":
+                for item_type, subtypes in weaponSubTypesDict.items():
+                    for subtype, substrings in subtypes.items():
+                        for item_substring in substrings:
+                            if item_substring in Item.name.lower() and item_substring !="":
+                               Item.item_type = item_type
+                               Item.sub_type = subtype
+                               #print("DEBUG a hit found :",Item.name, item_type, subtype,item_substring)
+        self.database.session.commit()                        
 
     def __CatFilter__(self, selection):
         if selection != "all":

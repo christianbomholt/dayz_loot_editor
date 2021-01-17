@@ -43,13 +43,12 @@ clothingSubTypesDict = {
                 },
     "gloves":{ "gloves": ["gloves"]
                 },
-
+                
     "headwear": ["hat"],
     "footwear": ["cap"],
     "pants": ["bandana"],
     "shirts": ["helm"],
     "vests": ["mask"],
-
     "Balaclava": ["balaclava"],
     "Shirts": ["shirt", "blouse"],
     "Hoodies": ["hoodie"],
@@ -69,13 +68,13 @@ clothingSubTypesDict = {
 }
 
 foodSubTypesDict = {
-    "Vegetables": ["mushroom", "apple", "pear", "plum", "pumpkin"],
-    "Packaged Food": ["can", "cereal", "powdered"],
-    "Meat": ["meat", "lard"],
-    "Drinks": ["sodacan", "bottle", "canteen"],
-    "Medical Supplies": ["saline", "bandage", "firstaid", "kitiv", "bloodTe", "Thermom"],
-    "Medications": ["charcoal", "disinf", "vitamin", "tetracy", "painkil", "epine", "morph"],
-    "Money Exchange": []
+    "vegetables": ["mushroom", "apple", "pear", "plum", "pumpkin"],
+    "packaged food": ["can", "cereal", "powdered"],
+    "meat": ["meat", "lard"],
+    "drinks": ["sodacan", "bottle", "canteen"],
+    "medical supplies": ["saline", "bandage", "firstaid", "kitiv", "bloodte", "thermom"],
+    "medications": ["charcoal", "disinf", "vitamin", "tetracy", "painkil", "epine", "morph"],
+    "money exchange": []
 }
 
 miscSubTypesDict = {
@@ -92,25 +91,38 @@ miscSubTypesDict = {
 }
 
 weaponSubTypesDict = {
-    "ranged": gunSubTypesDict,
-    "melee":{"knife": ["knife"],
-            "axe": ["axe"],
-            "melee": ["bat"]
+    "ranged": {
+        "Sidearms": [],
+        "pistols": ["fnx45"],
+        "rifles": [],
+        "shotguns": ["shotgun"],
+        "submachine guns": ["mp5k","ump45"],
+        "assault rifles": ["ak101","ak74","m4a1","akm"],
+        "light machine guns": [],
+        "sniper rifles": ["mosin9130"],
+        "anti material rifles": []
             },
-    "ammo": {"ammunition": ["ammo"]},
-    "optic": {"scopes": ["optic", "LRS", "scope"]},
-    "mag": {"magazines": ["mag"]},
-    "attachment": {"attachments": [""],
-                   "handguards": ["hndgrd", "handguard"],
-                   "bayonets": ["bayonet"],
-                   "buttstocks": ["bttstck", "buttstock"]}
+    "melee":{
+        "knife": ["knife"],
+        "axe": ["axe"],
+        "melee": ["bat"]
+            },
+    "ammo": {
+        "single ammo": ["ammo_"],
+        "boxed ammo": ["ammob"],
+        },
+    "optic": {
+        "scopes": ["optic", "lrs", "scope"]
+        },
+    "mag": {
+        "magazines": ["mag"]
+        },
+    "attachment": {
+        "attachments": [""],
+        "handguards": ["hndgrd", "handguard"],
+        "bayonets": ["bayonet"],
+        "buttstocks": ["bttstck", "buttstock"]}
 }
-
-    
-    # weaponSubTypesDict = {
-    # "bttstck": {"sub_type": "buttstocks", "item_type": "attatchment"},
-
-    # }
 
 
 
