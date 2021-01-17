@@ -9,7 +9,7 @@ from ui.setprices import TraderEditor
 from xml_manager.xml_writer import XMLWriter
 import tkinter.filedialog as filedialog
 #from utility.combo_box_manager import ComboBoxManager
-from utility import assign_rarity, distribute_nominal, column_definition, weaponSubTypesDict
+from utility import assign_rarity, distribute_nominal, column_definition, categoriesDict
 
 class GUI(object):
     def __init__(self, main_container: Tk):
@@ -79,10 +79,18 @@ class GUI(object):
         help_menu = Menu(self.menu_bar, tearoff=0)
         help_menu.add_command(label="You'll never walk alone")
 
+# tools menus builder
+        tools_menu = Menu(self.menu_bar, tearoff=0)
+        tools_menu.add_command(label="Derive types and subtypes", command=self.derivetypessubtypes)
+        tools_menu.add_command(label="Assign Rarity from nominal", command=self.func2assign_raritiy)
+        
+
 #building menu bar
         self.menu_bar.add_cascade(label="File", menu=file_menu)
         self.menu_bar.add_cascade(label="Mods In Use", menu=mods_menu)
         self.menu_bar.add_cascade(label="Help", menu=help_menu)
+        self.menu_bar.add_cascade(label="Tools", menu=tools_menu)
+
 
 #configuring menu bar
         self.window.config(menu=self.menu_bar)
@@ -164,21 +172,12 @@ class GUI(object):
             self.entryFrame, self.cat_type, *self.database.get_all_types("cat_type")[:-1]
         )
         self.cat_typeOption.grid(row=7, column=1, sticky="w", pady=5)
-        """
-        self.item_typeOption = OptionMenu(
-            self.entryFrame, self.item_type, *self.database.get_all_types("item_type")[:-1]
-        )
-        self.item_typeOption.grid(row=8, column=1, sticky="w", pady=5)"""
 
         self.itemtypeAutoComp = ttk.Combobox(
             self.entryFrame, textvariable=self.item_type, values=self.database.get_all_types("item_type")[:-1] 
         )
         self.itemtypeAutoComp.grid(row=8, column=1, sticky="w", pady=5)
-        """
-        self.sub_typeOption = OptionMenu(
-            self.entryFrame, self.sub_type, *self.database.get_all_types("sub_type")[:-1]
-        )
-        self.sub_typeOption.grid(row=9, column=1, sticky="w", pady=5)"""
+
         self.subtypeAutoComp = ttk.Combobox(
             self.entryFrame, textvariable=self.sub_type, values=self.database.get_all_types("sub_type")[:-1]
         )
@@ -369,16 +368,28 @@ class GUI(object):
             command=self.testfunc,
         ).grid(row=3)
 
+    def func2assign_raritiy(self):
+        items = self.database.session.query(Item).filter(Item.nominal>0).all()
+        assign_rarity(items, self.database.session)   
+
+    def derivetypessubtypes(self):
+        for Item in self.gridItems:
+            for item_type, subtypes in categoriesDict.get(Item.cat_type).items():
+                for subtype, substrings in subtypes.items():
+                    for item_substring in substrings:
+                        if item_substring in Item.name.lower() and item_substring !="":
+                            Item.item_type = item_type
+                            Item.sub_type = subtype
+        self.database.session.commit()                        
+
     def testfunc(self):
         for Item in self.gridItems:
-            if Item.cat_type == "weapons":
-                for item_type, subtypes in weaponSubTypesDict.items():
-                    for subtype, substrings in subtypes.items():
-                        for item_substring in substrings:
-                            if item_substring in Item.name.lower() and item_substring !="":
-                               Item.item_type = item_type
-                               Item.sub_type = subtype
-                               #print("DEBUG a hit found :",Item.name, item_type, subtype,item_substring)
+            for item_type, subtypes in categoriesDict.get(Item.cat_type).items():
+                for subtype, substrings in subtypes.items():
+                    for item_substring in substrings:
+                        if item_substring in Item.name.lower() and item_substring !="":
+                            Item.item_type = item_type
+                            Item.sub_type = subtype
         self.database.session.commit()                        
 
     def __CatFilter__(self, selection):

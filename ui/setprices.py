@@ -33,13 +33,13 @@ class TraderEditor(object):
 
     def createSubTypes(self, seltrader):
         subtypesFrame = Frame(self.main)
-        subtypesFrame.grid(row=0, column=0, columnspan=2, pady=10)
+        subtypesFrame.grid(row=2, column=1, columnspan=1, pady=10)
 
         self.seltrader = StringVar()
         self.traderSel = OptionMenu(
             subtypesFrame, self.seltrader, *self.config.get_traders(), command=self.setseltrader
         )
-        self.traderSel.grid(row=0, column=0, sticky="w", pady=5)
+        self.traderSel.grid(row=0, column=1, sticky="w", pady=5)
         self.seltrader.set(self.config.get_traders()[0])
         self.seltrader = self.config.get_traders()[0]
         """

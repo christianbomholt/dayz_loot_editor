@@ -64,7 +64,6 @@ class XMLParser(object):
                 item.cat_type ='object'"""
             if item_value.find('category') is None:
                 item.cat_type ='object'    
-                print("DEBUG get_items:",item.name )
             for i in item_value:
                 if i.tag == "nominal":
                     item.nominal = i.text

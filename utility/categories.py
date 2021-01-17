@@ -32,62 +32,102 @@ gunSubTypesDict = {
 }
 
 clothingSubTypesDict = {
-    
-    "eyewear":{ "glases": ["glasses"],
+    "eyewear":{ "glasses": ["glasses","goggles"],
                 "nightvision": ["nvg"],
                 "melee": ["bat"]
                 },
-    "masks":{ "masks": ["mask"],
-                "gas masks": ["gas"],
-                "fun": ["Santa Beard"]
+    "headwear":{    "masks": ["mask"],
+                    "hat": ["hat","cap","beret"],
+                    "helmet": ["helm"],
+                    "balaclava": ["balaclava"],
+                    "bandana": ["bandana"],
+                    "gas masks": ["gas"],
+                    "fun": ["santasbeard"]
                 },
-    "gloves":{ "gloves": ["gloves"]
+    "gloves":{      "gloves": ["gloves"]
                 },
-                
-    "headwear": ["hat"],
-    "footwear": ["cap"],
-    "pants": ["bandana"],
-    "shirts": ["helm"],
-    "vests": ["mask"],
-    "Balaclava": ["balaclava"],
-    "Shirts": ["shirt", "blouse"],
-    "Hoodies": ["hoodie"],
-    "Sweaters": ["sweater"],
-    "Vests": ["vest"],
-    "Jackets": ["jacket"],
-    "Coats": ["coat"],
-    "Suits": ["suit"],
-    "Skirts Dresses": ["skirt", "dress_"],
-    "Pants": ["pants", "breeches", "jeans"],
-    "Shoes Boots": ["shoes", "sneakers", "boots", "wellies"],
-    "Ghillie": ["ghillie"],
-    "Holsters": ["holster"],
-    "Pouches": ["pouch"],
-    "Bags": ["bag"],
-    "Handmade": []
+    "footwear":{    "shoes": ["shoes","sneakers"],
+                    "boots": ["boot", "wellies"],
+                },
+    "lowerbody":{   "pants": ["pant", "breech", "jeans"],
+                    "skirt/dress": ["skirt", "dress_"]
+                },
+    "upperbody":{   "vests": ["vest"],
+                    "shirts": ["shirt", "blouse"],
+                    "hoodies": ["hoodie"],
+                    "sweaters": ["sweater"],
+                    "vests": ["vest"],
+                    "jackets": ["jacket"],
+                    "coats": ["coat"],
+                    "suits": ["suit"]
+                },
+    "ghillie":{   "ghillie": ["ghillie"]
+                },
+    "accessory":{   "belt": ["belt"],
+                    "armband": ["armband"]
+                }                
 }
 
 foodSubTypesDict = {
-    "vegetables": ["mushroom", "apple", "pear", "plum", "pumpkin"],
-    "packaged food": ["can", "cereal", "powdered"],
-    "meat": ["meat", "lard"],
-    "drinks": ["sodacan", "bottle", "canteen"],
-    "medical supplies": ["saline", "bandage", "firstaid", "kitiv", "bloodte", "thermom"],
-    "medications": ["charcoal", "disinf", "vitamin", "tetracy", "painkil", "epine", "morph"],
-    "money exchange": []
+    "natural":  {   "vegetables": ["mushroom", "apple", "pear", "plum", "pumpkin","zucchini","rice","potato","pepper","tomato"],
+                    "animal":["meat", "lard","steak"]
+                },
+    "man made": {   "packaged food": ["can", "cereal", "powdered","marmala"]
+                },
+    "drink":    {   "drink": ["sodacan", "bottle", "canteen","waterbottle"]   
+                },
+    "medical":  {   "firstaid": ["saline", "bandage", "firstaid", "kitiv", "bloodte", "thermom"],
+                    "medicin": ["charcoal", "disinf", "vitamin", "tetracy", "painkil", "epine", "morph"]
+                }
 }
 
-miscSubTypesDict = {
-    "Tools (small)": ["screwdr", "wren", "sewingk", "pliers", "whetst", "saw", "cleaning", "chenkn", "anopen", "compas",
-                      "hatche", "machet", "lockpick", "binoc"],
-    "Tools (big)": ["lugwr", "crowb", "shov", "picka", "sledge", "woodAx", "ghterax"],
-    "Electronics": ["battery", "onalrad", "megaph", "cableree", "electronicrep"],
-    "Fire Lights": ["chemlight", "flare", "flashlight", "ablegas", "torch", "spotlight", "matchbox"],
-    "Cooking Hunting Supplies": ["pot", "purific", "tripo", "beartra"],
-    "Hardware Supplies": ["barrel", "canister", "handcuff", "netting", "seachest"],
-    "Tents": ["tent"],
-    "Seeds Lime": ["seeds"],
-    "Melee": ["cattleprod", "BrassKnuckles", "NailedBaseba", "stunbat"]
+containerSubTypesDict = {
+    "bags":     {   "bags": ["bag"]
+                },
+    "l-storage":{   "tents": ["tent"],
+                    "crate": ["crate"]
+                },
+    "s-storage":{   "bear": ["bear"] ,
+                    "giftbox": ["giftbox"],
+                    "ammobox": ["ammobox"] 
+                },
+    "medical":  {   "firstaid": ["saline", "bandage", "firstaid", "kitiv", "bloodte", "thermom"],
+                    "medicin": ["charcoal", "disinf", "vitamin", "tetracy", "painkil", "epine", "morph"]
+                }
+}
+
+
+toolsSubTypesDict = {
+    "s-tools":  {   "handtools": ["screwdr", "wren", "sewingk", "pliers", "whetst", "saw", "cleaning", "chenkn", "anopen", "compas",
+                      "hatche", "machet", "lockpick", "binoc","hammer"],
+                    "melee": ["cattleprod", "brassknuckles", "bat", "stunbat"],
+                    "knife": ["knife"]
+                },
+    "l-tools":  {   "largetools": ["lugwr", "crowb", "shov", "picka", "sledge", "woodax", "ghterax","pipe"]
+                },
+    "electro":  {   "electro": ["battery", "radio", "megaph", "cableree", "electronicrep","xmaslights","rangef","baseradio"]
+                },
+    "lightsource":{ "light": ["chemlight", "flare", "flashlight", "ablegas", "torch", "spotlight"]
+                },
+    "cooking":  {   "cooking": ["pot", "purific", "tripo","fryingpan","firep","oven"]
+                },
+    "hardware": {   "hardware": ["barrel", "canister", "handcuff", "netting", "seachest","rope"]
+                },
+    "tents":    {   "person tent": ["tent"]
+                },
+    "fire":    {   "fire": ["firewood","lighter","bark","handdri", "matchbox","woodenstick"]
+                },
+    "farming":  {   "farming": ["seeds","plant","lime","antipestsspray","gardenplot"]
+                },
+    "hunt/fish":  { "hunt/fish": ["hook","rod","pelt","trap","gardenplot","bait","smallg","burlap","guts","bone"]
+                },
+    "personal":  {  "medical": ["bandage","blood","heatpack","rag","saline","tetracyclineantibiotics","thermo","vitaminbottle","epinephrine","morphine","painkillertablets","defibrillator","charcoaltablets"],
+                    "equiptment": ["pen","paper"]
+                },
+    "bases":  {   "basestuff": ["flag","nail","shelter","barbedwire","fencekit","metalwire","woodenlog","woodenplank","watchtowerkit","pileofwoodenplanks"]
+                },
+    "automotive":  {   "automotive": ["sparkp","headligh","engineo","carradiator","tirerepairkit"]
+                }                
 }
 
 weaponSubTypesDict = {
@@ -124,20 +164,31 @@ weaponSubTypesDict = {
         "buttstocks": ["bttstck", "buttstock"]}
 }
 
-
-
 vehicleSubTypesDict = {
-    "Vehicle": ["OffroadHatchback", "CivilianSedan", "chassis"],
-    "Vehicle Parts": {}
+    "vehicle":  {
+        "car": ["hatchback","sedan"],
+        "truck": ["truck"]}
+}
+
+vehiclepartsSubTypesDict = {
+    "vehicleparts":  {
+        "door": ["door"],
+        "trunk": ["trunk"],
+        "hood": ["hood"],
+        "wheel": ["wheel"]}
 }
 
 categoriesDict = {"weapons": weaponSubTypesDict,
-                  "containers": clothingSubTypesDict,
+                  "containers": containerSubTypesDict,
                   "clothes": clothingSubTypesDict,
                   "food": foodSubTypesDict,
-                  "tools": miscSubTypesDict,
+                  "tools": toolsSubTypesDict,
                   "vehicles": vehicleSubTypesDict,
-                  "vehiclesparts": {}}
+                  "vehiclesparts": vehiclepartsSubTypesDict,
+                  "object":{}}
+
+
+
 
 weaponSubTypes = list(weaponSubTypesDict.keys())
 categories = list(categoriesDict.keys())
@@ -194,10 +245,11 @@ def appendKeys(dict, tolist):
     return tolist
 
 
-allcats = appendKeys(gunSubTypesDict, allcats)
+
+allcats = appendKeys(weaponSubTypesDict, allcats)
 allcats = appendKeys(clothingSubTypesDict, allcats)
 allcats = appendKeys(foodSubTypesDict, allcats)
-allcats = appendKeys(miscSubTypesDict, allcats)
+allcats = appendKeys(toolsSubTypesDict, allcats)
 allcats = appendKeys(vehicleSubTypesDict, allcats)
 
 
