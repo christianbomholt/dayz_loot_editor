@@ -245,30 +245,20 @@ class GUI(object):
         self.treeFrame.grid_rowconfigure(0, weight=1)
         self.treeFrame.grid_columnconfigure(1, weight=1)
 
-        self.column_info = self.config.get_tree_heading()
-        column_definition
-        self.tree = ttk.Treeview(self.treeFrame, columns=self.column_info[0], height=40)
-        for col in self.column_info[1]:
+        self.tree = ttk.Treeview(self.treeFrame, columns=[col.get("text") for col in column_definition], height=40)
+        for col in column_definition:
             self.tree.heading(
-                col[2],
-                text=col[0],
-                command=lambda _col=col[0]: self.tree_view_sort_column(
+                col.get("col_id"),
+                text=col.get("text"),
+                command=lambda _col=col.get("text"): self.tree_view_sort_column(
                     self.tree, _col, False
                 ),
             )
-            # self.tree.heading(
-            #     column_definition.get("col_id"),
-            #     text=column_definition.get("text"),
-            #     command=lambda _col=column_definition.get("text"): self.tree_view_sort_column(
-            #         self.tree, _col, False
-            #     ),
-            # )
-            # self.tree.column(
-            #     column_definition.get("col_id"), 
-            #     width=column_definition.get("width"), 
-            #     stretch=column_definition.get("stretch")
-            # )
-            self.tree.column(col[2], width=col[1], stretch=col[3])
+            self.tree.column(
+                col.get("col_id"), 
+                width=col.get("width"), 
+                stretch=col.get("stretch")
+            )
         self.tree.grid(row=0, column=0, sticky="nsew")
         self.tree.heading('#0', text='ID')
 
