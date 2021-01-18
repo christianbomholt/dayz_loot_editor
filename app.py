@@ -245,8 +245,7 @@ class GUI(object):
         self.treeFrame.grid_rowconfigure(0, weight=1)
         self.treeFrame.grid_columnconfigure(1, weight=1)
 
-        self.column_info = self.config.get_tree_heading()
-        self.tree = ttk.Treeview(self.treeFrame, columns=self.column_info[0], height=40)
+        self.tree = ttk.Treeview(self.treeFrame, columns=[col.get("text") for col in column_definition], height=40)
         for col in column_definition:
             self.tree.heading(
                 col.get("col_id"),
