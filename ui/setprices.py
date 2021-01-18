@@ -29,7 +29,8 @@ class TraderEditor(object):
         
 
     def setseltrader(self,value):
-        self.seltrader = value    
+        self.seltrader = value
+        self.traderupdate()
 
     def createSubTypes(self, seltrader):
         subtypesFrame = Frame(self.main)
@@ -42,13 +43,6 @@ class TraderEditor(object):
         self.traderSel.grid(row=0, column=1, sticky="w", pady=5)
         self.seltrader.set(self.config.get_traders()[0])
         self.seltrader = self.config.get_traders()[0]
-        """
-        Button(
-            subtypesFrame,
-            text="testbutton",
-            width=14,
-            command=self.testdef,
-        ).grid(row=0, column=1)"""
 
         self.subTypeListbox = Listbox(subtypesFrame, width=35, height=30, exportselection=False)
         self.subTypeListbox.grid(row = 1, column=1, sticky="ns", padx=10)
@@ -59,6 +53,16 @@ class TraderEditor(object):
             if subType == "":
                 subType = "UNASSIGNED"
             self.subTypeListbox.insert(END, subType)
+
+
+    def traderupdate(self):
+        subTypeLst = self.database.get_tradersubtypetupl(self.seltrader,self.selectedMods)
+        self.subTypeListbox.delete(0,'end')
+        print("DEBUG traderupdate:", subTypeLst)   
+        for subType in subTypeLst:
+            if subType == "":
+                subType = "UNASSIGNED"
+            self.subTypeListbox.insert(END, subType)       
 
     def testdef(self):
         traderitem = self.database.get_traderpricingtupl(self.seltrader,"Rifles",self.selectedMods)

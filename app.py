@@ -83,6 +83,9 @@ class GUI(object):
         tools_menu = Menu(self.menu_bar, tearoff=0)
         tools_menu.add_command(label="Derive types and subtypes", command=self.derivetypessubtypes)
         tools_menu.add_command(label="Assign Rarity from nominal", command=self.func2assign_raritiy)
+        tools_menu.add_separator()
+        tools_menu.add_command(label="Dump database to sql file", command=self.dump2sql)
+        
         
 
 #building menu bar
@@ -368,6 +371,9 @@ class GUI(object):
             command=self.testfunc,
         ).grid(row=3)
 
+    def dump2sql(self):
+        self.database.sql_dbDump()
+
     def func2assign_raritiy(self):
         items = self.database.session.query(Item).filter(Item.nominal>0).all()
         assign_rarity(items, self.database.session)   
@@ -577,20 +583,16 @@ class GUI(object):
         items = self.database.session.query(Item).filter(Item.mod.in_ (self.selected_mods))
         xml_writer.export_xml(items)
 
-    def tree_view_sort_column(self, tv, col, reverse):
-        l = [(tv.set(k, col), k) for k in tv.get_children("")]
-        l.sort(reverse=reverse)
-
-# rearrange items in sorted positions
+    def tree_view_sort_column(self,tv, col, reverse):
+        l = [(tv.set(k, col), k) for k in tv.get_children('')]
+        try:
+            l.sort(key=lambda t: int(t[0]), reverse=reverse)
+        except ValueError:
+            l.sort(reverse=reverse)
         for index, (val, k) in enumerate(l):
-            tv.move(k, "", index)
+            tv.move(k, '', index)
+        tv.heading(col, command=lambda: self.tree_view_sort_column(tv, col, not reverse)) 
 
-# reverse sort next time
-        tv.heading(
-            col,
-            command=lambda _col=col: self.tree_view_sort_column(tv, _col, not reverse),
-        )
-    
     def __distribute_nominal(self):
 
         distribute_nominal(

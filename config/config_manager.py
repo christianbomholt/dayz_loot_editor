@@ -58,6 +58,7 @@ class ConfigManager(object):
         traders = list()
         for i in trader_list:
             traders.append(i.attributes["value"].value)
+        traders.append("EXCLUDE")
         return traders
 
     def get_rarities(self):
