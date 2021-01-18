@@ -3,12 +3,13 @@ import sqlite3
 from sqlalchemy import create_engine, Column, Integer, String, and_, func
 from sqlalchemy.orm import sessionmaker
 from model.item import Item
-
-#from database.init_db import InitDatabase
-
 from config import ConfigManager
 from database.dao import Dao
 
+from sqlalchemy.ext.declarative import declarative_base
+
+
+Base = declarative_base()
 
 class DB(object):
 
@@ -63,25 +64,27 @@ class DB(object):
 
     def __start_db(self, newDataBase, db_name):
         if newDataBase:
-            #InitDatabase(db_name)
-            Item(db_name)
-            self.config.set_database(db_name)
-            self.db_status.set("Database connected to: " + db_name)
             engine = create_engine(f"sqlite:///{db_name}")
             Base.metadata.create_all(engine)
             raw_connection = engine.raw_connection()
             c = raw_connection.cursor()
-            c.execute("select count(*) from items")
-            nrows = c.fetchall()[0][0]
-
+            nrows = 0
+            if engine.has_table("items"):
+                c.execute("select count(*) from items")
+                nrows = c.fetchall()[0][0]
             print(f"number of rows in database: { nrows }")
             if nrows == 0:
                 print(f"Initializing rows using 'init.sql'")
-                raw_connection.cursor().executescript(open("../init.sql").read())
+                raw_connection.cursor().executescript(open("init.sql").read())
                 c.execute("select count(*) from items")
                 nrows = c.fetchall()[0][0]
                 print(f"Inserted { nrows } in the database")
             raw_connection.commit()
+            #InitDatabase(db_name)
+            Item(db_name)
+            self.config.set_database(db_name)
+            self.db_status.set("Database connected to: " + db_name)
+            self.window.destroy()
         else:
             if Dao(db_name).items_table_exist():
 
