@@ -9,7 +9,7 @@ from ui.setprices import TraderEditor
 from xml_manager.xml_writer import XMLWriter
 import tkinter.filedialog as filedialog
 #from utility.combo_box_manager import ComboBoxManager
-from utility import assign_rarity, distribute_nominal, column_definition, categoriesDict
+from utility import assign_rarity, distribute_nominal, column_definition, categoriesDict, callforweapons
 
 class GUI(object):
     def __init__(self, main_container: Tk):
@@ -379,14 +379,7 @@ class GUI(object):
         self.database.session.commit()                        
 
     def testfunc(self):
-        for Item in self.gridItems:
-            for item_type, subtypes in categoriesDict.get(Item.cat_type).items():
-                for subtype, substrings in subtypes.items():
-                    for item_substring in substrings:
-                        if item_substring in Item.name.lower() and item_substring !="":
-                            Item.item_type = item_type
-                            Item.sub_type = subtype
-        self.database.session.commit()                        
+        callforweapons()                       
 
     def __CatFilter__(self, selection):
         if selection != "all":

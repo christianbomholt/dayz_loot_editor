@@ -1,5 +1,4 @@
 from typing import Optional
-
 from fastapi import FastAPI, status, HTTPException
 from fastapi.responses import JSONResponse
 from sqlalchemy import Column, Integer, String
