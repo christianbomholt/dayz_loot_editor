@@ -15,8 +15,12 @@ class ConfigManager(object):
 
     def get_database(self):
         database = self.config_file.getElementsByTagName("database")
-        
         return database[0].attributes["value"].value
+
+    def get_mapselect(self):
+        mapselect = self.config_file.getElementsByTagName("mapselect")
+        return mapselect[0].attributes["value"].value
+
 
     def get_cat_types(self):
         cat_type_list = self.config_file.getElementsByTagName("category")
@@ -92,4 +96,14 @@ class ConfigManager(object):
         for elem in elems:
             list(elem)[0].set("value",name)
         
+        tree.write(self.cofig_name)
+
+
+    def set_mapselect(self, name):
+        tree = ET.parse(self.cofig_name)
+        root = tree.getroot()
+        
+        elems = tree.findall('mapselectfile')
+        for elem in elems:
+            list(elem)[0].set("value",name)
         tree.write(self.cofig_name)

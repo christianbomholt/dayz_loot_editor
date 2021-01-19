@@ -1,5 +1,6 @@
 import xml.etree.ElementTree as ET
 from model.item import Item
+from config import ConfigManager
 
 
 
@@ -30,6 +31,9 @@ class XMLParser(object):
         self.string_data = string_data
         self.xml = ET.fromstring(self.string_data)
         self.mod_prefixes = ["Mass", "GP_", "gp_", "FP4_"]
+        self.config = ConfigManager("config.xml")
+        self.mapselectValue = StringVar()
+        self.mapselectValue.set(self.config.get_mapselect())
         self.not_gun_keywords = [
             "lrs",
             "ammo",
@@ -76,9 +80,16 @@ class XMLParser(object):
                 elif i.tag == "lifetime":
                     item.lifetime = i.text
                 elif i.tag == "usage":
-                    usages.append(i.attrib["name"])
+                    try:
+                        usages.append(i.attrib["name"])
+                    except:
+                        pass
+                        #print("DEBUG xmlParser, usage fix")    
                 elif i.tag == "value":
-                    tiers.append(i.attrib["name"])
+                    try:
+                        tiers.append(i.attrib["name"])
+                    except KeyError:
+                        pass                        
                 elif i.tag == "flags":
                     item.dynamic_event = i.attrib["deloot"]
                     item.count_in_hoarder = i.attrib["count_in_hoarder"]

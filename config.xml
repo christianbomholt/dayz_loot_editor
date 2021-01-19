@@ -1,8 +1,12 @@
 <config>
     <databasefile>
-        <database value="dayz_items_4.db" />
+        <database value="dayz_items_6.db" />
     </databasefile>
       
+    <mapselectfile>
+        <mapselect value="Namalsk Map" />
+    </mapselectfile>     
+
     <tiers>
         <tier value="Tier1" />
         <tier value="Tier2" />

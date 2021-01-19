@@ -85,7 +85,8 @@ containerSubTypesDict = {
     "bags":     {   "bags": ["bag"]
                 },
     "l-storage":{   "tents": ["tent"],
-                    "crate": ["crate"]
+                    "crate": ["crate"],
+                    "barrel" :  ["barrel"]
                 },
     "s-storage":{   "bear": ["bear"] ,
                     "giftbox": ["giftbox"],
@@ -133,11 +134,11 @@ toolsSubTypesDict = {
 weaponSubTypesDict = {
     "ranged": {
         "Sidearms": [],
-        "pistols": ["fnx45"],
+        "pistols": ["fnx45","deagle","makarov","glock"],
         "rifles": [],
         "shotguns": ["shotgun"],
         "submachine guns": ["mp5k","ump45"],
-        "assault rifles": ["ak101","ak74","m4a1","akm"],
+        "assault rifles": ["ak101","ak74","m4a1","akm","aks74u"],
         "light machine guns": [],
         "sniper rifles": ["mosin9130"],
         "anti material rifles": []
@@ -157,10 +158,15 @@ weaponSubTypesDict = {
     "mag": {
         "magazines": ["mag"]
         },
+    "explosive": {
+        "explosive": ["grenade"]
+        },
     "attachment": {
         "attachments": [""],
         "handguards": ["hndgrd", "handguard"],
         "bayonets": ["bayonet"],
+        "suppressor": ["suppressor"],
+        "compensator" : ["compensator"],
         "buttstocks": ["bttstck", "buttstock"]}
 }
 
@@ -243,8 +249,6 @@ def appendKeys(dict, tolist):
     for cat in dict.keys():
         tolist.append(cat)
     return tolist
-
-
 
 allcats = appendKeys(weaponSubTypesDict, allcats)
 allcats = appendKeys(clothingSubTypesDict, allcats)

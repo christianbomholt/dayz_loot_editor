@@ -18,11 +18,13 @@ class DB(object):
         self.window.grab_set()
         self.config = ConfigManager("config.xml")
         self.database_name = self.config.get_database()
+        self.mapselectValue = StringVar()
+        self.mapselectValue.set(self.config.get_mapselect())
 
         self.configFrame = Frame(self.window)
         self.configFrame.grid(row=1, column=0, sticky="n,w,e", padx=30)
 
-        Label(self.configFrame, text="Database Name").grid(row=7, column=0, sticky="w")
+        Label(self.configFrame, text="Database Name").grid(row=2, column=0, sticky="w")
         self.db_name = StringVar()
         self.db_name.set(self.database_name)
         self.db_status = StringVar()
@@ -31,18 +33,19 @@ class DB(object):
         )
 
         Label(self.configFrame, textvariable=self.db_status).grid(
-            columnspan=2, row=8, column=0, sticky="w"
+            columnspan=2, row=3, column=0, sticky="w"
         )
         self.db_name = self.db_status
         button_frame = Frame(self.window)
-        button_frame.grid(row=2, column=0, columnspan=3, pady=10)
+        button_frame.grid(row=4, column=0, columnspan=3, pady=10)
         Button(
             button_frame, text="Open DB", width=12, command=self.openDB
-        ).grid(row=0, column=0, sticky="w", padx=5)
+        ).grid(row=4, column=0, sticky="w", padx=5)
         Button(
             button_frame, text="New DB", width=12, command=self.newDB
-        ).grid(row=0, column=1, sticky="w", padx=5)
-
+        ).grid(row=4, column=1, sticky="w", padx=5)
+        Radiobutton(button_frame, text="Normal Map", variable=self.mapselectValue, value="Normal Map") .grid(row=5, column=0,sticky="w")
+        Radiobutton(button_frame, text="Namalsk", variable=self.mapselectValue, value="Namalsk Map").grid(row=5, column=1,sticky="w")
         self.window.wait_window()
 
     def openDB(self):
@@ -83,17 +86,14 @@ class DB(object):
             #InitDatabase(db_name)
             Item(db_name)
             self.config.set_database(db_name)
+            self.config.set_mapselect(self.mapselectValue.get())
             self.db_status.set("Database connected to: " + db_name)
             self.window.destroy()
         else:
             if Dao(db_name).items_table_exist():
 
                 self.config.set_database(db_name)
-                # self.manage_ini.write_ini(
-                #     section="Database",
-                #     sub_section="Database_Name",
-                #     value = db_name
-                # )
+                self.config.set_mapselect(self.mapselectValue.get())
                 self.db_status.set(
                 "Database connected to: " + db_name
                 )

@@ -104,6 +104,19 @@ class Dao(object):
     def get_traderitemstupl(self, traderSel, sub_type, selected_Mods):
         results = self.session.query(Item).filter(and_(Item.trader==(traderSel),Item.sub_type==(sub_type),Item.mod.in_(selected_Mods))).all()
         return [u.__dict__ for u in results]
+# Used in Set prices to save to DB
+    def setTraderValues_fast(self, values):
+        for value in values:
+            self.session.query(Item).filter(
+                Item.name==value[5]
+            ).update({
+                Item.traderCat: value[0],
+                Item.buyprice: value[1],
+                Item.sellprice: value[2],
+                Item.traderExclude: value[3],
+                Item.rarity: value[4]
+            }, synchronize_session=False)
+        self.session.commit()          
 
 #*******************Used for PyTest***********************************************
     def fast_search_like_name(self, item_name):

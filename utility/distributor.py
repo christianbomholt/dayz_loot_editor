@@ -47,7 +47,6 @@ def assign_rarity(items, session):
     
     for item, rarity in zip(items, derived_rarities):
         item.rarity = rarity
-
     session.commit()
 
 

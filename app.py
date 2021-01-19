@@ -9,7 +9,7 @@ from ui.setprices import TraderEditor
 from xml_manager.xml_writer import XMLWriter
 import tkinter.filedialog as filedialog
 #from utility.combo_box_manager import ComboBoxManager
-from utility import assign_rarity, distribute_nominal, column_definition, categoriesDict, callforweapons
+from utility import assign_rarity, distribute_nominal, column_definition, categoriesDict, getweapons
 
 class GUI(object):
     def __init__(self, main_container: Tk):
@@ -379,7 +379,7 @@ class GUI(object):
         self.database.session.commit()                        
 
     def testfunc(self):
-        callforweapons()                       
+        getweapons()                       
 
     def __CatFilter__(self, selection):
         if selection != "all":
@@ -472,11 +472,20 @@ class GUI(object):
     def __populate_items(self, items):
         if self.tree.get_children() != ():
             self.tree.delete(*self.tree.get_children())
-        for i in items:
-            self.tree.insert("", "end", text=i.id, value=[i.name,i.nominal,i.min,
-            i.restock,i.lifetime,i.usage,i.tier,i.rarity,i.cat_type,i.item_type,i.sub_type,
-            i.mod,i.trader,i.dynamic_event,i.count_in_hoarder,i.count_in_cargo,
-            i.count_in_player,i.count_in_map])
+
+        self.tree.tag_configure("evenrow",background='white',foreground='black')
+        self.tree.tag_configure("oddrow",background='black',foreground='white')
+        for idx,i in enumerate(items): 
+            if idx % 2 ==0:
+                self.tree.insert("", "end", text=i.id, value=[i.name,i.nominal,i.min,
+                i.restock,i.lifetime,i.usage,i.tier,i.rarity,i.cat_type,i.item_type,i.sub_type,
+                i.mod,i.trader,i.dynamic_event,i.count_in_hoarder,i.count_in_cargo,
+                i.count_in_player,i.count_in_map],tags=('evenrow'))
+            else:
+                self.tree.insert("", "end", text=i.id, value=[i.name,i.nominal,i.min,
+                i.restock,i.lifetime,i.usage,i.tier,i.rarity,i.cat_type,i.item_type,i.sub_type,
+                i.mod,i.trader,i.dynamic_event,i.count_in_hoarder,i.count_in_cargo,
+                i.count_in_player,i.count_in_map],tags=('oddrow'))
 
     def __search_like_name(self):
         if self.name.get() != "":
