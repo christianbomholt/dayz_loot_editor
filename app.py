@@ -41,7 +41,8 @@ class GUI(object):
         self.__create_distribution_block()        
         #
         self.tree.bind("<ButtonRelease-1>", self.__fill_entry_frame)
-        
+        style = ttk.Style()
+        style.configure('Treeview', background='red')
 
 
     def deselectAllMods(self):
@@ -245,11 +246,10 @@ class GUI(object):
         self.treeFrame.grid(row=0, column=1, sticky="nsew")
         self.treeFrame.grid_rowconfigure(0, weight=1)
         self.treeFrame.grid_columnconfigure(1, weight=1)
-
         self.tree = ttk.Treeview(self.treeFrame, columns=[col.get("text") for col in column_definition], height=40)
-        if Tcl().eval('info patchlevel') == '8.6.9':
-            ttk.Treeview.table_style.map(style_name, foreground=_fixed_map(table_style, style_name, 'foreground'), background=_fixed_map(table_style, style_name, 'background'))
-
+        style.map("Treeview",
+                foreground=fixed_map("foreground"),
+                background=fixed_map("background"))
         for col in column_definition:
             self.tree.heading(
                 col.get("col_id"),
@@ -604,17 +604,15 @@ class GUI(object):
     def openTraderEditor(self):
         TraderEditor(self.window,self.selected_mods)
 
-    def _fixed_map(style, style_name, option):
-    # Fix for setting text colour for Tkinter 8.6.9
-    # From: https://core.tcl.tk/tk/info/509cafafae
-    #
+def fixed_map(option):
     # Returns the style map for 'option' with any styles starting with
-    # ('!disabled', '!selected', ...) filtered out.
+    # ("!disabled", "!selected", ...) filtered out
 
-    # style.map() returns an empty list for missing options, so this
-    # should be future-safe.
-        return [elm for elm in style.map(style_name, query_opt=option) if
-                elm[:2] != ('!disabled', '!selected')]    
+    # style.map() returns an empty list for missing options, so this should
+    # be future-safe
+    return [elm for elm in style.map("Treeview", query_opt=option)
+            if elm[:2] != ("!disabled", "!selected")]
+
 
 window = Tk()
 GUI(window)
