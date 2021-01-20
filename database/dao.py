@@ -144,4 +144,15 @@ class Dao(object):
             Item.traderExclude: traderExclude,
             Item.rarity: rarity
         }, synchronize_session=False)
-        self.session.commit()     
+        self.session.commit() 
+
+    def setmapselectValue(self, value):
+        self.session.query(Mapselect).update({
+                Mapselect.mapselect: value
+            }, synchronize_session=False)
+        self.session.commit()   
+
+    def get_mapselectValue(self,item_id):
+        map = self.session.query(Mapselect).get(item_id)
+        self.session.commit()
+        return map                 

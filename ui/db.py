@@ -3,6 +3,7 @@ import sqlite3
 from sqlalchemy import create_engine, Column, Integer, String, and_, func
 from sqlalchemy.orm import sessionmaker
 from model.item import Item
+from model.item import Mapselect
 from config import ConfigManager
 from database.dao import Dao
 
@@ -19,7 +20,6 @@ class DB(object):
         self.config = ConfigManager("config.xml")
         self.database_name = self.config.get_database()
         self.mapselectValue = StringVar()
-        self.mapselectValue.set(self.config.get_mapselect())
 
         self.configFrame = Frame(self.window)
         self.configFrame.grid(row=1, column=0, sticky="n,w,e", padx=30)
@@ -85,15 +85,15 @@ class DB(object):
             raw_connection.commit()
             #InitDatabase(db_name)
             Item(db_name)
+            self.database.setmapselectValue(self.mapselectValue.get())
             self.config.set_database(db_name)
-            self.config.set_mapselect(self.mapselectValue.get())
             self.db_status.set("Database connected to: " + db_name)
             self.window.destroy()
         else:
             if Dao(db_name).items_table_exist():
-
                 self.config.set_database(db_name)
-                self.config.set_mapselect(self.mapselectValue.get())
+                self.mapselectValue.set()
+                
                 self.db_status.set(
                 "Database connected to: " + db_name
                 )
@@ -101,7 +101,7 @@ class DB(object):
                 self.db_status.set(
                     "items table doesn't exist! Please initialize your Database."
                 )
-
+         
 
 def testWindow():
     window = Tk()

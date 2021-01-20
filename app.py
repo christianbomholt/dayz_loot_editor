@@ -41,6 +41,7 @@ class GUI(object):
         self.__create_distribution_block()        
         #
         self.tree.bind("<ButtonRelease-1>", self.__fill_entry_frame)
+        
 
 
     def deselectAllMods(self):
@@ -244,6 +245,9 @@ class GUI(object):
         self.treeFrame.grid(row=0, column=1, sticky="nsew")
         self.treeFrame.grid_rowconfigure(0, weight=1)
         self.treeFrame.grid_columnconfigure(1, weight=1)
+
+        if tkinter.Tcl().eval('info patchlevel') == '8.6.9':
+            table_style.map(style_name, foreground=_fixed_map(table_style, style_name, 'foreground'), background=_fixed_map(table_style, style_name, 'background'))
 
         self.tree = ttk.Treeview(self.treeFrame, columns=[col.get("text") for col in column_definition], height=40)
         for col in column_definition:
@@ -473,19 +477,21 @@ class GUI(object):
         if self.tree.get_children() != ():
             self.tree.delete(*self.tree.get_children())
 
-        self.tree.tag_configure("evenrow",background='white',foreground='black')
-        self.tree.tag_configure("oddrow",background='black',foreground='white')
         for idx,i in enumerate(items): 
-            if idx % 2 ==0:
+            if idx % 2 == 0:
                 self.tree.insert("", "end", text=i.id, value=[i.name,i.nominal,i.min,
                 i.restock,i.lifetime,i.usage,i.tier,i.rarity,i.cat_type,i.item_type,i.sub_type,
                 i.mod,i.trader,i.dynamic_event,i.count_in_hoarder,i.count_in_cargo,
-                i.count_in_player,i.count_in_map],tags=('evenrow'))
+                i.count_in_player,i.count_in_map],tags=('evenrow',))
             else:
                 self.tree.insert("", "end", text=i.id, value=[i.name,i.nominal,i.min,
                 i.restock,i.lifetime,i.usage,i.tier,i.rarity,i.cat_type,i.item_type,i.sub_type,
                 i.mod,i.trader,i.dynamic_event,i.count_in_hoarder,i.count_in_cargo,
-                i.count_in_player,i.count_in_map],tags=('oddrow'))
+                i.count_in_player,i.count_in_map],tags=('oddrow',))
+
+        self.tree.tag_configure('oddrow', background='orange')
+        self.tree.tag_configure('evenrow', background='purple')
+        
 
     def __search_like_name(self):
         if self.name.get() != "":
@@ -597,6 +603,18 @@ class GUI(object):
 
     def openTraderEditor(self):
         TraderEditor(self.window,self.selected_mods)
+
+    def _fixed_map(style, style_name, option):
+    # Fix for setting text colour for Tkinter 8.6.9
+    # From: https://core.tcl.tk/tk/info/509cafafae
+    #
+    # Returns the style map for 'option' with any styles starting with
+    # ('!disabled', '!selected', ...) filtered out.
+
+    # style.map() returns an empty list for missing options, so this
+    # should be future-safe.
+        return [elm for elm in style.map(style_name, query_opt=option) if
+                elm[:2] != ('!disabled', '!selected')]    
 
 window = Tk()
 GUI(window)

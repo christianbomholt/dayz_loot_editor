@@ -31,12 +31,9 @@ class Item(Base):
     traderExclude = Column(Integer, default=0)
     traderCat = Column(String, nullable=True)
 
-
     def __init__(self, db_name):
         engine = create_engine(f"sqlite:///{db_name}")
         Base.metadata.create_all(engine)
-
-       
 
     def __repr__(self):
         return f"Items(id={self.id},name={self.name},nominal={self.nominal},min={self.min},restock={self.restock},\
@@ -45,3 +42,13 @@ class Item(Base):
         count_in_cargo={self.count_in_cargo},count_in_hourder={self.count_in_hoarder},count_in_map={self.count_in_map},\
         count_in_player={self.count_in_player},buyprice={self.buyprice},sellprice={self.sellprice},traderExclude={self.traderExclude},\
         traderCat={self.traderCat})"
+
+
+class Mapselect(Base):
+    __tablename__ = "mapselectvalue"
+    id = Column(Integer, primary_key=True)
+    mapselect = Column(String)
+
+    def __init__(self, db_name):
+        engine = create_engine(f"sqlite:///{db_name}")
+        Base.metadata.create_all(engine)
