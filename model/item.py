@@ -5,6 +5,10 @@ from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
+def init_database(db_name):
+    engine = create_engine(f"sqlite:///{db_name}")
+    Base.metadata.create_all(engine)
+
 class Item(Base):
     __tablename__ = "items"
     id = Column(Integer, primary_key=True)
@@ -31,10 +35,6 @@ class Item(Base):
     traderExclude = Column(Integer, default=0)
     traderCat = Column(String, nullable=True)
 
-    def __init__(self, db_name):
-        engine = create_engine(f"sqlite:///{db_name}")
-        Base.metadata.create_all(engine)
-
     def __repr__(self):
         return f"Items(id={self.id},name={self.name},nominal={self.nominal},min={self.min},restock={self.restock},\
         lifetime={self.lifetime},usage={self.usage},tier={self.tier},rarity={self.rarity},cat_type={self.cat_type},\
@@ -48,7 +48,3 @@ class Mapselect(Base):
     __tablename__ = "mapselect"
     id = Column(Integer, primary_key=True)
     mapselectvalue = Column(String)
-
-    def __init__(self, db_name):
-        engine = create_engine(f"sqlite:///{db_name}")
-        Base.metadata.create_all(engine)

@@ -2,7 +2,7 @@ from tkinter import Tk, Toplevel, Frame, StringVar, Radiobutton, Label, Entry, B
 import sqlite3
 from sqlalchemy import create_engine, Column, Integer, String, and_, func
 from sqlalchemy.orm import sessionmaker
-from model.item import Item
+from model.item import Item, init_database
 from model.item import Mapselect
 from config import ConfigManager
 from database.dao import Dao
@@ -84,8 +84,7 @@ class DB(object):
                 print(f"Inserted { nrows } in the database")
             raw_connection.commit()
             #InitDatabase(db_name)
-            Item(db_name)
-            Mapselect(db_name)
+            init_database(db_name)
             Dao(db_name).setmapselectValue(self.mapselectValue.get())
             self.config.set_database(db_name)
             self.db_status.set("Database connected to: " + db_name)
