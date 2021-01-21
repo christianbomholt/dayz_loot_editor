@@ -45,9 +45,9 @@ class Item(Base):
 
 
 class Mapselect(Base):
-    __tablename__ = "mapselectvalue"
+    __tablename__ = "mapselect"
     id = Column(Integer, primary_key=True)
-    mapselect = Column(String)
+    mapselectvalue = Column(String)
 
     def __init__(self, db_name):
         engine = create_engine(f"sqlite:///{db_name}")

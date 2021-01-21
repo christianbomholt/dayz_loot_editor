@@ -24,6 +24,7 @@ class NewItems(object):
         self.modSelector.grid(row=0, column=1)
         self.duplicate = IntVar()
         self.duplicate.set(0)
+        self.mapselectValue = StringVar()
 
         Checkbutton(
             self.mod_frame,
@@ -35,7 +36,10 @@ class NewItems(object):
         self.text_area.grid(row=1, padx=3, pady=3)
 
         self.buttons = Frame(self.window)
-        self.buttons.grid(row=3, sticky="w")
+        Radiobutton(self.buttons, text="Normal Map", variable=self.mapselectValue, value="Normal Map") .grid(row=3, column=0,sticky="w")
+        Radiobutton(self.buttons, text="Namalsk", variable=self.mapselectValue, value="Namalsk Map").grid(row=3, column=1,sticky="w")
+
+        self.buttons.grid(row=4, sticky="w")
         Button(
             self.buttons, text="OK", height=1, width=10, command=self.__add_items
         ).grid(padx=10, pady=10)

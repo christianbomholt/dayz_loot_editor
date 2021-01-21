@@ -1,7 +1,7 @@
 import sqlite3
 from sqlalchemy import create_engine, and_, func
 from sqlalchemy.orm import sessionmaker
-from model.item import Item
+from model.item import Item, Mapselect
 
 
 class Dao(object):
@@ -147,12 +147,15 @@ class Dao(object):
         self.session.commit() 
 
     def setmapselectValue(self, value):
-        self.session.query(Mapselect).update({
-                Mapselect.mapselect: value
-            }, synchronize_session=False)
-        self.session.commit()   
+        exists = self.session.query(Mapselect).first()
+        if not exists:
+            map_object = Mapselect(
+                mapselectvalue = "value"
+            )
+            self.session.add(map_object)    
+
 
     def get_mapselectValue(self,item_id):
-        map = self.session.query(Mapselect).get(item_id)
+        map = self.session.query(mapselect).get(item_id)
         self.session.commit()
         return map                 

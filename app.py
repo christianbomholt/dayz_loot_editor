@@ -41,8 +41,7 @@ class GUI(object):
         self.__create_distribution_block()        
         #
         self.tree.bind("<ButtonRelease-1>", self.__fill_entry_frame)
-        style = ttk.Style()
-        style.configure('Treeview', background='red')
+
 
 
     def deselectAllMods(self):
@@ -240,16 +239,31 @@ class GUI(object):
             self.checkBoxFrame, text="Delete", width=8, command=self.__delete_item
         ).grid(row=5, column=1, pady=5, sticky="w")
 
-#**********************Create tree view ************************************************************        
+#**********************Create tree view ************************************************************  
+# 
+
+    def fixed_map(self, style, option):
+        # Returns the style map for 'option' with any styles starting with
+        # ("!disabled", "!selected", ...) filtered out
+
+        # style.map() returns an empty list for missing options, so this should
+        # be future-safe
+        return [elm for elm in style.map("Treeview", query_opt=option)
+                if elm[:2] != ("!disabled", "!selected")]
+
     def __create_tree_view(self):
+        style = ttk.Style()
+        style.configure('Treeview', background='#97FFFF',foreground='black')
+
         self.treeFrame = Frame(self.window)
         self.treeFrame.grid(row=0, column=1, sticky="nsew")
         self.treeFrame.grid_rowconfigure(0, weight=1)
         self.treeFrame.grid_columnconfigure(1, weight=1)
+
         self.tree = ttk.Treeview(self.treeFrame, columns=[col.get("text") for col in column_definition], height=40)
         style.map("Treeview",
-                foreground=fixed_map("foreground"),
-                background=fixed_map("background"))
+                foreground=self.fixed_map(style,"foreground"),
+                background=self.fixed_map(style,"background"))
         for col in column_definition:
             self.tree.heading(
                 col.get("col_id"),
@@ -489,13 +503,14 @@ class GUI(object):
                 i.mod,i.trader,i.dynamic_event,i.count_in_hoarder,i.count_in_cargo,
                 i.count_in_player,i.count_in_map],tags=('oddrow',))
 
-        self.tree.tag_configure('oddrow', background='orange')
-        self.tree.tag_configure('evenrow', background='purple')
+        self.tree.tag_configure('oddrow', background='#FFFFFF')
+        self.tree.tag_configure('evenrow', background='#EBEBEB')
         
 
     def __search_like_name(self):
         if self.name.get() != "":
-            items = self.database.search_like_name(self.name.get())
+            items = self.database.search
+            _like_name(self.name.get())
             self.__populate_items(items)
             self.gridItems = items
 
@@ -603,16 +618,6 @@ class GUI(object):
 
     def openTraderEditor(self):
         TraderEditor(self.window,self.selected_mods)
-
-def fixed_map(option):
-    # Returns the style map for 'option' with any styles starting with
-    # ("!disabled", "!selected", ...) filtered out
-
-    # style.map() returns an empty list for missing options, so this should
-    # be future-safe
-    return [elm for elm in style.map("Treeview", query_opt=option)
-            if elm[:2] != ("!disabled", "!selected")]
-
 
 window = Tk()
 GUI(window)
