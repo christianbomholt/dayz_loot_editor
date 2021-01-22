@@ -379,6 +379,9 @@ class GUI(object):
             command=self.testfunc,
         ).grid(row=3)
 
+    def testfunc(self):
+        print("DEBUG testfunc :", self.database.get_mapselectValue(1).mapselectvalue)
+
     def dump2sql(self):
         self.database.sql_dbDump()
 
@@ -396,8 +399,6 @@ class GUI(object):
                             Item.sub_type = subtype
         self.database.session.commit()                        
 
-    def testfunc(self):
-        getweapons()                       
 
     def __CatFilter__(self, selection):
         if selection != "all":
@@ -504,13 +505,12 @@ class GUI(object):
                 i.count_in_player,i.count_in_map],tags=('oddrow',))
 
         self.tree.tag_configure('oddrow', background='#FFFFFF')
-        self.tree.tag_configure('evenrow', background='#EBEBEB')
+        self.tree.tag_configure('evenrow', background='#F5F5F5')
         
 
     def __search_like_name(self):
         if self.name.get() != "":
-            items = self.database.search
-            _like_name(self.name.get())
+            items = self.database.search_like_name(self.name.get())
             self.__populate_items(items)
             self.gridItems = items
 

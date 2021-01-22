@@ -149,13 +149,15 @@ class Dao(object):
     def setmapselectValue(self, value):
         exists = self.session.query(Mapselect).first()
         if not exists:
+            print("DEBUG  setmapselectValue:",value )
             map_object = Mapselect(
-                mapselectvalue = "value"
+                mapselectvalue = value
             )
-            self.session.add(map_object)    
+            self.session.add(map_object)
+            self.session.commit()   
 
 
     def get_mapselectValue(self,item_id):
-        map = self.session.query(mapselect).get(item_id)
+        results = self.session.query(Mapselect).get(item_id)
         self.session.commit()
-        return map                 
+        return results      

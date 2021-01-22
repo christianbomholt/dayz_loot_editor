@@ -32,8 +32,8 @@ class XMLParser(object):
         self.xml = ET.fromstring(self.string_data)
         self.mod_prefixes = ["Mass", "GP_", "gp_", "FP4_"]
         self.config = ConfigManager("config.xml")
-        self.mapselectValue = StringVar()
-        self.mapselectValue.set(self.config.get_mapselect())
+        #self.mapselectValue = StringVar()
+        #self.mapselectValue.set(self.config.get_mapselect())
         self.not_gun_keywords = [
             "lrs",
             "ammo",
