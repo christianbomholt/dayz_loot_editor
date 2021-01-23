@@ -3,6 +3,7 @@ from model.item import Item
 
 
 def get_type_block(item: Item):
+    print("DEBUG get_type_block :", self.mapname )
     type_block = ET.Element("type")
     type_block.set("name", item.name)
     # nominal
@@ -49,8 +50,9 @@ def get_type_block(item: Item):
 
 
 class XMLWriter(object):
-    def __init__(self, filename):
+    def __init__(self, filename, mapname):
         self.filename = filename
+        self.mapname = mapname
 
     def export_xml(self, items):
         xml_file = open(self.filename, "a")

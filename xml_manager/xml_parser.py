@@ -56,16 +56,14 @@ class XMLParser(object):
             "hndgrd",
         ]
 
-    def get_items(self, dbname):
+    def get_items(self, mapname):
         items = list()
+        usage_name = "usage" if mapname == "Normal Map" else "tag"
         for item_value in self.xml.iter("type"):
-            item = Item(dbname)
+            item = Item()
             usages = list()
             tiers = list()
             item.name = item_value.attrib["name"]
-            """cat = item_value.find('category')
-            if cat is None:
-                item.cat_type ='object'"""
             if item_value.find('category') is None:
                 item.cat_type ='object'    
             for i in item_value:
@@ -79,7 +77,7 @@ class XMLParser(object):
                     item.cat_type = i.attrib["name"]
                 elif i.tag == "lifetime":
                     item.lifetime = i.text
-                elif i.tag == "usage":
+                elif i.tag == usage_name:
                     try:
                         usages.append(i.attrib["name"])
                     except:

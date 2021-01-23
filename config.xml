@@ -1,6 +1,6 @@
 <config>
     <databasefile>
-        <database value="JesusChrist1" />
+        <database value="namalsk10.db" />
     </databasefile>
       
     <mapselectfile>

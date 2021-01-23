@@ -32,6 +32,8 @@ class DB(object):
             f"Database Connected to: {self.database_name}"
         )
 
+        self.mapselectValue.set(Dao(self.database_name).get_mapselectValue(1).mapselectvalue)
+
         Label(self.configFrame, textvariable=self.db_status).grid(
             columnspan=2, row=3, column=0, sticky="w"
         )

@@ -25,6 +25,9 @@ class NewItems(object):
         self.duplicate = IntVar()
         self.duplicate.set(0)
         self.mapselectValue = StringVar()
+        print("DEBUG set mapSelector :", self.database.get_mapselectValue(1).mapselectvalue)
+        if self.database.get_mapselectValue(1):
+            self.mapselectValue.set(self.database.get_mapselectValue(1).mapselectvalue)
 
         Checkbutton(
             self.mod_frame,
@@ -70,7 +73,7 @@ class NewItems(object):
                 if string_data.startswith("<type n"):
                     string_data = "<types>\n  " + string_data + "\n</types>"
                 xml_parser = XMLParser(string_data)
-                items = xml_parser.get_items(self.config.get_database())
+                items = xml_parser.get_items(self.mapselectValue.get())
                 for i in items:
                     i.mod = self.modSelector.get()
                     self.database.create_item(item=i, duplicate=self.duplicate.get())

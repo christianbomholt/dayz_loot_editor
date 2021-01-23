@@ -20,7 +20,6 @@ class GUI(object):
         self.gridItems = []
         #
         self.window = main_container
-        self.window.wm_title("Loot Editor v0.98.7")
         self.window.grid_rowconfigure(0, weight=1)
         self.window.grid_columnconfigure(1, weight=1)
         self.menu_bar = Menu(self.window)
@@ -41,8 +40,7 @@ class GUI(object):
         self.__create_distribution_block()        
         #
         self.tree.bind("<ButtonRelease-1>", self.__fill_entry_frame)
-
-
+        self.window.wm_title("Loot Editor v0.98.7 - "+ self.config.get_database()+" used for maptype: " + self.database.get_mapselectValue(1).mapselectvalue)
 
     def deselectAllMods(self):
         for k in self.moddict: self.moddict[k].set(0)
@@ -592,9 +590,11 @@ class GUI(object):
 
     def __export_xml(self):
         file = filedialog.asksaveasfile(mode="a", defaultextension=".xml")
-        xml_writer = XMLWriter(filename=file.name)
-        items = self.database.session.query(Item).filter(Item.mod.in_ (self.selected_mods))
-        xml_writer.export_xml(items)
+        if file != "":
+            mapname = self.database.get_mapselectValue(1).mapselectvalue
+            xml_writer = XMLWriter(filename=file.name,mapname)
+            items = self.database.session.query(Item).filter(Item.mod.in_ (self.selected_mods))
+            xml_writer.export_xml(items)
 
     def tree_view_sort_column(self,tv, col, reverse):
         l = [(tv.set(k, col), k) for k in tv.get_children('')]
