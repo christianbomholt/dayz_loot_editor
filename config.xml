@@ -1,12 +1,8 @@
 <config>
     <databasefile>
-        <database value="forth2.db" />
+        <database value="Livonia1" />
     </databasefile>
-      
-    <mapselectfile>
-        <mapselect value="Namalsk Map" />
-    </mapselectfile>     
-
+   
     <tiers>
         <tier value="Tier1" />
         <tier value="Tier2" />

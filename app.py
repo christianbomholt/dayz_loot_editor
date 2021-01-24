@@ -42,6 +42,14 @@ class GUI(object):
         self.tree.bind("<ButtonRelease-1>", self.__fill_entry_frame)
         self.window.wm_title("Loot Editor v0.98.7 - "+ self.config.get_database()+" used for maptype: " + self.database.get_mapselectValue(1).mapselectvalue)
 
+    def initializeapp(self):
+        self.__create_tree_view()
+        self.__create_side_bar()
+        self.__initiate_items()
+        self.__create_nominal_info()
+        self.window.wm_title("Loot Editor v0.98.7  UPDATED - "+ self.config.get_database()+" used for maptype: " + self.database.get_mapselectValue(1).mapselectvalue)
+
+
     def deselectAllMods(self):
         for k in self.moddict: self.moddict[k].set(0)
 
@@ -50,6 +58,15 @@ class GUI(object):
     def selectAllMods(self):
         for k in self.moddict: self.moddict[k].set(1)
         self.__selectmodsfunction___()  
+
+    def updateAllMods(self,menu):
+        for mod in self.database.get_all_types("mod"):
+            if mod != "all":
+                int_var = IntVar(value=1)
+                menu.add_checkbutton(label=mod, variable=int_var, command=self.__selectmodsfunction___)
+                self.moddict[mod] = int_var
+                self.selected_mods.append(mod)
+
 
     def __create_menu_bar(self):
 # file menus builder
@@ -68,12 +85,8 @@ class GUI(object):
         mods_menu.add_command(label="Deselect All" , command=self.deselectAllMods)
         mods_menu.add_command(label="Select All", command=self.selectAllMods)
         mods_menu.add_separator()
-        for mod in self.database.get_all_types("mod"):
-            if mod != "all":
-                int_var = IntVar(value=1)
-                mods_menu.add_checkbutton(label=mod, variable=int_var, command=self.__selectmodsfunction___)
-                self.moddict[mod] = int_var
-                self.selected_mods.append(mod) 
+        self.updateAllMods(mods_menu)
+                 
 # help menus builder
         help_menu = Menu(self.menu_bar, tearoff=0)
         help_menu.add_command(label="You'll never walk alone")
@@ -580,6 +593,7 @@ class GUI(object):
 
     def __open_db_window(self):
         DB(self.window)
+        self.initializeapp()
 
     def __open_items_window(self):
         NewItems(self.window)

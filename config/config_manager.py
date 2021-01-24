@@ -97,13 +97,3 @@ class ConfigManager(object):
             list(elem)[0].set("value",name)
         
         tree.write(self.cofig_name)
-
-
-    def set_mapselect(self, name):
-        tree = ET.parse(self.cofig_name)
-        root = tree.getroot()
-        
-        elems = tree.findall('mapselectfile')
-        for elem in elems:
-            list(elem)[0].set("value",name)
-        tree.write(self.cofig_name)
