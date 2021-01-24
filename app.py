@@ -592,9 +592,9 @@ class GUI(object):
         file = filedialog.asksaveasfile(mode="a", defaultextension=".xml")
         if file != "":
             mapname = self.database.get_mapselectValue(1).mapselectvalue
-            xml_writer = XMLWriter(filename=file.name,mapname)
+            xml_writer = XMLWriter(filename=file.name)
             items = self.database.session.query(Item).filter(Item.mod.in_ (self.selected_mods))
-            xml_writer.export_xml(items)
+            xml_writer.export_xml(items,mapname)
 
     def tree_view_sort_column(self,tv, col, reverse):
         l = [(tv.set(k, col), k) for k in tv.get_children('')]

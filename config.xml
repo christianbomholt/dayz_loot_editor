@@ -1,6 +1,6 @@
 <config>
     <databasefile>
-        <database value="namalsk10.db" />
+        <database value="forth2.db" />
     </databasefile>
       
     <mapselectfile>

@@ -1,4 +1,4 @@
-from tkinter import Tk, Toplevel, Frame, StringVar, Radiobutton, Label, Entry, Button, filedialog
+from tkinter import Tk, Toplevel, Frame, StringVar, Radiobutton, Label, Entry, Button, filedialog,OptionMenu
 import sqlite3
 from sqlalchemy import create_engine, Column, Integer, String, and_, func
 from sqlalchemy.orm import sessionmaker
@@ -46,6 +46,13 @@ class DB(object):
         Button(
             button_frame, text="New DB", width=12, command=self.newDB
         ).grid(row=4, column=1, sticky="w", padx=5)
+        self.DbInitValue = StringVar()
+        optionList = ('Chernarus', 'Livonia', 'Namalsk')
+        self.DbInitValue.set(optionList[0])
+        self.DbInit = OptionMenu(
+            button_frame, self.DbInitValue, *optionList
+        ).grid(row=4,column=0,sticky="w")
+
         Radiobutton(button_frame, text="Normal Map", variable=self.mapselectValue, value="Normal Map") .grid(row=5, column=0,sticky="w")
         Radiobutton(button_frame, text="Namalsk", variable=self.mapselectValue, value="Namalsk Map").grid(row=5, column=1,sticky="w")
         self.window.wait_window()

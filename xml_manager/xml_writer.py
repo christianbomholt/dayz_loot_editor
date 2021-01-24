@@ -2,8 +2,8 @@ import xml.etree.ElementTree as ET
 from model.item import Item
 
 
-def get_type_block(item: Item):
-    print("DEBUG get_type_block :", self.mapname )
+def get_type_block(item: Item,mapname):
+    print("DEBUG get_type_block :", mapname )
     type_block = ET.Element("type")
     type_block.set("name", item.name)
     # nominal
@@ -50,14 +50,15 @@ def get_type_block(item: Item):
 
 
 class XMLWriter(object):
-    def __init__(self, filename, mapname):
+    def __init__(self, filename):
         self.filename = filename
-        self.mapname = mapname
+        self.mapname = ""
 
-    def export_xml(self, items):
+    def export_xml(self, items, mapname):
         xml_file = open(self.filename, "a")
+        self.mapname = mapname
         xml_file.write('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>')
         xml_file.write("\n<types>")
         for i in items:
-            xml_file.write("\n" + get_type_block(i))
+            xml_file.write("\n" + get_type_block(i, mapname))
         xml_file.write("\n</types>")
