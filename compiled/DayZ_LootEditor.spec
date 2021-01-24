@@ -4,10 +4,10 @@ block_cipher = None
 
 
 a = Analysis(['G:\\LootEditor\\dayz_loot_editor\\\\app.py'],
-             pathex=['C:\\Program Files (x86)\\Windows Kits\\10\\Redist\\ucrt\\DLLs\\x64', 'G:\\LootEditor\\dayz_loot_editor\\compiled'],
+             pathex=['C:\\Windows\\WinSxS\\x86_microsoft-windows-m..namespace-downlevel_31bf3856ad364e35_10.0.15063.0_none_7c5a1866018b960d', 'G:\\LootEditor\\dayz_loot_editor\\compiled'],
              binaries=[],
              datas=[],
-             hiddenimports=['decimal'],
+             hiddenimports=[],
              hookspath=[],
              runtime_hooks=[],
              excludes=[],

@@ -1,8 +1,9 @@
-from sklearn.cluster import KMeans
+#from sklearn.cluster import KMeans
 import numpy as np
 
 def assign_rarity(items, session):
-
+    pass
+    """
     kmeans = KMeans(
         init="random",
         n_clusters=9,
@@ -47,7 +48,7 @@ def assign_rarity(items, session):
     
     for item, rarity in zip(items, derived_rarities):
         item.rarity = rarity
-    session.commit()
+    session.commit()"""
 
 
 def distribute_nominal(database, items, totalNumDisplayed, distributorValue):
