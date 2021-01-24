@@ -134,13 +134,15 @@ toolsSubTypesDict = {
 weaponSubTypesDict = {
     "ranged": {
         "Sidearms": [],
-        "pistols": ["fnx45","deagle","makarov","glock"],
+        "pistols": ["fnx45","deagle","makarov","glock","colt1911","engraved1911","cz75","mkll"],
         "rifles": [],
-        "shotguns": ["shotgun"],
-        "submachine guns": ["mp5k","ump45"],
-        "assault rifles": ["ak101","ak74","m4a1","akm","aks74u"],
+        "shotguns": ["shotgun","saiga"],
+        "submachine guns": ["mp5k","ump45","cz61"],
+        "assault rifles": ["ak101","ak74","m4a1","akm","aks74u","fal"],
         "light machine guns": [],
-        "sniper rifles": ["mosin9130"],
+        "sniper rifles": ["mosin9130","svd","vss"],
+        "hunting rifles": ["b95","cz527","Izh18","repeater","winchester70"],
+        "semi-automatic rifles": ["ruger1022","sks"],
         "anti material rifles": []
             },
     "melee":{
@@ -167,6 +169,7 @@ weaponSubTypesDict = {
         "bayonets": ["bayonet"],
         "suppressor": ["suppressor"],
         "compensator" : ["compensator"],
+        "light" : ["universallight","tlrlight"],
         "buttstocks": ["bttstck", "buttstock"]}
 }
 

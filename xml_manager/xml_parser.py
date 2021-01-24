@@ -59,6 +59,7 @@ class XMLParser(object):
     def get_items(self, mapname):
         items = list()
         usage_name = "usage" if mapname == "Normal Map" else "tag"
+        tier_attrib = "name" if mapname == "Normal Map" else "user"
         for item_value in self.xml.iter("type"):
             item = Item()
             usages = list()
@@ -85,7 +86,7 @@ class XMLParser(object):
                         #print("DEBUG xmlParser, usage fix")    
                 elif i.tag == "value":
                     try:
-                        tiers.append(i.attrib["name"])
+                        tiers.append(i.attrib[tier_attrib])
                     except KeyError:
                         pass                        
                 elif i.tag == "flags":

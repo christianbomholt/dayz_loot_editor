@@ -254,11 +254,6 @@ class GUI(object):
 # 
 
     def fixed_map(self, style, option):
-        # Returns the style map for 'option' with any styles starting with
-        # ("!disabled", "!selected", ...) filtered out
-
-        # style.map() returns an empty list for missing options, so this should
-        # be future-safe
         return [elm for elm in style.map("Treeview", query_opt=option)
                 if elm[:2] != ("!disabled", "!selected")]
 
@@ -340,8 +335,6 @@ class GUI(object):
         Button(
             self.filterFrame, text="Filter", width=12, command=self.__filter_items
         ).grid(row=4, columnspan=2, pady=5, padx=10, sticky="nesw")
-
-
         self.buttons_frame = Frame(self.filterFrame)
         self.buttons_frame.grid(row=6, columnspan=2)
     
@@ -478,6 +471,7 @@ class GUI(object):
             tiers = self.tiersListBox.curselection()
             tier_values = [self.tiersListBox.get(i) for i in tiers]
             tiers = ",".join(tier_values)
+            print("DEBUG tier_values :", tiers)
             if tiers  != "":
                 setattr(item_to_update, "tier", tiers)
 

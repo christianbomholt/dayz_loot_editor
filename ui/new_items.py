@@ -25,10 +25,8 @@ class NewItems(object):
         self.duplicate = IntVar()
         self.duplicate.set(0)
         self.mapselectValue = StringVar()
-        print("DEBUG set mapSelector :", self.database.get_mapselectValue(1).mapselectvalue)
-        if self.database.get_mapselectValue(1):
-            self.mapselectValue.set(self.database.get_mapselectValue(1).mapselectvalue)
-
+        self.mapselectValue.set("Normal Map")
+        
         Checkbutton(
             self.mod_frame,
             text="Use Values of Duplicate Items",
