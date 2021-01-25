@@ -30,4 +30,4 @@ exe = EXE(pyz,
           upx=False,
           upx_exclude=[],
           runtime_tmpdir=None,
-          console=True , icon='G:\\LootEditor\\dayz_loot_editor\\data\\miniLogo.ico')
+          console=True , icon='G:\\LootEditor\\dayz_loot_editor\\data\\LootEditor.ico')

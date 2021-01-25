@@ -131,6 +131,34 @@ toolsSubTypesDict = {
                 }                
 }
 
+pistolsNamalskSubTypesDict = {
+    "pistols": {
+        "Sidearms": [],
+        "pistols": ["fnx45","deagle","makarov","glock","colt1911","engraved1911","cz75","mkll"]
+            }
+}
+
+
+
+
+riflesNamalskSubTypesDict = {
+    "rifles": {
+        "rifles": [],
+        "shotguns": ["shotgun","saiga"],
+        "submachine guns": ["mp5k","ump45","cz61"],
+        "assault rifles": ["ak101","ak74","m4a1","akm","aks74u","fal"],
+        "light machine guns": [],
+        "sniper rifles": ["mosin9130","svd","vss"],
+        "hunting rifles": ["b95","cz527","Izh18","repeater","winchester70"],
+        "semi-automatic rifles": ["ruger1022","sks"],
+        "anti material rifles": []
+            }
+}
+
+
+
+
+
 weaponSubTypesDict = {
     "ranged": {
         "Sidearms": [],
@@ -196,6 +224,17 @@ categoriesDict = {"weapons": weaponSubTypesDict,
                   "vehiclesparts": vehiclepartsSubTypesDict,
                   "object":{}}
 
+categoriesNamalskDict = {
+                  "pistols": pistolsNamalskSubTypesDict,
+                  "rifles": riflesNamalskSubTypesDict,
+                  "weapons": weaponSubTypesDict,
+                  "containers": containerSubTypesDict,
+                  "clothes": clothingSubTypesDict,
+                  "food": foodSubTypesDict,
+                  "tools": toolsSubTypesDict,
+                  "vehicles": vehicleSubTypesDict,
+                  "vehiclesparts": vehiclepartsSubTypesDict,
+                  "object":{}}
 
 
 
