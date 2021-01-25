@@ -59,7 +59,7 @@ class DB(object):
         self.window.wait_window()
 
     def openDB(self):
-        db_name = filedialog.askopenfilename(filetypes=[("Sqlite db's", ".db")])
+        db_name = filedialog.askopenfilename(filetypes=[("Sqlite db's", ".db")],defaultextension=".db")
         if "/" in db_name:
             db_name = db_name.split("/")[-1]       
             self.db_status.set("Database connected to: " + db_name)

@@ -3,7 +3,6 @@ from model.item import Item
 
 
 def get_type_block(item: Item,mapname):
-    print("DEBUG get_type_block :", mapname )
     type_block = ET.Element("type")
     type_block.set("name", item.name)
     # nominal
@@ -20,6 +19,7 @@ def get_type_block(item: Item,mapname):
     _min.text = str(item.min)
     quant_min = ET.SubElement(type_block, "quantmin")
     quant_min.text = "-1"
+    #max
     quant_max = ET.SubElement(type_block, "quantmax")
     quant_max.text = "1"
     cost = ET.SubElement(type_block, "cost")
@@ -32,16 +32,28 @@ def get_type_block(item: Item,mapname):
     flags.set("count_in_cargo", str(item.count_in_cargo))
     flags.set("crafted", "0")
     flags.set("deloot", str(item.dynamic_event))
+
     category = ET.SubElement(type_block, "category")
-    category.set("name", str(item.item_type))
+    if mapname == "Namalsk":
+        if item.item_type == "ranged":
+            if item.subtyp == "pistols":
+                category.set("name", str("pistol"))
+            else:
+                category.set("name", str("rifles"))
+        else:
+            category.set("name", str(item.cat_type))
+    else:                
+        category.set("name", str(item.cat_type))
     #
+    usage_name = "tag" if mapname == "Namalsk" else "usage"
     usages = str(item.usage)
     usages = usages.split(",")
     for i in usages:
-        usage = ET.SubElement(type_block, "usage")
+        usage = ET.SubElement(type_block, usage_name)
         usage.set("name", i)
-    tiers = item.tier.split(",")
 
+
+    tiers = item.tier.split(",")
     for i in tiers:
         tier = ET.SubElement(type_block, "value")
         tier.set("name", i)

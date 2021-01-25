@@ -74,7 +74,9 @@ class GUI(object):
         file_menu.add_command(label="Setup Database", command=self.__open_db_window)
         file_menu.add_separator()
         file_menu.add_command(label="Add Items", command=self.__open_items_window)
-        file_menu.add_command(label="Export XML File", command=self.__export_xml)
+        file_menu.add_separator()
+        file_menu.add_command(label="Export XML File", command=self.export_xml_normal)
+        file_menu.add_command(label="Export Namalsk XML File", command=self.export_xml_Namalsk)
         file_menu.add_separator()
         file_menu.add_command(label="Exit", command=self.window.destroy)
 
@@ -109,6 +111,12 @@ class GUI(object):
 
 #configuring menu bar
         self.window.config(menu=self.menu_bar)
+
+    def export_xml_normal(self):
+        self.__export_xml("Normal")    
+
+    def export_xml_Namalsk(self):
+        self.__export_xml("Namalsk")    
 
 #Create Left side entry frame  *************************************************
     def __create_entry_frame(self):
@@ -471,10 +479,8 @@ class GUI(object):
             tiers = self.tiersListBox.curselection()
             tier_values = [self.tiersListBox.get(i) for i in tiers]
             tiers = ",".join(tier_values)
-            print("DEBUG tier_values :", tiers)
             if tiers  != "":
                 setattr(item_to_update, "tier", tiers)
-
             self.database.session.commit()
         self.__populate_items(self.gridItems)
 
@@ -487,10 +493,8 @@ class GUI(object):
 
 
     def __initiate_items(self, items=None):
-        print(self.database.get_all_types("cat_type"))
-        if items is None:
-            items = self.database.session.query(Item).filter(Item.mod.in_ (self.selected_mods))
-            self.gridItems = items
+        items = self.database.session.query(Item).filter(Item.mod.in_ (self.selected_mods))
+        self.gridItems = items
         self.__populate_items(items.all())
 
     def __populate_items(self, items):
@@ -596,10 +600,10 @@ class GUI(object):
         self.__populate_items(items.all())
         
 
-    def __export_xml(self):
+    def __export_xml(self,mapname):
         file = filedialog.asksaveasfile(mode="a", defaultextension=".xml")
         if file != "":
-            mapname = self.database.get_mapselectValue(1).mapselectvalue
+            #mapname = self.database.get_mapselectValue(1).mapselectvalue
             xml_writer = XMLWriter(filename=file.name)
             items = self.database.session.query(Item).filter(Item.mod.in_ (self.selected_mods))
             xml_writer.export_xml(items,mapname)
