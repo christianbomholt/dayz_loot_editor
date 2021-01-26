@@ -392,7 +392,9 @@ class GUI(object):
         ).grid(row=3)
 
     def testfunc(self):
-        print("DEBUG testfunc :", self.database.get_mapselectValue(1).mapselectvalue)
+        assign_rarity(self.gridItems.filter(Item.nominal>0).all(), self.database.session)
+        
+        # print("DEBUG testfunc :", self.database.get_mapselectValue(1).mapselectvalue)
 
     def dump2sql(self):
         self.database.sql_dbDump()
