@@ -1,0 +1,2534 @@
+{
+    "HlyngeWeapons": [
+        {
+            "name": "access",
+            "attachments": [],
+            "bullets": [],
+            "magazines": []
+        },
+        {
+            "name": "Weapon_Base",
+            "attachments": [],
+            "bullets": [],
+            "magazines": []
+        },
+        {
+            "name": "DefaultWeapon",
+            "attachments": [],
+            "bullets": [],
+            "magazines": []
+        },
+        {
+            "name": "PistolCore",
+            "attachments": [],
+            "bullets": [],
+            "magazines": []
+        },
+        {
+            "name": "RifleCore",
+            "attachments": [],
+            "bullets": [],
+            "magazines": []
+        },
+        {
+            "name": "LauncherCore",
+            "attachments": [],
+            "bullets": [],
+            "magazines": []
+        },
+        {
+            "name": "Rifle_Base",
+            "attachments": [],
+            "bullets": [],
+            "magazines": []
+        },
+        {
+            "name": "BoltActionRifle_Base",
+            "attachments": [],
+            "bullets": [],
+            "magazines": []
+        },
+        {
+            "name": "BoltActionRifle_InnerMagazine_Base",
+            "attachments": [],
+            "bullets": [],
+            "magazines": []
+        },
+        {
+            "name": "Shotgun_Base",
+            "attachments": [],
+            "bullets": [],
+            "magazines": []
+        },
+        {
+            "name": "Pistol_Base",
+            "attachments": [],
+            "bullets": [],
+            "magazines": []
+        },
+        {
+            "name": "Archery_Base",
+            "attachments": [],
+            "bullets": [],
+            "magazines": []
+        },
+        {
+            "name": "Launcher_Base",
+            "attachments": [],
+            "bullets": [],
+            "magazines": []
+        },
+        {
+            "name": "PVCBow",
+            "attachments": [],
+            "bullets": [
+                "Ammo_ArrowComposite",
+                "Ammo_ArrowPrimitive",
+                "Ammo_ArrowBoned",
+                "Ammo_SharpStick",
+                "Mag_Arrows_Quiver"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "QuickieBow",
+            "attachments": [],
+            "bullets": [
+                "Ammo_ArrowComposite",
+                "Ammo_ArrowPrimitive",
+                "Ammo_ArrowBoned",
+                "Ammo_SharpStick",
+                "Mag_Arrows_Quiver"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "RecurveBow",
+            "attachments": [],
+            "bullets": [
+                "Ammo_ArrowComposite",
+                "Ammo_ArrowPrimitive",
+                "Ammo_ArrowBoned",
+                "Ammo_SharpStick",
+                "Mag_Arrows_Quiver"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "Crossbow",
+            "attachments": [
+                "FNP45_MRDSOptic",
+                "Crossbow_RedpointOptic",
+                "PistolOptic"
+            ],
+            "bullets": [
+                "Ammo_ArrowBolt",
+                "Mag_Bolts_Quiver"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "AK101_Base",
+            "attachments": [],
+            "bullets": [
+                "Ammo_556x45",
+                "Ammo_556x45Tracer"
+            ],
+            "magazines": [
+                "Mag_AK101_30Rnd",
+                "Mag_AK101_30Rnd_Black",
+                "Mag_AK101_30Rnd_Green"
+            ]
+        },
+        {
+            "name": "AK101",
+            "attachments": [
+                "AK_WoodBttstck",
+                "AK_WoodBttstck_Black",
+                "AK_WoodBttstck_Camo",
+                "AK74_WoodBttstck",
+                "AK74_WoodBttstck_Black",
+                "AK74_WoodBttstck_Camo",
+                "AK_FoldingBttstck",
+                "AK_FoldingBttstck_Black",
+                "AK_FoldingBttstck_Green",
+                "AK_PlasticBttstck",
+                "AK_PlasticBttstck_Black",
+                "AK_PlasticBttstck_Green",
+                "AKS74U_Bttstck",
+                "AKS74U_Bttstck_Black",
+                "AKS74U_Bttstck_Green",
+                "Groza_LowerReceiver",
+                "GrozaGL_LowerReceiver",
+                "WeaponHandguardAK",
+                "WeaponHandguardAK",
+                "WeaponHandguardAK",
+                "WeaponHandguardAK",
+                "WeaponHandguardAK",
+                "WeaponHandguardAK",
+                "WeaponHandguardAK",
+                "GhillieAtt_ColorBase",
+                "GhillieAtt_Tan",
+                "GhillieAtt_Woodland",
+                "GhillieAtt_Mossy",
+                "KashtanOptic",
+                "PSO1Optic",
+                "PSO11Optic",
+                "GrozaOptic",
+                "KobraOptic",
+                "KazuarOptic",
+                "UniversalLight",
+                "ImprovisedSuppressor",
+                "AK_Suppressor",
+                "Groza_Barrel_Short",
+                "Groza_Barrel_Grip",
+                "Groza_Barrel_Suppressor",
+                "AK_Bayonet"
+            ],
+            "bullets": [
+                "Ammo_556x45",
+                "Ammo_556x45Tracer"
+            ],
+            "magazines": [
+                "Mag_AK101_30Rnd",
+                "Mag_AK101_30Rnd_Black",
+                "Mag_AK101_30Rnd_Green"
+            ]
+        },
+        {
+            "name": "AK101_Black",
+            "attachments": [
+                "AK_WoodBttstck",
+                "AK_WoodBttstck_Black",
+                "AK_WoodBttstck_Camo",
+                "AK74_WoodBttstck",
+                "AK74_WoodBttstck_Black",
+                "AK74_WoodBttstck_Camo",
+                "AK_FoldingBttstck",
+                "AK_FoldingBttstck_Black",
+                "AK_FoldingBttstck_Green",
+                "AK_PlasticBttstck",
+                "AK_PlasticBttstck_Black",
+                "AK_PlasticBttstck_Green",
+                "AKS74U_Bttstck",
+                "AKS74U_Bttstck_Black",
+                "AKS74U_Bttstck_Green",
+                "Groza_LowerReceiver",
+                "GrozaGL_LowerReceiver",
+                "WeaponHandguardAK",
+                "WeaponHandguardAK",
+                "WeaponHandguardAK",
+                "WeaponHandguardAK",
+                "WeaponHandguardAK",
+                "WeaponHandguardAK",
+                "WeaponHandguardAK",
+                "GhillieAtt_ColorBase",
+                "GhillieAtt_Tan",
+                "GhillieAtt_Woodland",
+                "GhillieAtt_Mossy",
+                "KashtanOptic",
+                "PSO1Optic",
+                "PSO11Optic",
+                "GrozaOptic",
+                "KobraOptic",
+                "KazuarOptic",
+                "UniversalLight",
+                "ImprovisedSuppressor",
+                "AK_Suppressor",
+                "Groza_Barrel_Short",
+                "Groza_Barrel_Grip",
+                "Groza_Barrel_Suppressor",
+                "AK_Bayonet"
+            ],
+            "bullets": [
+                "Ammo_556x45",
+                "Ammo_556x45Tracer"
+            ],
+            "magazines": [
+                "Mag_AK101_30Rnd",
+                "Mag_AK101_30Rnd_Black",
+                "Mag_AK101_30Rnd_Green"
+            ]
+        },
+        {
+            "name": "AK101_Green",
+            "attachments": [
+                "AK_WoodBttstck",
+                "AK_WoodBttstck_Black",
+                "AK_WoodBttstck_Camo",
+                "AK74_WoodBttstck",
+                "AK74_WoodBttstck_Black",
+                "AK74_WoodBttstck_Camo",
+                "AK_FoldingBttstck",
+                "AK_FoldingBttstck_Black",
+                "AK_FoldingBttstck_Green",
+                "AK_PlasticBttstck",
+                "AK_PlasticBttstck_Black",
+                "AK_PlasticBttstck_Green",
+                "AKS74U_Bttstck",
+                "AKS74U_Bttstck_Black",
+                "AKS74U_Bttstck_Green",
+                "Groza_LowerReceiver",
+                "GrozaGL_LowerReceiver",
+                "WeaponHandguardAK",
+                "WeaponHandguardAK",
+                "WeaponHandguardAK",
+                "WeaponHandguardAK",
+                "WeaponHandguardAK",
+                "WeaponHandguardAK",
+                "WeaponHandguardAK",
+                "GhillieAtt_ColorBase",
+                "GhillieAtt_Tan",
+                "GhillieAtt_Woodland",
+                "GhillieAtt_Mossy",
+                "KashtanOptic",
+                "PSO1Optic",
+                "PSO11Optic",
+                "GrozaOptic",
+                "KobraOptic",
+                "KazuarOptic",
+                "UniversalLight",
+                "ImprovisedSuppressor",
+                "AK_Suppressor",
+                "Groza_Barrel_Short",
+                "Groza_Barrel_Grip",
+                "Groza_Barrel_Suppressor",
+                "AK_Bayonet"
+            ],
+            "bullets": [
+                "Ammo_556x45",
+                "Ammo_556x45Tracer"
+            ],
+            "magazines": [
+                "Mag_AK101_30Rnd",
+                "Mag_AK101_30Rnd_Black",
+                "Mag_AK101_30Rnd_Green"
+            ]
+        },
+        {
+            "name": "AK74_Base",
+            "attachments": [],
+            "bullets": [
+                "Ammo_545x39",
+                "Ammo_545x39Tracer"
+            ],
+            "magazines": [
+                "Mag_AK74_30Rnd",
+                "Mag_AK74_30Rnd_Black",
+                "Mag_AK74_30Rnd_Green"
+            ]
+        },
+        {
+            "name": "AK74",
+            "attachments": [
+                "AK_WoodBttstck",
+                "AK_WoodBttstck_Black",
+                "AK_WoodBttstck_Camo",
+                "AK74_WoodBttstck",
+                "AK74_WoodBttstck_Black",
+                "AK74_WoodBttstck_Camo",
+                "AK_FoldingBttstck",
+                "AK_FoldingBttstck_Black",
+                "AK_FoldingBttstck_Green",
+                "AK_PlasticBttstck",
+                "AK_PlasticBttstck_Black",
+                "AK_PlasticBttstck_Green",
+                "AKS74U_Bttstck",
+                "AKS74U_Bttstck_Black",
+                "AKS74U_Bttstck_Green",
+                "Groza_LowerReceiver",
+                "GrozaGL_LowerReceiver",
+                "WeaponHandguardAK",
+                "WeaponHandguardAK",
+                "WeaponHandguardAK",
+                "WeaponHandguardAK",
+                "WeaponHandguardAK",
+                "WeaponHandguardAK",
+                "WeaponHandguardAK",
+                "GhillieAtt_ColorBase",
+                "GhillieAtt_Tan",
+                "GhillieAtt_Woodland",
+                "GhillieAtt_Mossy",
+                "KashtanOptic",
+                "PSO1Optic",
+                "PSO11Optic",
+                "GrozaOptic",
+                "KobraOptic",
+                "KazuarOptic",
+                "UniversalLight",
+                "ImprovisedSuppressor",
+                "AK_Suppressor",
+                "Groza_Barrel_Short",
+                "Groza_Barrel_Grip",
+                "Groza_Barrel_Suppressor",
+                "AK_Bayonet"
+            ],
+            "bullets": [
+                "Ammo_545x39",
+                "Ammo_545x39Tracer"
+            ],
+            "magazines": [
+                "Mag_AK74_30Rnd",
+                "Mag_AK74_30Rnd_Black",
+                "Mag_AK74_30Rnd_Green"
+            ]
+        },
+        {
+            "name": "AK74_Black",
+            "attachments": [
+                "AK_WoodBttstck",
+                "AK_WoodBttstck_Black",
+                "AK_WoodBttstck_Camo",
+                "AK74_WoodBttstck",
+                "AK74_WoodBttstck_Black",
+                "AK74_WoodBttstck_Camo",
+                "AK_FoldingBttstck",
+                "AK_FoldingBttstck_Black",
+                "AK_FoldingBttstck_Green",
+                "AK_PlasticBttstck",
+                "AK_PlasticBttstck_Black",
+                "AK_PlasticBttstck_Green",
+                "AKS74U_Bttstck",
+                "AKS74U_Bttstck_Black",
+                "AKS74U_Bttstck_Green",
+                "Groza_LowerReceiver",
+                "GrozaGL_LowerReceiver",
+                "WeaponHandguardAK",
+                "WeaponHandguardAK",
+                "WeaponHandguardAK",
+                "WeaponHandguardAK",
+                "WeaponHandguardAK",
+                "WeaponHandguardAK",
+                "WeaponHandguardAK",
+                "GhillieAtt_ColorBase",
+                "GhillieAtt_Tan",
+                "GhillieAtt_Woodland",
+                "GhillieAtt_Mossy",
+                "KashtanOptic",
+                "PSO1Optic",
+                "PSO11Optic",
+                "GrozaOptic",
+                "KobraOptic",
+                "KazuarOptic",
+                "UniversalLight",
+                "ImprovisedSuppressor",
+                "AK_Suppressor",
+                "Groza_Barrel_Short",
+                "Groza_Barrel_Grip",
+                "Groza_Barrel_Suppressor",
+                "AK_Bayonet"
+            ],
+            "bullets": [
+                "Ammo_545x39",
+                "Ammo_545x39Tracer"
+            ],
+            "magazines": [
+                "Mag_AK74_30Rnd",
+                "Mag_AK74_30Rnd_Black",
+                "Mag_AK74_30Rnd_Green"
+            ]
+        },
+        {
+            "name": "AK74_Green",
+            "attachments": [
+                "AK_WoodBttstck",
+                "AK_WoodBttstck_Black",
+                "AK_WoodBttstck_Camo",
+                "AK74_WoodBttstck",
+                "AK74_WoodBttstck_Black",
+                "AK74_WoodBttstck_Camo",
+                "AK_FoldingBttstck",
+                "AK_FoldingBttstck_Black",
+                "AK_FoldingBttstck_Green",
+                "AK_PlasticBttstck",
+                "AK_PlasticBttstck_Black",
+                "AK_PlasticBttstck_Green",
+                "AKS74U_Bttstck",
+                "AKS74U_Bttstck_Black",
+                "AKS74U_Bttstck_Green",
+                "Groza_LowerReceiver",
+                "GrozaGL_LowerReceiver",
+                "WeaponHandguardAK",
+                "WeaponHandguardAK",
+                "WeaponHandguardAK",
+                "WeaponHandguardAK",
+                "WeaponHandguardAK",
+                "WeaponHandguardAK",
+                "WeaponHandguardAK",
+                "GhillieAtt_ColorBase",
+                "GhillieAtt_Tan",
+                "GhillieAtt_Woodland",
+                "GhillieAtt_Mossy",
+                "KashtanOptic",
+                "PSO1Optic",
+                "PSO11Optic",
+                "GrozaOptic",
+                "KobraOptic",
+                "KazuarOptic",
+                "UniversalLight",
+                "ImprovisedSuppressor",
+                "AK_Suppressor",
+                "Groza_Barrel_Short",
+                "Groza_Barrel_Grip",
+                "Groza_Barrel_Suppressor",
+                "AK_Bayonet"
+            ],
+            "bullets": [
+                "Ammo_545x39",
+                "Ammo_545x39Tracer"
+            ],
+            "magazines": [
+                "Mag_AK74_30Rnd",
+                "Mag_AK74_30Rnd_Black",
+                "Mag_AK74_30Rnd_Green"
+            ]
+        },
+        {
+            "name": "AKS74U",
+            "attachments": [
+                "AK_WoodBttstck",
+                "AK_WoodBttstck_Black",
+                "AK_WoodBttstck_Camo",
+                "AK74_WoodBttstck",
+                "AK74_WoodBttstck_Black",
+                "AK74_WoodBttstck_Camo",
+                "AK_FoldingBttstck",
+                "AK_FoldingBttstck_Black",
+                "AK_FoldingBttstck_Green",
+                "AK_PlasticBttstck",
+                "AK_PlasticBttstck_Black",
+                "AK_PlasticBttstck_Green",
+                "AKS74U_Bttstck",
+                "AKS74U_Bttstck_Black",
+                "AKS74U_Bttstck_Green",
+                "Groza_LowerReceiver",
+                "GrozaGL_LowerReceiver",
+                "GhillieAtt_ColorBase",
+                "GhillieAtt_Tan",
+                "GhillieAtt_Woodland",
+                "GhillieAtt_Mossy",
+                "ImprovisedSuppressor",
+                "AK_Suppressor",
+                "Groza_Barrel_Short",
+                "Groza_Barrel_Grip",
+                "Groza_Barrel_Suppressor"
+            ],
+            "bullets": [
+                "Ammo_545x39",
+                "Ammo_545x39Tracer"
+            ],
+            "magazines": [
+                "Mag_AK74_30Rnd",
+                "Mag_AK74_30Rnd_Black",
+                "Mag_AK74_30Rnd_Green"
+            ]
+        },
+        {
+            "name": "AKS74U_Black",
+            "attachments": [
+                "AK_WoodBttstck",
+                "AK_WoodBttstck_Black",
+                "AK_WoodBttstck_Camo",
+                "AK74_WoodBttstck",
+                "AK74_WoodBttstck_Black",
+                "AK74_WoodBttstck_Camo",
+                "AK_FoldingBttstck",
+                "AK_FoldingBttstck_Black",
+                "AK_FoldingBttstck_Green",
+                "AK_PlasticBttstck",
+                "AK_PlasticBttstck_Black",
+                "AK_PlasticBttstck_Green",
+                "AKS74U_Bttstck",
+                "AKS74U_Bttstck_Black",
+                "AKS74U_Bttstck_Green",
+                "Groza_LowerReceiver",
+                "GrozaGL_LowerReceiver",
+                "GhillieAtt_ColorBase",
+                "GhillieAtt_Tan",
+                "GhillieAtt_Woodland",
+                "GhillieAtt_Mossy",
+                "ImprovisedSuppressor",
+                "AK_Suppressor",
+                "Groza_Barrel_Short",
+                "Groza_Barrel_Grip",
+                "Groza_Barrel_Suppressor"
+            ],
+            "bullets": [
+                "Ammo_545x39",
+                "Ammo_545x39Tracer"
+            ],
+            "magazines": [
+                "Mag_AK74_30Rnd",
+                "Mag_AK74_30Rnd_Black",
+                "Mag_AK74_30Rnd_Green"
+            ]
+        },
+        {
+            "name": "AKS74U_Green",
+            "attachments": [
+                "AK_WoodBttstck",
+                "AK_WoodBttstck_Black",
+                "AK_WoodBttstck_Camo",
+                "AK74_WoodBttstck",
+                "AK74_WoodBttstck_Black",
+                "AK74_WoodBttstck_Camo",
+                "AK_FoldingBttstck",
+                "AK_FoldingBttstck_Black",
+                "AK_FoldingBttstck_Green",
+                "AK_PlasticBttstck",
+                "AK_PlasticBttstck_Black",
+                "AK_PlasticBttstck_Green",
+                "AKS74U_Bttstck",
+                "AKS74U_Bttstck_Black",
+                "AKS74U_Bttstck_Green",
+                "Groza_LowerReceiver",
+                "GrozaGL_LowerReceiver",
+                "GhillieAtt_ColorBase",
+                "GhillieAtt_Tan",
+                "GhillieAtt_Woodland",
+                "GhillieAtt_Mossy",
+                "ImprovisedSuppressor",
+                "AK_Suppressor",
+                "Groza_Barrel_Short",
+                "Groza_Barrel_Grip",
+                "Groza_Barrel_Suppressor"
+            ],
+            "bullets": [
+                "Ammo_545x39",
+                "Ammo_545x39Tracer"
+            ],
+            "magazines": [
+                "Mag_AK74_30Rnd",
+                "Mag_AK74_30Rnd_Black",
+                "Mag_AK74_30Rnd_Green"
+            ]
+        },
+        {
+            "name": "AKM_Base",
+            "attachments": [],
+            "bullets": [
+                "Ammo_762x39",
+                "Ammo_762x39Tracer"
+            ],
+            "magazines": [
+                "Mag_AKM_30Rnd",
+                "Mag_AKM_Palm30Rnd",
+                "Mag_AKM_Palm30Rnd_Black",
+                "Mag_AKM_Palm30Rnd_Green",
+                "Mag_AKM_Drum75Rnd",
+                "Mag_AKM_Drum75Rnd_Green",
+                "Mag_AKM_Drum75Rnd_Black",
+                "Mag_AKM_Drum_TEST"
+            ]
+        },
+        {
+            "name": "AKM",
+            "attachments": [
+                "AK_WoodBttstck",
+                "AK_WoodBttstck_Black",
+                "AK_WoodBttstck_Camo",
+                "AK74_WoodBttstck",
+                "AK74_WoodBttstck_Black",
+                "AK74_WoodBttstck_Camo",
+                "AK_FoldingBttstck",
+                "AK_FoldingBttstck_Black",
+                "AK_FoldingBttstck_Green",
+                "AK_PlasticBttstck",
+                "AK_PlasticBttstck_Black",
+                "AK_PlasticBttstck_Green",
+                "AKS74U_Bttstck",
+                "AKS74U_Bttstck_Black",
+                "AKS74U_Bttstck_Green",
+                "Groza_LowerReceiver",
+                "GrozaGL_LowerReceiver",
+                "WeaponHandguardAK",
+                "WeaponHandguardAK",
+                "WeaponHandguardAK",
+                "WeaponHandguardAK",
+                "WeaponHandguardAK",
+                "WeaponHandguardAK",
+                "WeaponHandguardAK",
+                "GhillieAtt_ColorBase",
+                "GhillieAtt_Tan",
+                "GhillieAtt_Woodland",
+                "GhillieAtt_Mossy",
+                "KashtanOptic",
+                "PSO1Optic",
+                "PSO11Optic",
+                "GrozaOptic",
+                "KobraOptic",
+                "KazuarOptic",
+                "UniversalLight",
+                "ImprovisedSuppressor",
+                "AK_Suppressor",
+                "Groza_Barrel_Short",
+                "Groza_Barrel_Grip",
+                "Groza_Barrel_Suppressor",
+                "AK_Bayonet"
+            ],
+            "bullets": [
+                "Ammo_762x39",
+                "Ammo_762x39Tracer"
+            ],
+            "magazines": [
+                "Mag_AKM_30Rnd",
+                "Mag_AKM_Palm30Rnd",
+                "Mag_AKM_Palm30Rnd_Black",
+                "Mag_AKM_Palm30Rnd_Green",
+                "Mag_AKM_Drum75Rnd",
+                "Mag_AKM_Drum75Rnd_Green",
+                "Mag_AKM_Drum75Rnd_Black",
+                "Mag_AKM_Drum_TEST"
+            ]
+        },
+        {
+            "name": "AKM_TESTBED",
+            "attachments": [
+                "AK_WoodBttstck",
+                "AK_WoodBttstck_Black",
+                "AK_WoodBttstck_Camo",
+                "AK74_WoodBttstck",
+                "AK74_WoodBttstck_Black",
+                "AK74_WoodBttstck_Camo",
+                "AK_FoldingBttstck",
+                "AK_FoldingBttstck_Black",
+                "AK_FoldingBttstck_Green",
+                "AK_PlasticBttstck",
+                "AK_PlasticBttstck_Black",
+                "AK_PlasticBttstck_Green",
+                "AKS74U_Bttstck",
+                "AKS74U_Bttstck_Black",
+                "AKS74U_Bttstck_Green",
+                "Groza_LowerReceiver",
+                "GrozaGL_LowerReceiver",
+                "WeaponHandguardAK",
+                "WeaponHandguardAK",
+                "WeaponHandguardAK",
+                "WeaponHandguardAK",
+                "WeaponHandguardAK",
+                "WeaponHandguardAK",
+                "WeaponHandguardAK",
+                "GhillieAtt_ColorBase",
+                "GhillieAtt_Tan",
+                "GhillieAtt_Woodland",
+                "GhillieAtt_Mossy",
+                "KashtanOptic",
+                "PSO1Optic",
+                "PSO11Optic",
+                "GrozaOptic",
+                "KobraOptic",
+                "KazuarOptic",
+                "UniversalLight",
+                "ImprovisedSuppressor",
+                "AK_Suppressor",
+                "Groza_Barrel_Short",
+                "Groza_Barrel_Grip",
+                "Groza_Barrel_Suppressor",
+                "AK_Bayonet"
+            ],
+            "bullets": [
+                "Ammo_762x39",
+                "Ammo_762x39Tracer"
+            ],
+            "magazines": [
+                "Mag_AKM_30Rnd",
+                "Mag_AKM_Palm30Rnd",
+                "Mag_AKM_Palm30Rnd_Black",
+                "Mag_AKM_Palm30Rnd_Green",
+                "Mag_AKM_Drum75Rnd",
+                "Mag_AKM_Drum75Rnd_Green",
+                "Mag_AKM_Drum75Rnd_Black",
+                "Mag_AKM_Drum_TEST"
+            ]
+        },
+        {
+            "name": "AugSteyr_Base",
+            "attachments": [],
+            "bullets": [
+                "Ammo_556x45",
+                "Ammo_556x45Tracer"
+            ],
+            "magazines": [
+                "Mag_STANAG_30Rnd",
+                "Mag_STANAGCoupled_30Rnd",
+                "Mag_CMAG_10Rnd",
+                "Mag_CMAG_20Rnd",
+                "Mag_CMAG_30Rnd",
+                "Mag_CMAG_40Rnd",
+                "Mag_CMAG_10Rnd_Green",
+                "Mag_CMAG_20Rnd_Green",
+                "Mag_CMAG_30Rnd_Green",
+                "Mag_CMAG_40Rnd_Green",
+                "Mag_CMAG_10Rnd_Black",
+                "Mag_CMAG_20Rnd_Black",
+                "Mag_CMAG_30Rnd_Black",
+                "Mag_CMAG_40Rnd_Black"
+            ]
+        },
+        {
+            "name": "AugSteyr",
+            "attachments": [
+                "ImprovisedSuppressor",
+                "M4_Suppressor",
+                "Aug_Barrel"
+            ],
+            "bullets": [
+                "Ammo_556x45",
+                "Ammo_556x45Tracer"
+            ],
+            "magazines": [
+                "Mag_STANAG_30Rnd",
+                "Mag_STANAGCoupled_30Rnd",
+                "Mag_CMAG_10Rnd",
+                "Mag_CMAG_20Rnd",
+                "Mag_CMAG_30Rnd",
+                "Mag_CMAG_40Rnd",
+                "Mag_CMAG_10Rnd_Green",
+                "Mag_CMAG_20Rnd_Green",
+                "Mag_CMAG_30Rnd_Green",
+                "Mag_CMAG_40Rnd_Green",
+                "Mag_CMAG_10Rnd_Black",
+                "Mag_CMAG_20Rnd_Black",
+                "Mag_CMAG_30Rnd_Black",
+                "Mag_CMAG_40Rnd_Black"
+            ]
+        },
+        {
+            "name": "B95_Base",
+            "attachments": [],
+            "bullets": [
+                "Ammo_308Win",
+                "Ammo_308WinTracer",
+                "Mag_308WinSnaploader_2Rnd"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "B95",
+            "attachments": [
+                "GhillieAtt_ColorBase",
+                "GhillieAtt_Tan",
+                "GhillieAtt_Woodland",
+                "GhillieAtt_Mossy",
+                "HuntingOptic"
+            ],
+            "bullets": [
+                "Ammo_308Win",
+                "Ammo_308WinTracer",
+                "Mag_308WinSnaploader_2Rnd"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "B95_Black",
+            "attachments": [
+                "GhillieAtt_ColorBase",
+                "GhillieAtt_Tan",
+                "GhillieAtt_Woodland",
+                "GhillieAtt_Mossy",
+                "HuntingOptic"
+            ],
+            "bullets": [
+                "Ammo_308Win",
+                "Ammo_308WinTracer",
+                "Mag_308WinSnaploader_2Rnd"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "B95_Green",
+            "attachments": [
+                "GhillieAtt_ColorBase",
+                "GhillieAtt_Tan",
+                "GhillieAtt_Woodland",
+                "GhillieAtt_Mossy",
+                "HuntingOptic"
+            ],
+            "bullets": [
+                "Ammo_308Win",
+                "Ammo_308WinTracer",
+                "Mag_308WinSnaploader_2Rnd"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "CZ527_Base",
+            "attachments": [],
+            "bullets": [
+                "Ammo_762x39",
+                "Ammo_762x39Tracer"
+            ],
+            "magazines": [
+                "Mag_CZ527_5rnd"
+            ]
+        },
+        {
+            "name": "CZ527",
+            "attachments": [
+                "GhillieAtt_ColorBase",
+                "GhillieAtt_Tan",
+                "GhillieAtt_Woodland",
+                "GhillieAtt_Mossy",
+                "HuntingOptic",
+                "ImprovisedSuppressor"
+            ],
+            "bullets": [
+                "Ammo_762x39",
+                "Ammo_762x39Tracer"
+            ],
+            "magazines": [
+                "Mag_CZ527_5rnd"
+            ]
+        },
+        {
+            "name": "CZ527_Black",
+            "attachments": [
+                "GhillieAtt_ColorBase",
+                "GhillieAtt_Tan",
+                "GhillieAtt_Woodland",
+                "GhillieAtt_Mossy",
+                "HuntingOptic",
+                "ImprovisedSuppressor"
+            ],
+            "bullets": [
+                "Ammo_762x39",
+                "Ammo_762x39Tracer"
+            ],
+            "magazines": [
+                "Mag_CZ527_5rnd"
+            ]
+        },
+        {
+            "name": "CZ527_Green",
+            "attachments": [
+                "GhillieAtt_ColorBase",
+                "GhillieAtt_Tan",
+                "GhillieAtt_Woodland",
+                "GhillieAtt_Mossy",
+                "HuntingOptic",
+                "ImprovisedSuppressor"
+            ],
+            "bullets": [
+                "Ammo_762x39",
+                "Ammo_762x39Tracer"
+            ],
+            "magazines": [
+                "Mag_CZ527_5rnd"
+            ]
+        },
+        {
+            "name": "CZ527_Camo",
+            "attachments": [
+                "GhillieAtt_ColorBase",
+                "GhillieAtt_Tan",
+                "GhillieAtt_Woodland",
+                "GhillieAtt_Mossy",
+                "HuntingOptic",
+                "ImprovisedSuppressor"
+            ],
+            "bullets": [
+                "Ammo_762x39",
+                "Ammo_762x39Tracer"
+            ],
+            "magazines": [
+                "Mag_CZ527_5rnd"
+            ]
+        },
+        {
+            "name": "CZ61_Base",
+            "attachments": [],
+            "bullets": [
+                "Ammo_380"
+            ],
+            "magazines": [
+                "Mag_CZ61_20Rnd"
+            ]
+        },
+        {
+            "name": "CZ61",
+            "attachments": [
+                "ImprovisedSuppressor",
+                "PistolSuppressor",
+                "MakarovPBSuppressor"
+            ],
+            "bullets": [
+                "Ammo_380"
+            ],
+            "magazines": [
+                "Mag_CZ61_20Rnd"
+            ]
+        },
+        {
+            "name": "FAL_Base",
+            "attachments": [],
+            "bullets": [
+                "Ammo_308Win",
+                "Ammo_308WinTracer"
+            ],
+            "magazines": [
+                "Mag_FAL_20Rnd"
+            ]
+        },
+        {
+            "name": "FAL",
+            "attachments": [
+                "Fal_OeBttstck",
+                "Fal_FoldingBttstck",
+                "GhillieAtt_ColorBase",
+                "GhillieAtt_Tan",
+                "GhillieAtt_Woodland",
+                "GhillieAtt_Mossy",
+                "M4_CarryHandleOptic",
+                "BUISOptic",
+                "M68Optic",
+                "M4_T3NRDSOptic",
+                "ImprovisedSuppressor"
+            ],
+            "bullets": [
+                "Ammo_308Win",
+                "Ammo_308WinTracer"
+            ],
+            "magazines": [
+                "Mag_FAL_20Rnd"
+            ]
+        },
+        {
+            "name": "Izh18_Base",
+            "attachments": [],
+            "bullets": [
+                "Ammo_762x39",
+                "Ammo_762x39Tracer"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "Izh18",
+            "attachments": [
+                "GhillieAtt_ColorBase",
+                "GhillieAtt_Tan",
+                "GhillieAtt_Woodland",
+                "GhillieAtt_Mossy",
+                "ImprovisedSuppressor"
+            ],
+            "bullets": [
+                "Ammo_762x39",
+                "Ammo_762x39Tracer"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "SawedoffIzh18",
+            "attachments": [],
+            "bullets": [
+                "Ammo_762x39",
+                "Ammo_762x39Tracer"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "M249_Base",
+            "attachments": [],
+            "bullets": [
+                "Ammo_556x45",
+                "Ammo_556x45Tracer"
+            ],
+            "magazines": [
+                "Mag_M249_Box200Rnd"
+            ]
+        },
+        {
+            "name": "M249",
+            "attachments": [
+                "M4_CarryHandleOptic",
+                "BUISOptic",
+                "M68Optic",
+                "M4_T3NRDSOptic",
+                "ImprovisedSuppressor",
+                "M4_Suppressor",
+                "M249_Hndgrd",
+                "M249_RisHndgrd",
+                "Att_Handguard_M249_Ris",
+                "Att_Handguard_M249_Ris",
+                "Att_Handguard_M249_Ris",
+                "Att_Handguard_M249_Ris"
+            ],
+            "bullets": [
+                "Ammo_556x45",
+                "Ammo_556x45Tracer"
+            ],
+            "magazines": [
+                "Mag_M249_Box200Rnd"
+            ]
+        },
+        {
+            "name": "M4A1_Base",
+            "attachments": [],
+            "bullets": [
+                "Ammo_556x45",
+                "Ammo_556x45Tracer"
+            ],
+            "magazines": [
+                "Mag_STANAG_30Rnd",
+                "Mag_STANAGCoupled_30Rnd",
+                "Mag_CMAG_10Rnd",
+                "Mag_CMAG_20Rnd",
+                "Mag_CMAG_30Rnd",
+                "Mag_CMAG_40Rnd",
+                "Mag_CMAG_10Rnd_Green",
+                "Mag_CMAG_20Rnd_Green",
+                "Mag_CMAG_30Rnd_Green",
+                "Mag_CMAG_40Rnd_Green",
+                "Mag_CMAG_10Rnd_Black",
+                "Mag_CMAG_20Rnd_Black",
+                "Mag_CMAG_30Rnd_Black",
+                "Mag_CMAG_40Rnd_Black"
+            ]
+        },
+        {
+            "name": "M4A1",
+            "attachments": [
+                "M4_OEBttstck",
+                "M4_OEBttstck_Black",
+                "M4_OEBttstck_Green",
+                "M4_MPBttstck",
+                "M4_MPBttstck_Black",
+                "M4_MPBttstck_Green",
+                "M4_CQBBttstck",
+                "M4_CQBBttstck_Black",
+                "M4_CQBBttstck_Green",
+                "WeaponHandguardM4",
+                "WeaponHandguardM4",
+                "WeaponHandguardM4",
+                "WeaponHandguardM4",
+                "WeaponHandguardM4",
+                "WeaponHandguardM4",
+                "WeaponHandguardM4",
+                "GhillieAtt_ColorBase",
+                "GhillieAtt_Tan",
+                "GhillieAtt_Woodland",
+                "GhillieAtt_Mossy",
+                "M4_CarryHandleOptic",
+                "BUISOptic",
+                "M68Optic",
+                "M4_T3NRDSOptic",
+                "UniversalLight",
+                "ImprovisedSuppressor",
+                "M4_Suppressor",
+                "M9A1_Bayonet"
+            ],
+            "bullets": [
+                "Ammo_556x45",
+                "Ammo_556x45Tracer"
+            ],
+            "magazines": [
+                "Mag_STANAG_30Rnd",
+                "Mag_STANAGCoupled_30Rnd",
+                "Mag_CMAG_10Rnd",
+                "Mag_CMAG_20Rnd",
+                "Mag_CMAG_30Rnd",
+                "Mag_CMAG_40Rnd",
+                "Mag_CMAG_10Rnd_Green",
+                "Mag_CMAG_20Rnd_Green",
+                "Mag_CMAG_30Rnd_Green",
+                "Mag_CMAG_40Rnd_Green",
+                "Mag_CMAG_10Rnd_Black",
+                "Mag_CMAG_20Rnd_Black",
+                "Mag_CMAG_30Rnd_Black",
+                "Mag_CMAG_40Rnd_Black"
+            ]
+        },
+        {
+            "name": "M4A1_Green",
+            "attachments": [
+                "M4_OEBttstck",
+                "M4_OEBttstck_Black",
+                "M4_OEBttstck_Green",
+                "M4_MPBttstck",
+                "M4_MPBttstck_Black",
+                "M4_MPBttstck_Green",
+                "M4_CQBBttstck",
+                "M4_CQBBttstck_Black",
+                "M4_CQBBttstck_Green",
+                "WeaponHandguardM4",
+                "WeaponHandguardM4",
+                "WeaponHandguardM4",
+                "WeaponHandguardM4",
+                "WeaponHandguardM4",
+                "WeaponHandguardM4",
+                "WeaponHandguardM4",
+                "GhillieAtt_ColorBase",
+                "GhillieAtt_Tan",
+                "GhillieAtt_Woodland",
+                "GhillieAtt_Mossy",
+                "M4_CarryHandleOptic",
+                "BUISOptic",
+                "M68Optic",
+                "M4_T3NRDSOptic",
+                "UniversalLight",
+                "ImprovisedSuppressor",
+                "M4_Suppressor",
+                "M9A1_Bayonet"
+            ],
+            "bullets": [
+                "Ammo_556x45",
+                "Ammo_556x45Tracer"
+            ],
+            "magazines": [
+                "Mag_STANAG_30Rnd",
+                "Mag_STANAGCoupled_30Rnd",
+                "Mag_CMAG_10Rnd",
+                "Mag_CMAG_20Rnd",
+                "Mag_CMAG_30Rnd",
+                "Mag_CMAG_40Rnd",
+                "Mag_CMAG_10Rnd_Green",
+                "Mag_CMAG_20Rnd_Green",
+                "Mag_CMAG_30Rnd_Green",
+                "Mag_CMAG_40Rnd_Green",
+                "Mag_CMAG_10Rnd_Black",
+                "Mag_CMAG_20Rnd_Black",
+                "Mag_CMAG_30Rnd_Black",
+                "Mag_CMAG_40Rnd_Black"
+            ]
+        },
+        {
+            "name": "M4A1_Black",
+            "attachments": [
+                "M4_OEBttstck",
+                "M4_OEBttstck_Black",
+                "M4_OEBttstck_Green",
+                "M4_MPBttstck",
+                "M4_MPBttstck_Black",
+                "M4_MPBttstck_Green",
+                "M4_CQBBttstck",
+                "M4_CQBBttstck_Black",
+                "M4_CQBBttstck_Green",
+                "WeaponHandguardM4",
+                "WeaponHandguardM4",
+                "WeaponHandguardM4",
+                "WeaponHandguardM4",
+                "WeaponHandguardM4",
+                "WeaponHandguardM4",
+                "WeaponHandguardM4",
+                "GhillieAtt_ColorBase",
+                "GhillieAtt_Tan",
+                "GhillieAtt_Woodland",
+                "GhillieAtt_Mossy",
+                "M4_CarryHandleOptic",
+                "BUISOptic",
+                "M68Optic",
+                "M4_T3NRDSOptic",
+                "UniversalLight",
+                "ImprovisedSuppressor",
+                "M4_Suppressor",
+                "M9A1_Bayonet"
+            ],
+            "bullets": [
+                "Ammo_556x45",
+                "Ammo_556x45Tracer"
+            ],
+            "magazines": [
+                "Mag_STANAG_30Rnd",
+                "Mag_STANAGCoupled_30Rnd",
+                "Mag_CMAG_10Rnd",
+                "Mag_CMAG_20Rnd",
+                "Mag_CMAG_30Rnd",
+                "Mag_CMAG_40Rnd",
+                "Mag_CMAG_10Rnd_Green",
+                "Mag_CMAG_20Rnd_Green",
+                "Mag_CMAG_30Rnd_Green",
+                "Mag_CMAG_40Rnd_Green",
+                "Mag_CMAG_10Rnd_Black",
+                "Mag_CMAG_20Rnd_Black",
+                "Mag_CMAG_30Rnd_Black",
+                "Mag_CMAG_40Rnd_Black"
+            ]
+        },
+        {
+            "name": "UnderSlugGrenadeM4",
+            "attachments": [],
+            "bullets": [
+                "Ammo_GrenadeM4"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "Mosin9130_Base",
+            "attachments": [],
+            "bullets": [
+                "Ammo_762x54",
+                "Ammo_762x54Tracer",
+                "Mag_CLIP762x54_5Rnd"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "SawedoffMosin9130_Base",
+            "attachments": [],
+            "bullets": [
+                "Ammo_762x54",
+                "Ammo_762x54Tracer",
+                "Mag_CLIP762x54_5Rnd"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "Mosin9130",
+            "attachments": [
+                "GhillieAtt_ColorBase",
+                "GhillieAtt_Tan",
+                "GhillieAtt_Woodland",
+                "GhillieAtt_Mossy",
+                "PUScopeOptic",
+                "ImprovisedSuppressor",
+                "Mosin_Compensator",
+                "Mosin_Bayonet"
+            ],
+            "bullets": [
+                "Ammo_762x54",
+                "Ammo_762x54Tracer",
+                "Mag_CLIP762x54_5Rnd"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "Mosin9130_Black",
+            "attachments": [
+                "GhillieAtt_ColorBase",
+                "GhillieAtt_Tan",
+                "GhillieAtt_Woodland",
+                "GhillieAtt_Mossy",
+                "PUScopeOptic",
+                "ImprovisedSuppressor",
+                "Mosin_Compensator",
+                "Mosin_Bayonet"
+            ],
+            "bullets": [
+                "Ammo_762x54",
+                "Ammo_762x54Tracer",
+                "Mag_CLIP762x54_5Rnd"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "Mosin9130_Green",
+            "attachments": [
+                "GhillieAtt_ColorBase",
+                "GhillieAtt_Tan",
+                "GhillieAtt_Woodland",
+                "GhillieAtt_Mossy",
+                "PUScopeOptic",
+                "ImprovisedSuppressor",
+                "Mosin_Compensator",
+                "Mosin_Bayonet"
+            ],
+            "bullets": [
+                "Ammo_762x54",
+                "Ammo_762x54Tracer",
+                "Mag_CLIP762x54_5Rnd"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "Mosin9130_Camo",
+            "attachments": [
+                "GhillieAtt_ColorBase",
+                "GhillieAtt_Tan",
+                "GhillieAtt_Woodland",
+                "GhillieAtt_Mossy",
+                "PUScopeOptic",
+                "ImprovisedSuppressor",
+                "Mosin_Compensator",
+                "Mosin_Bayonet"
+            ],
+            "bullets": [
+                "Ammo_762x54",
+                "Ammo_762x54Tracer",
+                "Mag_CLIP762x54_5Rnd"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "SawedoffMosin9130",
+            "attachments": [
+                "PUScopeOptic"
+            ],
+            "bullets": [
+                "Ammo_762x54",
+                "Ammo_762x54Tracer",
+                "Mag_CLIP762x54_5Rnd"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "SawedoffMosin9130_Black",
+            "attachments": [
+                "PUScopeOptic"
+            ],
+            "bullets": [
+                "Ammo_762x54",
+                "Ammo_762x54Tracer",
+                "Mag_CLIP762x54_5Rnd"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "SawedoffMosin9130_Green",
+            "attachments": [
+                "PUScopeOptic"
+            ],
+            "bullets": [
+                "Ammo_762x54",
+                "Ammo_762x54Tracer",
+                "Mag_CLIP762x54_5Rnd"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "SawedoffMosin9130_Camo",
+            "attachments": [
+                "PUScopeOptic"
+            ],
+            "bullets": [
+                "Ammo_762x54",
+                "Ammo_762x54Tracer",
+                "Mag_CLIP762x54_5Rnd"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "MP5K_Base",
+            "attachments": [],
+            "bullets": [
+                "Ammo_9x19"
+            ],
+            "magazines": [
+                "Mag_MP5_15Rnd",
+                "Mag_MP5_30Rnd"
+            ]
+        },
+        {
+            "name": "MP5K",
+            "attachments": [
+                "MP5k_StockBttstck",
+                "WeaponHandguardMP5",
+                "WeaponHandguardMP5",
+                "WeaponHandguardMP5",
+                "WeaponHandguardMP5",
+                "WeaponHandguardMP5",
+                "WeaponHandguardMP5",
+                "M4_CarryHandleOptic",
+                "BUISOptic",
+                "M68Optic",
+                "M4_T3NRDSOptic",
+                "UniversalLight",
+                "MP5_Compensator",
+                "ImprovisedSuppressor",
+                "PistolSuppressor",
+                "MakarovPBSuppressor"
+            ],
+            "bullets": [
+                "Ammo_9x19"
+            ],
+            "magazines": [
+                "Mag_MP5_15Rnd",
+                "Mag_MP5_30Rnd"
+            ]
+        },
+        {
+            "name": "Groza_Base",
+            "attachments": [],
+            "bullets": [
+                "Ammo_9x39",
+                "Ammo_9x39AP"
+            ],
+            "magazines": [
+                "Mag_Groza_20Rnd",
+                "Mag_VSS_10Rnd"
+            ]
+        },
+        {
+            "name": "Groza",
+            "attachments": [
+                "AK_WoodBttstck",
+                "AK_WoodBttstck_Black",
+                "AK_WoodBttstck_Camo",
+                "AK74_WoodBttstck",
+                "AK74_WoodBttstck_Black",
+                "AK74_WoodBttstck_Camo",
+                "AK_FoldingBttstck",
+                "AK_FoldingBttstck_Black",
+                "AK_FoldingBttstck_Green",
+                "AK_PlasticBttstck",
+                "AK_PlasticBttstck_Black",
+                "AK_PlasticBttstck_Green",
+                "AKS74U_Bttstck",
+                "AKS74U_Bttstck_Black",
+                "AKS74U_Bttstck_Green",
+                "Groza_LowerReceiver",
+                "GrozaGL_LowerReceiver",
+                "KashtanOptic",
+                "PSO1Optic",
+                "PSO11Optic",
+                "GrozaOptic",
+                "KobraOptic",
+                "KazuarOptic",
+                "ImprovisedSuppressor",
+                "AK_Suppressor",
+                "Groza_Barrel_Short",
+                "Groza_Barrel_Grip",
+                "Groza_Barrel_Suppressor"
+            ],
+            "bullets": [
+                "Ammo_9x39",
+                "Ammo_9x39AP"
+            ],
+            "magazines": [
+                "Mag_Groza_20Rnd",
+                "Mag_VSS_10Rnd"
+            ]
+        },
+        {
+            "name": "PM73Rak_Base",
+            "attachments": [],
+            "bullets": [
+                "Ammo_380"
+            ],
+            "magazines": [
+                "Mag_PM73_25Rnd",
+                "Mag_PM73_15Rnd"
+            ]
+        },
+        {
+            "name": "PM73Rak",
+            "attachments": [],
+            "bullets": [
+                "Ammo_380"
+            ],
+            "magazines": [
+                "Mag_PM73_25Rnd",
+                "Mag_PM73_15Rnd"
+            ]
+        },
+        {
+            "name": "Repeater_Base",
+            "attachments": [],
+            "bullets": [
+                "Ammo_357"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "Repeater",
+            "attachments": [
+                "GhillieAtt_ColorBase",
+                "GhillieAtt_Tan",
+                "GhillieAtt_Woodland",
+                "GhillieAtt_Mossy",
+                "ImprovisedSuppressor"
+            ],
+            "bullets": [
+                "Ammo_357"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "Ruger1022_Base",
+            "attachments": [],
+            "bullets": [
+                "Ammo_22"
+            ],
+            "magazines": [
+                "Mag_Ruger1022_30Rnd",
+                "Mag_Ruger1022_15Rnd"
+            ]
+        },
+        {
+            "name": "Ruger1022",
+            "attachments": [
+                "GhillieAtt_ColorBase",
+                "GhillieAtt_Tan",
+                "GhillieAtt_Woodland",
+                "GhillieAtt_Mossy",
+                "HuntingOptic",
+                "ImprovisedSuppressor"
+            ],
+            "bullets": [
+                "Ammo_22"
+            ],
+            "magazines": [
+                "Mag_Ruger1022_30Rnd",
+                "Mag_Ruger1022_15Rnd"
+            ]
+        },
+        {
+            "name": "ScoutBase",
+            "attachments": [],
+            "bullets": [
+                "Ammo_308Win",
+                "Ammo_308WinTracer"
+            ],
+            "magazines": [
+                "Mag_Scout_5Rnd"
+            ]
+        },
+        {
+            "name": "Scout",
+            "attachments": [
+                "GhillieAtt_ColorBase",
+                "GhillieAtt_Tan",
+                "GhillieAtt_Woodland",
+                "GhillieAtt_Mossy",
+                "HuntingOptic",
+                "M4_CarryHandleOptic",
+                "BUISOptic",
+                "M68Optic",
+                "M4_T3NRDSOptic",
+                "ImprovisedSuppressor"
+            ],
+            "bullets": [
+                "Ammo_308Win",
+                "Ammo_308WinTracer"
+            ],
+            "magazines": [
+                "Mag_Scout_5Rnd"
+            ]
+        },
+        {
+            "name": "Scout_Black",
+            "attachments": [
+                "GhillieAtt_ColorBase",
+                "GhillieAtt_Tan",
+                "GhillieAtt_Woodland",
+                "GhillieAtt_Mossy",
+                "HuntingOptic",
+                "M4_CarryHandleOptic",
+                "BUISOptic",
+                "M68Optic",
+                "M4_T3NRDSOptic",
+                "ImprovisedSuppressor"
+            ],
+            "bullets": [
+                "Ammo_308Win",
+                "Ammo_308WinTracer"
+            ],
+            "magazines": [
+                "Mag_Scout_5Rnd"
+            ]
+        },
+        {
+            "name": "Scout_Green",
+            "attachments": [
+                "GhillieAtt_ColorBase",
+                "GhillieAtt_Tan",
+                "GhillieAtt_Woodland",
+                "GhillieAtt_Mossy",
+                "HuntingOptic",
+                "M4_CarryHandleOptic",
+                "BUISOptic",
+                "M68Optic",
+                "M4_T3NRDSOptic",
+                "ImprovisedSuppressor"
+            ],
+            "bullets": [
+                "Ammo_308Win",
+                "Ammo_308WinTracer"
+            ],
+            "magazines": [
+                "Mag_Scout_5Rnd"
+            ]
+        },
+        {
+            "name": "SKS_Base",
+            "attachments": [],
+            "bullets": [
+                "Ammo_762x39",
+                "Mag_CLIP762x39_10Rnd",
+                "Ammo_762x39Tracer"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "SKS",
+            "attachments": [
+                "GhillieAtt_ColorBase",
+                "GhillieAtt_Tan",
+                "GhillieAtt_Woodland",
+                "GhillieAtt_Mossy",
+                "PUScopeOptic",
+                "ImprovisedSuppressor",
+                "SKS_Bayonet"
+            ],
+            "bullets": [
+                "Ammo_762x39",
+                "Mag_CLIP762x39_10Rnd",
+                "Ammo_762x39Tracer"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "SKS_Black",
+            "attachments": [
+                "GhillieAtt_ColorBase",
+                "GhillieAtt_Tan",
+                "GhillieAtt_Woodland",
+                "GhillieAtt_Mossy",
+                "PUScopeOptic",
+                "ImprovisedSuppressor",
+                "SKS_Bayonet"
+            ],
+            "bullets": [
+                "Ammo_762x39",
+                "Mag_CLIP762x39_10Rnd",
+                "Ammo_762x39Tracer"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "SKS_Green",
+            "attachments": [
+                "GhillieAtt_ColorBase",
+                "GhillieAtt_Tan",
+                "GhillieAtt_Woodland",
+                "GhillieAtt_Mossy",
+                "PUScopeOptic",
+                "ImprovisedSuppressor",
+                "SKS_Bayonet"
+            ],
+            "bullets": [
+                "Ammo_762x39",
+                "Mag_CLIP762x39_10Rnd",
+                "Ammo_762x39Tracer"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "SVD_Base",
+            "attachments": [],
+            "bullets": [
+                "Ammo_762x54",
+                "Ammo_762x54Tracer"
+            ],
+            "magazines": [
+                "Mag_SVD_10Rnd"
+            ]
+        },
+        {
+            "name": "SVD",
+            "attachments": [
+                "GhillieAtt_ColorBase",
+                "GhillieAtt_Tan",
+                "GhillieAtt_Woodland",
+                "GhillieAtt_Mossy",
+                "KashtanOptic",
+                "PSO1Optic",
+                "PSO11Optic",
+                "GrozaOptic",
+                "KobraOptic",
+                "KazuarOptic",
+                "ImprovisedSuppressor",
+                "AK_Suppressor",
+                "Groza_Barrel_Short",
+                "Groza_Barrel_Grip",
+                "Groza_Barrel_Suppressor"
+            ],
+            "bullets": [
+                "Ammo_762x54",
+                "Ammo_762x54Tracer"
+            ],
+            "magazines": [
+                "Mag_SVD_10Rnd"
+            ]
+        },
+        {
+            "name": "Trumpet_Base",
+            "attachments": [],
+            "bullets": [
+                "Ammo_22"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "Trumpet",
+            "attachments": [
+                "HuntingOptic",
+                "ImprovisedSuppressor"
+            ],
+            "bullets": [
+                "Ammo_22"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "UMP45_Base",
+            "attachments": [],
+            "bullets": [
+                "Ammo_45ACP"
+            ],
+            "magazines": [
+                "Mag_UMP_25Rnd"
+            ]
+        },
+        {
+            "name": "UMP45",
+            "attachments": [
+                "GhillieAtt_ColorBase",
+                "GhillieAtt_Tan",
+                "GhillieAtt_Woodland",
+                "GhillieAtt_Mossy",
+                "M4_CarryHandleOptic",
+                "BUISOptic",
+                "M68Optic",
+                "M4_T3NRDSOptic",
+                "UniversalLight",
+                "ImprovisedSuppressor",
+                "PistolSuppressor",
+                "MakarovPBSuppressor"
+            ],
+            "bullets": [
+                "Ammo_45ACP"
+            ],
+            "magazines": [
+                "Mag_UMP_25Rnd"
+            ]
+        },
+        {
+            "name": "VSS_Base",
+            "attachments": [],
+            "bullets": [
+                "Ammo_9x39",
+                "Ammo_9x39AP"
+            ],
+            "magazines": [
+                "Mag_VSS_10Rnd",
+                "Mag_VAL_20Rnd"
+            ]
+        },
+        {
+            "name": "VSS",
+            "attachments": [
+                "GhillieAtt_ColorBase",
+                "GhillieAtt_Tan",
+                "GhillieAtt_Woodland",
+                "GhillieAtt_Mossy",
+                "KashtanOptic",
+                "PSO1Optic",
+                "PSO11Optic",
+                "GrozaOptic",
+                "KobraOptic",
+                "KazuarOptic"
+            ],
+            "bullets": [
+                "Ammo_9x39",
+                "Ammo_9x39AP"
+            ],
+            "magazines": [
+                "Mag_VSS_10Rnd",
+                "Mag_VAL_20Rnd"
+            ]
+        },
+        {
+            "name": "Winchester70_Base",
+            "attachments": [],
+            "bullets": [
+                "Ammo_308Win",
+                "Ammo_308WinTracer"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "Winchester70",
+            "attachments": [
+                "GhillieAtt_ColorBase",
+                "GhillieAtt_Tan",
+                "GhillieAtt_Woodland",
+                "GhillieAtt_Mossy",
+                "HuntingOptic",
+                "ImprovisedSuppressor"
+            ],
+            "bullets": [
+                "Ammo_308Win",
+                "Ammo_308WinTracer"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "Winchester70_Black",
+            "attachments": [
+                "GhillieAtt_ColorBase",
+                "GhillieAtt_Tan",
+                "GhillieAtt_Woodland",
+                "GhillieAtt_Mossy",
+                "HuntingOptic",
+                "ImprovisedSuppressor"
+            ],
+            "bullets": [
+                "Ammo_308Win",
+                "Ammo_308WinTracer"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "Winchester70_Green",
+            "attachments": [
+                "GhillieAtt_ColorBase",
+                "GhillieAtt_Tan",
+                "GhillieAtt_Woodland",
+                "GhillieAtt_Mossy",
+                "HuntingOptic",
+                "ImprovisedSuppressor"
+            ],
+            "bullets": [
+                "Ammo_308Win",
+                "Ammo_308WinTracer"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "GP25Base",
+            "attachments": [],
+            "bullets": [],
+            "magazines": []
+        },
+        {
+            "name": "GP25",
+            "attachments": [],
+            "bullets": [],
+            "magazines": []
+        },
+        {
+            "name": "GP25_Standalone",
+            "attachments": [],
+            "bullets": [],
+            "magazines": []
+        },
+        {
+            "name": "LAWBase",
+            "attachments": [],
+            "bullets": [
+                "Ammo_LAW_HE"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "LAW",
+            "attachments": [],
+            "bullets": [
+                "Ammo_LAW_HE"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "M203Base",
+            "attachments": [],
+            "bullets": [],
+            "magazines": []
+        },
+        {
+            "name": "M203",
+            "attachments": [],
+            "bullets": [],
+            "magazines": []
+        },
+        {
+            "name": "M203_Standalone",
+            "attachments": [],
+            "bullets": [],
+            "magazines": []
+        },
+        {
+            "name": "RPG7Base",
+            "attachments": [],
+            "bullets": [
+                "Ammo_RPG7_HE",
+                "Ammo_RPG7_AP"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "RPG7",
+            "attachments": [],
+            "bullets": [
+                "Ammo_RPG7_HE",
+                "Ammo_RPG7_AP"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "NonlethalCore",
+            "attachments": [],
+            "bullets": [],
+            "magazines": []
+        },
+        {
+            "name": "NonlethalPistol",
+            "attachments": [],
+            "bullets": [],
+            "magazines": []
+        },
+        {
+            "name": "NonlethalRifle",
+            "attachments": [],
+            "bullets": [],
+            "magazines": []
+        },
+        {
+            "name": "DartGun",
+            "attachments": [
+                "M4_CarryHandleOptic",
+                "BUISOptic",
+                "M68Optic",
+                "M4_T3NRDSOptic"
+            ],
+            "bullets": [],
+            "magazines": [
+                "D_Syringe_Single",
+                "Mag_Dartgun_CO2"
+            ]
+        },
+        {
+            "name": "Shockpistol_Base",
+            "attachments": [],
+            "bullets": [
+                "Ammo_9x19"
+            ],
+            "magazines": [
+                "Mag_ShockCartridge"
+            ]
+        },
+        {
+            "name": "Shockpistol",
+            "attachments": [],
+            "bullets": [
+                "Ammo_9x19"
+            ],
+            "magazines": [
+                "Mag_ShockCartridge"
+            ]
+        },
+        {
+            "name": "Shockpistol_Black",
+            "attachments": [],
+            "bullets": [
+                "Ammo_9x19"
+            ],
+            "magazines": [
+                "Mag_ShockCartridge"
+            ]
+        },
+        {
+            "name": "Colt1911_Base",
+            "attachments": [],
+            "bullets": [
+                "Ammo_45ACP"
+            ],
+            "magazines": [
+                "Mag_1911_7Rnd"
+            ]
+        },
+        {
+            "name": "Colt1911",
+            "attachments": [
+                "TLRLight",
+                "ImprovisedSuppressor",
+                "PistolSuppressor",
+                "MakarovPBSuppressor"
+            ],
+            "bullets": [
+                "Ammo_45ACP"
+            ],
+            "magazines": [
+                "Mag_1911_7Rnd"
+            ]
+        },
+        {
+            "name": "Engraved1911",
+            "attachments": [
+                "TLRLight",
+                "ImprovisedSuppressor",
+                "PistolSuppressor",
+                "MakarovPBSuppressor"
+            ],
+            "bullets": [
+                "Ammo_45ACP"
+            ],
+            "magazines": [
+                "Mag_1911_7Rnd"
+            ]
+        },
+        {
+            "name": "CZ75_Base",
+            "attachments": [],
+            "bullets": [
+                "Ammo_9x19"
+            ],
+            "magazines": [
+                "Mag_CZ75_15Rnd"
+            ]
+        },
+        {
+            "name": "CZ75",
+            "attachments": [
+                "FNP45_MRDSOptic",
+                "TLRLight",
+                "ImprovisedSuppressor",
+                "PistolSuppressor",
+                "MakarovPBSuppressor"
+            ],
+            "bullets": [
+                "Ammo_9x19"
+            ],
+            "magazines": [
+                "Mag_CZ75_15Rnd"
+            ]
+        },
+        {
+            "name": "Deagle_Base",
+            "attachments": [],
+            "bullets": [
+                "Ammo_357"
+            ],
+            "magazines": [
+                "Mag_Deagle_9rnd"
+            ]
+        },
+        {
+            "name": "Deagle",
+            "attachments": [
+                "FNP45_MRDSOptic",
+                "Crossbow_RedpointOptic",
+                "PistolOptic",
+                "ImprovisedSuppressor",
+                "PistolSuppressor",
+                "MakarovPBSuppressor"
+            ],
+            "bullets": [
+                "Ammo_357"
+            ],
+            "magazines": [
+                "Mag_Deagle_9rnd"
+            ]
+        },
+        {
+            "name": "Deagle_Gold",
+            "attachments": [
+                "FNP45_MRDSOptic",
+                "Crossbow_RedpointOptic",
+                "PistolOptic",
+                "ImprovisedSuppressor",
+                "PistolSuppressor",
+                "MakarovPBSuppressor"
+            ],
+            "bullets": [
+                "Ammo_357"
+            ],
+            "magazines": [
+                "Mag_Deagle_9rnd"
+            ]
+        },
+        {
+            "name": "Derringer_Base",
+            "attachments": [],
+            "bullets": [
+                "Ammo_45ACP"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "Derringer_Black",
+            "attachments": [],
+            "bullets": [
+                "Ammo_45ACP"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "Derringer_Pink",
+            "attachments": [],
+            "bullets": [
+                "Ammo_45ACP"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "Derringer_Grey",
+            "attachments": [],
+            "bullets": [
+                "Ammo_45ACP"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "Flaregun_Base",
+            "attachments": [],
+            "bullets": [
+                "Ammo_Flare",
+                "Ammo_FlareRed",
+                "Ammo_FlareGreen",
+                "Ammo_FlareBlue"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "Flaregun",
+            "attachments": [],
+            "bullets": [
+                "Ammo_Flare",
+                "Ammo_FlareRed",
+                "Ammo_FlareGreen",
+                "Ammo_FlareBlue"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "FNX45_Base",
+            "attachments": [],
+            "bullets": [
+                "Ammo_45ACP"
+            ],
+            "magazines": [
+                "Mag_FNX45_15Rnd"
+            ]
+        },
+        {
+            "name": "FNX45",
+            "attachments": [
+                "FNP45_MRDSOptic",
+                "TLRLight",
+                "ImprovisedSuppressor",
+                "PistolSuppressor",
+                "MakarovPBSuppressor"
+            ],
+            "bullets": [
+                "Ammo_45ACP"
+            ],
+            "magazines": [
+                "Mag_FNX45_15Rnd"
+            ]
+        },
+        {
+            "name": "FNX45_arrow",
+            "attachments": [
+                "ImprovisedSuppressor",
+                "PistolSuppressor",
+                "MakarovPBSuppressor",
+                "FNP45_MRDSOptic",
+                "TLRLight"
+            ],
+            "bullets": [
+                "Ammo_ArrowComposite"
+            ],
+            "magazines": [
+                "Mag_FNX45_15Rnd"
+            ]
+        },
+        {
+            "name": "Glock19_Base",
+            "attachments": [],
+            "bullets": [
+                "Ammo_9x19"
+            ],
+            "magazines": [
+                "Mag_Glock_15Rnd"
+            ]
+        },
+        {
+            "name": "Glock19",
+            "attachments": [
+                "FNP45_MRDSOptic",
+                "TLRLight",
+                "ImprovisedSuppressor",
+                "PistolSuppressor",
+                "MakarovPBSuppressor"
+            ],
+            "bullets": [
+                "Ammo_9x19"
+            ],
+            "magazines": [
+                "Mag_Glock_15Rnd"
+            ]
+        },
+        {
+            "name": "LongHorn_Base",
+            "attachments": [],
+            "bullets": [
+                "Ammo_308Win",
+                "Ammo_308WinTracer"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "LongHorn",
+            "attachments": [
+                "FNP45_MRDSOptic",
+                "Crossbow_RedpointOptic",
+                "PistolOptic",
+                "ImprovisedSuppressor"
+            ],
+            "bullets": [
+                "Ammo_308Win",
+                "Ammo_308WinTracer"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "Magnum_Base",
+            "attachments": [],
+            "bullets": [
+                "Ammo_357",
+                "Mag_357Speedloader_6Rnd"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "Magnum",
+            "attachments": [
+                "Magnum_Cylinder",
+                "Magnum_Ejector"
+            ],
+            "bullets": [
+                "Ammo_357",
+                "Mag_357Speedloader_6Rnd"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "MKII_Base",
+            "attachments": [],
+            "bullets": [
+                "Ammo_22"
+            ],
+            "magazines": [
+                "Mag_MKII_10Rnd"
+            ]
+        },
+        {
+            "name": "MKII",
+            "attachments": [],
+            "bullets": [
+                "Ammo_22"
+            ],
+            "magazines": [
+                "Mag_MKII_10Rnd"
+            ]
+        },
+        {
+            "name": "P1_Base",
+            "attachments": [],
+            "bullets": [
+                "Ammo_9x19"
+            ],
+            "magazines": [
+                "Mag_P1_8Rnd"
+            ]
+        },
+        {
+            "name": "P1",
+            "attachments": [
+                "ImprovisedSuppressor",
+                "PistolSuppressor",
+                "MakarovPBSuppressor",
+                "ImprovisedSuppressor"
+            ],
+            "bullets": [
+                "Ammo_9x19"
+            ],
+            "magazines": [
+                "Mag_P1_8Rnd"
+            ]
+        },
+        {
+            "name": "MakarovPB_Base",
+            "attachments": [],
+            "bullets": [
+                "Ammo_380"
+            ],
+            "magazines": [
+                "Mag_MakarovPB_8Rnd"
+            ]
+        },
+        {
+            "name": "MakarovPB",
+            "attachments": [
+                "ImprovisedSuppressor",
+                "PistolSuppressor",
+                "MakarovPBSuppressor"
+            ],
+            "bullets": [
+                "Ammo_380"
+            ],
+            "magazines": [
+                "Mag_MakarovPB_8Rnd"
+            ]
+        },
+        {
+            "name": "MakarovIJ70_Base",
+            "attachments": [],
+            "bullets": [
+                "Ammo_380"
+            ],
+            "magazines": [
+                "Mag_IJ70_8Rnd"
+            ]
+        },
+        {
+            "name": "MakarovIJ70",
+            "attachments": [
+                "ImprovisedSuppressor",
+                "PistolSuppressor",
+                "MakarovPBSuppressor"
+            ],
+            "bullets": [
+                "Ammo_380"
+            ],
+            "magazines": [
+                "Mag_IJ70_8Rnd"
+            ]
+        },
+        {
+            "name": "Red9_Base",
+            "attachments": [],
+            "bullets": [
+                "Ammo_9x19",
+                "Mag_CLIP9x19_10Rnd"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "Red9",
+            "attachments": [
+                "Red9Bttstck",
+                "ImprovisedSuppressor"
+            ],
+            "bullets": [
+                "Ammo_9x19",
+                "Mag_CLIP9x19_10Rnd"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "Izh43Shotgun_Base",
+            "attachments": [],
+            "bullets": [
+                "Ammo_12gaPellets",
+                "Ammo_12gaSlug",
+                "Ammo_12gaRubberSlug",
+                "Ammo_12gaBeanbag",
+                "Mag_12gaSnaploader_2Rnd"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "Izh43Shotgun",
+            "attachments": [
+                "GhillieAtt_ColorBase",
+                "GhillieAtt_Tan",
+                "GhillieAtt_Woodland",
+                "GhillieAtt_Mossy"
+            ],
+            "bullets": [
+                "Ammo_12gaPellets",
+                "Ammo_12gaSlug",
+                "Ammo_12gaRubberSlug",
+                "Ammo_12gaBeanbag",
+                "Mag_12gaSnaploader_2Rnd"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "SawedoffIzh43Shotgun",
+            "attachments": [
+                "GhillieAtt_ColorBase",
+                "GhillieAtt_Tan",
+                "GhillieAtt_Woodland",
+                "GhillieAtt_Mossy"
+            ],
+            "bullets": [
+                "Ammo_12gaPellets",
+                "Ammo_12gaSlug",
+                "Ammo_12gaRubberSlug",
+                "Ammo_12gaBeanbag",
+                "Mag_12gaSnaploader_2Rnd"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "Mp133Shotgun_Base",
+            "attachments": [],
+            "bullets": [
+                "Ammo_12gaPellets",
+                "Ammo_12gaSlug",
+                "Ammo_12gaRubberSlug",
+                "Ammo_12gaBeanbag"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "Mp133Shotgun",
+            "attachments": [
+                "FNP45_MRDSOptic"
+            ],
+            "bullets": [
+                "Ammo_12gaPellets",
+                "Ammo_12gaSlug",
+                "Ammo_12gaRubberSlug",
+                "Ammo_12gaBeanbag"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "Mp133Shotgun_PistolGrip",
+            "attachments": [
+                "FNP45_MRDSOptic"
+            ],
+            "bullets": [
+                "Ammo_12gaPellets",
+                "Ammo_12gaSlug",
+                "Ammo_12gaRubberSlug",
+                "Ammo_12gaBeanbag"
+            ],
+            "magazines": []
+        },
+        {
+            "name": "Saiga_Base",
+            "attachments": [],
+            "bullets": [
+                "Ammo_12gaPellets",
+                "Ammo_12gaSlug",
+                "Ammo_12gaRubberSlug",
+                "Ammo_12gaBeanbag"
+            ],
+            "magazines": [
+                "Mag_Saiga_5Rnd",
+                "Mag_Saiga_8Rnd",
+                "Mag_Saiga_Drum20Rnd"
+            ]
+        },
+        {
+            "name": "Saiga",
+            "attachments": [
+                "Saiga_Bttstck",
+                "GhillieAtt_ColorBase",
+                "GhillieAtt_Tan",
+                "GhillieAtt_Woodland",
+                "GhillieAtt_Mossy",
+                "KashtanOptic",
+                "PSO1Optic",
+                "PSO11Optic",
+                "GrozaOptic",
+                "KobraOptic",
+                "KazuarOptic"
+            ],
+            "bullets": [
+                "Ammo_12gaPellets",
+                "Ammo_12gaSlug",
+                "Ammo_12gaRubberSlug",
+                "Ammo_12gaBeanbag"
+            ],
+            "magazines": [
+                "Mag_Saiga_5Rnd",
+                "Mag_Saiga_8Rnd",
+                "Mag_Saiga_Drum20Rnd"
+            ]
+        }
+    ]
+}

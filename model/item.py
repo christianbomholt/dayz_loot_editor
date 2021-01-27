@@ -48,3 +48,39 @@ class Mapselect(Base):
     __tablename__ = "mapselect"
     id = Column(Integer, primary_key=True)
     mapselectvalue = Column(String)
+
+
+class Attachments(Base):
+    __tablename__ = "attachments"
+    id = Column(Integer, primary_key=True)
+    attachname = Column(String)
+
+class Bullets(Base):
+    __tablename__ = "bullets"
+    id = Column(Integer, primary_key=True)
+    bulletname = Column(String)
+    bulletcount = Column(Integer)
+
+class Magazines(Base):
+    __tablename__ = "magazines"
+    id = Column(Integer, primary_key=True)
+    magname = Column(String)
+    magbulletcount = Column(Integer)
+
+    """
+             "name": "CZ527_Camo",
+            "attachments": [
+                "GhillieAtt_ColorBase",
+                "GhillieAtt_Tan",
+                "GhillieAtt_Woodland",
+                "GhillieAtt_Mossy",
+                "HuntingOptic",
+                "ImprovisedSuppressor"
+            ],
+            "bullets": [
+                "Ammo_762x39",
+                "Ammo_762x39Tracer"
+            ],
+            "magazines": [
+                "Mag_CZ527_5rnd"
+            ]"""   
