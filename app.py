@@ -9,7 +9,7 @@ from ui.setprices import TraderEditor
 from xml_manager.xml_writer import XMLWriter
 import tkinter.filedialog as filedialog
 #from utility.combo_box_manager import ComboBoxManager
-from utility import assign_rarity, distribute_nominal, column_definition, categoriesDict, getweapons
+from utility import assign_rarity, distribute_nominal, column_definition, categoriesDict,categoriesNamalskDict, getweapons
 
 class GUI(object):
     def __init__(self, main_container: Tk):
@@ -404,13 +404,28 @@ class GUI(object):
         assign_rarity(items, self.database.session)   
 
     def derivetypessubtypes(self):
-        for Item in self.gridItems:
-            for item_type, subtypes in categoriesDict.get(Item.cat_type).items():
-                for subtype, substrings in subtypes.items():
-                    for item_substring in substrings:
-                        if item_substring in Item.name.lower() and item_substring !="":
-                            Item.item_type = item_type
-                            Item.sub_type = subtype
+        if self.database.get_mapselectValue(1).mapselectvalue == "Namalsk":
+            print("DEBUG derivetypessubtypes we are in a Namalsk map :", )
+            for Item in self.gridItems:
+                try:
+                    for item_type, subtypes in categoriesNamalskDict.get(Item.cat_type).items():
+                        for subtype, substrings in subtypes.items():
+                            for item_substring in substrings:
+                                if item_substring in Item.name.lower() and item_substring !="":
+                                    Item.item_type = item_type
+                                    Item.sub_type = subtype
+                    if Item.cat_type in {"rifles","pistols"}:
+                        Item.cat_type = "weapons"
+                except:
+                    print("DEBUG  :", )
+        else:
+            for Item in self.gridItems:
+                for item_type, subtypes in categoriesDict.get(Item.cat_type).items():
+                    for subtype, substrings in subtypes.items():
+                        for item_substring in substrings:
+                            if item_substring in Item.name.lower() and item_substring !="":
+                                Item.item_type = item_type
+                                Item.sub_type = subtype                        
         self.database.session.commit()                        
 
 

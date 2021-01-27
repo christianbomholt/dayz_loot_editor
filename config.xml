@@ -1,38 +1,38 @@
 <config>
     <databasefile>
-        <database value="Livonia1" />
+        <database value="namalsk5.db" />
     </databasefile>
    
     <tiers>
-        <tier value="Tier1"/>
-        <tier value="Tier2"/>
-        <tier value="Tier3"/>
-        <tier value="Tier4"/>
-        <tier value="Tier5"/>
-        <tier value="Tier6"/>
-        <tier value="Tier7"/>
-        <tier value="Tier8"/>
-        <tier value="Tier9"/>
-        <tier value="Tier10"/>
-        <tier value="Tier11"/>
-        <tier value="Tier12"/>
-        <tier value="Tier13"/>
-        <tier value="Tier14"/>
-        <tier value="Tier15"/>
-        <tier value="Tier16"/>
-        <tier value="Tier17"/>		
-        <tier value="Tier18"/>
-        <tier value="Tier19"/>
-        <tier value="Tier20"/>
-        <tier value="Tier21"/>		
-        <tier value="Tier22"/>
-        <tier value="Tier23"/>
-        <tier value="Tier24"/>
-        <tier value="Tier25"/>		
-        <tier value="Tier26"/>
-        <tier value="Tier27"/>
-        <tier value="Tier28"/>
-        <tier value="Tier29"/>
+        <tier value="Tier1" />
+        <tier value="Tier2" />
+        <tier value="Tier3" />
+        <tier value="Tier4" />
+        <tier value="Tier5" />
+        <tier value="Tier6" />
+        <tier value="Tier7" />
+        <tier value="Tier8" />
+        <tier value="Tier9" />
+        <tier value="Tier10" />
+        <tier value="Tier11" />
+        <tier value="Tier12" />
+        <tier value="Tier13" />
+        <tier value="Tier14" />
+        <tier value="Tier15" />
+        <tier value="Tier16" />
+        <tier value="Tier17" />		
+        <tier value="Tier18" />
+        <tier value="Tier19" />
+        <tier value="Tier20" />
+        <tier value="Tier21" />		
+        <tier value="Tier22" />
+        <tier value="Tier23" />
+        <tier value="Tier24" />
+        <tier value="Tier25" />		
+        <tier value="Tier26" />
+        <tier value="Tier27" />
+        <tier value="Tier28" />
+        <tier value="Tier29" />
     </tiers>
       
     <traders>

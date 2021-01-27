@@ -134,12 +134,9 @@ toolsSubTypesDict = {
 pistolsNamalskSubTypesDict = {
     "pistols": {
         "Sidearms": [],
-        "pistols": ["fnx45","deagle","makarov","glock","colt1911","engraved1911","cz75","mkll"]
+        "pistols": ["fnx45","deagle","makarov","glock","colt1911","engraved1911","cz75","mkii","magnum"]
             }
 }
-
-
-
 
 riflesNamalskSubTypesDict = {
     "rifles": {
@@ -155,14 +152,16 @@ riflesNamalskSubTypesDict = {
             }
 }
 
-
-
-
+explosivesSubtypeDict = {
+    "explosives": {
+        "explosives": ["grenade","mine"]
+            }
+}
 
 weaponSubTypesDict = {
     "ranged": {
         "Sidearms": [],
-        "pistols": ["fnx45","deagle","makarov","glock","colt1911","engraved1911","cz75","mkll"],
+        "pistols": ["fnx45","deagle","makarov","glock","colt1911","engraved1911","cz75","mkii","magnum"],
         "rifles": [],
         "shotguns": ["shotgun","saiga"],
         "submachine guns": ["mp5k","ump45","cz61"],
@@ -228,6 +227,7 @@ categoriesNamalskDict = {
                   "pistols": pistolsNamalskSubTypesDict,
                   "rifles": riflesNamalskSubTypesDict,
                   "weapons": weaponSubTypesDict,
+                  "explosives" : explosivesSubtypeDict,
                   "containers": containerSubTypesDict,
                   "clothes": clothingSubTypesDict,
                   "food": foodSubTypesDict,

@@ -49,6 +49,12 @@ class Mapselect(Base):
     id = Column(Integer, primary_key=True)
     mapselectvalue = Column(String)
 
+"""
+class ItemAttachmentLink(Base):
+    __tablename__ = "attachments"
+    id = Column(Integer, primary_key=True)
+    itemname = Column(String)
+
 
 class Attachments(Base):
     __tablename__ = "attachments"
@@ -67,7 +73,6 @@ class Magazines(Base):
     magname = Column(String)
     magbulletcount = Column(Integer)
 
-    """
              "name": "CZ527_Camo",
             "attachments": [
                 "GhillieAtt_ColorBase",
