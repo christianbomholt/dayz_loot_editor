@@ -56,7 +56,6 @@ clothingSubTypesDict = {
                     "shirts": ["shirt", "blouse"],
                     "hoodies": ["hoodie"],
                     "sweaters": ["sweater"],
-                    "vests": ["vest"],
                     "jackets": ["jacket"],
                     "coats": ["coat"],
                     "suits": ["suit"]
@@ -206,6 +205,12 @@ vehicleSubTypesDict = {
         "truck": ["truck"]}
 }
 
+objectSubTypesDict = {
+    "ai":  {
+        "zombie": ["zmb"],
+        "animal": ["animal"]}
+}
+
 vehiclepartsSubTypesDict = {
     "vehicleparts":  {
         "door": ["door"],
@@ -221,7 +226,8 @@ categoriesDict = {"weapons": weaponSubTypesDict,
                   "tools": toolsSubTypesDict,
                   "vehicles": vehicleSubTypesDict,
                   "vehiclesparts": vehiclepartsSubTypesDict,
-                  "object":{}}
+                  "object":objectSubTypesDict
+                  }
 
 categoriesNamalskDict = {
                   "pistols": pistolsNamalskSubTypesDict,
@@ -234,7 +240,8 @@ categoriesNamalskDict = {
                   "tools": toolsSubTypesDict,
                   "vehicles": vehicleSubTypesDict,
                   "vehiclesparts": vehiclepartsSubTypesDict,
-                  "object":{}}
+                  "object":objectSubTypesDict
+                  }
 
 
 

@@ -29,9 +29,7 @@ class DB(object):
         self.db_name = StringVar()
         self.db_name.set(self.database_name)
         self.db_status = StringVar()
-        self.db_status.set(
-            f"{self.database_name}"
-        )
+        self.db_status.set(f"{self.database_name}")
 #        self.mapselectValue.set(Dao(self.database_name).get_mapselectValue(1).mapselectvalue)
         Label(self.configFrame, textvariable=self.db_status).grid(
             columnspan=2, row=2, column=0, sticky="w"
@@ -55,8 +53,8 @@ class DB(object):
         Button(
             button_frame, text="New DB", width=12, command=self.newDB
         ).grid(row=6, column=1, sticky="w", padx=5)
-        
         self.window.wait_window()
+
 
     def openDB(self):
         db_name = filedialog.askopenfilename(filetypes=[("Sqlite db's", ".db")],defaultextension=".db")
@@ -67,7 +65,7 @@ class DB(object):
         self.__start_db(newDataBase, db_name)
 
     def newDB(self):
-        db_name = filedialog.asksaveasfilename(filetypes=[("Sqlite db's", ".db")])
+        db_name = filedialog.asksaveasfilename(filetypes=[("Sqlite db's", ".db")],defaultextension=".db")
         if "/" in db_name:
             db_name = db_name.split("/")[-1]
         newDataBase = True
@@ -87,7 +85,7 @@ class DB(object):
                 nrows = c.fetchall()[0][0]
             print(f"number of rows in database: { nrows }")
             if nrows == 0:
-                print(f"Initializing rows using 'init.sql'")
+                print(f"Initializing rows using '{mapinit}.sql'")
                 raw_connection.cursor().executescript(open(f"{mapinit}.sql").read())
                 c.execute("select count(*) from items")
                 nrows = c.fetchall()[0][0]
@@ -97,20 +95,16 @@ class DB(object):
             init_database(db_name)
             Dao(db_name).setmapselectValue(mapinit)
             self.config.set_database(db_name)
-            self.db_status.set("Database connected to: " + db_name)
+            self.db_status.set("Database being loaded is: " + db_name)
             self.window.destroy()
         else:
             if Dao(db_name).items_table_exist():
                 self.config.set_database(db_name)
-                self.DbInitValue.set(Dao(self.database_name).get_mapselectValue(1).mapselectvalue)
-                
-                self.db_status.set(
-                "Database connected to: " + db_name
-                )
+                #self.DbInitValue.set(Dao(self.database_name).get_mapselectValue(1).mapselectvalue)
+                self.db_status.set("We are opening: " + db_name)
+                self.window.destroy()
             else:
-                self.db_status.set(
-                    "items table doesn't exist! Please initialize your Database."
-                )      
+                self.db_status.set("items table doesn't exist! Please initialize your Database.")      
          
 
 def testWindow():

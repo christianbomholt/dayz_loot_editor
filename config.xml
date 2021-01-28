@@ -1,6 +1,6 @@
 <config>
     <databasefile>
-        <database value="namalsk5.db" />
+        <database value="deerisle1.db" />
     </databasefile>
    
     <tiers>

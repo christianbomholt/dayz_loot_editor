@@ -43,16 +43,17 @@ class GUI(object):
         self.window.wm_title("Loot Editor v0.98.7 - "+ self.config.get_database()+" used for maptype: " + self.database.get_mapselectValue(1).mapselectvalue)
 
     def initializeapp(self):
+        print("DEBUG initializeapp: before", )
         self.__create_tree_view()
         self.__create_side_bar()
+        self.database = Dao(self.config.get_database())
         self.__initiate_items()
         self.__create_nominal_info()
-        self.window.wm_title("Loot Editor v0.98.7  UPDATED - "+ self.config.get_database()+" used for maptype: " + self.database.get_mapselectValue(1).mapselectvalue)
-
+        self.window.wm_title("Loot Editor v0.98.7  UPDATED - fresh database that is initialized with: " + self.database.get_mapselectValue(1).mapselectvalue)
+        self.__selectmodsfunction___()        
 
     def deselectAllMods(self):
         for k in self.moddict: self.moddict[k].set(0)
-
         self.__selectmodsfunction___()
 
     def selectAllMods(self):
@@ -298,7 +299,6 @@ class GUI(object):
         self.treeView = self.tree
         vertical = ttk.Scrollbar(self.treeFrame, orient=VERTICAL)
         horizontal = ttk.Scrollbar(self.treeFrame, orient=HORIZONTAL)
-
         vertical.grid(row=0, column=1, sticky="ns")
         horizontal.grid(row=1, column=0, sticky="we")
         self.tree.config(yscrollcommand=vertical.set)
@@ -310,10 +310,8 @@ class GUI(object):
     def __create_side_bar(self):
         self.filterFrameHolder = Frame(self.window)
         self.filterFrameHolder.grid(row=0, column=2, sticky="n")
-
         self.filterFrame = LabelFrame(self.filterFrameHolder,width=14, text="Filter")
         self.filterFrame.grid(row=1, column=0, pady=5)
-
         Label(self.filterFrame, text="Category").grid(row=1, column=0, sticky="w")
         Label(self.filterFrame, text="Item type").grid(row=2, column=0, sticky="w")
         Label(self.filterFrame, text="Sub type").grid(row=3, column=0, sticky="w")
@@ -358,18 +356,14 @@ class GUI(object):
     def __create_distribution_block(self):
         self.distribution = LabelFrame(self.filterFrameHolder, text="Nominal Distribution")
         self.distribution.grid(row=6, column=0, padx=20, pady=20)
-
         Label(self.distribution, text="By Displayed Items").grid(row=0, columnspan=2)
-
         Label(self.distribution, text="Target Nominal").grid(row=1, columnspan=2)
-            
         self.desiredNomEntry = Entry(
             self.distribution, textvariable=self.totalNumDisplayed, width=14
         ).grid(row=2, columnspan=2, pady=7)
         self.distributorValue.set("Use Rarity")
         Radiobutton(self.distribution, text="Use Rarity", variable=self.distributorValue, value="Use Rarity") .grid(row=3, column=0,sticky="w")
         Radiobutton(self.distribution, text="Use Nominal", variable=self.distributorValue, value="Use Nominal").grid(row=4, column=0,sticky="w")
-
         Button(
             self.distribution, text="Distribute", width=12, command=self.__distribute_nominal
         ).grid(row=5, columnspan=2, pady=10)
@@ -393,8 +387,6 @@ class GUI(object):
 
     def testfunc(self):
         assign_rarity(self.gridItems.filter(Item.nominal>0).all(), self.database.session)
-        
-        # print("DEBUG testfunc :", self.database.get_mapselectValue(1).mapselectvalue)
 
     def dump2sql(self):
         self.database.sql_dbDump()
@@ -417,7 +409,7 @@ class GUI(object):
                     if Item.cat_type in {"rifles","pistols"}:
                         Item.cat_type = "weapons"
                 except:
-                    print("DEBUG  :", )
+                    print("DEBUG item category not found :", Item.cat_type, Item.name)
         else:
             for Item in self.gridItems:
                 for item_type, subtypes in categoriesDict.get(Item.cat_type).items():
@@ -445,15 +437,12 @@ class GUI(object):
             self.type_for_filter.set("all")
 
     def __selectmodsfunction___(self):        
-        
         values = [(mod, var.get()) for mod, var in self.moddict.items()]
         self.moddlist = values
         self.selected_mods = [x[0] for x in self.moddlist if x[1]==1]
-            
         items = self.database.session.query(Item).filter(Item.mod.in_ (self.selected_mods))
         self.gridItems = items
         self.__populate_items(self.gridItems)
-
         self.__create_nominal_info()
         self.type_for_filter.set("all")
         self.sub_type_for_filter.set("all")

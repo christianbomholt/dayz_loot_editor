@@ -89,6 +89,7 @@ class Dao(object):
         db_connection = sqlite3.connect(self.db_name)
         with open(filename, 'w') as f:
             for line in db_connection.iterdump():
+                line = line.replace('\u202c', '')
                 f.write('%s\n' % line)
 
 #***********************Selects for Trader Prices ***************************************************
