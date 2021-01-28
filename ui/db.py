@@ -83,7 +83,6 @@ class DB(object):
             if engine.has_table("items"):
                 c.execute("select count(*) from items")
                 nrows = c.fetchall()[0][0]
-            print(f"number of rows in database: { nrows }")
             if nrows == 0:
                 print(f"Initializing rows using '{mapinit}.sql'")
                 raw_connection.cursor().executescript(open(f"{mapinit}.sql").read())
@@ -91,7 +90,6 @@ class DB(object):
                 nrows = c.fetchall()[0][0]
                 print(f"Inserted { nrows } in the database")
             raw_connection.commit()
-            #InitDatabase(db_name)
             init_database(db_name)
             Dao(db_name).setmapselectValue(mapinit)
             self.config.set_database(db_name)

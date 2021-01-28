@@ -43,7 +43,6 @@ class GUI(object):
         self.window.wm_title("Loot Editor v0.98.7 - "+ self.config.get_database()+" used for maptype: " + self.database.get_mapselectValue(1).mapselectvalue)
 
     def initializeapp(self):
-        print("DEBUG initializeapp: before", )
         self.__create_tree_view()
         self.__create_side_bar()
         self.database = Dao(self.config.get_database())
