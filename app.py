@@ -47,6 +47,9 @@ class GUI(object):
         self.__create_tree_view()
         self.__create_side_bar()
         self.database = Dao(self.config.get_database())
+        items = self.database.session.query(Item).filter(Item.mod.in_ (self.selected_mods))
+        self.gridItems = items
+        self.__populate_items(self.gridItems)
         self.__initiate_items()
         self.__create_nominal_info()
         self.window.wm_title("Loot Editor v0.98.7  UPDATED - fresh database that is initialized with: " + self.database.get_mapselectValue(1).mapselectvalue)

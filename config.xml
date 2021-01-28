@@ -1,6 +1,6 @@
 <config>
     <databasefile>
-        <database value="deerisle1.db" />
+        <database value="Chernarus3.db" />
     </databasefile>
    
     <tiers>
