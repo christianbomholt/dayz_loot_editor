@@ -1,6 +1,6 @@
 <config>
     <databasefile>
-        <database value="Chernarus3.db" />
+        <database value="hunter.db" />
     </databasefile>
    
     <tiers>

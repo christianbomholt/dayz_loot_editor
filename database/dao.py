@@ -103,7 +103,7 @@ class Dao(object):
         return results
 # Used in Set prices
     def get_traderitemstupl(self, traderSel, sub_type, selected_Mods):
-        results = self.session.query(Item).filter(and_(Item.trader==(traderSel),Item.sub_type==(sub_type),Item.mod.in_(selected_Mods))).all()
+        results = self.session.query(Item).filter(and_(Item.trader==(traderSel),Item.sub_type==(sub_type),Item.mod.in_(selected_Mods))).order_by(Item.sub_type).all()
         return [u.__dict__ for u in results]
 # Used in Set prices to save to DB
     def setTraderValues_fast(self, values):

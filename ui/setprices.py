@@ -169,7 +169,7 @@ class TraderEditor(object):
         self.canv.grid(row=0, column=0, sticky="nsew")
         self.canvFrame = Frame(self.canv, height=height, width=width)
         self.canv.create_window(0, 0, window=self.canvFrame, anchor='nw')
-
+        
         for i in items:
             traderCat = i.get("traderCat")
             subtype = i.get("sub_type")

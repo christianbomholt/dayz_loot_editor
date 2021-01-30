@@ -2,16 +2,17 @@ import pyperclip
 #from windows import addToClipboard
 from math import ceil
 
+
 rarityForTrader = {"undefined": 0,
-             "Legendary": 50,
-             "Extremely Rare": 45,
-             "Very Rare": 40,
-             "Rare": 35,
+             "Legendary": 10,
+             "Extremely Rare": 15,
+             "Very Rare": 20,
+             "Rare": 25,
              "Somewhat Rare": 30,
-             "Uncommon": 25,
-             "Common": 20,
-             "Very Common": 15,
-             "All Over The Place": 10}
+             "Uncommon": 35,
+             "Common": 40,
+             "Very Common": 45,
+             "All Over The Place": 50}             
 
 def getKey(item):
     return int(item[2])
@@ -60,6 +61,7 @@ def getDistribution(rows, rarity_is_set):
         for item in rows:
             if item[0] != 0:
                 raritySet.add(rarityForTrader[item[0]])
+                print("DEBUG getDistribution :",rarityForTrader[item[0]])
     else:
         for item in rows:
             raritySet.add(item[1])
@@ -78,7 +80,7 @@ def stretch(distribution):
 
 def scale(maxP, minP, newMax, newMin, todistribute):
     newPoints = []
-
+    print("DEBUG  :", maxP,minP,newMax,newMin)
     for point in todistribute:
         if ((maxP - minP) + newMin) != 0:
             newPoint = (point - minP)*((newMax - newMin) / (maxP - minP)) + newMin

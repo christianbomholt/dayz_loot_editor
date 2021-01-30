@@ -52,7 +52,7 @@ class GUI(object):
         self.__initiate_items()
         self.__create_nominal_info()
         self.window.wm_title("Loot Editor v0.98.7  UPDATED - fresh database that is initialized with: " + self.database.get_mapselectValue(1).mapselectvalue)
-        self.__selectmodsfunction___()        
+        #self.__selectmodsfunction___()        
 
     def deselectAllMods(self):
         for k in self.moddict: self.moddict[k].set(0)
@@ -379,13 +379,13 @@ class GUI(object):
             width=14,
             command=self.openTraderEditor,
         ).grid(row=2)
-        
+        """
         Button(
             self.buttons_frame,
             text="Test Button",
             width=14,
             command=self.testfunc,
-        ).grid(row=3)
+        ).grid(row=3)"""
 
     def testfunc(self):
         assign_rarity(self.gridItems.filter(Item.nominal>0).all(), self.database.session)
