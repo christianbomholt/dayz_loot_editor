@@ -96,7 +96,8 @@ class PyperclipWindowsException(PyperclipException):
 
 def _stringifyText(text):
     if PY2:
-        acceptedTypes = (unicode, str, int, float, bool)
+        pass
+        #acceptedTypes = (unicode, str, int, float, bool)
     else:
         acceptedTypes = (str, int, float, bool)
     if not isinstance(text, acceptedTypes):

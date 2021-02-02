@@ -4,6 +4,7 @@ from math import ceil
 
 
 rarityForTrader = {"undefined": 0,
+            "Not in CE" : 0,
              "Legendary": 10,
              "Extremely Rare": 15,
              "Very Rare": 20,

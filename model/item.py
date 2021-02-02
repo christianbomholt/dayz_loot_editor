@@ -54,6 +54,8 @@ class ItemAttachmentLink(Base):
     __tablename__ = "attachments"
     id = Column(Integer, primary_key=True)
     itemname = Column(String)
+    attachname = Column(String)
+    magname = Column(String)
 
 
 class Attachments(Base):

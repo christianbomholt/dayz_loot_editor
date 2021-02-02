@@ -8,6 +8,7 @@ from ui.new_items import NewItems
 from ui.setprices import TraderEditor
 from xml_manager.xml_writer import XMLWriter
 import tkinter.filedialog as filedialog
+import webbrowser
 #from utility.combo_box_manager import ComboBoxManager
 from utility import assign_rarity, distribute_nominal, column_definition, categoriesDict,categoriesNamalskDict, getweapons
 
@@ -29,6 +30,7 @@ class GUI(object):
         self.nomVars = []
         self.weaponNomTypes = {"gun":0, "ammo":0, "optic":0, "mag":0, "attachment":0}
         self.distributorValue = StringVar()
+        self.searchName = StringVar()
 
         #
         self.__create_menu_bar()
@@ -52,7 +54,7 @@ class GUI(object):
         self.__initiate_items()
         self.__create_nominal_info()
         self.window.wm_title("Loot Editor v0.98.7  UPDATED - fresh database that is initialized with: " + self.database.get_mapselectValue(1).mapselectvalue)
-        #self.__selectmodsfunction___()        
+#self.__selectmodsfunction___()        
 
     def deselectAllMods(self):
         for k in self.moddict: self.moddict[k].set(0)
@@ -102,14 +104,13 @@ class GUI(object):
         tools_menu.add_command(label="Assign Rarity from nominal", command=self.func2assign_raritiy)
         tools_menu.add_separator()
         tools_menu.add_command(label="Dump database to sql file", command=self.dump2sql)
-        
-        
 
 #building menu bar
         self.menu_bar.add_cascade(label="File", menu=file_menu)
         self.menu_bar.add_cascade(label="Mods In Use", menu=mods_menu)
         self.menu_bar.add_cascade(label="Help", menu=help_menu)
         self.menu_bar.add_cascade(label="Tools", menu=tools_menu)
+
 
 
 #configuring menu bar
@@ -343,15 +344,31 @@ class GUI(object):
         Button(
             self.filterFrame, text="Filter", width=12, command=self.__filter_items
         ).grid(row=4, columnspan=2, pady=5, padx=10, sticky="nesw")
-        self.buttons_frame = Frame(self.filterFrame)
-        self.buttons_frame.grid(row=6, columnspan=2)
-    
+        self.serchName = Entry(self.filterFrame, textvariable=self.searchName, width=14).grid(row=5, columnspan=2, pady=5, padx=10, sticky="nesw")
         Button(
-            self.buttons_frame,
+            self.filterFrame,
             text="Search like Name",
             width=14,
             command=self.__search_like_name,
-        ).grid(row=1)
+        ).grid(row=6, columnspan=2, pady=5, padx=10, sticky="nesw")
+
+
+#
+# This is were we have the test button
+#         
+        Button(
+            self.filterFrame,
+            text="Trader Editor",
+            width=14,
+            command=self.openTraderEditor,
+        ).grid(row=7, columnspan=2, pady=5, padx=10, sticky="nesw")
+        
+        Button(
+            self.filterFrame,
+            text="Donate !",
+            width=14,
+            command=self.callback,
+        ).grid(row=8, columnspan=2, pady=5, padx=10, sticky="nesw")
 
 
 # Distribution block
@@ -370,25 +387,12 @@ class GUI(object):
             self.distribution, text="Distribute", width=12, command=self.__distribute_nominal
         ).grid(row=5, columnspan=2, pady=10)
 
-#
-# This is were we have the test button
-#         
-        Button(
-            self.buttons_frame,
-            text="Trader Editor",
-            width=14,
-            command=self.openTraderEditor,
-        ).grid(row=2)
-        """
-        Button(
-            self.buttons_frame,
-            text="Test Button",
-            width=14,
-            command=self.testfunc,
-        ).grid(row=3)"""
 
-    def testfunc(self):
-        assign_rarity(self.gridItems.filter(Item.nominal>0).all(), self.database.session)
+
+    def callback(self):
+        new = 2
+        url = "https://www.paypal.com/paypalme/Luskerne"
+        webbrowser.open(url,new = new)       
 
     def dump2sql(self):
         self.database.sql_dbDump()
@@ -526,8 +530,9 @@ class GUI(object):
         
 
     def __search_like_name(self):
-        if self.name.get() != "":
-            items = self.database.search_like_name(self.name.get())
+        #if self.name.get() != "":
+        if self.searchName.get() != "":
+            items = self.database.search_like_name(self.searchName.get())
             self.__populate_items(items)
             self.gridItems = items
 
@@ -606,6 +611,8 @@ class GUI(object):
         items = self.database.session.query(Item).filter(Item.mod.in_ (self.selected_mods))
         self.gridItems = items
         self.__populate_items(items.all())
+        self.menu_bar.delete(1)
+        self.__create_menu_bar()
         
 
     def __export_xml(self,mapname):
