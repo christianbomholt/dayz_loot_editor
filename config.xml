@@ -1,77 +1,57 @@
 <config>
-    <usages>
-        <usage value="Town"/>
-        <usage value="Police"/>
-        <usage value="Military"/>
-        <usage value="item4"/>
-    </usages>
+    <databasefile>
+        <database value="DemoVideo1.db" />
+    </databasefile>
+   
     <tiers>
-        <tier value="Tier1"/>
-        <tier value="Tier2"/>
-        <tier value="Tier3"/>
-        <tier value="Tier4"/>
+        <tier value="Tier1" />
+        <tier value="Tier2" />
+        <tier value="Tier3" />
+        <tier value="Tier4" />
+        <tier value="Tier5" />
+        <tier value="Tier6" />
+        <tier value="Tier7" />
+        <tier value="Tier8" />
+        <tier value="Tier9" />
+        <tier value="Tier10" />
+        <tier value="Tier11" />
+        <tier value="Tier12" />
+        <tier value="Tier13" />
+        <tier value="Tier14" />
+        <tier value="Tier15" />
+        <tier value="Tier16" />
+        <tier value="Tier17" />		
+        <tier value="Tier18" />
+        <tier value="Tier19" />
+        <tier value="Tier20" />
+        <tier value="Tier21" />		
+        <tier value="Tier22" />
+        <tier value="Tier23" />
+        <tier value="Tier24" />
+        <tier value="Tier25" />		
+        <tier value="Tier26" />
+        <tier value="Tier27" />
+        <tier value="Tier28" />
+        <tier value="Tier29" />
     </tiers>
-	<categoryes>
-	    <category value="all"/>
-        <category value="other"/>	
-	    <category value="clothes"/>
-        <category value="containers"/>
-        <category value="explosives"/>
-        <category value="food"/>
-        <category value="tools"/>
-        <category value="weapons"/>
-	</categoryes>	
-    <types>
-        <type value="all"/>
-        <type value="type"/>
-        <type value="type1"/>
-        <type value="type2"/>
-    </types>
-    <sub_types>
-        <sub_type value="all"/>
-        <sub_type value="Sub Type 1"/>
-        <sub_type value="Sub Type 2"/>
-    </sub_types>
+      
     <traders>
-	    <trader value="Trader 1"/>
-        <trader value="Trader 2"/>
-        <trader value="Trader 3"/>
+	    <trader value="Trader 1" />
+        <trader value="Trader 2" />
+        <trader value="Trader 3" />
     </traders>
-    <mods>
-	    <mod value="Vanilla"/>
-        <mod value="Mod 1"/>
-        <mod value="Mod 2"/>
-    </mods>
-    <rairties>
-        <rarity value="undefined"/>
-        <rarity value="Legendary"/>
-        <rarity value="Extremely Rare"/>
-        <rarity value="Very Rare"/>
-        <rarity value="Rare"/>
-        <rarity value="Somewhat Rare"/>
-        <rarity value="Uncommon"/>
-        <rarity value="Common"/>
-        <rarity value="Very Common"/>
-        <rarity value="All Over The Place"/>
+    
+    <rairties> 
+        <rarity value="undefined" />
+        <rarity value="Not in CE" />
+        <rarity value="Legendary" />
+        <rarity value="Extremely Rare" />
+        <rarity value="Very Rare" />
+        <rarity value="Rare" />
+        <rarity value="Somewhat Rare" />
+        <rarity value="Uncommon" />
+        <rarity value="Common" />
+        <rarity value="Very Common" />
+        <rarity value="All Over The Place" />
     </rairties>
-    <tree>
-        <node text="Name" width ="250" col_id="#1" stretch="YES"/>
-        <node text="Nominal" width ="60" col_id="#2" stretch="YES"/>
-        <node text="Min" width="50" col_id="#3" stretch="No"/>
-        <node text="Restock" width="60" col_id="#4" stretch="YES"/>
-        <node text="Lifetime" width="60" col_id="#5" stretch="YES"/>
-        <node text="Usage" width="200" col_id="#6" stretch="YES"/>
-        <node text="Tier" width="200" col_id="#7" stretch="YES"/>
-        <node text="Rarity" width="60" col_id="#8" stretch="YES"/>
-		<node text="Category" width="60" col_id="#9" stretch="YES"/>
-        <node text="Type" width="60" col_id="#10" stretch="YES"/>
-        <node text="Sub Type" width="60" col_id="#11" stretch="YES"/>
-        <node text="Mod" width="60" col_id="#12" stretch="YES"/>
-        <node text="Trader" width="60" col_id="#13" stretch="YES"/>
-        <node text="D" width="20" col_id="#14" stretch="NO"/>
-        <node text="H" width="20" col_id="#15" stretch="NO"/>
-        <node text="C" width="20" col_id="#16" stretch="NO"/>
-        <node text="P" width="20" col_id="#17" stretch="NO"/>
-        <node text="M" width="20" col_id="#18" stretch="NO"/>
-    </tree>
 </config>

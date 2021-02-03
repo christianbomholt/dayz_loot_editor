@@ -8,107 +8,86 @@ from utility.categories import traderCatSwitcher
 from utility.exportTrader import createTrader, distribute
 from utility.exportTrader import rarityForTrader
 from config import ConfigManager
-from config.ini_manager import INIManager
-
 
 class TraderEditor(object):
     def __init__(self, root, selectedMods):
         self.window = Toplevel(root)
+
         self.window.wm_title("Set Prices for trader config")
         self.window.grab_set()
         self.selectedMods = selectedMods
         self.traderVal = []
         self.config = ConfigManager("config.xml")
-        self.ini_manger = INIManager("app.ini")
-        self.database = Dao(self.ini_manger.read_ini("Database", "Database_Name"))    
+        self.database = Dao(self.config.get_database())
         self.seltrader = ""
         self.main = Frame(self.window)
         self.main.grid()
         self.createSubTypes("all")
-        self.createTraderEditor(self.window, 0, 1, [])
+        self.createTraderEditor(self.window, 0, 1)
         self.createTraderSetting(self.window, 1, 1)
         self.subTypeListbox.bind("<<ListboxSelect>>", self.fillTraderWindow)
         
 
     def setseltrader(self,value):
-        self.seltrader = value    
+        self.seltrader = value
+        self.traderupdate()
 
     def createSubTypes(self, seltrader):
         subtypesFrame = Frame(self.main)
-        subtypesFrame.grid()
+        subtypesFrame.grid(row=2, column=1, columnspan=1, pady=10)
+
         self.seltrader = StringVar()
         self.traderSel = OptionMenu(
             subtypesFrame, self.seltrader, *self.config.get_traders(), command=self.setseltrader
         )
         self.traderSel.grid(row=0, column=1, sticky="w", pady=5)
         self.seltrader.set(self.config.get_traders()[0])
+        self.seltrader = self.config.get_traders()[0]
 
         self.subTypeListbox = Listbox(subtypesFrame, width=35, height=30, exportselection=False)
         self.subTypeListbox.grid(row = 1, column=1, sticky="ns", padx=10)
-        subTypes = set()
 
-        for mod in self.selectedMods:
-            for subtype_in_mod in Dao.getSubtypesMods(self, mod):
-                subTypes.add(subtype_in_mod)
+        subTypeLst = self.database.get_tradersubtypetupl(self.seltrader,self.selectedMods)   
 
-        for subType in sorted(subTypes):
+        for subType in subTypeLst:
             if subType == "":
                 subType = "UNASSIGNED"
-
             self.subTypeListbox.insert(END, subType)
 
-    def createTraderEditor(self, root, row, column, rows):
-        self.drawEditor(root, row, column, self.setTraderCat(rows))
 
-    def setTraderCat(self, rows):
-        for i in range(len(rows)):
-            traderCat = rows[i][2]
-            if traderCat == "" or traderCat == None:
-                rows[i][2] = traderCatSwitcher(rows[i][1])
-        return rows
+    def traderupdate(self):
+        subTypeLst = self.database.get_tradersubtypetupl(self.seltrader,self.selectedMods)
+        self.subTypeListbox.delete(0,'end')
+        print("DEBUG traderupdate:", subTypeLst)   
+        for subType in subTypeLst:
+            if subType == "":
+                subType = "UNASSIGNED"
+            self.subTypeListbox.insert(END, subType)       
 
-    def drawEditor(self, root, row, column, rows):
-        height = 480
-        width = 400
-        self.frame = Frame(root, height=height, width=width)
-        self.frame.grid(row=row, column=column, sticky="nw", pady=20)
-        self.frame.rowconfigure(0, weight=1)
-        self.frame.columnconfigure(0, weight=1)
+    def testdef(self):
+        traderitem = self.database.get_traderpricingtupl(self.seltrader,"Rifles",self.selectedMods)
+        
+    
 
-        self.canv = Canvas(self.frame, height=height, width=width)
-        self.canv.grid(row=0, column=0, sticky="nsew")
+    def createTraderEditor(self, root, row, column):    
+        self.fillTraderWindow(root)
 
-        self.canvFrame = Frame(self.canv, height=height, width=width)
-        self.canv.create_window(0, 0, window=self.canvFrame, anchor='nw')
-
-
-        for item in rows:
-            self.traderRow(self.canvFrame, *item)
-
-        scrl = Scrollbar(self.frame, orient=VERTICAL)
-        scrl.config(command=self.canv.yview)
-        self.canv.config(yscrollcommand=scrl.set)
-        scrl.grid(row=0, column=1, sticky="ns")
-
-        root.rowconfigure(row, weight=1)
-        root.columnconfigure(column, weight=1)
-
-        self.canvFrame.bind("<Configure>", self.update_scrollregion)
+    # name-0, subtype-1, tradercat-2, buyprice-3, sellprice, rarity, nominal, traderexclude, mod
+    def setTraderCat(self,traderCat, subtype):
+        if traderCat == "" or traderCat == None:
+            traderCat = traderCatSwitcher(subtype)
+        return traderCat
 
     def createTraderSetting(self, root, row, column):
         radioFrame = Frame(root)
         radioFrame.grid(row=row, column=column, sticky="w", pady=5)
-
         MODES = [("Use Rarity", "rar"), ("Use Nominal", "nom")]
         self.v = StringVar()
         self.v.set("rar")
-
         Radiobutton(radioFrame, text=MODES[0][0], variable=self.v, value=MODES[0][1]).grid(row=0, column=0)
         Radiobutton(radioFrame, text=MODES[1][0], variable=self.v, value=MODES[1][1]).grid(row=0, column=1)
-
         frame = Frame(root)
         frame.grid(row=row + 1, column=column, sticky="w", pady=5)
-
         self.buyEntires = self.createPriceBlock(frame, "Buy Price", 0, 0)
         self.sellEntries = self.createPriceBlock(frame, "Sell Price", 0, 1)
         buttonFrame = Frame(root)
@@ -170,33 +149,43 @@ class TraderEditor(object):
         buyPriceEntry.grid(row=0, column=3, padx=xpad)
         sellPriceEntry = Entry(frame, textvariable=sellPriceVar, width=8)
         sellPriceEntry.grid(row=0, column=4, padx=xpad)
-
         self.traderVal.append(([traderCatEntry, buyPriceEntry, sellPriceEntry, doExclude], [rarity, name, nominal]))
 
-    def clearTraderWindow(self):
-        self.frame.grid_forget()
-        self.traderVal = []
-
-    def fillTraderWindow(self, event):
-        self.clearTraderWindow()
+    #def fillTraderWindow(self,parent, event):
+    def fillTraderWindow(self,parent):
+        root = self.window        
         selSubtype = self.subTypeListbox.get(ANCHOR)
         selSubtype = "" if selSubtype == "UNASSIGNED" else selSubtype
-
-        itemsOfSubtype = Dao.getSubtypeForTrader(self, selSubtype)
-        traderitemstupl = self.database.get_traderitemstupl(self.seltrader,selSubtype,self.selectedMods)
-        print("DEBUG selectedMods: ",traderitemstupl)
-        itemsOfSubtypeOfSelectedMods = []
-
-        for item in itemsOfSubtype:
-            if item[-1] in self.selectedMods:
-                itemsOfSubtypeOfSelectedMods.append(item[:-1])
-
-        self.createTraderEditor(self.window, 0, 1, itemsOfSubtypeOfSelectedMods)
+        items = self.database.get_traderitemstupl(self.seltrader,selSubtype,self.selectedMods)
+        height = 480
+        width = 400
+        self.frame = Frame(root, height=height, width=width)
+        self.frame.grid_forget()
+        self.traderVal = []        
+        self.frame.grid(row=0, column=1, sticky="nw", pady=20)
+        self.frame.rowconfigure(0, weight=1)
+        self.frame.columnconfigure(0, weight=1)
+        self.canv = Canvas(self.frame, height=height, width=width)
+        self.canv.grid(row=0, column=0, sticky="nsew")
+        self.canvFrame = Frame(self.canv, height=height, width=width)
+        self.canv.create_window(0, 0, window=self.canvFrame, anchor='nw')
+        
+        for i in items:
+            traderCat = i.get("traderCat")
+            subtype = i.get("sub_type")
+            traderCat = self.setTraderCat(traderCat,subtype)
+            self.traderRow(self.canvFrame, i.get("name"), subtype, traderCat, i.get("buyprice"), i.get("sellprice"), i.get("rarity"), i.get("nominal"), i.get("traderExclude"))
+        scrl = Scrollbar(self.frame, orient=VERTICAL)
+        scrl.config(command=self.canv.yview)
+        self.canv.config(yscrollcommand=scrl.set)
+        scrl.grid(row=0, column=1, sticky="ns")
+        root.rowconfigure(0, weight=1)
+        root.columnconfigure(1, weight=1)
+        self.canvFrame.bind("<Configure>", self.update_scrollregion)
 
     def createLabel(self, root, text, row, column, sticky="w", px=5, py=5):
         Label(root, text=text).grid(row=row, column=column, sticky=sticky, padx=px, pady=py)
 
-    # traderCat, buyprice, sellprice, traderExclude, rarity, name
     def createValues(self):
         values = []
         for i in range(len(self.traderVal)):
@@ -210,7 +199,6 @@ class TraderEditor(object):
 
     def update(self):
         values = self.createValues()
-        print("DEBUG Values: ", values)
         self.database.setTraderValues_fast(values)
 
     def createTrader(self):
@@ -218,18 +206,19 @@ class TraderEditor(object):
         items = self.createValues()
         newItems = []
         for item in items:
+                        # name, traderCat, buyPrice, sellPrice, rarity
             newItem = [item[5], item[0], item[1], item[2], item[3], item[4]]
-            print("DEBUG NewItem: ", newItem)
             newItems.append(newItem)
-        # name, traderCat, buyPrice, sellPrice, rarity
         createTrader(self.window, sub_type, newItems)
 
     def applyFractions(self):
         selSubtype = self.subTypeListbox.get(ANCHOR)
         selSubtype = "" if selSubtype == "UNASSIGNED" else selSubtype
-        # name, subtype, tradercat, buyprice, sellprice, rarity, nominal, traderexclude
-        item = Dao.getSubtypeForTrader(self, selSubtype)
-
+        item = []
+        traderitem = self.database.get_traderpricingtupl(self.seltrader,selSubtype,self.selectedMods)
+        for i in traderitem:
+            item.append(i)
+    
         # buyprice, sellprice, tradercat, subtype, name
         for item in self.traderVal:
             sellprice = int(float(item[0][1].get()) * float(self.frac.get())) if item[0][1].get() != "-1" else -1
@@ -240,17 +229,15 @@ class TraderEditor(object):
         rarity_is_set = True if self.v.get() == "rar" else False
         selSubtype = self.subTypeListbox.get(ANCHOR)
         selSubtype = "" if selSubtype == "UNASSIGNED" else selSubtype
-        #print("DEBUG in DistributePricing ", selSubtype)
-        # name, subtype, tradercat, buyprice, sellprice, rarity, nominal, traderexclude
-        itemsOfSubtype = Dao.getSubtypeForTrader(self, selSubtype)
+        item = []
+        traderitem = self.database.get_traderpricingtupl(self.seltrader,selSubtype,self.selectedMods)
         rarities = []
-
+        for i in traderitem:
+            item.append(i)
         # rarity, nominal
-        for item in itemsOfSubtype:
-            #print("DEBUG Item", item)
+        for item in item:
             rarities.append((item[5], item[6]))
         try:
-            #print("DEBUG Rarities", rarities)
             pricing = distribute(rarities, int(self.buyEntires[0].get()), int(self.buyEntires[1].get()),
                                  int(self.sellEntries[0].get()), int(self.sellEntries[1].get()), rarity_is_set)
         except IndexError:

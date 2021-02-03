@@ -1,5 +1,7 @@
 import xml.etree.ElementTree as ET
 from model.item import Item
+from config import ConfigManager
+
 
 
 def is_mag(name):
@@ -29,6 +31,7 @@ class XMLParser(object):
         self.string_data = string_data
         self.xml = ET.fromstring(self.string_data)
         self.mod_prefixes = ["Mass", "GP_", "gp_", "FP4_"]
+        self.config = ConfigManager("config.xml")
         self.not_gun_keywords = [
             "lrs",
             "ammo",
@@ -51,13 +54,17 @@ class XMLParser(object):
             "hndgrd",
         ]
 
-    def get_items(self):
+    def get_items(self, mapname):
         items = list()
+        usage_name = "usage" if mapname == "Normal Map" else "tag"
+        tier_attrib = "name" if mapname == "Normal Map" else "user"
         for item_value in self.xml.iter("type"):
             item = Item()
             usages = list()
             tiers = list()
             item.name = item_value.attrib["name"]
+            if item_value.find('category') is None:
+                item.cat_type ='object'    
             for i in item_value:
                 if i.tag == "nominal":
                     item.nominal = i.text
@@ -66,23 +73,27 @@ class XMLParser(object):
                 elif i.tag == "min":
                     item.min = i.text
                 elif i.tag == "category":
-                    category = i.attrib["name"]
-                    if category != "weapons":
-                        item.item_type = category
-                    else:
-                        item.item_type = self.__get_type(name=item.name)
+                    item.cat_type = i.attrib["name"]
                 elif i.tag == "lifetime":
                     item.lifetime = i.text
-                elif i.tag == "usage":
-                    usages.append(i.attrib["name"])
+                elif i.tag == usage_name:
+                    try:
+                        usages.append(i.attrib["name"])
+                    except:
+                        pass
+                        #print("DEBUG xmlParser, usage fix")    
                 elif i.tag == "value":
-                    tiers.append(i.attrib["name"])
+                    try:
+                        tiers.append(i.attrib[tier_attrib])
+                    except KeyError:
+                        pass                        
                 elif i.tag == "flags":
                     item.dynamic_event = i.attrib["deloot"]
                     item.count_in_hoarder = i.attrib["count_in_hoarder"]
                     item.count_in_cargo = i.attrib["count_in_cargo"]
                     item.count_in_player = i.attrib["count_in_player"]
                     item.count_in_map = i.attrib["count_in_map"]
+
             item.usage = ",".join(usages)
             item.tier = ",".join(tiers)
             items.append(item)

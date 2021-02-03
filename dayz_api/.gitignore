@@ -1,0 +1,4 @@
+.aws-sam
+.vscode
+*.pyc
+__pychache__/
