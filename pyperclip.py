@@ -68,7 +68,7 @@ EXCEPT_MSG = """
 
 PY2 = sys.version_info[0] == 2
 
-STR_OR_UNICODE = unicode if PY2 else str # For paste(): Python 3 uses str, Python 2 uses unicode.
+STR_OR_UNICODE = str # For paste(): Python 3 uses str, Python 2 uses unicode.
 
 ENCODING = 'utf-8'
 

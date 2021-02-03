@@ -1,6 +1,6 @@
 <config>
     <databasefile>
-        <database value="DemoVideo1.db" />
+        <database value="TestNamalsk1.db" />
     </databasefile>
    
     <tiers>

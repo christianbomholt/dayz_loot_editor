@@ -42,7 +42,7 @@ class GUI(object):
         self.__create_distribution_block()        
         #
         self.tree.bind("<ButtonRelease-1>", self.__fill_entry_frame)
-        self.window.wm_title("Loot Editor v0.98.7 - "+ self.config.get_database()+" used for maptype: " + self.database.get_mapselectValue(1).mapselectvalue)
+        self.window.wm_title("Loot Editor v0.98.8 - "+ self.config.get_database()+" used for maptype: " + self.database.get_mapselectValue(1).mapselectvalue)
 
     def initializeapp(self):
         self.__create_tree_view()
@@ -53,7 +53,7 @@ class GUI(object):
         self.__populate_items(self.gridItems)
         self.__initiate_items()
         self.__create_nominal_info()
-        self.window.wm_title("Loot Editor v0.98.7  UPDATED - fresh database that is initialized with: " + self.database.get_mapselectValue(1).mapselectvalue)
+        self.window.wm_title("Loot Editor v0.98.8  UPDATED - fresh database that is initialized with: " + self.database.get_mapselectValue(1).mapselectvalue)
 #self.__selectmodsfunction___()        
 
     def deselectAllMods(self):

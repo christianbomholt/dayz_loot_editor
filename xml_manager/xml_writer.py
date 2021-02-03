@@ -35,13 +35,17 @@ def get_type_block(item: Item,mapname):
 
     category = ET.SubElement(type_block, "category")
     if mapname == "Namalsk":
-        if item.item_type == "ranged":
-            if item.subtyp == "pistols":
-                category.set("name", str("pistol"))
+        if item.item_type is not None:
+            if item.item_type == "ranged":
+                if item.sub_type == "pistols":
+                    category.set("name", str("pistol"))
+                else:
+                    category.set("name", str("rifles"))
             else:
-                category.set("name", str("rifles"))
+                category.set("name", str(item.cat_type))
         else:
-            category.set("name", str(item.cat_type))
+            category.set("name", str(item.cat_type))        
+
     else:                
         category.set("name", str(item.cat_type))
     #
