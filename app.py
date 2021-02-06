@@ -146,21 +146,25 @@ class GUI(object):
         Label(self.entryFrame, text="Name").grid(row=0, column=0, sticky="w", pady=5)
         Label(self.entryFrame, text="Nominal").grid(row=1, column=0, sticky="w", pady=5)
         Label(self.entryFrame, text="Min").grid(row=2, column=0, sticky="w", pady=5)
-        Label(self.entryFrame, text="Restock").grid(row=3, column=0, sticky="w", pady=5)
-        Label(self.entryFrame, text="Lifetime").grid(row=4, column=0, sticky="w", pady=5)
-        Label(self.entryFrame, text="Usages").grid(row=5, column=0, sticky="w", pady=5)
-        Label(self.entryFrame, text="Tiers").grid(row=6, column=0, sticky="w", pady=5)
-        Label(self.entryFrame, text="Category").grid(row=7, column=0, sticky="w", pady=5)
-        Label(self.entryFrame, text="Type").grid(row=8, column=0, sticky="w", pady=5)
-        Label(self.entryFrame, text="Sub Type").grid(row=9, column=0, sticky="w", pady=5)
-        Label(self.entryFrame, text="Rarity").grid(row=10, column=0, sticky="w", pady=5)
-        Label(self.entryFrame, text="Mod").grid(row=11, column=0, sticky="w", pady=5)
-        Label(self.entryFrame, text="Trader").grid(row=12, column=0, sticky="w", pady=5)
+        Label(self.entryFrame, text="QMin").grid(row=3, column=0, sticky="w", pady=5)
+        Label(self.entryFrame, text="QMax").grid(row=4, column=0, sticky="w", pady=5)
+        Label(self.entryFrame, text="Restock").grid(row=5, column=0, sticky="w", pady=5)
+        Label(self.entryFrame, text="Lifetime").grid(row=6, column=0, sticky="w", pady=5)
+        Label(self.entryFrame, text="Usages").grid(row=7, column=0, sticky="w", pady=5)
+        Label(self.entryFrame, text="Tiers").grid(row=8, column=0, sticky="w", pady=5)
+        Label(self.entryFrame, text="Category").grid(row=9, column=0, sticky="w", pady=5)
+        Label(self.entryFrame, text="Type").grid(row=10, column=0, sticky="w", pady=5)
+        Label(self.entryFrame, text="Sub Type").grid(row=11, column=0, sticky="w", pady=5)
+        Label(self.entryFrame, text="Rarity").grid(row=12, column=0, sticky="w", pady=5)
+        Label(self.entryFrame, text="Mod").grid(row=13, column=0, sticky="w", pady=5)
+        Label(self.entryFrame, text="Trader").grid(row=14, column=0, sticky="w", pady=5)
         # input variables
         self.id = IntVar()
         self.name = StringVar()
         self.nominal = IntVar()
         self.min = IntVar()
+        self.qmin = IntVar()
+        self.qmax = IntVar()
         self.restock = IntVar()
         self.lifetime = IntVar()
         self.usages = StringVar()
@@ -183,17 +187,21 @@ class GUI(object):
         self.nominalField.grid(row=1, column=1, sticky="w")
         self.minField = Entry(self.entryFrame, textvariable=self.min)
         self.minField.grid(row=2, column=1, sticky="w")
+        self.qminField = Entry(self.entryFrame, textvariable=self.qmin)
+        self.qminField.grid(row=3, column=1, sticky="w")
+        self.qmaxField = Entry(self.entryFrame, textvariable=self.qmax)
+        self.qmaxField.grid(row=4, column=1, sticky="w")
         self.restockField = Entry(self.entryFrame, textvariable=self.restock)
-        self.restockField.grid(row=3, column=1, sticky="w")
+        self.restockField.grid(row=5, column=1, sticky="w")
         self.lifetimeField = Entry(self.entryFrame, textvariable=self.lifetime)
-        self.lifetimeField.grid(row=4, column=1, sticky="w")
+        self.lifetimeField.grid(row=6, column=1, sticky="w")
         self.usagesListBox = Listbox(
             self.entryFrame,
             height=4,
             selectmode="multiple",
             exportselection=False,
         )
-        self.usagesListBox.grid(row=5, column=1, pady=5, sticky="w")
+        self.usagesListBox.grid(row=7, column=1, pady=5, sticky="w")
         usages = self.config.get_usages()
         for i in usages:
             self.usagesListBox.insert(END, i)
@@ -204,40 +212,40 @@ class GUI(object):
             selectmode="multiple",
             exportselection=False,
         )
-        self.tiersListBox.grid(row=6, column=1, pady=5, sticky="w")
+        self.tiersListBox.grid(row=8, column=1, pady=5, sticky="w")
         tiers = self.config.get_tiers()
         for i in tiers:
             self.tiersListBox.insert(END, i)
 
         self.cat_typeOption = OptionMenu(
-            self.entryFrame, self.cat_type, *self.database.get_all_types("cat_type")[:-1]
+            self.entryFrame, self.cat_type, *self.database.get_all_categories("cat_type")[:-1]
         )
-        self.cat_typeOption.grid(row=7, column=1, sticky="w", pady=5)
+        self.cat_typeOption.grid(row=9, column=1, sticky="w", pady=5)
 
         self.itemtypeAutoComp = ttk.Combobox(
             self.entryFrame, textvariable=self.item_type, values=self.database.get_all_types("item_type")[:-1] 
         )
-        self.itemtypeAutoComp.grid(row=8, column=1, sticky="w", pady=5)
+        self.itemtypeAutoComp.grid(row=10, column=1, sticky="w", pady=5)
 
         self.subtypeAutoComp = ttk.Combobox(
             self.entryFrame, textvariable=self.sub_type, values=self.database.get_all_types("sub_type")[:-1]
         )
-        self.subtypeAutoComp .grid(row=9, column=1, sticky="w", pady=5)
+        self.subtypeAutoComp .grid(row=11, column=1, sticky="w", pady=5)
 
         self.rarityOption = OptionMenu(
             self.entryFrame, self.rarity, *self.config.get_rarities()
         )
-        self.rarityOption.grid(row=10, column=1, sticky="w", pady=5)
+        self.rarityOption.grid(row=12, column=1, sticky="w", pady=5)
 
         self.modOption = OptionMenu(
             self.entryFrame, self.mod, *self.database.get_all_types("mod")[:-1]
         )
-        self.modOption.grid(row=11, column=1, sticky="w", pady=5)
+        self.modOption.grid(row=13, column=1, sticky="w", pady=5)
 
         self.traderOption = OptionMenu(
             self.entryFrame, self.trader, *self.config.get_traders()
         )
-        self.traderOption.grid(row=12, column=1, sticky="w", pady=5)
+        self.traderOption.grid(row=14, column=1, sticky="w", pady=5)
 
         self.checkBoxFrame = Frame(self.entryFrameHolder)
         self.checkBoxFrame.grid(row=1, column=0, columnspan=2, sticky="w")
@@ -482,6 +490,8 @@ class GUI(object):
             item_to_update = self.database.session.query(Item).get(id_of_interest)
             __update_helper(item_to_update, "nominal", -1)
             __update_helper(item_to_update, "min", -1)
+            __update_helper(item_to_update, "qmin", -1)
+            __update_helper(item_to_update, "qmax", -1)
             __update_helper(item_to_update, "restock", -1)
             __update_helper(item_to_update, "lifetime", -1)
             __update_helper(item_to_update, "rarity", "")
@@ -529,12 +539,12 @@ class GUI(object):
 
         for idx,i in enumerate(items): 
             if idx % 2 == 0:
-                self.tree.insert("", "end", text=i.id, value=[i.name,i.nominal,i.min,
+                self.tree.insert("", "end", text=i.id, value=[i.name,i.nominal,i.min,i.qmin,i.qmax,
                 i.restock,i.lifetime,i.usage,i.tier,i.rarity,i.cat_type,i.item_type,i.sub_type,
                 i.mod,i.trader,i.dynamic_event,i.count_in_hoarder,i.count_in_cargo,
                 i.count_in_player,i.count_in_map],tags=('evenrow',))
             else:
-                self.tree.insert("", "end", text=i.id, value=[i.name,i.nominal,i.min,
+                self.tree.insert("", "end", text=i.id, value=[i.name,i.nominal,i.min,i.qmin,i.qmax,
                 i.restock,i.lifetime,i.usage,i.tier,i.rarity,i.cat_type,i.item_type,i.sub_type,
                 i.mod,i.trader,i.dynamic_event,i.count_in_hoarder,i.count_in_cargo,
                 i.count_in_player,i.count_in_map],tags=('oddrow',))
@@ -576,6 +586,8 @@ class GUI(object):
             self.name.set(item.name)
             self.nominal.set(-1)
             self.min.set(-1)
+            self.qmin.set(-1)
+            self.qmax.set(-1)
             self.lifetime.set(-1)
             self.restock.set(-1)
             self.mod.set("")

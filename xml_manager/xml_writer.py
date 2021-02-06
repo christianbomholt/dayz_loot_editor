@@ -18,10 +18,10 @@ def get_type_block(item: Item,mapname):
     _min = ET.SubElement(type_block, "min")
     _min.text = str(item.min)
     quant_min = ET.SubElement(type_block, "quantmin")
-    quant_min.text = "-1"
+    quant_min.text = str(item.qmin)
     #max
     quant_max = ET.SubElement(type_block, "quantmax")
-    quant_max.text = "1"
+    quant_max.text = str(item.qmax)
     cost = ET.SubElement(type_block, "cost")
     cost.text = "100"
 

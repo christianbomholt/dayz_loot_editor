@@ -2,8 +2,6 @@ from sqlalchemy import create_engine, MetaData, Column, Integer, String, Foreign
 from sqlalchemy.orm import relationship, backref, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
-
-
 Base = declarative_base()
 
 def init_database(db_name):
@@ -16,6 +14,8 @@ class Item(Base):
     name = Column(String)
     nominal = Column(Integer, default = 0)
     min = Column(Integer, default = 0)
+    qmin = Column(Integer, default = -1)
+    qmax = Column(Integer, default = -1)
     restock = Column(Integer, default = 1800)
     lifetime = Column(Integer, default = 38000)
     usage = Column(String)
@@ -37,7 +37,7 @@ class Item(Base):
     traderCat = Column(String, nullable=True)
 
     def __repr__(self):
-        return f"Items(id={self.id},name={self.name},nominal={self.nominal},min={self.min},restock={self.restock},\
+        return f"Items(id={self.id},name={self.name},nominal={self.nominal},min={self.min},qmin={self.qmin},qmax={self.qmax},restock={self.restock},\
         lifetime={self.lifetime},usage={self.usage},tier={self.tier},rarity={self.rarity},cat_type={self.cat_type},\
         item_type={self.item_type},sub_type={self.sub_type},mod={self.mod},trader={self.trader},dynamic_event={self.dynamic_event},\
         count_in_cargo={self.count_in_cargo},count_in_hourder={self.count_in_hoarder},count_in_map={self.count_in_map},\

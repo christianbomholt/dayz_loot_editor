@@ -72,6 +72,10 @@ class XMLParser(object):
                     item.restock = i.text
                 elif i.tag == "min":
                     item.min = i.text
+                elif i.tag == "quantmin":
+                    item.qmin = i.text
+                elif i.tag == "quantmax":
+                    item.qmax = i.text
                 elif i.tag == "category":
                     item.cat_type = i.attrib["name"]
                 elif i.tag == "lifetime":

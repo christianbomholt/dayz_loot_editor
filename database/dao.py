@@ -38,7 +38,7 @@ class Dao(object):
 #Used in a different filters
     
     def get_all_categories(self, col):
-        result = self.session.query(Item).distinct(Item.category)
+        result = self.session.query(Item).distinct(Item.cat_type)
         result=[c[0] for c in result if c[0] is not None]
         result.append("all")
         return result
