@@ -26,6 +26,7 @@ class GUI(object):
         self.window.grid_columnconfigure(1, weight=1)
         self.menu_bar = Menu(self.window)
         self.moddict = {}
+        self.modcount = 0
         self.moddlist = []
         self.totalNumDisplayed = IntVar()
         self.nomVars = []
@@ -65,14 +66,26 @@ class GUI(object):
         for k in self.moddict: self.moddict[k].set(1)
         self.__selectmodsfunction___()  
 
+    def initAllMods(self,menu):
+        for mod in self.database.get_all_types("mod"):
+            if mod != "all":
+                self.modcount += 1
+                int_var = IntVar(value=1)
+                menu.add_checkbutton(label=mod, variable=int_var, command=self.__selectmodsfunction___)
+                self.moddict[mod] = int_var
+                self.selected_mods.append(mod)
+
     def updateAllMods(self,menu):
+
+        for i in range(self.modcount+3):
+            if i > 3:
+                menu.delete(i)
         for mod in self.database.get_all_types("mod"):
             if mod != "all":
                 int_var = IntVar(value=1)
                 menu.add_checkbutton(label=mod, variable=int_var, command=self.__selectmodsfunction___)
                 self.moddict[mod] = int_var
                 self.selected_mods.append(mod)
-
 
     def __create_menu_bar(self):
 # file menus builder
@@ -89,13 +102,6 @@ class GUI(object):
 
 # database menus builder
 
-# initializing mods menu
-        mods_menu = Menu(self.menu_bar, tearoff=0)
-        mods_menu.add_command(label="Deselect All" , command=self.deselectAllMods)
-        mods_menu.add_command(label="Select All", command=self.selectAllMods)
-        mods_menu.add_separator()
-        self.updateAllMods(mods_menu)
-                 
 # help menus builder
         help_menu = Menu(self.menu_bar, tearoff=0)
         help_menu.add_command(label="You'll never walk alone")
@@ -107,9 +113,17 @@ class GUI(object):
         tools_menu.add_separator()
         tools_menu.add_command(label="Dump database to sql file", command=self.dump2sql)
 
+# initializing mods menu
+        self.mods_menu = Menu(self.menu_bar, tearoff=0)
+        self.mods_menu.add_command(label="Deselect All" , command=self.deselectAllMods)
+        self.mods_menu.add_command(label="Select All", command=self.selectAllMods)
+        self.mods_menu.add_separator()
+        self.initAllMods(self.mods_menu)
+
+
 #building menu bar
         self.menu_bar.add_cascade(label="File", menu=file_menu)
-        self.menu_bar.add_cascade(label="Mods In Use", menu=mods_menu)
+        self.menu_bar.add_cascade(label="Mods In Use", menu=self.mods_menu)
         self.menu_bar.add_cascade(label="Help", menu=help_menu)
         self.menu_bar.add_cascade(label="Tools", menu=tools_menu)
 
@@ -619,7 +633,7 @@ class GUI(object):
         items = self.database.session.query(Item).filter(Item.mod.in_ (self.selected_mods))
         self.gridItems = items
         self.__populate_items(items.all())
-        self.updateAllMods(self.menu_bar.mods_menu)
+        self.updateAllMods(self.mods_menu)
         #self.__create_menu_bar()
         
 

@@ -18,7 +18,8 @@ class LinkItem(object):
     def __init__(self, root):
         self.window = Toplevel(root)
         self.window.grab_set()
-
+        self.config = ConfigManager("config.xml")
+        self.database = Dao(self.config.get_database())
         self.configFrame = Frame(self.window)
         self.configFrame.grid(row=3, column=0, sticky="n,w,e", padx=30)
 
@@ -26,7 +27,7 @@ class LinkItem(object):
 # Buttons
         Button(
             self.configFrame, text="Open", width=12, command=self.openLinkItem
-        ).grid(row=2, column=0, sticky="w", padx=5)
+        ).grid(row=2, column=0, sticky="w", padx=25)
         self.window.wait_window()
 
 
@@ -40,7 +41,7 @@ class LinkItem(object):
     def __loadLinkItem(self,LinkItemFile):
         with open(LinkItemFile, 'r') as myfile:
             data=myfile.read()
-        attachments = json.loads(data)["HlyngeWeapons"]
+        self.database.attachments = json.loads(data)["HlyngeWeapons"]
 
 
 def testWindow():

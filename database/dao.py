@@ -18,12 +18,15 @@ class Dao(object):
 
 # create item  - used in new_items.py
     def create_item(self, item: Item, duplicate=0):
+        print("DEBUG  :", item)
         if duplicate == 1:
             self.session.add(item)
+            print("DEBUG  :", item)
             self.session.commit()
         else:
             if self.session.query(Item).filter(Item.name == item.name).count() == 0:
                 self.session.add(item)
+                print("DEBUG  :", item)
                 self.session.commit()
 
 # get item used for __fill_entry_frame

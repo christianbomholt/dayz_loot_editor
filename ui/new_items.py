@@ -64,6 +64,7 @@ class NewItems(object):
             items = xml_parser.get_items(self.mapselectValue.get())
             for i in items:
                 i.mod = self.modSelector.get()
+                print("DEBUG __altadd_items :", i.mod)
                 self.database.create_item(item=i, duplicate=self.duplicate.get())
         else:
             print("DEBUG  :", clean_data)
@@ -72,7 +73,56 @@ class NewItems(object):
                 message="Beginning and ending dont match.. fix it",
                 parent=self.window,
             )
-        self.window.destroy()            
+        self.window.destroy() 
+
+
+
+    def __add_items(self):
+        string_data = self.text_area.get(1.0, END).strip()
+        if string_data == "":
+            messagebox.showerror(
+                title="Error", message="Empty Data", parent=self.window
+            )
+        else:
+            if self.__check_xml(string_data) == 1:
+                messagebox.showerror(
+                    title="Parsing Error",
+                    message="Beginning of type is wrong. type has to start "
+                    "with <type",
+                    parent=self.window,
+                )
+            elif self.__check_xml(string_data) == 2:
+                messagebox.showerror(
+                    title="Parsing Error",
+                    message="Beginning of type is wrong. types has to start "
+                    "with <types",
+                    parent=self.window,
+                )
+            else:
+                if string_data.startswith("<type n"):
+                    string_data = "<types>\n  " + string_data + "\n</types>"
+                xml_parser = XMLParser(string_data)
+                items = xml_parser.get_items(self.mapselectValue.get())
+                for i in items:
+                    i.mod = self.modSelector.get()
+                    self.database.create_item(item=i, duplicate=self.duplicate.get())
+                self.window.destroy()
+
+    def __check_xml(self, text):
+        if text.startswith("<type"):
+            if text.endswith("</type>"):
+                return 0
+            else:
+                return 2
+
+        elif text.startswith("<types>"):
+            if text.endswith("</types>"):
+                return 0
+            else:
+                return 2
+        else:
+            return 1        
+
 
 def testWindow():
     window = Tk()

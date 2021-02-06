@@ -75,7 +75,7 @@ class XMLParser(object):
                 elif i.tag == "category":
                     item.cat_type = i.attrib["name"]
                 elif i.tag == "lifetime":
-                    item.lifetime = i.text
+                    item.lifetime = i.text.strip()
                 elif i.tag == usage_name:
                     try:
                         usages.append(i.attrib["name"])

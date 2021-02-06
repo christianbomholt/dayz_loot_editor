@@ -1,6 +1,6 @@
 <config>
     <databasefile>
-        <database value="Expanded1.db" />
+        <database value="WhyNoImport.db" />
     </databasefile>
    
     <tiers>
@@ -56,18 +56,18 @@
     </rairties>
 
     <usages>
-        <usage value="Police"/>
-        <usage value="Farm"/>
-        <usage value="Town"/>
-        <usage value="Village"/>
-        <usage value="Hunting"/>
-        <usage value="Office"/>
-        <usage value="School"/>
-        <usage value="Military"/>
-        <usage value="Medic"/>
-        <usage value="Firefighter"/>
-        <usage value="Coast"/>
-        <usage value="Industrial"/>
-        <usage value="Lunapark"/>
+        <usage value="Police" />
+        <usage value="Farm" />
+        <usage value="Town" />
+        <usage value="Village" />
+        <usage value="Hunting" />
+        <usage value="Office" />
+        <usage value="School" />
+        <usage value="Military" />
+        <usage value="Medic" />
+        <usage value="Firefighter" />
+        <usage value="Coast" />
+        <usage value="Industrial" />
+        <usage value="Lunapark" />
     </usages>
 </config>
