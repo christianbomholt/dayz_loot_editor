@@ -42,45 +42,37 @@ class NewItems(object):
 
         self.buttons.grid(row=4, sticky="w")
         Button(
-            self.buttons, text="OK", height=1, width=10, command=self.__add_items
+            self.buttons, text="OK", height=1, width=10, command=self.__altadd_items
         ).grid(padx=10, pady=10)
         self.window.wait_window()
 
-    def __add_items(self):
+    def __altadd_items(self):
+        comment = "<!--"
+        clean_data = str
         string_data = self.text_area.get(1.0, END).strip()
-        if string_data == "":
+        string_data = "<type name" + string_data.split("<type name", 1)[1]
+        string_data = string_data.rsplit("</type", 1)[0]
+        string_data = string_data.strip()+ "\n</type>"
+        clean_data = ""
+        for idx, line in enumerate(string_data.splitlines()):
+            if comment not in line:
+                clean_data += line + "\n"
+        clean_data = clean_data.strip()
+        if clean_data.startswith("<type") and clean_data.endswith("</type>"):
+            clean_data = "<types>\n  " + clean_data + "\n</types>"
+            xml_parser = XMLParser(clean_data)
+            items = xml_parser.get_items(self.mapselectValue.get())
+            for i in items:
+                i.mod = self.modSelector.get()
+                self.database.create_item(item=i, duplicate=self.duplicate.get())
+        else:
+            print("DEBUG  :", clean_data)
             messagebox.showerror(
-                title="Error", message="Empty Data", parent=self.window
+                title="Parsing Error",
+                message="Beginning and ending dont match.. fix it",
+                parent=self.window,
             )
-        else:
-            if self.__check_xml(string_data) == 1:
-                print("Parsing Error: Beginning of type is wrong. type has to start with <type")
-            elif self.__check_xml(string_data) == 2:
-                print("Parsing Error: Beginning of type n is wrong")
-            else:
-                if string_data.startswith("<type n"):
-                    string_data = "<types>\n  " + string_data + "\n</types>"
-                xml_parser = XMLParser(string_data)
-                items = xml_parser.get_items(self.mapselectValue.get())
-                for i in items:
-                    i.mod = self.modSelector.get()
-                    self.database.create_item(item=i, duplicate=self.duplicate.get())
-                self.window.destroy()
-
-    def __check_xml(self, text):
-        if text.startswith("<type"):
-            if text.endswith("</type>"):
-                return 0
-            else:
-                return 2
-        elif text.startswith("<types>"):
-            if text.endswith("</types>"):
-                return 0
-            else:
-                return 2
-        else:
-            return 1
-
+        self.window.destroy()            
 
 def testWindow():
     window = Tk()

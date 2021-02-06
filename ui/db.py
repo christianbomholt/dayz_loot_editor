@@ -6,10 +6,7 @@ from model.item import Item, init_database
 from model.item import Mapselect
 from config import ConfigManager
 from database.dao import Dao
-
-
 from sqlalchemy.ext.declarative import declarative_base
-
 
 Base = declarative_base()
 
@@ -30,7 +27,6 @@ class DB(object):
         self.db_name.set(self.database_name)
         self.db_status = StringVar()
         self.db_status.set(f"{self.database_name}")
-#        self.mapselectValue.set(Dao(self.database_name).get_mapselectValue(1).mapselectvalue)
         Label(self.configFrame, textvariable=self.db_status).grid(
             columnspan=2, row=2, column=0, sticky="w"
         )

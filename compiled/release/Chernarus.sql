@@ -25,7 +25,7 @@ CREATE TABLE "items" (
 	"traderCat"	VARCHAR,
 	PRIMARY KEY("id")
 );
-INSERT INTO "items" VALUES(1,'MassGhillieSuitBoxMossy',2,3,100,12,'Military','Tier1','Legendary','weapons','ranged','Assault Rifles','Vanilla','EXCLUDE',1,0,0,0,0,2000,200,1,NULL);
+INSERT INTO "items" VALUES(1,'MassGhillieSuitBoxMossy',2,3,100,12,'Military','Tier1','Legendary','weapons','ranged','assault rifles','Vanilla','EXCLUDE',1,0,0,0,0,2000,200,1,NULL);
 INSERT INTO "items" VALUES(2,'ACOGOptic',15,8,1800,14400,'Military','','Very Rare','weapons','optic','scopes','Vanilla','Trader 1',0,0,0,0,1,NULL,NULL,0,NULL);
 INSERT INTO "items" VALUES(3,'AK101',5,2,1800,28800,'Military','Tier4','Legendary','weapons','ranged','assault rifles','Vanilla','Trader 1',0,1,1,0,1,NULL,NULL,0,NULL);
 INSERT INTO "items" VALUES(4,'AK101_Black',0,0,0,28800,'','','Not in CE','weapons','ranged','assault rifles','Vanilla','Trader 1',0,0,0,0,1,NULL,NULL,0,NULL);
@@ -276,7 +276,7 @@ INSERT INTO "items" VALUES(248,'CZ61',20,10,180,7200,'Police','','Rare','weapons
 INSERT INTO "items" VALUES(249,'CZ75',60,40,0,28800,'Police,Village','Tier1,Tier2,Tier3','Uncommon','weapons',NULL,NULL,'Vanilla','Trader 1',0,0,0,0,1,NULL,NULL,0,NULL);
 INSERT INTO "items" VALUES(250,'CableReel',80,50,0,604800,'Industrial','','Common','tools','electro','electro','Vanilla','Trader 1',0,0,0,0,1,NULL,NULL,0,NULL);
 INSERT INTO "items" VALUES(251,'Camonet',40,20,0,14400,'Military','','Somewhat Rare','tools',NULL,NULL,'Vanilla','Trader 1',0,0,0,0,1,NULL,NULL,0,NULL);
-INSERT INTO "items" VALUES(252,'CanOpener',70,50,0,14400,'Town,Village','Tier1,Tier2,Tier3,Tier4','Common','tools','personal','equiptment','Vanilla','Trader 1',0,0,0,0,1,NULL,NULL,0,NULL);
+INSERT INTO "items" VALUES(252,'CanOpener',70,50,0,14400,'Town,Village','Tier1,Tier2,Tier3,Tier4','Common','tools','personal','equipment','Vanilla','Trader 1',0,0,0,0,1,NULL,NULL,0,NULL);
 INSERT INTO "items" VALUES(253,'CaninaBerry',0,0,0,900,'','','Not in CE','tools',NULL,NULL,'Vanilla','Trader 1',0,0,0,0,1,NULL,NULL,0,NULL);
 INSERT INTO "items" VALUES(254,'CanisterGasoline',50,30,0,28800,'Industrial','','Uncommon','tools','hardware','hardware','Vanilla','Trader 1',0,0,0,0,1,NULL,NULL,0,NULL);
 INSERT INTO "items" VALUES(255,'Canteen',20,10,0,14400,'Military,Hunting','','Rare','food','drink','drink','Vanilla','Trader 1',0,0,0,0,1,NULL,NULL,0,NULL);
@@ -306,7 +306,7 @@ INSERT INTO "items" VALUES(278,'Chemlight_Red',50,30,0,14400,'Industrial,Town,Vi
 INSERT INTO "items" VALUES(279,'Chemlight_White',50,30,0,14400,'Industrial,Town,Village','','Uncommon','tools','lightsource','light','Vanilla','Trader 1',0,0,0,0,1,NULL,NULL,0,NULL);
 INSERT INTO "items" VALUES(280,'Chemlight_Yellow',50,30,0,14400,'Industrial,Town,Village','','Uncommon','tools','lightsource','light','Vanilla','Trader 1',0,0,0,0,1,NULL,NULL,0,NULL);
 INSERT INTO "items" VALUES(281,'ChernarusMap',50,30,0,14400,'Hunting,Office','','Uncommon','tools',NULL,NULL,'Vanilla','Trader 1',0,0,0,0,1,NULL,NULL,0,NULL);
-INSERT INTO "items" VALUES(282,'ChernarusMap_Open',0,0,0,3,'','','Not in CE','tools','personal','equiptment','Vanilla','Trader 1',0,0,0,0,1,NULL,NULL,0,NULL);
+INSERT INTO "items" VALUES(282,'ChernarusMap_Open',0,0,0,3,'','','Not in CE','tools','personal','equipment','Vanilla','Trader 1',0,0,0,0,1,NULL,NULL,0,NULL);
 INSERT INTO "items" VALUES(283,'ChernarusSportShirt',30,20,0,14400,'Town,School','','Somewhat Rare','clothes','upperbody','shirts','Vanilla','Trader 1',0,0,0,0,1,NULL,NULL,0,NULL);
 INSERT INTO "items" VALUES(284,'ChestHolster',40,30,0,14400,'Town,Village','Tier2,Tier3,Tier4','Somewhat Rare','clothes',NULL,NULL,'Vanilla','Trader 1',0,0,0,0,1,NULL,NULL,0,NULL);
 INSERT INTO "items" VALUES(285,'ChickenBreastMeat',0,0,0,14400,'','','Not in CE','food','natural','animal','Vanilla','Trader 1',0,0,0,0,1,NULL,NULL,0,NULL);
@@ -899,7 +899,7 @@ INSERT INTO "items" VALUES(871,'PSO11Optic',5,3,1800,28800,'Military','Tier3,Tie
 INSERT INTO "items" VALUES(872,'PSO1Optic',15,8,1800,14400,'Military','','Very Rare','weapons','optic','scopes','Vanilla','Trader 1',0,0,0,0,1,NULL,NULL,0,NULL);
 INSERT INTO "items" VALUES(873,'PUScopeOptic',15,8,1800,14400,'Military,Hunting','','Very Rare','weapons','optic','scopes','Vanilla','Trader 1',0,0,0,0,1,NULL,NULL,0,NULL);
 INSERT INTO "items" VALUES(874,'PainkillerTablets',20,12,0,28800,'Medic','','Rare','tools','personal','medical','Vanilla','Trader 1',0,0,0,0,1,NULL,NULL,0,NULL);
-INSERT INTO "items" VALUES(875,'Paper',0,0,0,7200,'','','Not in CE','tools','personal','equiptment','Vanilla','Trader 1',0,0,0,0,1,NULL,NULL,0,NULL);
+INSERT INTO "items" VALUES(875,'Paper',0,0,0,7200,'','','Not in CE','tools','personal','equipment','Vanilla','Trader 1',0,0,0,0,1,NULL,NULL,0,NULL);
 INSERT INTO "items" VALUES(876,'ParamedicJacket_Blue',7,3,0,14400,'Medic','','Extremely Rare','clothes','upperbody','jackets','Vanilla','Trader 1',0,0,0,0,1,NULL,NULL,0,NULL);
 INSERT INTO "items" VALUES(877,'ParamedicJacket_Crimson',7,3,0,14400,'Medic','','Extremely Rare','clothes','upperbody','jackets','Vanilla','Trader 1',0,0,0,0,1,NULL,NULL,0,NULL);
 INSERT INTO "items" VALUES(878,'ParamedicJacket_Green',7,3,0,14400,'Medic','','Extremely Rare','clothes','upperbody','jackets','Vanilla','Trader 1',0,0,0,0,1,NULL,NULL,0,NULL);
@@ -913,10 +913,10 @@ INSERT INTO "items" VALUES(885,'PartyTent_Lunapark',20,20,43200,3888000,'Lunapar
 INSERT INTO "items" VALUES(886,'PeachesCan',25,20,60,14400,'Town','Tier2,Tier3','Rare','food','man made','packaged food','Vanilla','Trader 1',0,0,0,0,1,NULL,NULL,0,NULL);
 INSERT INTO "items" VALUES(887,'PeachesCan_Opened',0,0,0,14400,'','','Not in CE','food','man made','packaged food','Vanilla','Trader 1',0,0,0,0,1,NULL,NULL,0,NULL);
 INSERT INTO "items" VALUES(888,'Pear',0,0,0,900,'','','Not in CE','food','natural','vegetables','Vanilla','Trader 1',0,0,0,0,1,NULL,NULL,0,NULL);
-INSERT INTO "items" VALUES(889,'Pen_Black',0,0,0,28800,'Town,Village,Office,School','','Not in CE','tools','personal','equiptment','Vanilla','Trader 1',0,0,0,0,1,NULL,NULL,0,NULL);
-INSERT INTO "items" VALUES(890,'Pen_Blue',0,0,0,28800,'Town,Village,Office,School','','Not in CE','tools','personal','equiptment','Vanilla','Trader 1',0,0,0,0,1,NULL,NULL,0,NULL);
-INSERT INTO "items" VALUES(891,'Pen_Green',0,0,0,28800,'Town,Village,Office,School','','Not in CE','tools','personal','equiptment','Vanilla','Trader 1',0,0,0,0,1,NULL,NULL,0,NULL);
-INSERT INTO "items" VALUES(892,'Pen_Red',0,0,0,28800,'Town,Village,Office,School','','Not in CE','tools','personal','equiptment','Vanilla','Trader 1',0,0,0,0,1,NULL,NULL,0,NULL);
+INSERT INTO "items" VALUES(889,'Pen_Black',0,0,0,28800,'Town,Village,Office,School','','Not in CE','tools','personal','equipment','Vanilla','Trader 1',0,0,0,0,1,NULL,NULL,0,NULL);
+INSERT INTO "items" VALUES(890,'Pen_Blue',0,0,0,28800,'Town,Village,Office,School','','Not in CE','tools','personal','equipment','Vanilla','Trader 1',0,0,0,0,1,NULL,NULL,0,NULL);
+INSERT INTO "items" VALUES(891,'Pen_Green',0,0,0,28800,'Town,Village,Office,School','','Not in CE','tools','personal','equipment','Vanilla','Trader 1',0,0,0,0,1,NULL,NULL,0,NULL);
+INSERT INTO "items" VALUES(892,'Pen_Red',0,0,0,28800,'Town,Village,Office,School','','Not in CE','tools','personal','equipment','Vanilla','Trader 1',0,0,0,0,1,NULL,NULL,0,NULL);
 INSERT INTO "items" VALUES(893,'PepperSeeds',0,0,0,14400,'','','Not in CE','tools','farming','farming','Vanilla','Trader 1',0,0,0,0,1,NULL,NULL,0,NULL);
 INSERT INTO "items" VALUES(894,'PepperSeedsPack',30,20,0,14400,'Farm','','Somewhat Rare','food','natural','vegetables','Vanilla','Trader 1',0,0,0,0,1,NULL,NULL,0,NULL);
 INSERT INTO "items" VALUES(895,'PersonalRadio',40,20,0,28800,'Military,Police,Medic,Firefighter','','Somewhat Rare','tools','electro','electro','Vanilla','Trader 1',0,0,0,0,1,NULL,NULL,0,NULL);

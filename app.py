@@ -4,6 +4,7 @@ from config import ConfigManager
 from database.dao import Dao
 from model.item import Item
 from ui.db import DB
+from ui.linkitems import LinkItem
 from ui.new_items import NewItems
 from ui.setprices import TraderEditor
 from xml_manager.xml_writer import XMLWriter
@@ -42,7 +43,7 @@ class GUI(object):
         self.__create_distribution_block()        
         #
         self.tree.bind("<ButtonRelease-1>", self.__fill_entry_frame)
-        self.window.wm_title("Loot Editor v0.98.8 - "+ self.config.get_database()+" used for maptype: " + self.database.get_mapselectValue(1).mapselectvalue)
+        self.window.wm_title("CE-Editor v0.10.2 - "+ self.config.get_database()+" used for maptype: " + self.database.get_mapselectValue(1).mapselectvalue)
 
     def initializeapp(self):
         self.__create_tree_view()
@@ -53,7 +54,7 @@ class GUI(object):
         self.__populate_items(self.gridItems)
         self.__initiate_items()
         self.__create_nominal_info()
-        self.window.wm_title("Loot Editor v0.98.8  UPDATED - fresh database that is initialized with: " + self.database.get_mapselectValue(1).mapselectvalue)
+        self.window.wm_title("CE-Editor v0.10.2  UPDATED - fresh database that is initialized with: " + self.database.get_mapselectValue(1).mapselectvalue)
 #self.__selectmodsfunction___()        
 
     def deselectAllMods(self):
@@ -77,6 +78,7 @@ class GUI(object):
 # file menus builder
         file_menu = Menu(self.menu_bar, tearoff=0)
         file_menu.add_command(label="Setup Database", command=self.__open_db_window)
+        file_menu.add_command(label="Import Link-data", command=self.__import_link_window)
         file_menu.add_separator()
         file_menu.add_command(label="Add Items", command=self.__open_items_window)
         file_menu.add_separator()
@@ -110,8 +112,6 @@ class GUI(object):
         self.menu_bar.add_cascade(label="Mods In Use", menu=mods_menu)
         self.menu_bar.add_cascade(label="Help", menu=help_menu)
         self.menu_bar.add_cascade(label="Tools", menu=tools_menu)
-
-
 
 #configuring menu bar
         self.window.config(menu=self.menu_bar)
@@ -606,13 +606,21 @@ class GUI(object):
         DB(self.window)
         self.initializeapp()
 
+    def __import_link_window(self):
+        LinkItem(self.window)
+        self.initializeapp()    
+
+    def remove_menu(self):
+        self.emptyMenu = Menu(self.window)
+        self.window.config(menu=self.emptyMenu)
+
     def __open_items_window(self):
         NewItems(self.window)
         items = self.database.session.query(Item).filter(Item.mod.in_ (self.selected_mods))
         self.gridItems = items
         self.__populate_items(items.all())
-        self.menu_bar.delete(1)
-        self.__create_menu_bar()
+        self.updateAllMods(self.menu_bar.mods_menu)
+        #self.__create_menu_bar()
         
 
     def __export_xml(self,mapname):

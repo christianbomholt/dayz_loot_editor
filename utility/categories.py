@@ -122,7 +122,7 @@ toolsSubTypesDict = {
     "hunt/fish":  { "hunt/fish": ["hook","rod","pelt","trap","gardenplot","bait","smallg","burlap","guts","bone"]
                 },
     "personal":  {  "medical": ["bandage","blood","heatpack","rag","saline","tetracyclineantibiotics","thermo","vitaminbottle","epinephrine","morphine","painkillertablets","defibrillator","charcoaltablets"],
-                    "equiptment": ["pen","paper"]
+                    "equipment": ["pen","paper"]
                 },
     "bases":  {   "basestuff": ["flag","nail","shelter","barbedwire","fencekit","metalwire","woodenlog","woodenplank","watchtowerkit","pileofwoodenplanks"]
                 },
@@ -165,7 +165,7 @@ weaponSubTypesDict = {
         "shotguns": ["shotgun","saiga"],
         "submachine guns": ["mp5k","ump45","cz61"],
         "assault rifles": ["ak101","ak74","m4a1","akm","aks74u","fal"],
-        "light machine guns": [],
+        "light machine guns": ["lmg","m249"],
         "sniper rifles": ["mosin9130","svd","vss"],
         "hunting rifles": ["b95","cz527","Izh18","repeater","winchester70"],
         "semi-automatic rifles": ["ruger1022","sks"],

@@ -1,5 +1,5 @@
 import sqlite3
-from sqlalchemy import create_engine, and_, func
+from sqlalchemy import create_engine, and_, func, desc, asc
 from sqlalchemy.orm import sessionmaker
 from model.item import Item, Mapselect
 
@@ -33,11 +33,27 @@ class Dao(object):
         return item
 
 #Used in a different filters
-    def get_all_types(self, col):
-        result = self.session.query(getattr(Item, col).distinct().label(col+"s"))
+    
+    def get_all_categories(self, col):
+        result = self.session.query(Item).distinct(Item.category)
         result=[c[0] for c in result if c[0] is not None]
         result.append("all")
         return result
+    """
+    def get_all_types(self, col):
+        result = self.session.query(getattr(Item, col).order_by(getattr(Item, col)).distinct().label(col+"s"))
+        result=[c[0] for c in result if c[0] is not None]
+        result.append("all")
+        return result"""     
+
+    def get_all_types(self, col):
+        result = self.session\
+            .query(getattr(Item,col).distinct().label(col+'s'))\
+            .order_by(desc(getattr(Item,col)))
+        result=[c[0] for c in result if c[0] is not None]
+        result.append("all")
+        return result     
+    
 
 # delete item - used in the delete button
     def delete_item(self, item_id):

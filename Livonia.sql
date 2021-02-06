@@ -25,7 +25,7 @@ CREATE TABLE "items" (
 	"traderCat"	VARCHAR,
 	PRIMARY KEY("id")
 );
-INSERT INTO "items" VALUES(1,'MassGhillieSuitBoxMossy',2,3,100,12,'Military','Tier1','Legendary','weapons','ranged','Assault Rifles','Vanilla','EXCLUDE',1,0,0,0,0,2000,200,1,NULL);
+INSERT INTO "items" VALUES(1,'MassGhillieSuitBoxMossy',2,3,100,12,'Military','Tier1','Legendary','weapons','ranged','assault rifles','Vanilla','EXCLUDE',1,0,0,0,0,2000,200,1,NULL);
 INSERT INTO "items" VALUES(2,'ACOGOptic',12,8,1800,14400,'Military','','Extremely Rare','weapons',NULL,NULL,'Vanilla','Trader 1',0,0,0,0,1,NULL,NULL,0,NULL);
 INSERT INTO "items" VALUES(3,'AK101',5,2,1800,28800,'Military','Tier3','Legendary','weapons',NULL,NULL,'Vanilla','Trader 1',0,1,1,0,1,NULL,NULL,0,NULL);
 INSERT INTO "items" VALUES(4,'AK101_Black',0,0,0,28800,'','','undefined','weapons',NULL,NULL,'Vanilla','Trader 1',0,0,0,0,1,NULL,NULL,0,NULL);

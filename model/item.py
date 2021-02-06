@@ -1,6 +1,7 @@
 from sqlalchemy import create_engine, MetaData, Column, Integer, String, ForeignKey, Table
-from sqlalchemy.orm import relationship, backref
+from sqlalchemy.orm import relationship, backref, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
+
 
 
 Base = declarative_base()
@@ -49,45 +50,55 @@ class Mapselect(Base):
     id = Column(Integer, primary_key=True)
     mapselectvalue = Column(String)
 
-"""
-class ItemAttachmentLink(Base):
-    __tablename__ = "attachments"
+class LinkAttachments(Base):
+    __tablename__ = "link_attachments"
     id = Column(Integer, primary_key=True)
     itemname = Column(String)
     attachname = Column(String)
+    
+    def __repr__(self):
+        return f"Link(itemname={self.itemname}, attachname={self.attachname})"
+
+class LinkMags(Base):
+    __tablename__ = "link_mags"
+    id = Column(Integer, primary_key=True)
+    itemname = Column(String)
+    magname = Column(String)    
+    
+class LinkBullets(Base):
+    __tablename__ = "link_bullets"
+    id = Column(Integer, primary_key=True)
+    itemname = Column(String)
+    bulletname = Column(String)
+
+class LinkBulletMag(Base):
+    __tablename__ = "link_bullet_to_mags"
+    id = Column(Integer, primary_key=True)
     magname = Column(String)
-
-
+    bulletname = Column(String)
+    
 class Attachments(Base):
     __tablename__ = "attachments"
     id = Column(Integer, primary_key=True)
-    attachname = Column(String)
+    name = Column(String)
+    
+    def __repr__(self):
+        return f"Attach(name={self.name})"
 
 class Bullets(Base):
     __tablename__ = "bullets"
     id = Column(Integer, primary_key=True)
-    bulletname = Column(String)
-    bulletcount = Column(Integer)
+    name = Column(String)
+    bulletcount = Column(Integer, default=7)
+    
+    def __repr__(self):
+        return f"Bullet(name={self.name}, bullet_count={self.bulletcount})"
 
 class Magazines(Base):
     __tablename__ = "magazines"
     id = Column(Integer, primary_key=True)
-    magname = Column(String)
-    magbulletcount = Column(Integer)
-
-             "name": "CZ527_Camo",
-            "attachments": [
-                "GhillieAtt_ColorBase",
-                "GhillieAtt_Tan",
-                "GhillieAtt_Woodland",
-                "GhillieAtt_Mossy",
-                "HuntingOptic",
-                "ImprovisedSuppressor"
-            ],
-            "bullets": [
-                "Ammo_762x39",
-                "Ammo_762x39Tracer"
-            ],
-            "magazines": [
-                "Mag_CZ527_5rnd"
-            ]"""   
+    name = Column(String)
+    magbulletcount = Column(Integer, default=30)
+    
+    def __repr__(self):
+        return f"Mag(name={self.name}, bullets_in_mag={self.magbulletcount})"
