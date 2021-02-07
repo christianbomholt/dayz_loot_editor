@@ -1,43 +1,5 @@
 BEGIN TRANSACTION;
-CREATE TABLE attachments (
-	id INTEGER NOT NULL, 
-	name VARCHAR, 
-	PRIMARY KEY (id)
-);
-CREATE TABLE bullets (
-	id INTEGER NOT NULL, 
-	name VARCHAR, 
-	bulletcount INTEGER, 
-	PRIMARY KEY (id)
-);
-CREATE TABLE "items" (
-	"id"	INTEGER NOT NULL,
-	"name"	VARCHAR,
-	"nominal"	INTEGER DEFAULT 0,
-	"min"	INTEGER DEFAULT 0,
-	"qmin"	INTEGER DEFAULT -1,
-	"qmax"	INTEGER DEFAULT -1,
-	"restock"	INTEGER,
-	"lifetime"	INTEGER,
-	"usage"	VARCHAR,
-	"tier"	VARCHAR,
-	"rarity"	VARCHAR DEFAULT 'undefined',
-	"cat_type"	VARCHAR,
-	"item_type"	VARCHAR,
-	"sub_type"	VARCHAR,
-	"mod"	VARCHAR DEFAULT 'Vanilla',
-	"trader"	VARCHAR DEFAULT 'Trader 1',
-	"dynamic_event"	INTEGER,
-	"count_in_hoarder"	INTEGER,
-	"count_in_cargo"	INTEGER,
-	"count_in_player"	INTEGER,
-	"count_in_map"	INTEGER,
-	"buyprice"	INTEGER,
-	"sellprice"	INTEGER,
-	"traderExclude"	INTEGER DEFAULT 0,
-	"traderCat"	VARCHAR,
-	PRIMARY KEY("id")
-);
+
 INSERT INTO "items" VALUES(1,'AK74',3,2,-1,-1,1800,3600,'military','Tier3','Legendary','weapons','ranged','assault rifles','vanilla','Trader 1',0,0,0,0,1,NULL,NULL,0,NULL);
 INSERT INTO "items" VALUES(2,'AKS74U',5,3,-1,-1,1800,3600,'military','Tier2,Tier3','Extremely Rare','weapons','rifles','assault rifles','vanilla','Trader 1',0,0,0,0,1,NULL,NULL,0,NULL);
 INSERT INTO "items" VALUES(3,'AK101',2,1,-1,-1,3600,3600,'military','Tier3,Tier4','Legendary','weapons','rifles','assault rifles','vanilla','Trader 1',0,0,0,0,1,NULL,NULL,0,NULL);
@@ -1091,40 +1053,6 @@ INSERT INTO "items" VALUES(1050,'HeadlightH7_Box',25,22,-1,-1,0,2700,'civilian,i
 INSERT INTO "items" VALUES(1051,'HeadlightH7',0,0,-1,-1,1800,1800,'','','undefined','object',NULL,NULL,'vanilla','Trader 1',0,0,0,0,1,NULL,NULL,0,NULL);
 INSERT INTO "items" VALUES(1052,'SparkPlug',25,22,-1,-1,0,2700,'civilian,industrial','','Somewhat Rare','tools','automotive','automotive','vanilla','Trader 1',0,0,0,0,1,NULL,NULL,0,NULL);
 INSERT INTO "items" VALUES(1053,'CarRadiator',12,9,-1,-1,0,2700,'industrial','','Very Rare','tools','automotive','automotive','vanilla','Trader 1',0,0,0,0,1,NULL,NULL,0,NULL);
-CREATE TABLE link_attachments (
-	id INTEGER NOT NULL, 
-	itemname VARCHAR, 
-	attachname VARCHAR, 
-	PRIMARY KEY (id)
-);
-CREATE TABLE link_bullet_to_mags (
-	id INTEGER NOT NULL, 
-	magname VARCHAR, 
-	bulletname VARCHAR, 
-	PRIMARY KEY (id)
-);
-CREATE TABLE link_bullets (
-	id INTEGER NOT NULL, 
-	itemname VARCHAR, 
-	bulletname VARCHAR, 
-	PRIMARY KEY (id)
-);
-CREATE TABLE link_mags (
-	id INTEGER NOT NULL, 
-	itemname VARCHAR, 
-	magname VARCHAR, 
-	PRIMARY KEY (id)
-);
-CREATE TABLE magazines (
-	id INTEGER NOT NULL, 
-	name VARCHAR, 
-	magbulletcount INTEGER, 
-	PRIMARY KEY (id)
-);
-CREATE TABLE mapselect (
-	id INTEGER NOT NULL, 
-	mapselectvalue VARCHAR, 
-	PRIMARY KEY (id)
-);
+
 INSERT INTO "mapselect" VALUES(1,'Namalsk');
 COMMIT;

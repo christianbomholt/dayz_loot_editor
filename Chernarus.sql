@@ -1,30 +1,4 @@
 BEGIN TRANSACTION;
-CREATE TABLE "items" (
-	"id"	INTEGER NOT NULL,
-	"name"	VARCHAR,
-	"nominal"	INTEGER DEFAULT 0,
-	"min"	INTEGER DEFAULT 0,
-	"restock"	INTEGER,
-	"lifetime"	INTEGER,
-	"usage"	VARCHAR,
-	"tier"	VARCHAR,
-	"rarity"	VARCHAR DEFAULT 'undefined',
-	"cat_type"	VARCHAR,
-	"item_type"	VARCHAR,
-	"sub_type"	VARCHAR,
-	"mod"	VARCHAR DEFAULT 'Vanilla',
-	"trader"	VARCHAR DEFAULT 'Trader 1',
-	"dynamic_event"	INTEGER,
-	"count_in_hoarder"	INTEGER,
-	"count_in_cargo"	INTEGER,
-	"count_in_player"	INTEGER,
-	"count_in_map"	INTEGER,
-	"buyprice"	INTEGER,
-	"sellprice"	INTEGER,
-	"traderExclude"	INTEGER DEFAULT 0,
-	"traderCat"	VARCHAR,
-	PRIMARY KEY("id")
-);
 INSERT INTO "items" VALUES(1,'MassGhillieSuitBoxMossy',2,3,100,12,'Military','Tier1','Legendary','weapons','ranged','assault rifles','Vanilla','EXCLUDE',1,0,0,0,0,2000,200,1,NULL);
 INSERT INTO "items" VALUES(2,'ACOGOptic',15,8,1800,14400,'Military','','Very Rare','weapons','optic','scopes','Vanilla','Trader 1',0,0,0,0,1,NULL,NULL,0,NULL);
 INSERT INTO "items" VALUES(3,'AK101',5,2,1800,28800,'Military','Tier4','Legendary','weapons','ranged','assault rifles','Vanilla','Trader 1',0,1,1,0,1,NULL,NULL,0,NULL);
@@ -1448,10 +1422,5 @@ INSERT INTO "items" VALUES(1420,'ZucchiniSeeds',0,0,0,14400,'','','Not in CE','t
 INSERT INTO "items" VALUES(1421,'ZucchiniSeedsPack',30,20,0,14400,'Farm','','Somewhat Rare','food','natural','vegetables','Vanilla','Trader 1',0,0,0,0,1,NULL,NULL,0,NULL);
 INSERT INTO "items" VALUES(1422,'ZmbM_usSoldier_normal_Woodland2',0,1,0,1800,'','','Not in CE','object','ai','zombie','Vanilla','Trader 1',0,0,0,0,1,NULL,NULL,0,NULL);
 
-CREATE TABLE mapselect (
-	id INTEGER NOT NULL, 
-	mapselectvalue VARCHAR, 
-	PRIMARY KEY (id)
-);
 INSERT INTO "mapselect" VALUES(1,'Chernarus');
 COMMIT;
