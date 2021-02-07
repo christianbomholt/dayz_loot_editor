@@ -47,10 +47,13 @@ class GUI(object):
         self.window.wm_title("CE-Editor v0.10.2 - "+ self.config.get_database()+" used for maptype: " + self.database.get_mapselectValue(1).mapselectvalue)
 
     def initializeapp(self):
+        print("initializeapp  :", self.database.get_mapselectValue(1).mapselectvalue)
         self.__create_tree_view()
         self.__create_side_bar()
+        print("DEBUG  :",self.config.get_database() )
         self.database = Dao(self.config.get_database())
         items = self.database.session.query(Item).filter(Item.mod.in_ (self.selected_mods))
+        print("initializeapp  :", self.database.get_mapselectValue(1).mapselectvalue)
         self.gridItems = items
         self.__populate_items(self.gridItems)
         self.__initiate_items()

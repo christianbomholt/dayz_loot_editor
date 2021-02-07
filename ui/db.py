@@ -8,7 +8,8 @@ from config import ConfigManager
 from database.dao import Dao
 from sqlalchemy.ext.declarative import declarative_base
 
-Base = declarative_base()
+
+#Base = declarative_base()
 
 class DB(object):
 
@@ -70,8 +71,10 @@ class DB(object):
 
     def __start_db(self, newDataBase, db_name):
         if newDataBase:
-            engine = create_engine(f"sqlite:///{db_name}")
-            Base.metadata.create_all(engine)
+            #init_database(db_name)
+            engine = init_database(db_name)
+            #engine = create_engine(f"sqlite:///{db_name}")
+            #Base.metadata.create_all(engine)
             raw_connection = engine.raw_connection()
             mapinit = self.DbInitValue.get()
             c = raw_connection.cursor()

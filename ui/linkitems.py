@@ -3,11 +3,12 @@ import sqlite3
 from sqlalchemy import create_engine, Column, Integer, String, and_, func
 from sqlalchemy.orm import sessionmaker
 from model.item import Item, init_database
-from model.item import Mapselect,Attachments
+from model.item import Mapselect,Attachments,LinkAttachments,LinkBulletMag,LinkBullets,LinkMags,Magazines,Bullets
 from config import ConfigManager
 from database.dao import Dao
 from sqlalchemy.ext.declarative import declarative_base
 import json
+import re
 
 
 
@@ -39,10 +40,65 @@ class LinkItem(object):
 
 
     def __loadLinkItem(self,LinkItemFile):
+        self.database.session.query(Bullets).delete()
+        self.database.session.query(Magazines).delete()
+        self.database.session.query(Attachments).delete()
+        self.database.session.query(LinkBulletMag).delete()
+        self.database.session.query(LinkBullets).delete()
+        self.database.session.query(LinkMags).delete()
+        self.database.session.query(LinkAttachments).delete()
+        
+        self.database.session.commit()    
+
         with open(LinkItemFile, 'r') as myfile:
             data=myfile.read()
-        self.database.attachments = json.loads(data)["HlyngeWeapons"]
+        attachments = json.loads(data)["HlyngeWeapons"]
 
+        for item in attachments:
+            item_name = item.get("name")
+            for attach in item.get("attachments"):
+                exists = self.database.session.query(Attachments).filter_by(name=attach).first()
+                if not exists:
+                    item_obj = Attachments(name = attach)
+                    self.database.session.add(item_obj)
+                
+                exists = self.database.session.query(LinkAttachments).filter_by(attachname=attach, itemname=item_name).first()
+                if not exists:
+                    item_obj = LinkAttachments(attachname=attach, itemname=item_name)
+                    self.database.session.add(item_obj)
+        
+            for mag in item.get("magazines"):
+                exists = self.database.session.query(Magazines).filter_by(name=mag).first()
+                if not exists:
+                    #Mag_MKII_10Rnd
+                    x=0
+                    if "rnd" in mag.lower():
+                        x = mag.lower().split("rnd")[-2].split("_")[-1]
+                        x = re.sub("[^0-9]", "", x)
+                    item_obj = Magazines(name = mag,magbulletcount = int(x))
+                    self.database.session.add(item_obj)
+                exists = self.database.session.query(LinkMags).filter_by(magname=mag, itemname=item_name).first()
+                if not exists:
+                    item_obj = LinkMags(magname=mag, itemname=item_name)
+                    self.database.session.add(item_obj)
+
+            for bullet in item.get("bullets"):
+                exists = self.database.session.query(Bullets).filter_by(name=bullet).first()
+                if not exists:
+                    item_obj = Bullets(name = bullet)
+                    self.database.session.add(item_obj)
+                
+                exists = self.database.session.query(LinkBullets).filter_by(bulletname=bullet, itemname=item_name).first()
+                if not exists:
+                    item_obj = LinkBullets(bulletname=bullet, itemname=item_name)
+                    self.database.session.add(item_obj)
+                    
+                for mag in item.get("magazines"):
+                    exists = self.database.session.query(LinkBulletMag).filter_by(bulletname=bullet, magname=mag).first()
+                    if not exists:
+                        item_obj = LinkBulletMag(bulletname=bullet, magname=mag)
+                        self.database.session.add(item_obj)
+        self.database.session.commit()
 
 def testWindow():
     window = Tk()

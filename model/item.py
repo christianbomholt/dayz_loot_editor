@@ -7,6 +7,7 @@ Base = declarative_base()
 def init_database(db_name):
     engine = create_engine(f"sqlite:///{db_name}")
     Base.metadata.create_all(engine)
+    return engine
 
 class Item(Base):
     __tablename__ = "items"

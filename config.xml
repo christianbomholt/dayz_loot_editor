@@ -1,6 +1,6 @@
 <config>
     <databasefile>
-        <database value="Namalsk1.db" />
+        <database value="Namalsk4.db" />
     </databasefile>
    
     <tiers>
@@ -40,6 +40,8 @@
         <trader value="Trader 2" />
         <trader value="Trader 3" />
     </traders>
+
+    
     
     <rairties> 
         <rarity value="undefined" />
