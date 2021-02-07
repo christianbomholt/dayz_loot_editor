@@ -18,15 +18,12 @@ class Dao(object):
 
 # create item  - used in new_items.py
     def create_item(self, item: Item, duplicate=0):
-        print("DEBUG  :", item)
         if duplicate == 1:
             self.session.add(item)
-            print("DEBUG  :", item)
             self.session.commit()
         else:
             if self.session.query(Item).filter(Item.name == item.name).count() == 0:
                 self.session.add(item)
-                print("DEBUG  :", item)
                 self.session.commit()
 
 # get item used for __fill_entry_frame
@@ -42,12 +39,6 @@ class Dao(object):
         result=[c[0] for c in result if c[0] is not None]
         result.append("all")
         return result
-    """
-    def get_all_types(self, col):
-        result = self.session.query(getattr(Item, col).order_by(getattr(Item, col)).distinct().label(col+"s"))
-        result=[c[0] for c in result if c[0] is not None]
-        result.append("all")
-        return result"""     
 
     def get_all_types(self, col):
         result = self.session\
@@ -55,7 +46,7 @@ class Dao(object):
             .order_by(desc(getattr(Item,col)))
         result=[c[0] for c in result if c[0] is not None]
         result.append("all")
-        return result     
+        return result
     
 
 # delete item - used in the delete button
@@ -169,7 +160,6 @@ class Dao(object):
     def setmapselectValue(self, value):
         exists = self.session.query(Mapselect).first()
         if not exists:
-            print("DEBUG  setmapselectValue:",value )
             map_object = Mapselect(
                 mapselectvalue = value
             )

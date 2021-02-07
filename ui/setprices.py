@@ -58,7 +58,6 @@ class TraderEditor(object):
     def traderupdate(self):
         subTypeLst = self.database.get_tradersubtypetupl(self.seltrader,self.selectedMods)
         self.subTypeListbox.delete(0,'end')
-        print("DEBUG traderupdate:", subTypeLst)   
         for subType in subTypeLst:
             if subType == "":
                 subType = "UNASSIGNED"
@@ -66,8 +65,6 @@ class TraderEditor(object):
 
     def testdef(self):
         traderitem = self.database.get_traderpricingtupl(self.seltrader,"Rifles",self.selectedMods)
-        
-    
 
     def createTraderEditor(self, root, row, column):    
         self.fillTraderWindow(root)

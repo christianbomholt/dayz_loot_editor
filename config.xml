@@ -1,6 +1,6 @@
 <config>
     <databasefile>
-        <database value="WhyNoImport.db" />
+        <database value="Namalsk1.db" />
     </databasefile>
    
     <tiers>

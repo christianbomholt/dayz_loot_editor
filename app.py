@@ -91,7 +91,7 @@ class GUI(object):
 # file menus builder
         file_menu = Menu(self.menu_bar, tearoff=0)
         file_menu.add_command(label="Setup Database", command=self.__open_db_window)
-        file_menu.add_command(label="Import Link-data", command=self.__import_link_window)
+        file_menu.add_command(label="Import (UnderDev)", command=self.__import_link_window)
         file_menu.add_separator()
         file_menu.add_command(label="Add Items", command=self.__open_items_window)
         file_menu.add_separator()
@@ -218,7 +218,7 @@ class GUI(object):
             self.tiersListBox.insert(END, i)
 
         self.cat_typeOption = OptionMenu(
-            self.entryFrame, self.cat_type, *self.database.get_all_categories("cat_type")[:-1]
+            self.entryFrame, self.cat_type, *self.database.get_all_types("cat_type")[:-1]
         )
         self.cat_typeOption.grid(row=9, column=1, sticky="w", pady=5)
 
@@ -374,7 +374,6 @@ class GUI(object):
             command=self.__search_like_name,
         ).grid(row=6, columnspan=2, pady=5, padx=10, sticky="nesw")
 
-
 #
 # This is were we have the test button
 #         
@@ -440,12 +439,15 @@ class GUI(object):
                     print("DEBUG item category not found :", Item.cat_type, Item.name)
         else:
             for Item in self.gridItems:
-                for item_type, subtypes in categoriesDict.get(Item.cat_type).items():
-                    for subtype, substrings in subtypes.items():
-                        for item_substring in substrings:
-                            if item_substring in Item.name.lower() and item_substring !="":
-                                Item.item_type = item_type
-                                Item.sub_type = subtype                        
+                try:
+                    for item_type, subtypes in categoriesDict.get(Item.cat_type).items():
+                        for subtype, substrings in subtypes.items():
+                            for item_substring in substrings:
+                                if item_substring in Item.name.lower() and item_substring !="":
+                                    Item.item_type = item_type
+                                    Item.sub_type = subtype
+                except:
+                    print("DEBUG item category not found :", Item.cat_type, Item.name)                                            
         self.database.session.commit()                        
 
 
@@ -592,12 +594,14 @@ class GUI(object):
             self.restock.set(-1)
             self.mod.set("")
             self.trader.set("")
-            usages = tree_row['values'][5]
-            for i in range(len(usages)):
-                self.usagesListBox.select_clear(i)
-            tiers = tree_row['values'][6]    
-            for i in range(len(tiers)):
-                self.tiersListBox.select_clear(i)
+            usages = tree_row['values'][7]
+            if usages != "":
+                for i in range(len(usages)):
+                    self.usagesListBox.select_clear(i)
+            tiers = tree_row['values'][8]    
+            if tiers != "":
+                for i in range(len(tiers)):
+                    self.tiersListBox.select_clear(i)
             self.rarity.set("")
             self.cat_type.set("")
             self.item_type.set("")

@@ -100,7 +100,6 @@ def distribute_nominal(database, items, totalNumDisplayed, distributorValue):
     targetNominal = int(totalNumDisplayed)
 
     if distributorValue =="Use Rarity":
-
         for item in items:
                 multiplier = rarities.get(item.rarity)
                 item.nominal= round(item.nominal*multiplier)
@@ -109,4 +108,5 @@ def distribute_nominal(database, items, totalNumDisplayed, distributorValue):
     ratio = targetNominal/currentNominal
     for item in items:
         item.nominal= max(round(item.nominal*ratio),1)
+        item.min = max(round (item.min*ratio),1)
     database.session.commit()

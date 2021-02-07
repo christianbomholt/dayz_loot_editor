@@ -222,6 +222,7 @@ vehiclepartsSubTypesDict = {
 }
 
 categoriesDict = {"weapons": weaponSubTypesDict,
+                  "explosives" : explosivesSubtypeDict,
                   "containers": containerSubTypesDict,
                   "clothes": clothingSubTypesDict,
                   "food": foodSubTypesDict,

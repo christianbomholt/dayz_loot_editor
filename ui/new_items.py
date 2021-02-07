@@ -52,7 +52,7 @@ class NewItems(object):
         string_data = self.text_area.get(1.0, END).strip()
         string_data = "<type name" + string_data.split("<type name", 1)[1]
         string_data = string_data.rsplit("</type", 1)[0]
-        string_data = string_data.strip()+ "\n</type>"
+        string_data = string_data.strip() #+ "\n</type>"
         clean_data = ""
         for idx, line in enumerate(string_data.splitlines()):
             if comment not in line:
@@ -64,10 +64,8 @@ class NewItems(object):
             items = xml_parser.get_items(self.mapselectValue.get())
             for i in items:
                 i.mod = self.modSelector.get()
-                print("DEBUG __altadd_items :", i.mod)
                 self.database.create_item(item=i, duplicate=self.duplicate.get())
         else:
-            print("DEBUG  :", clean_data)
             messagebox.showerror(
                 title="Parsing Error",
                 message="Beginning and ending dont match.. fix it",

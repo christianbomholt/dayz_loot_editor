@@ -62,7 +62,6 @@ def getDistribution(rows, rarity_is_set):
         for item in rows:
             if item[0] != 0:
                 raritySet.add(rarityForTrader[item[0]])
-                print("DEBUG getDistribution :",rarityForTrader[item[0]])
     else:
         for item in rows:
             raritySet.add(item[1])
@@ -81,7 +80,6 @@ def stretch(distribution):
 
 def scale(maxP, minP, newMax, newMin, todistribute):
     newPoints = []
-    print("DEBUG  :", maxP,minP,newMax,newMin)
     for point in todistribute:
         if ((maxP - minP) + newMin) != 0:
             newPoint = (point - minP)*((newMax - newMin) / (maxP - minP)) + newMin
