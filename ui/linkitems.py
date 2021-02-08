@@ -11,7 +11,6 @@ import json
 import re
 
 
-
 Base = declarative_base()
 
 class LinkItem(object):

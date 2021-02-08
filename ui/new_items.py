@@ -3,7 +3,6 @@ from tkinter import ttk
 from config import ConfigManager
 from xml_manager.xml_parser import XMLParser
 from database.dao import Dao
-#from config import INIManager
 from tkinter import messagebox
 
 
@@ -42,7 +41,7 @@ class NewItems(object):
 
         self.buttons.grid(row=4, sticky="w")
         Button(
-            self.buttons, text="OK", height=1, width=10, command=self.__altadd_items
+            self.buttons, text="OK", height=1, width=10, command=self.__add_items
         ).grid(padx=10, pady=10)
         self.window.wait_window()
 
@@ -82,18 +81,22 @@ class NewItems(object):
                 title="Error", message="Empty Data", parent=self.window
             )
         else:
+            for idx, line in enumerate(string_data.splitlines()):
+                if "<!--" not in line:
+                    string_data += line + "\n"
+            string_data = string_data.strip()
             if self.__check_xml(string_data) == 1:
                 messagebox.showerror(
                     title="Parsing Error",
-                    message="Beginning of type is wrong. type has to start "
-                    "with <type",
+                    message="Beginning or end of input is wrong."
+                    "it has to start with <type and end with <type> ",
                     parent=self.window,
                 )
             elif self.__check_xml(string_data) == 2:
                 messagebox.showerror(
                     title="Parsing Error",
-                    message="Beginning of type is wrong. types has to start "
-                    "with <types",
+                    message="Beginning or end of input is wrong."
+                    "it has to start with <types> and end with <types> ",
                     parent=self.window,
                 )
             else:

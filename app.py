@@ -10,6 +10,7 @@ from ui.setprices import TraderEditor
 from xml_manager.xml_writer import XMLWriter
 import tkinter.filedialog as filedialog
 import webbrowser
+import time
 #from utility.combo_box_manager import ComboBoxManager
 from utility import assign_rarity, distribute_nominal, column_definition, categoriesDict,categoriesNamalskDict, getweapons
 
@@ -28,10 +29,12 @@ class GUI(object):
         self.moddict = {}
         self.modcount = 0
         self.moddlist = []
+        self.totalWeaponDisplayed = IntVar()
         self.totalNumDisplayed = IntVar()
         self.nomVars = []
-        self.weaponNomTypes = {"gun":0, "ammo":0, "optic":0, "mag":0, "attachment":0}
+        self.weaponNomTypes = {"ranged":0, "ammo":0, "optic":0, "mag":0, "attachment":0}
         self.distributorValue = StringVar()
+        self.weapondistributorValue = StringVar()
         self.searchName = StringVar()
 
         #
@@ -41,25 +44,21 @@ class GUI(object):
         self.__create_side_bar()
         self.__initiate_items()
         self.__create_nominal_info()
-        self.__create_distribution_block()        
+
         #
         self.tree.bind("<ButtonRelease-1>", self.__fill_entry_frame)
         self.window.wm_title("CE-Editor v0.10.2 - "+ self.config.get_database()+" used for maptype: " + self.database.get_mapselectValue(1).mapselectvalue)
 
     def initializeapp(self):
-        print("initializeapp  :", self.database.get_mapselectValue(1).mapselectvalue)
         self.__create_tree_view()
         self.__create_side_bar()
-        print("DEBUG  :",self.config.get_database() )
         self.database = Dao(self.config.get_database())
         items = self.database.session.query(Item).filter(Item.mod.in_ (self.selected_mods))
-        print("initializeapp  :", self.database.get_mapselectValue(1).mapselectvalue)
         self.gridItems = items
         self.__populate_items(self.gridItems)
         self.__initiate_items()
         self.__create_nominal_info()
-        self.window.wm_title("CE-Editor v0.10.2  UPDATED - fresh database that is initialized with: " + self.database.get_mapselectValue(1).mapselectvalue)
-#self.__selectmodsfunction___()        
+        self.window.wm_title("CE-Editor v0.10.2  UPDATED - fresh database - restart to see the right map")
 
     def deselectAllMods(self):
         for k in self.moddict: self.moddict[k].set(0)
@@ -81,7 +80,7 @@ class GUI(object):
     def updateAllMods(self,menu):
 
         for i in range(self.modcount+3):
-            if i > 3:
+            if i >2:
                 menu.delete(i)
         for mod in self.database.get_all_types("mod"):
             if mod != "all":
@@ -115,6 +114,8 @@ class GUI(object):
         tools_menu.add_command(label="Assign Rarity from nominal", command=self.func2assign_raritiy)
         tools_menu.add_separator()
         tools_menu.add_command(label="Dump database to sql file", command=self.dump2sql)
+        tools_menu.add_separator()
+        tools_menu.add_command(label="TestFunction for DEV", command=self.testfunction)
 
 # initializing mods menu
         self.mods_menu = Menu(self.menu_bar, tearoff=0)
@@ -339,10 +340,12 @@ class GUI(object):
         self.filterFrameHolder = Frame(self.window)
         self.filterFrameHolder.grid(row=0, column=2, sticky="n")
         self.filterFrame = LabelFrame(self.filterFrameHolder,width=14, text="Filter")
-        self.filterFrame.grid(row=1, column=0, pady=5)
+        self.filterFrame.grid(row=1, column=1, pady=5)
         Label(self.filterFrame, text="Category").grid(row=1, column=0, sticky="w")
         Label(self.filterFrame, text="Item type").grid(row=2, column=0, sticky="w")
         Label(self.filterFrame, text="Sub type").grid(row=3, column=0, sticky="w")
+        self.__create_distribution_block()
+        self.__create_weapon_distribution_block()
 
 #Category
         self.cat_type_for_filter = StringVar()
@@ -394,11 +397,24 @@ class GUI(object):
             command=self.callback,
         ).grid(row=8, columnspan=2, pady=5, padx=10, sticky="nesw")
 
+    """"
 
-# Distribution block
+        self.filterFrame = LabelFrame(self.filterFrameHolder,width=14, text="Filter")
+        self.filterFrame.grid(row=1, column=1, pady=5)
+
+        self.filterFrameHolder = Frame(self.window)
+        self.filterFrameHolder.grid(row=1, column=2, sticky="n")
+
+        self.entryFrameHolder = Frame(self.window)
+        self.entryFrameHolder.grid(row=0, column=0, sticky="nw")
+        self.entryFrame = Frame(self.entryFrameHolder)
+        self.entryFrame.grid(padx=8, pady=6)"""
+
+
+# Normal Distribution block
     def __create_distribution_block(self):
-        self.distribution = LabelFrame(self.filterFrameHolder, text="Nominal Distribution")
-        self.distribution.grid(row=6, column=0, padx=20, pady=20)
+        self.distribution = LabelFrame(self.filterFrameHolder,width=14, text="Nominal Distribution")
+        self.distribution.grid(row=2, column=1, pady=5)
         Label(self.distribution, text="By Displayed Items").grid(row=0, columnspan=2)
         Label(self.distribution, text="Target Nominal").grid(row=1, columnspan=2)
         self.desiredNomEntry = Entry(
@@ -411,6 +427,22 @@ class GUI(object):
             self.distribution, text="Distribute", width=12, command=self.__distribute_nominal
         ).grid(row=5, columnspan=2, pady=10)
 
+# Weapon Distribution block
+    def __create_weapon_distribution_block(self):
+        self.weapondistribution = LabelFrame(self.filterFrameHolder,width=14, text="Weapon Distribution")
+        self.weapondistribution.grid(row=3, column=1, pady=5)
+        Label(self.weapondistribution, text="By Displayed Items").grid(row=0, columnspan=2)
+        Label(self.weapondistribution, text="Target Nominal").grid(row=1, columnspan=2)
+        self.weapondesiredNomEntry = Entry(
+            self.weapondistribution, textvariable=self.totalWeaponDisplayed, width=14
+        ).grid(row=2, columnspan=2, pady=7)
+        self.weapondistributorValue.set("Use Rarity")
+        Radiobutton(self.weapondistribution, text="Use Rarity", variable=self.weapondistributorValue, value="Use Rarity") .grid(row=3, column=0,sticky="w")
+        Radiobutton(self.weapondistribution, text="Use Nominal", variable=self.weapondistributorValue, value="Use Nominal").grid(row=4, column=0,sticky="w")
+        Button(
+            self.weapondistribution, text="Distribute", width=12, command=self.__distribute_nominal
+        ).grid(row=5, columnspan=2, pady=10)
+
 
 
     def callback(self):
@@ -420,6 +452,10 @@ class GUI(object):
 
     def dump2sql(self):
         self.database.sql_dbDump()
+
+    def testfunction(self):
+        print("DEBUG  :", self.database.getNominalByCat(self.gridItems,"weapons"))    
+        
 
     def func2assign_raritiy(self):
         items = self.database.session.query(Item).filter(Item.nominal>0).all()
@@ -621,10 +657,12 @@ class GUI(object):
         self.infoFrame.grid(row=1, column=1, sticky="s,w,e")
         Label(self.infoFrame, text="Nominal counts: ").grid(row=0, column=0)
         self.totalNumDisplayed.set(self.database.getNominal(self.gridItems)[0])
+        value = self.database.getNominalByCat(self.gridItems,"weapons")[0][1]
+        self.totalWeaponDisplayed.set(value)
         Label(self.infoFrame, text="Displayed:").grid(row=0, column=1)
         Label(self.infoFrame, textvariable=self.totalNumDisplayed).grid(row=0, column=2)
         i = 3
-        self.weaponNomTypes = {"gun":0, "ammo":0, "optic":0, "mag":0, "attachment":0}
+        self.weaponNomTypes = {"ranged":0, "ammo":0, "optic":0, "mag":0, "attachment":0}
         for item_type in list(self.weaponNomTypes):
             var = StringVar()
             nomvar = (self.database.getNominalByType(self.gridItems,item_type))

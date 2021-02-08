@@ -234,6 +234,7 @@ class TraderEditor(object):
         # rarity, nominal
         for item in item:
             rarities.append((item[5], item[6]))
+            print("distributePricing  :", item[5], item[6])
         try:
             pricing = distribute(rarities, int(self.buyEntires[0].get()), int(self.buyEntires[1].get()),
                                  int(self.sellEntries[0].get()), int(self.sellEntries[1].get()), rarity_is_set)
@@ -244,12 +245,15 @@ class TraderEditor(object):
         sellPricing = pricing[1]
 
         for item in self.traderVal:
+            print("DEBUG  :", item[1][1],item[1][2] )
             try:
                 keyValue = rarityForTrader[item[1][0]] if rarity_is_set else item[1][2]
             except KeyError:
+                pass
+                """
                 keyValue = 0
             self.setEntryVal(item[0][1], buyPricing[keyValue])
-            self.setEntryVal(item[0][2], sellPricing[keyValue])
+            self.setEntryVal(item[0][2], sellPricing[keyValue])"""
 
     def setEntryVal(self, entry, newVal):
         entry.delete(0, END)

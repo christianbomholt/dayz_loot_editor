@@ -68,6 +68,17 @@ class Dao(object):
         return result       
 
 # used in __create_nominal_info
+    def getNominalByCat(self, grid_items, cat_type):
+        grid_items = grid_items.subquery()
+        result = self.session\
+            .query(Item.cat_type, func.sum(Item.nominal))\
+            .filter(Item.cat_type==cat_type)\
+            .join(grid_items, Item.id == grid_items.c.id)\
+            .group_by(Item.cat_type)\
+            .all()
+        return result 
+
+# used in __create_nominal_info
     def getNominalByType(self, grid_items, item_type):
         grid_items = grid_items.subquery()
         result = self.session\
