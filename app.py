@@ -345,7 +345,7 @@ class GUI(object):
         Label(self.filterFrame, text="Item type").grid(row=2, column=0, sticky="w")
         Label(self.filterFrame, text="Sub type").grid(row=3, column=0, sticky="w")
         self.__create_distribution_block()
-        self.__create_weapon_distribution_block()
+        #self.__create_weapon_distribution_block()
 
 #Category
         self.cat_type_for_filter = StringVar()
@@ -426,7 +426,7 @@ class GUI(object):
         Button(
             self.distribution, text="Distribute", width=12, command=self.__distribute_nominal
         ).grid(row=5, columnspan=2, pady=10)
-
+    """
 # Weapon Distribution block
     def __create_weapon_distribution_block(self):
         self.weapondistribution = LabelFrame(self.filterFrameHolder,width=14, text="Weapon Distribution")
@@ -441,7 +441,7 @@ class GUI(object):
         Radiobutton(self.weapondistribution, text="Use Nominal", variable=self.weapondistributorValue, value="Use Nominal").grid(row=4, column=0,sticky="w")
         Button(
             self.weapondistribution, text="Distribute", width=12, command=self.__distribute_nominal
-        ).grid(row=5, columnspan=2, pady=10)
+        ).grid(row=5, columnspan=2, pady=10)"""
 
 
 
@@ -595,7 +595,6 @@ class GUI(object):
         
 
     def __search_like_name(self):
-        #if self.name.get() != "":
         if self.searchName.get() != "":
             items = self.database.search_like_name(self.searchName.get())
             self.__populate_items(items)
@@ -657,7 +656,10 @@ class GUI(object):
         self.infoFrame.grid(row=1, column=1, sticky="s,w,e")
         Label(self.infoFrame, text="Nominal counts: ").grid(row=0, column=0)
         self.totalNumDisplayed.set(self.database.getNominal(self.gridItems)[0])
-        value = self.database.getNominalByCat(self.gridItems,"weapons")[0][1]
+        try:
+            value = self.database.getNominalByCat(self.gridItems,"weapons")[0][1]
+        except:
+            value = 0    
         self.totalWeaponDisplayed.set(value)
         Label(self.infoFrame, text="Displayed:").grid(row=0, column=1)
         Label(self.infoFrame, textvariable=self.totalNumDisplayed).grid(row=0, column=2)

@@ -7,9 +7,7 @@ dbtest = Dao("test.db")
 # config.set_database("dayz_items_4.db")
 
 def test_config_getters():
-  #assert dbtest.fast_search_like_name("MassBlack")[0][1] == 'MassBlackYellowMB'
-  
-  for item in dbtest.fast_search_like_name("MassBlackY"):
+   for item in dbtest.fast_search_like_name("MassBlackY"):
     assert item.get("name") in ['MassBlackYellowMB']
 
 
@@ -32,5 +30,4 @@ def test_filter():
   selected_Mods = ("Vanilla", "Mod 1", "Mod 2")
   items = dbtest.session.query(Item).filter(Item.mod.in_ (selected_Mods)).all()
   print(set([u.__dict__["mod"] for u in items]))
-
   assert set([u.__dict__["mod"] for u in items]) == set(selected_Mods)

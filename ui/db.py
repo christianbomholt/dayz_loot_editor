@@ -36,7 +36,7 @@ class DB(object):
         button_frame.grid(row=6, column=0, columnspan=2, pady=10)
 # Selections        
         self.DbInitValue = StringVar()
-        optionList = ('Chernarus', 'Livonia', 'Namalsk','Deerisle')
+        optionList = ('Chernarus', 'Livonia', 'Namalsk','Deerisle','Chiemsee')
         self.DbInitValue.set(optionList[0])
         self.DbInit = OptionMenu(
             button_frame, self.DbInitValue, *optionList

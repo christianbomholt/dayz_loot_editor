@@ -58,6 +58,7 @@ class TraderEditor(object):
     def traderupdate(self):
         subTypeLst = self.database.get_tradersubtypetupl(self.seltrader,self.selectedMods)
         self.subTypeListbox.delete(0,'end')
+        print("DEBUG traderupdate:", subTypeLst)   
         for subType in subTypeLst:
             if subType == "":
                 subType = "UNASSIGNED"
@@ -65,6 +66,8 @@ class TraderEditor(object):
 
     def testdef(self):
         traderitem = self.database.get_traderpricingtupl(self.seltrader,"Rifles",self.selectedMods)
+        
+    
 
     def createTraderEditor(self, root, row, column):    
         self.fillTraderWindow(root)
@@ -166,7 +169,7 @@ class TraderEditor(object):
         self.canv.grid(row=0, column=0, sticky="nsew")
         self.canvFrame = Frame(self.canv, height=height, width=width)
         self.canv.create_window(0, 0, window=self.canvFrame, anchor='nw')
-        
+
         for i in items:
             traderCat = i.get("traderCat")
             subtype = i.get("sub_type")
@@ -234,7 +237,6 @@ class TraderEditor(object):
         # rarity, nominal
         for item in item:
             rarities.append((item[5], item[6]))
-            print("distributePricing  :", item[5], item[6])
         try:
             pricing = distribute(rarities, int(self.buyEntires[0].get()), int(self.buyEntires[1].get()),
                                  int(self.sellEntries[0].get()), int(self.sellEntries[1].get()), rarity_is_set)
@@ -245,15 +247,12 @@ class TraderEditor(object):
         sellPricing = pricing[1]
 
         for item in self.traderVal:
-            print("DEBUG  :", item[1][1],item[1][2] )
             try:
                 keyValue = rarityForTrader[item[1][0]] if rarity_is_set else item[1][2]
             except KeyError:
-                pass
-                """
                 keyValue = 0
             self.setEntryVal(item[0][1], buyPricing[keyValue])
-            self.setEntryVal(item[0][2], sellPricing[keyValue])"""
+            self.setEntryVal(item[0][2], sellPricing[keyValue])
 
     def setEntryVal(self, entry, newVal):
         entry.delete(0, END)

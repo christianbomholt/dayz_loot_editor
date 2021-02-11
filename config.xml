@@ -1,6 +1,6 @@
 <config>
     <databasefile>
-        <database value="Namalsk5.db" />
+        <database value="chimsee.db" />
     </databasefile>
    
     <tiers>
