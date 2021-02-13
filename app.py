@@ -589,7 +589,6 @@ class GUI(object):
                 i.restock,i.lifetime,i.usage,i.tier,i.rarity,i.cat_type,i.item_type,i.sub_type,
                 i.mod,i.trader,i.dynamic_event,i.count_in_hoarder,i.count_in_cargo,
                 i.count_in_player,i.count_in_map],tags=('oddrow',))
-
         self.tree.tag_configure('oddrow', background='#FFFFFF')
         self.tree.tag_configure('evenrow', background='#F5F5F5')
         

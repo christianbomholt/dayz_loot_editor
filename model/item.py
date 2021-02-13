@@ -82,6 +82,7 @@ class Attachments(Base):
     __tablename__ = "attachments"
     id = Column(Integer, primary_key=True)
     name = Column(String)
+    attach_prop = Column(Integer, default=0)
     
     def __repr__(self):
         return f"Attach(name={self.name})"
@@ -91,6 +92,7 @@ class Bullets(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String)
     bulletcount = Column(Integer, default=7)
+    bullet_prop = Column(Integer, default=0)
     
     def __repr__(self):
         return f"Bullet(name={self.name}, bullet_count={self.bulletcount})"
@@ -100,6 +102,7 @@ class Magazines(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String)
     magbulletcount = Column(Integer, default=30)
+    mag_prop = Column(Integer, default=0)
     
     def __repr__(self):
         return f"Mag(name={self.name}, bullets_in_mag={self.magbulletcount})"

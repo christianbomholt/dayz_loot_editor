@@ -21,6 +21,12 @@ column_definition = [
     {"text": "M", "width": 20, "col_id": "#20", "stretch": "NO" }
 ]
 
+attach_definition = [
+    {"text": "Name", "width": 250, "col_id": "#1", "stretch": "YES" },
+    {"text": "Count", "width": 60, "col_id": "#2", "stretch": "YES" },
+    {"text": "Prop", "width": 50, "col_id": "#3", "stretch": "NO" },
+]
+
 gunSubTypesDict = {
     "Sidearms": [],
     "pistols": [],

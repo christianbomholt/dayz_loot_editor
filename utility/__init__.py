@@ -1,3 +1,3 @@
 from utility.distributor import assign_rarity, distribute_nominal
-from utility.categories import column_definition,categoriesDict,categoriesNamalskDict
+from utility.categories import column_definition,categoriesDict,categoriesNamalskDict,attach_definition
 from utility.api_calls import getweapons
