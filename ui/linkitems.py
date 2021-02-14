@@ -25,7 +25,9 @@ class LinkItem(object):
         self.gridAttachs = []
         self.__create_entry_frame()
         self.__create_tree_view()
+        self.table = f'{self.attach.get()}'
         self.__initiate_attachs()
+
 
     def __create_entry_frame(self):
         self.entryFrameHolder = Frame(self.window)
@@ -76,6 +78,7 @@ class LinkItem(object):
 
 
     def __setattach__(self):
+        self.table = f'{self.attach.get()}'
         print("__setattach__  :", )
 
     def __create_tree_view(self):
@@ -127,10 +130,12 @@ class LinkItem(object):
             if value_from_update_form != default_value:
                 setattr(attach, field, value_from_update_form)
 
-        for attach in self.treeView.selection():
+        for attachs in self.treeView.selection():
             attach = self.treeView.item(attachs)
             id_of_interest = attach["text"]
-            attach_to_update = self.database.session.query(Item).get(id_of_interest)
+            #attach_to_update = self.database.session.query(Item).get(id_of_interest)
+            attach_to_update = self.database.session.query(Base.metadata.tables[self.table]).get(id_of_interest)
+
             __update_helper(attach_to_update, "count", -1)
             __update_helper(attach_to_update, "prop", -1)
             self.database.session.commit()
@@ -145,9 +150,8 @@ class LinkItem(object):
 
 
     def __initiate_attachs(self, attachs=None):
-        table = f'{self.attach.get()}'
-        print("__initiate_attachs  :", table)
-        attachs = self.database.session.query(Base.metadata.tables[table])
+        print("__initiate_attachs  :", self.table)
+        attachs = self.database.session.query(Base.metadata.tables[self.table])
         #attachs = self.database.session.query(table)
         self.gridAttachs = attachs
         print("__initiate_attachs  :", attachs.count() )
