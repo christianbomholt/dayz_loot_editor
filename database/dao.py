@@ -32,6 +32,14 @@ class Dao(object):
         self.session.commit()
         return item
 
+
+    def get_attach(self,attachClasse, item_id):
+        print("get_attach  :",attachClasse)
+        item = self.session.query(attachClasse).get(item_id)
+        print("get_attach  :",item)
+        self.session.commit()
+        return item
+
 #Used in a different filters
     
     def get_all_categories(self, col):

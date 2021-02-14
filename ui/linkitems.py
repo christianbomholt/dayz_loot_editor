@@ -2,7 +2,7 @@ from tkinter import Tk, Toplevel, Frame, StringVar, Radiobutton, Label, Entry, B
 from tkinter import ttk, VERTICAL, HORIZONTAL, LabelFrame,Tcl
 import sqlite3
 from sqlalchemy import create_engine, Column, Integer, String, and_, func
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, mapper
 from model.item import Item, init_database, Base
 from model.item import Mapselect,Attachments,LinkAttachments,LinkBulletMag,LinkBullets,LinkMags,Magazines,Bullets
 from config import ConfigManager
@@ -27,6 +27,7 @@ class LinkItem(object):
         self.__create_tree_view()
         self.table = f'{self.attach.get()}'
         self.__initiate_attachs()
+        self.tree.bind("<ButtonRelease-1>", self.__fill_entry_frame)
 
 
     def __create_entry_frame(self):
@@ -39,6 +40,11 @@ class LinkItem(object):
         self.attach.set(optionList[0])
         OptionMenu(self.entryFrame, self.attach, *optionList, command = self.__setattach__
         ).grid(row=0, column=0, sticky="n,s,e,w",columnspan=2)
+        """
+        OptionMenu(
+            self.filterFrame, self.type_for_filter, *self.database.get_all_types("item_type"), command = self.__TypeFilter__
+        ).grid(row=2, column=1, sticky="w", padx=5)"""
+
         # labels
         Label(self.entryFrame, text="Name").grid(row=1, column=0, sticky="w", pady=5)
         Label(self.entryFrame, text="Count").grid(row=2, column=0, sticky="w", pady=5)
@@ -47,13 +53,13 @@ class LinkItem(object):
         # input variables
         self.id = IntVar()
         self.name = StringVar()
-        self.count = IntVar()
+        self.attachcount = IntVar()
         self.prop = IntVar()
         
         # form fields
         self.nameField = Entry(self.entryFrame, textvariable=self.name)
         self.nameField.grid(row=1, column=1, sticky="w")
-        self.countField = Entry(self.entryFrame, textvariable=self.count)
+        self.countField = Entry(self.entryFrame, textvariable=self.attachcount)
         self.countField.grid(row=2, column=1, sticky="w")
         self.propField = Entry(self.entryFrame, textvariable=self.prop)
         self.propField.grid(row=3, column=1, sticky="w")
@@ -66,7 +72,6 @@ class LinkItem(object):
             self.entryFrame, text="Delete", width=8, command=self.__delete_attach
         ).grid(row=4, column=1, pady=5, sticky="w")
 
-        #self.configFrame = Frame(self.window)
         self.configFrame = Frame(self.entryFrameHolder)
         self.configFrame.grid(row=2, column=0, sticky="n,w,e", padx=30)
         Label(self.configFrame, text="Select the LinkAttach File:").grid(row=1, column=0, sticky="w")
@@ -77,9 +82,15 @@ class LinkItem(object):
         ).grid(row=2, column=0, sticky="n,w", padx=10)
 
 
-    def __setattach__(self):
+    def get_class_by_tablename(self,tablename):
+        for c in Base._decl_class_registry.values():
+            if hasattr(c, '__tablename__') and c.__tablename__ == tablename:
+                return c
+
+    def __setattach__(self,selection):
         self.table = f'{self.attach.get()}'
-        print("__setattach__  :", )
+        self.__initiate_attachs()
+        print("__setattach__  :", self.table)
 
     def __create_tree_view(self):
         style = ttk.Style()
@@ -133,13 +144,12 @@ class LinkItem(object):
         for attachs in self.treeView.selection():
             attach = self.treeView.item(attachs)
             id_of_interest = attach["text"]
-            #attach_to_update = self.database.session.query(Item).get(id_of_interest)
-            attach_to_update = self.database.session.query(Base.metadata.tables[self.table]).get(id_of_interest)
-
-            __update_helper(attach_to_update, "count", -1)
+            attach_to_update = self.database.session.query(self.get_class_by_tablename(self.table)).get(id_of_interest)
+            #attach_to_update = self.database.session.query(Base.metadata.tables[self.table]).get(id_of_interest)
+            __update_helper(attach_to_update, "attachcount", -1)
             __update_helper(attach_to_update, "prop", -1)
             self.database.session.commit()
-        self.__populate_attach(self.gridAttachs)
+        self.__populate_attachs(self.gridAttachs)
 
     def __delete_attach(self):
         for attachs in self.treeView.selection():
@@ -150,11 +160,8 @@ class LinkItem(object):
 
 
     def __initiate_attachs(self, attachs=None):
-        print("__initiate_attachs  :", self.table)
-        attachs = self.database.session.query(Base.metadata.tables[self.table])
-        #attachs = self.database.session.query(table)
+        attachs = self.database.session.query(self.get_class_by_tablename(self.table))
         self.gridAttachs = attachs
-        print("__initiate_attachs  :", attachs.count() )
         self.__populate_attachs(attachs.all())
 
     def __populate_attachs(self, attachs):
@@ -171,11 +178,11 @@ class LinkItem(object):
     def __fill_entry_frame(self, event):        
         tree_row = self.tree.item(self.tree.focus())
         id = tree_row["text"]
-        attach = self.database.get_item(id)
+        attach = self.database.get_attach(self.get_class_by_tablename(self.table),id)
         if attach:
             self.id.set(id)
             self.name.set(attach.name)
-            self.count.set(-1)
+            self.attachcount.set(-1)
             self.prop.set(-1)
 
     def tree_view_sort_column(self,tv, col, reverse):

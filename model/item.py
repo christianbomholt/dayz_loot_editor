@@ -89,8 +89,8 @@ class Attachments(Base):
 
 class Bullets(Base):
     __tablename__ = "bullets"
-    #id = Column(Integer, primary_key=True)
-    name = Column(String, primary_key=True)
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
     attachcount = Column(Integer, default=7)
     prop = Column(Integer, default=0)
     
