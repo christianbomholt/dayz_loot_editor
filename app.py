@@ -714,7 +714,6 @@ class GUI(object):
         tv.heading(col, command=lambda: self.tree_view_sort_column(tv, col, not reverse)) 
 
     def __distribute_nominal(self):
-
         distribute_nominal(
             self.database, 
             self.gridItems.filter(Item.nominal>0), 

@@ -1,4 +1,4 @@
-from tkinter import Tk, Toplevel, Frame, StringVar, Radiobutton, Label, Entry, Button, filedialog,OptionMenu, IntVar
+from tkinter import Tk, Toplevel, Frame, StringVar, Radiobutton, Label, Entry, Button, filedialog, OptionMenu, IntVar
 from tkinter import ttk, VERTICAL, HORIZONTAL, LabelFrame,Tcl
 import sqlite3
 from sqlalchemy import create_engine, Column, Integer, String, and_, func
@@ -31,10 +31,15 @@ class LinkItem(object):
         self.entryFrameHolder.grid(row=0, column=0, sticky="nw")
         self.entryFrame = Frame(self.entryFrameHolder)
         self.entryFrame.grid(padx=8, pady=6)
+        optionList = ('Attachment', 'Magazine', 'Ammunition')
+        self.attach = StringVar()
+        self.attach.set(optionList[0])
+        OptionMenu(self.entryFrame, self.attach, *optionList, command = self.__setattach__
+        ).grid(row=0, column=0, sticky="n,s,e,w",columnspan=2)
         # labels
-        Label(self.entryFrame, text="Name").grid(row=0, column=0, sticky="w", pady=5)
-        Label(self.entryFrame, text="Count").grid(row=1, column=0, sticky="w", pady=5)
-        Label(self.entryFrame, text="Prop").grid(row=2, column=0, sticky="w", pady=5)
+        Label(self.entryFrame, text="Name").grid(row=1, column=0, sticky="w", pady=5)
+        Label(self.entryFrame, text="Count").grid(row=2, column=0, sticky="w", pady=5)
+        Label(self.entryFrame, text="Prop").grid(row=3, column=0, sticky="w", pady=5)
 
         # input variables
         self.id = IntVar()
@@ -44,28 +49,33 @@ class LinkItem(object):
         
         # form fields
         self.nameField = Entry(self.entryFrame, textvariable=self.name)
-        self.nameField.grid(row=0, column=1, sticky="w")
+        self.nameField.grid(row=1, column=1, sticky="w")
         self.countField = Entry(self.entryFrame, textvariable=self.count)
-        self.countField.grid(row=1, column=1, sticky="w")
+        self.countField.grid(row=2, column=1, sticky="w")
         self.propField = Entry(self.entryFrame, textvariable=self.prop)
-        self.propField.grid(row=2, column=1, sticky="w")
+        self.propField.grid(row=3, column=1, sticky="w")
 
         Button(
-            self.entryFrame, text="Update", width=8, command=self.__update_item
-        ).grid(row=5, column=0, pady=5, sticky="w")
+            self.entryFrame, text="Update", width=8, command=self.__update_attach
+        ).grid(row=4, column=0, pady=5, sticky="e")
 
         Button(
-            self.entryFrame, text="Delete", width=8, command=self.__delete_item
-        ).grid(row=5, column=1, pady=5, sticky="w")
+            self.entryFrame, text="Delete", width=8, command=self.__delete_attach
+        ).grid(row=4, column=1, pady=5, sticky="w")
 
         #self.configFrame = Frame(self.window)
         self.configFrame = Frame(self.entryFrameHolder)
         self.configFrame.grid(row=2, column=0, sticky="n,w,e", padx=30)
-        Label(self.configFrame, text="Select the LinkItems File:").grid(row=1, column=0, sticky="w")
-# Buttons
+        Label(self.configFrame, text="Select the LinkAttach File:").grid(row=1, column=0, sticky="w")
+
+        # Buttons
         Button(
             self.configFrame, text="Open", width=12, command=self.openLinkItem
         ).grid(row=2, column=0, sticky="n,w", padx=10)
+
+
+    def __setattach__(self):
+        print("__setattach__  :", )
 
     def __create_tree_view(self):
         style = ttk.Style()
@@ -110,11 +120,64 @@ class LinkItem(object):
         return [elm for elm in style.map("Treeview", query_opt=option)
                 if elm[:2] != ("!disabled", "!selected")]
 
-    def __update_item(self):
-        pass
+    def __update_attach(self):
+        def __update_helper(attach, field, default_value):
+            value_from_update_form = getattr(self, field).get()
+            if value_from_update_form != default_value:
+                setattr(attach, field, value_from_update_form)
 
-    def __delete_item(self):
-        pass
+        for attach in self.treeView.selection():
+            attach = self.treeView.attach(attachs)
+            id_of_interest = attach["text"]
+            attach_to_update = self.database.session.query(Item).get(id_of_interest)
+            __update_helper(attach_to_update, "count", -1)
+            __update_helper(attach_to_update, "prop", -1)
+            self.database.session.commit()
+        self.__populate_attach(self.gridAttachs)
+
+    def __delete_attach(self):
+        for attachs in self.treeView.selection():
+            attach = self.treeView.attach(attachs)
+            attachsid = attach["text"]
+            self.database.delete_attach(attachid)
+        self.__populate_attachs(self.gridAttachs)
+
+
+    def __initiate_attachs(self, attachs=None):
+        attachs = self.database.session.query(Item).filter(Item.mod.in_ (self.selected_mods))
+        self.gridAttachs = attachs
+        self.__populate_attachs(attachs.all())
+
+    def __populate_attachs(self, attachs):
+        if self.tree.get_children() != ():
+            self.tree.delete(*self.tree.get_children())
+        for idx,i in enumerate(attachs): 
+            if idx % 2 == 0:
+                self.tree.insert("", "end", text=i.id, value=[i.name,i.count,i.prop],tags=('evenrow',))
+            else:
+                self.tree.insert("", "end", text=i.id, value=[i.name,i.count,i.prop],tags=('oddrow',))
+        self.tree.tag_configure('oddrow', background='#FFFFFF')
+        self.tree.tag_configure('evenrow', background='#F5F5F5')
+
+    def __fill_entry_frame(self, event):        
+        tree_row = self.tree.item(self.tree.focus())
+        id = tree_row["text"]
+        attach = self.database.get_item(id)
+        if attach:
+            self.id.set(id)
+            self.name.set(attach.name)
+            self.count.set(-1)
+            self.prop.set(-1)
+
+    def tree_view_sort_column(self,tv, col, reverse):
+        l = [(tv.set(k, col), k) for k in tv.get_children('')]
+        try:
+            l.sort(key=lambda t: int(t[0]), reverse=reverse)
+        except ValueError:
+            l.sort(reverse=reverse)
+        for index, (val, k) in enumerate(l):
+            tv.move(k, '', index)
+        tv.heading(col, command=lambda: self.tree_view_sort_column(tv, col, not reverse)) 
 
     def openLinkItem(self):
         LinkItemFile = filedialog.askopenfilename(filetypes=[("DumpAttach", ".json")],defaultextension=".json")
