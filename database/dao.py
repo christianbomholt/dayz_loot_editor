@@ -62,9 +62,18 @@ class Dao(object):
         item = self.session.query(Item).get(item_id)
         self.session.delete(item)
         self.session.commit()
-
     # delete items
-    
+
+
+# delete item - used in the delete button
+    def delete_attach(self,attachClasse,item_id):
+        item = self.session.query(attachClasse).get(item_id)
+        self.session.delete(item)
+        self.session.commit()
+    # delete items
+
+
+
 # Used in __create_nominal_info
     def getNominal(self, grid_items):
         grid_items = grid_items.subquery()

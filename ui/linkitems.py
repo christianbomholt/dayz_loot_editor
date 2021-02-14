@@ -145,7 +145,6 @@ class LinkItem(object):
             attach = self.treeView.item(attachs)
             id_of_interest = attach["text"]
             attach_to_update = self.database.session.query(self.get_class_by_tablename(self.table)).get(id_of_interest)
-            #attach_to_update = self.database.session.query(Base.metadata.tables[self.table]).get(id_of_interest)
             __update_helper(attach_to_update, "attachcount", -1)
             __update_helper(attach_to_update, "prop", -1)
             self.database.session.commit()
@@ -153,9 +152,9 @@ class LinkItem(object):
 
     def __delete_attach(self):
         for attachs in self.treeView.selection():
-            attach = self.treeView.attach(attachs)
-            attachsid = attach["text"]
-            self.database.delete_attach(attachid)
+            attach = self.treeView.item(attachs)
+            itemid = attach["text"]
+            self.database.delete_attach(self.get_class_by_tablename(self.table),itemid)
         self.__populate_attachs(self.gridAttachs)
 
 
@@ -204,18 +203,6 @@ class LinkItem(object):
 
 
     def __loadLinkItem(self,LinkItemFile):
-        """
-        self.database.session.query(Bullets).delete()
-        self.database.session.query(Magazines).delete()
-        self.database.session.query(Attachments).delete()
-        self.database.session.query(LinkBulletMag).delete()
-        self.database.session.query(LinkBullets).delete()
-        self.database.session.query(LinkMags).delete()
-        self.database.session.query(LinkAttachments).delete()"""
-
-        
-        self.database.session.commit()    
-
         with open(LinkItemFile, 'r') as myfile:
             data=myfile.read()
         attachments = json.loads(data)["HlyngeWeapons"]
