@@ -83,7 +83,6 @@ class Attachments(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String)
     attach_prop = Column(Integer, default=0)
-    
     def __repr__(self):
         return f"Attach(name={self.name})"
 

@@ -24,14 +24,14 @@ class LinkItem(object):
         self.database = Dao(self.config.get_database())
         self.__create_entry_frame()
         self.__create_tree_view()
-
+        self.__initiate_attachs()
 
     def __create_entry_frame(self):
         self.entryFrameHolder = Frame(self.window)
         self.entryFrameHolder.grid(row=0, column=0, sticky="nw")
         self.entryFrame = Frame(self.entryFrameHolder)
         self.entryFrame.grid(padx=8, pady=6)
-        optionList = ('Attachment', 'Magazine', 'Ammunition')
+        optionList = ('Attachments', 'Bullets', 'Magazines')
         self.attach = StringVar()
         self.attach.set(optionList[0])
         OptionMenu(self.entryFrame, self.attach, *optionList, command = self.__setattach__
@@ -144,7 +144,9 @@ class LinkItem(object):
 
 
     def __initiate_attachs(self, attachs=None):
-        attachs = self.database.session.query(Item).filter(Item.mod.in_ (self.selected_mods))
+        table = f'{self.attach.get()}'
+        print("__initiate_attachs  :", table)
+        attachs = self.database.session.query(Attachments)
         self.gridAttachs = attachs
         self.__populate_attachs(attachs.all())
 
