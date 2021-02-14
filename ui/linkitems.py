@@ -3,7 +3,7 @@ from tkinter import ttk, VERTICAL, HORIZONTAL, LabelFrame,Tcl
 import sqlite3
 from sqlalchemy import create_engine, Column, Integer, String, and_, func
 from sqlalchemy.orm import sessionmaker
-from model.item import Item, init_database
+from model.item import Item, init_database, Base
 from model.item import Mapselect,Attachments,LinkAttachments,LinkBulletMag,LinkBullets,LinkMags,Magazines,Bullets
 from config import ConfigManager
 from database.dao import Dao
@@ -13,7 +13,7 @@ import re
 from utility import attach_definition
 
 
-Base = declarative_base()
+#Base = declarative_base()
 
 class LinkItem(object):
 
@@ -22,6 +22,7 @@ class LinkItem(object):
         self.window.grab_set()
         self.config = ConfigManager("config.xml")
         self.database = Dao(self.config.get_database())
+        self.gridAttachs = []
         self.__create_entry_frame()
         self.__create_tree_view()
         self.__initiate_attachs()
@@ -31,7 +32,7 @@ class LinkItem(object):
         self.entryFrameHolder.grid(row=0, column=0, sticky="nw")
         self.entryFrame = Frame(self.entryFrameHolder)
         self.entryFrame.grid(padx=8, pady=6)
-        optionList = ('Attachments', 'Bullets', 'Magazines')
+        optionList = ('attachments', 'bullets', 'magazines')
         self.attach = StringVar()
         self.attach.set(optionList[0])
         OptionMenu(self.entryFrame, self.attach, *optionList, command = self.__setattach__
@@ -127,7 +128,7 @@ class LinkItem(object):
                 setattr(attach, field, value_from_update_form)
 
         for attach in self.treeView.selection():
-            attach = self.treeView.attach(attachs)
+            attach = self.treeView.item(attachs)
             id_of_interest = attach["text"]
             attach_to_update = self.database.session.query(Item).get(id_of_interest)
             __update_helper(attach_to_update, "count", -1)
@@ -146,8 +147,10 @@ class LinkItem(object):
     def __initiate_attachs(self, attachs=None):
         table = f'{self.attach.get()}'
         print("__initiate_attachs  :", table)
-        attachs = self.database.session.query(Attachments)
+        attachs = self.database.session.query(Base.metadata.tables[table])
+        #attachs = self.database.session.query(table)
         self.gridAttachs = attachs
+        print("__initiate_attachs  :", attachs.count() )
         self.__populate_attachs(attachs.all())
 
     def __populate_attachs(self, attachs):
@@ -155,9 +158,9 @@ class LinkItem(object):
             self.tree.delete(*self.tree.get_children())
         for idx,i in enumerate(attachs): 
             if idx % 2 == 0:
-                self.tree.insert("", "end", text=i.id, value=[i.name,i.count,i.prop],tags=('evenrow',))
+                self.tree.insert("", "end", text=i.id, value=[i.name,i.attachcount,i.prop],tags=('evenrow',))
             else:
-                self.tree.insert("", "end", text=i.id, value=[i.name,i.count,i.prop],tags=('oddrow',))
+                self.tree.insert("", "end", text=i.id, value=[i.name,i.attachcount,i.prop],tags=('oddrow',))
         self.tree.tag_configure('oddrow', background='#FFFFFF')
         self.tree.tag_configure('evenrow', background='#F5F5F5')
 
@@ -190,13 +193,15 @@ class LinkItem(object):
 
 
     def __loadLinkItem(self,LinkItemFile):
+        """
         self.database.session.query(Bullets).delete()
         self.database.session.query(Magazines).delete()
         self.database.session.query(Attachments).delete()
         self.database.session.query(LinkBulletMag).delete()
         self.database.session.query(LinkBullets).delete()
         self.database.session.query(LinkMags).delete()
-        self.database.session.query(LinkAttachments).delete()
+        self.database.session.query(LinkAttachments).delete()"""
+
         
         self.database.session.commit()    
 
@@ -220,12 +225,11 @@ class LinkItem(object):
             for mag in item.get("magazines"):
                 exists = self.database.session.query(Magazines).filter_by(name=mag).first()
                 if not exists:
-                    #Mag_MKII_10Rnd
                     x=0
                     if "rnd" in mag.lower():
                         x = mag.lower().split("rnd")[-2].split("_")[-1]
                         x = re.sub("[^0-9]", "", x)
-                    item_obj = Magazines(name = mag,magbulletcount = int(x))
+                    item_obj = Magazines(name = mag,attachcount = int(x))
                     self.database.session.add(item_obj)
                 exists = self.database.session.query(LinkMags).filter_by(magname=mag, itemname=item_name).first()
                 if not exists:
@@ -233,11 +237,10 @@ class LinkItem(object):
                     self.database.session.add(item_obj)
 
             for bullet in item.get("bullets"):
-                exists = self.database.session.query(Bullets).filter_by(name=bullet).first()
+                exists = self.database.session.query(Bullets).filter_by(name = bullet).first()
                 if not exists:
                     item_obj = Bullets(name = bullet)
                     self.database.session.add(item_obj)
-                
                 exists = self.database.session.query(LinkBullets).filter_by(bulletname=bullet, itemname=item_name).first()
                 if not exists:
                     item_obj = LinkBullets(bulletname=bullet, itemname=item_name)

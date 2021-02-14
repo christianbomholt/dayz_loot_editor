@@ -82,26 +82,27 @@ class Attachments(Base):
     __tablename__ = "attachments"
     id = Column(Integer, primary_key=True)
     name = Column(String)
-    attach_prop = Column(Integer, default=0)
+    attachcount = Column(Integer, default=7)
+    prop = Column(Integer, default=0)
     def __repr__(self):
-        return f"Attach(name={self.name})"
+        return f"Attach(name={self.name}, attach_count={self.attachcount},attach_prop={self.prop})"
 
 class Bullets(Base):
     __tablename__ = "bullets"
-    id = Column(Integer, primary_key=True)
-    name = Column(String)
-    bulletcount = Column(Integer, default=7)
-    bullet_prop = Column(Integer, default=0)
+    #id = Column(Integer, primary_key=True)
+    name = Column(String, primary_key=True)
+    attachcount = Column(Integer, default=7)
+    prop = Column(Integer, default=0)
     
     def __repr__(self):
-        return f"Bullet(name={self.name}, bullet_count={self.bulletcount})"
+        return f"Bullet(name={self.name}, bullet_count={self.attachcount},attach_prop={self.prop})"
 
 class Magazines(Base):
     __tablename__ = "magazines"
     id = Column(Integer, primary_key=True)
     name = Column(String)
-    magbulletcount = Column(Integer, default=30)
-    mag_prop = Column(Integer, default=0)
+    attachcount = Column(Integer, default=30)
+    prop = Column(Integer, default=0)
     
     def __repr__(self):
-        return f"Mag(name={self.name}, bullets_in_mag={self.magbulletcount})"
+        return f"Mag(name={self.name}, bullets_in_mag={self.attachcount},attach_prop={self.prop})"
