@@ -121,6 +121,18 @@ class Dao(object):
         results = self.session.query(Item).filter(Item.name.like(search)).all()
         return results
 
+
+    def search_attach_name(self,attachClasse, item_name):
+        search = f'%{item_name}%'
+        results = self.session.query(attachClasse).filter(attachClasse.name.like(search)).all()
+        return results
+        
+    def search_attach_name(self,attachClasse, item_name):
+        search = f'%{item_name}%'
+        results = self.session.query(attachClasse).filter(attachClasse.name.like(search)).all()
+        return results
+
+
     def sql_dbDump(self):
         s =  str(self.db_name).split(".")
         filename = f"../{s[0]}.sql"

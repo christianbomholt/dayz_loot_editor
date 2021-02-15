@@ -2,7 +2,7 @@ from tkinter import Tk, Menu, IntVar, Frame, Label, StringVar, Entry, Listbox, E
 from tkinter import ttk, VERTICAL, HORIZONTAL, LabelFrame,Tcl
 from config import ConfigManager
 from database.dao import Dao
-from model.item import Item
+from model.item import Item, Ammobox
 from ui.db import DB
 from ui.linkitems import LinkItem
 from ui.new_items import NewItems
@@ -11,6 +11,7 @@ from xml_manager.xml_writer import XMLWriter
 import tkinter.filedialog as filedialog
 import webbrowser
 import time
+import re
 #from utility.combo_box_manager import ComboBoxManager
 from utility import assign_rarity, distribute_nominal, column_definition, categoriesDict,categoriesNamalskDict, getweapons
 
@@ -114,6 +115,8 @@ class GUI(object):
         tools_menu.add_command(label="Assign Rarity from nominal", command=self.func2assign_raritiy)
         tools_menu.add_separator()
         tools_menu.add_command(label="Dump database to sql file", command=self.dump2sql)
+        tools_menu.add_separator()
+        tools_menu.add_command(label="Derive ammobox table", command=self.deriveammobox)
         tools_menu.add_separator()
         tools_menu.add_command(label="TestFunction for DEV", command=self.testfunction)
 
@@ -372,6 +375,7 @@ class GUI(object):
         Button(
             self.filterFrame, text="Filter", width=12, command=self.__filter_items
         ).grid(row=4, columnspan=2, pady=5, padx=10, sticky="nesw")
+# Search like name        
         self.serchName = Entry(self.filterFrame, textvariable=self.searchName, width=14).grid(row=5, columnspan=2, pady=5, padx=10, sticky="nesw")
         Button(
             self.filterFrame,
@@ -724,6 +728,20 @@ class GUI(object):
 
     def openTraderEditor(self):
         TraderEditor(self.window,self.selected_mods)
+
+    def deriveammobox(self):
+        items = self.database.search_like_name("ammobox")
+        for item in items:
+            exists = self.database.session.query(Ammobox).filter_by(name=item.name).first()
+            if not exists:
+                x=0
+                if "rnd" in item.name.lower():
+                    x = item.name.lower().split("rnd")[-2].split("_")[-1]
+                    x = re.sub("[^0-9]", "", x)
+                item_obj = Ammobox(name = item.name,attachcount = int(x))
+                self.database.session.add(item_obj)
+
+
 
 window = Tk()
 GUI(window)

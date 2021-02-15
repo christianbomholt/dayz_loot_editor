@@ -106,3 +106,13 @@ class Magazines(Base):
     
     def __repr__(self):
         return f"Mag(name={self.name}, bullets_in_mag={self.attachcount},attach_prop={self.prop})"
+
+class Ammobox(Base):
+    __tablename__ = "ammobox"
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    attachcount = Column(Integer, default=30)
+    prop = Column(Integer, default=0)
+    
+    def __repr__(self):
+        return f"Ammobox(name={self.name}, bullets_in_box={self.attachcount},ammobox_prop={self.prop})"        
