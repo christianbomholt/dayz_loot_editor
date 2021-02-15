@@ -70,7 +70,7 @@ class LinkItem(object):
         ).grid(row=4, column=1, pady=5, sticky="w")
 
         # Search frame
-        self.searchFrame = Frame(self.entryFrameHolder,borderwidth="2", relief="ridge")
+        self.searchFrame = labelframe(self.entryFrameHolder,borderwidth="2", relief="ridge",text="Search")
         self.searchFrame.grid(row=2, column=0, sticky="n,w,e", padx=30)
         Label(self.searchFrame, text="Search like name:").grid(row=1, column=0, sticky="n")
 
@@ -269,7 +269,7 @@ class LinkItem(object):
                         self.database.session.add(item_obj)
         self.database.session.commit()
 
-        
+
 
 def testWindow():
     window = Tk()

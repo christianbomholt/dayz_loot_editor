@@ -2,7 +2,7 @@ from tkinter import Tk, Menu, IntVar, Frame, Label, StringVar, Entry, Listbox, E
 from tkinter import ttk, VERTICAL, HORIZONTAL, LabelFrame,Tcl
 from config import ConfigManager
 from database.dao import Dao
-from model.item import Item, Ammobox
+from model.item import Item, Ammobox, init_database
 from ui.db import DB
 from ui.linkitems import LinkItem
 from ui.new_items import NewItems
@@ -730,6 +730,7 @@ class GUI(object):
         TraderEditor(self.window,self.selected_mods)
 
     def deriveammobox(self):
+        init_database(self.config.get_database())
         items = self.database.search_like_name("ammobox")
         for item in items:
             exists = self.database.session.query(Ammobox).filter_by(name=item.name).first()
@@ -739,6 +740,8 @@ class GUI(object):
                     x = item.name.lower().split("rnd")[-2].split("_")[-1]
                     x = re.sub("[^0-9]", "", x)
                 item_obj = Ammobox(name = item.name,attachcount = int(x))
+                print("deriveammobox  :",item.name.lower(),int(x))
+
                 self.database.session.add(item_obj)
 
 
