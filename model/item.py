@@ -111,7 +111,7 @@ class Ammobox(Base):
     __tablename__ = "ammobox"
     id = Column(Integer, primary_key=True)
     name = Column(String)
-    attachcount = Column(Integer, default=30)
+    attachcount = Column(Integer, default=0)
     prop = Column(Integer, default=0)
     
     def __repr__(self):

@@ -1,22 +1,23 @@
 import pyperclip
-#from windows import addToClipboard
+# from windows import addToClipboard
 from math import ceil
 
-
 rarityForTrader = {"undefined": 0,
-            "Not in CE" : 0,
-             "Legendary": 10,
-             "Extremely Rare": 15,
-             "Very Rare": 20,
-             "Rare": 25,
-             "Somewhat Rare": 30,
-             "Uncommon": 35,
-             "Common": 40,
-             "Very Common": 45,
-             "All Over The Place": 50}             
+                   "Not in CE": 0,
+                   "Legendary": 10,
+                   "Extremely Rare": 15,
+                   "Very Rare": 20,
+                   "Rare": 25,
+                   "Somewhat Rare": 30,
+                   "Uncommon": 35,
+                   "Common": 40,
+                   "Very Common": 45,
+                   "All Over The Place": 50}
+
 
 def getKey(item):
     return int(item[2])
+
 
 def createTrader(root, subtype, rows):
     text = "\t<Category> {}\n".format(subtype)
@@ -31,18 +32,18 @@ def createTrader(root, subtype, rows):
     text += "\n"
     pyperclip.copy(text)
 
+
 # (rarity, nominal)
 def distribute(rows, minBuy, maxBuy, minSell, maxSell, useRarity):
     distribution = getDistribution(rows, useRarity)
-
     if len(distribution) <= 1:
-        return [(minBuy, minSell) for _ in rows]
+        return [(minBuy, minSell) for _ in rows], len(distribution)
 
     newDist = stretch(distribution)
     buyPrices = distributePricing(newDist, maxBuy, minBuy)
     sellPrices = distributePricing(newDist, maxSell, minSell)
-    buyPriceForDistrib = dict()
-    sellPriceForDistrib = dict()
+    buyPriceForDistrib = {}
+    sellPriceForDistrib = {}
 
     for i in range(len(distribution)):
         buyPriceForDistrib[distribution[i]] = buyPrices[i]
@@ -51,7 +52,7 @@ def distribute(rows, minBuy, maxBuy, minSell, maxSell, useRarity):
     buyPriceForDistrib[0] = -1
     sellPriceForDistrib[0] = -1
 
-    return buyPriceForDistrib, sellPriceForDistrib
+    return buyPriceForDistrib, sellPriceForDistrib, len(distribution)
 
 
 def getDistribution(rows, rarity_is_set):
@@ -67,8 +68,8 @@ def getDistribution(rows, rarity_is_set):
             raritySet.add(item[1])
 
     raritySet = sorted(raritySet)
-    if 0 in raritySet and len(raritySet) > 1:
-        raritySet.pop(0)
+    '''if 0 in raritySet and len(raritySet) > 1:
+        raritySet.pop(0)'''
     return raritySet
 
 
@@ -82,7 +83,7 @@ def scale(maxP, minP, newMax, newMin, todistribute):
     newPoints = []
     for point in todistribute:
         if ((maxP - minP) + newMin) != 0:
-            newPoint = (point - minP)*((newMax - newMin) / (maxP - minP)) + newMin
+            newPoint = (point - minP) * ((newMax - newMin) / (maxP - minP)) + newMin
         else:
             newPoint = 0
         newPoints.append(newPoint)
@@ -90,12 +91,11 @@ def scale(maxP, minP, newMax, newMin, todistribute):
 
 
 def distributePricing(to_distribute, maxPrice, minPrice):
-
     top = to_distribute[-1] - to_distribute[0]
     bottom = 0
     pricing = []
     for point in to_distribute:
-        price = (maxPrice - minPrice) * (((to_distribute[-1] - point) - bottom)**2 / (top - bottom)**2) + minPrice
+        price = (maxPrice - minPrice) * (((to_distribute[-1] - point) - bottom) ** 2 / (top - bottom) ** 2) + minPrice
         pricing.append(price)
     ouch = []
 

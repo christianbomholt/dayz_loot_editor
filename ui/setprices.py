@@ -1,192 +1,192 @@
 from tkinter import *
 from tkinter import _setit, messagebox
-
-#import windows
-# import pyperclip
 from database.dao import Dao
 from utility.categories import traderCatSwitcher
 from utility.exportTrader import createTrader, distribute
 from utility.exportTrader import rarityForTrader
 from config import ConfigManager
 
-class TraderEditor(object):
-    def __init__(self, root, selectedMods):
-        self.window = Toplevel(root)
 
+def set_trader_category(trader_category, subtype):
+    if trader_category == "" or trader_category is None:
+        trader_category = traderCatSwitcher(subtype)
+    return trader_category
+
+
+def create_label(root, text, row, column, sticky="w", px=5, py=5):
+    Label(root, text=text).grid(row=row, column=column, sticky=sticky, padx=px, pady=py)
+
+
+def set_entry_val(entry, new_val):
+    entry.delete(0, END)
+    entry.insert(END, str(new_val))
+
+
+class TraderEditor(object):
+    def __init__(self, root, selected_mods):
+        self.window = Toplevel(root)
         self.window.wm_title("Set Prices for trader config")
         self.window.grab_set()
-        self.selectedMods = selectedMods
+        self.selectedMods = selected_mods
         self.traderVal = []
         self.config = ConfigManager("config.xml")
         self.database = Dao(self.config.get_database())
-        self.seltrader = ""
+        self.selected_trader = ""
         self.main = Frame(self.window)
         self.main.grid()
-        self.createSubTypes("all")
-        self.createTraderEditor(self.window, 0, 1)
-        self.createTraderSetting(self.window, 1, 1)
-        self.subTypeListbox.bind("<<ListboxSelect>>", self.fillTraderWindow)
-        
+        self.__create_sub_types()
+        self.__create_trader_editor(self.window)
+        self.__create_trader_setting(self.window, 1, 1)
+        self.subTypeListbox.bind("<<ListboxSelect>>", self.__fill_trader_window)
 
-    def setseltrader(self,value):
-        self.seltrader = value
-        self.traderupdate()
+    def __set_selected_trader(self, value):
+        self.selected_trader = value
+        self.__trader__update()
 
-    def createSubTypes(self, seltrader):
-        subtypesFrame = Frame(self.main)
-        subtypesFrame.grid(row=2, column=1, columnspan=1, pady=10)
+    def __create_sub_types(self):
+        subtypes_frame = Frame(self.main)
+        subtypes_frame.grid(row=2, column=1, columnspan=1, pady=10)
+        self.selected_trader = StringVar()
+        traders_option_menu = OptionMenu(subtypes_frame,
+                                         self.selected_trader,
+                                         *self.config.get_traders(),
+                                         command=self.__set_selected_trader)
+        traders_option_menu.grid(row=0, column=1, sticky="w", pady=5)
+        self.selected_trader.set(self.config.get_traders()[0])
+        self.selected_trader = self.config.get_traders()[0]
+        self.subTypeListbox = Listbox(subtypes_frame, width=35, height=30, exportselection=False)
+        self.subTypeListbox.grid(row=1, column=1, sticky="ns", padx=10)
+        sub_type_lst = self.database.get_tradersubtypetupl(self.selected_trader, self.selectedMods)
 
-        self.seltrader = StringVar()
-        self.traderSel = OptionMenu(
-            subtypesFrame, self.seltrader, *self.config.get_traders(), command=self.setseltrader
-        )
-        self.traderSel.grid(row=0, column=1, sticky="w", pady=5)
-        self.seltrader.set(self.config.get_traders()[0])
-        self.seltrader = self.config.get_traders()[0]
+        for sub_type in sub_type_lst:
+            if sub_type == "":
+                sub_type = "UNASSIGNED"
+            self.subTypeListbox.insert(END, sub_type)
 
-        self.subTypeListbox = Listbox(subtypesFrame, width=35, height=30, exportselection=False)
-        self.subTypeListbox.grid(row = 1, column=1, sticky="ns", padx=10)
+    def __create_trader_editor(self, root):
+        self.__fill_trader_window(root)
 
-        subTypeLst = self.database.get_tradersubtypetupl(self.seltrader,self.selectedMods)   
-
-        for subType in subTypeLst:
-            if subType == "":
-                subType = "UNASSIGNED"
-            self.subTypeListbox.insert(END, subType)
-
-
-    def traderupdate(self):
-        subTypeLst = self.database.get_tradersubtypetupl(self.seltrader,self.selectedMods)
-        self.subTypeListbox.delete(0,'end')
-        print("DEBUG traderupdate:", subTypeLst)   
-        for subType in subTypeLst:
-            if subType == "":
-                subType = "UNASSIGNED"
-            self.subTypeListbox.insert(END, subType)       
-
-    def testdef(self):
-        traderitem = self.database.get_traderpricingtupl(self.seltrader,"Rifles",self.selectedMods)
-        
-    
-
-    def createTraderEditor(self, root, row, column):    
-        self.fillTraderWindow(root)
-
-    # name-0, subtype-1, tradercat-2, buyprice-3, sellprice, rarity, nominal, traderexclude, mod
-    def setTraderCat(self,traderCat, subtype):
-        if traderCat == "" or traderCat == None:
-            traderCat = traderCatSwitcher(subtype)
-        return traderCat
-
-    def createTraderSetting(self, root, row, column):
-        radioFrame = Frame(root)
-        radioFrame.grid(row=row, column=column, sticky="w", pady=5)
-        MODES = [("Use Rarity", "rar"), ("Use Nominal", "nom")]
+    def __create_trader_setting(self, root, row, column):
+        radio_frame = Frame(root)
+        radio_frame.grid(row=row, column=column, sticky="w", pady=5)
+        modes = [("Use Rarity", "rar"), ("Use Nominal", "nom")]
         self.v = StringVar()
         self.v.set("rar")
-        Radiobutton(radioFrame, text=MODES[0][0], variable=self.v, value=MODES[0][1]).grid(row=0, column=0)
-        Radiobutton(radioFrame, text=MODES[1][0], variable=self.v, value=MODES[1][1]).grid(row=0, column=1)
+        Radiobutton(radio_frame, text=modes[0][0], variable=self.v, value=modes[0][1]).grid(row=0, column=0)
+        Radiobutton(radio_frame, text=modes[1][0], variable=self.v, value=modes[1][1]).grid(row=0, column=1)
         frame = Frame(root)
         frame.grid(row=row + 1, column=column, sticky="w", pady=5)
-        self.buyEntires = self.createPriceBlock(frame, "Buy Price", 0, 0)
-        self.sellEntries = self.createPriceBlock(frame, "Sell Price", 0, 1)
-        buttonFrame = Frame(root)
-        buttonFrame.grid(row=row + 2, column=column, sticky="w", pady=5)
+        self.buy_entries = self.__create_price_block(frame, "Buy Price", 0, 0)
+        self.sellEntries = self.__create_price_block(frame, "Sell Price", 0, 1)
+        button_frame = Frame(root)
+        button_frame.grid(row=row + 2, column=column, sticky="w", pady=5)
 
-        Button(buttonFrame, text="Distribute Pricing", command=self.distributePricing).grid(row=0, column=0)
-        Button(buttonFrame, text="Apply Fractions", command=self.applyFractions).grid(row=0, column=1)
-        Button(buttonFrame, text="Save Changes", command=self.update).grid(row=0, column=2)
-        Button(buttonFrame, text="Copy to Clipboard", command=self.createTrader).grid(row=0, column=3, padx=5)
+        Button(button_frame, text="Distribute Pricing", command=self.__distribute_pricing).grid(row=0, column=0)
+        Button(button_frame, text="Apply Fractions", command=self.__apply_fractions).grid(row=0, column=1)
+        Button(button_frame, text="Save Changes", command=self.update).grid(row=0, column=2)
+        Button(button_frame, text="Copy to Clipboard", command=self.__create_trader).grid(row=0, column=3, padx=5)
 
+    def __trader__update(self):
+        sub_type_lst = self.database.get_tradersubtypetupl(self.selected_trader, self.selectedMods)
+        self.subTypeListbox.delete(0, 'end')
+        for sub_type in sub_type_lst:
+            if sub_type == "":
+                sub_type = "UNASSIGNED"
+            self.subTypeListbox.insert(END, sub_type)
 
-    def createPriceBlock(self, parent, name, row, column):
-        buyPrice = LabelFrame(parent, text=name)
-        buyPrice.grid(row=row, column=column, padx=10)
-
-        self.createLabel(buyPrice, "Minimal:", 0, 0, "w")
-        self.createLabel(buyPrice, "Maximal:", 1, 0, "w")
-        self.min = IntVar()
-        self.min.set(0)
-        min = Entry(buyPrice, textvariable=self.min)
-        min.grid(row=0, column=1, padx=5, pady=5)
-
-        self.max = IntVar()
-        self.max.set(0)
-        max = Entry(buyPrice, textvariable=self.max)
-        max.grid(row=1, column=1, padx=5, pady=5)
-
+    def __create_price_block(self, parent, name, row, column):
+        buy_price = LabelFrame(parent, text=name)
+        buy_price.grid(row=row, column=column, padx=10)
+        #
+        create_label(buy_price, "Minimal:", 0, 0, "w")
+        create_label(buy_price, "Maximal:", 1, 0, "w")
+        #
+        min_val = IntVar()
+        min_val.set(0)
+        min_val = Entry(buy_price, textvariable=min_val)
+        min_val.grid(row=0, column=1, padx=5, pady=5)
+        #
+        max_val = IntVar()
+        max_val.set(0)
+        max_val = Entry(buy_price, textvariable=max_val)
+        max_val.grid(row=1, column=1, padx=5, pady=5)
+        #
         if "sell" in name.lower():
-            self.createLabel(buyPrice, "fraction:", 2, 0, "w")
-            self.frac = Entry(buyPrice)
-            self.frac.insert(END, '1.0')
-            self.frac.grid(row=2, column=1, padx=5, pady=5)
+            create_label(buy_price, "fraction:", 2, 0, "w")
+            self.fraction = Entry(buy_price)
+            self.fraction.insert(END, '1.0')
+            self.fraction.grid(row=2, column=1, padx=5, pady=5)
+        return min_val, max_val
 
-        return (min, max)
+    def __update_scroll_region(self, root):
+        self.canvas.configure(scrollregion=self.canvas.bbox("all"))
 
-    def update_scrollregion(self, event):
-        self.canv.configure(scrollregion=self.canv.bbox("all"))
-
-    def traderRow(self, parent, name, sub_type, traderCat, buyPrice, sellPrice, rarity, nominal, exclude):
+    def __trader_row(self, parent, name, trader_category, buy_price, sell_price, rarity, nominal, exclude):
         frame = Frame(parent)
         frame.grid(padx=5, pady=2, sticky="w")
-        doExclude = IntVar()
-        doExclude.set(exclude)
-        nameVar = StringVar()
-        nameVar.set(name)
-        traderCatVar = StringVar()
-        traderCatVar.set(traderCat)
-        buyPriceVar = StringVar()
-        buyPriceVar.set(buyPrice)
-        sellPriceVar = StringVar()
-        sellPriceVar.set(sellPrice)
-        xpad = 10
-        Checkbutton(frame, variable=doExclude).grid(row=0, column=0)
-        nameEntry = Entry(frame, textvariable=nameVar, width=25)
-        nameEntry.grid(row=0, column=1, padx=xpad)
-        traderCatEntry = Entry(frame, textvariable=traderCatVar, width=3)
-        traderCatEntry.grid(row=0, column=2, padx=xpad)
-        buyPriceEntry = Entry(frame, textvariable=buyPriceVar, width=8)
-        buyPriceEntry.grid(row=0, column=3, padx=xpad)
-        sellPriceEntry = Entry(frame, textvariable=sellPriceVar, width=8)
-        sellPriceEntry.grid(row=0, column=4, padx=xpad)
-        self.traderVal.append(([traderCatEntry, buyPriceEntry, sellPriceEntry, doExclude], [rarity, name, nominal]))
+        #
+        do_exclude = IntVar()
+        do_exclude.set(exclude)
+        #
+        name_var = StringVar()
+        name_var.set(name)
+        #
+        trader_category_var = StringVar()
+        trader_category_var.set(trader_category)
+        #
+        buy_price_var = StringVar()
+        buy_price_var.set(buy_price)
+        #
+        sell_price_var = StringVar()
+        sell_price_var.set(sell_price)
+        #
+        x_padding = 10
+        Checkbutton(frame, variable=do_exclude).grid(row=0, column=0)
+        name_entry = Entry(frame, textvariable=name_var, width=25)
+        name_entry.grid(row=0, column=1, padx=x_padding)
+        trader_cat_entry = Entry(frame, textvariable=trader_category_var, width=3)
+        trader_cat_entry.grid(row=0, column=2, padx=x_padding)
+        buy_price_entry = Entry(frame, textvariable=buy_price_var, width=8)
+        buy_price_entry.grid(row=0, column=3, padx=x_padding)
+        sell_price_entry = Entry(frame, textvariable=sell_price_var, width=8)
+        sell_price_entry.grid(row=0, column=4, padx=x_padding)
+        self.traderVal.append(
+            ([trader_cat_entry, buy_price_entry, sell_price_entry, do_exclude], [rarity, name, nominal]))
 
-    #def fillTraderWindow(self,parent, event):
-    def fillTraderWindow(self,parent):
-        root = self.window        
-        selSubtype = self.subTypeListbox.get(ANCHOR)
-        selSubtype = "" if selSubtype == "UNASSIGNED" else selSubtype
-        items = self.database.get_traderitemstupl(self.seltrader,selSubtype,self.selectedMods)
+    # def fillTraderWindow(self,parent, event):
+    def __fill_trader_window(self, root):
+        root = self.window
+        selected_sub_type = self.subTypeListbox.get(ANCHOR)
+        selected_sub_type = "" if selected_sub_type == "UNASSIGNED" else selected_sub_type
+        items = self.database.get_traderitemstupl(self.selected_trader, selected_sub_type, self.selectedMods)
         height = 480
         width = 400
         self.frame = Frame(root, height=height, width=width)
         self.frame.grid_forget()
-        self.traderVal = []        
+        self.traderVal = []
         self.frame.grid(row=0, column=1, sticky="nw", pady=20)
         self.frame.rowconfigure(0, weight=1)
         self.frame.columnconfigure(0, weight=1)
-        self.canv = Canvas(self.frame, height=height, width=width)
-        self.canv.grid(row=0, column=0, sticky="nsew")
-        self.canvFrame = Frame(self.canv, height=height, width=width)
-        self.canv.create_window(0, 0, window=self.canvFrame, anchor='nw')
-
+        self.canvas = Canvas(self.frame, height=height, width=width)
+        self.canvas.grid(row=0, column=0, sticky="nsew")
+        self.canvasFrame = Frame(self.canvas, height=height, width=width)
+        self.canvas.create_window(0, 0, window=self.canvasFrame, anchor='nw')
+        #
         for i in items:
             traderCat = i.get("traderCat")
             subtype = i.get("sub_type")
-            traderCat = self.setTraderCat(traderCat,subtype)
-            self.traderRow(self.canvFrame, i.get("name"), subtype, traderCat, i.get("buyprice"), i.get("sellprice"), i.get("rarity"), i.get("nominal"), i.get("traderExclude"))
-        scrl = Scrollbar(self.frame, orient=VERTICAL)
-        scrl.config(command=self.canv.yview)
-        self.canv.config(yscrollcommand=scrl.set)
-        scrl.grid(row=0, column=1, sticky="ns")
+            traderCat = set_trader_category(traderCat, subtype)
+            self.__trader_row(self.canvasFrame, i.get("name"), traderCat, i.get("buyprice"), i.get("sellprice"),
+                              i.get("rarity"), i.get("nominal"), i.get("traderExclude"))
+        scrollbar = Scrollbar(self.frame, orient=VERTICAL)
+        scrollbar.config(command=self.canvas.yview)
+        self.canvas.config(yscrollcommand=scrollbar.set)
+        scrollbar.grid(row=0, column=1, sticky="ns")
         root.rowconfigure(0, weight=1)
         root.columnconfigure(1, weight=1)
-        self.canvFrame.bind("<Configure>", self.update_scrollregion)
+        self.canvasFrame.bind("<Configure>", self.__update_scroll_region)
 
-    def createLabel(self, root, text, row, column, sticky="w", px=5, py=5):
-        Label(root, text=text).grid(row=row, column=column, sticky=sticky, padx=px, pady=py)
-
-    def createValues(self):
+    def __create_values(self):
         values = []
         for i in range(len(self.traderVal)):
             item = []
@@ -198,68 +198,66 @@ class TraderEditor(object):
         return values
 
     def update(self):
-        values = self.createValues()
+        values = self.__create_values()
         self.database.setTraderValues_fast(values)
 
-    def createTrader(self):
+    def __create_trader(self):
         sub_type = self.subTypeListbox.get(ANCHOR)
-        items = self.createValues()
-        newItems = []
+        items = self.__create_values()
+        new_items = []
         for item in items:
-                        # name, traderCat, buyPrice, sellPrice, rarity
-            newItem = [item[5], item[0], item[1], item[2], item[3], item[4]]
-            newItems.append(newItem)
-        createTrader(self.window, sub_type, newItems)
+            # name, traderCat, buyPrice, sellPrice, rarity
+            new_item = [item[5], item[0], item[1], item[2], item[3], item[4]]
+            new_items.append(new_item)
+        createTrader(self.window, sub_type, new_items)
 
-    def applyFractions(self):
-        selSubtype = self.subTypeListbox.get(ANCHOR)
-        selSubtype = "" if selSubtype == "UNASSIGNED" else selSubtype
+    def __apply_fractions(self):
+        sel_subtype = self.subTypeListbox.get(ANCHOR)
+        sel_subtype = "" if sel_subtype == "UNASSIGNED" else sel_subtype
         item = []
-        traderitem = self.database.get_traderpricingtupl(self.seltrader,selSubtype,self.selectedMods)
-        for i in traderitem:
+        trader_item = self.database.get_traderpricingtupl(self.selected_trader, sel_subtype, self.selectedMods)
+        for i in trader_item:
             item.append(i)
-    
-        # buyprice, sellprice, tradercat, subtype, name
         for item in self.traderVal:
-            sellprice = int(float(item[0][1].get()) * float(self.frac.get())) if item[0][1].get() != "-1" else -1
-            self.setEntryVal(item[0][2], sellprice)
+            sell_price = int(float(item[0][1].get()) * float(self.fraction.get())) if item[0][1].get() != "-1" else -1
+            set_entry_val(item[0][2], sell_price)
 
-
-    def distributePricing(self):
+    def __distribute_pricing(self):
+        global pricing
         rarity_is_set = True if self.v.get() == "rar" else False
-        selSubtype = self.subTypeListbox.get(ANCHOR)
-        selSubtype = "" if selSubtype == "UNASSIGNED" else selSubtype
+        selected_subtype = self.subTypeListbox.get(ANCHOR)
+        selected_subtype = "" if selected_subtype == "UNASSIGNED" else selected_subtype
         item = []
-        traderitem = self.database.get_traderpricingtupl(self.seltrader,selSubtype,self.selectedMods)
+        trader_item = self.database.get_traderpricingtupl(self.selected_trader, selected_subtype, self.selectedMods)
         rarities = []
-        for i in traderitem:
+        for i in trader_item:
             item.append(i)
         # rarity, nominal
-        for item in item:
-            rarities.append((item[5], item[6]))
+        for i in item:
+            rarities.append((i[5], i[6]))
         try:
-            pricing = distribute(rarities, int(self.buyEntires[0].get()), int(self.buyEntires[1].get()),
+            pricing = distribute(rarities, int(self.buy_entries[0].get()), int(self.buy_entries[1].get()),
                                  int(self.sellEntries[0].get()), int(self.sellEntries[1].get()), rarity_is_set)
         except IndexError:
             windows.showError(self.window, "No rarities", "Set the rarity for your items, or use nominals")
+        if len(pricing) == 2:
+            for i in self.traderVal:
+                set_entry_val(i[0][1], int(self.buy_entries[0].get()))
+                set_entry_val(i[0][2], int(self.sellEntries[0].get()))
+        else:
+            buy_pricing = pricing[0]
+            sell_pricing = pricing[1]
+            for i in self.traderVal:
+                try:
+                    key_value = rarityForTrader[i[1][0]] if rarity_is_set else i[1][2]
+                except KeyError:
+                    key_value = 0
+                print(key_value)
+                set_entry_val(i[0][1], buy_pricing[key_value])
+                set_entry_val(i[0][2], sell_pricing[key_value])
 
-        buyPricing = pricing[0]
-        sellPricing = pricing[1]
 
-        for item in self.traderVal:
-            try:
-                keyValue = rarityForTrader[item[1][0]] if rarity_is_set else item[1][2]
-            except KeyError:
-                keyValue = 0
-            self.setEntryVal(item[0][1], buyPricing[keyValue])
-            self.setEntryVal(item[0][2], sellPricing[keyValue])
-
-    def setEntryVal(self, entry, newVal):
-        entry.delete(0, END)
-        entry.insert(END, str(newVal))
-
-
-def testWindow():
+def test_window():
     window = Tk()
     TraderEditor(window)
     window.mainloop()

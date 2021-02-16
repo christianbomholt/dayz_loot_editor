@@ -1,6 +1,6 @@
 <config>
     <databasefile>
-        <database value="chimsee.db" />
+        <database value="Chernarus10.db" />
     </databasefile>
    
     <tiers>

@@ -743,6 +743,7 @@ class GUI(object):
                 print("deriveammobox  :",item.name.lower(),int(x))
 
                 self.database.session.add(item_obj)
+                self.database.session.commit()
 
 
 
