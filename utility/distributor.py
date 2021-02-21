@@ -1,5 +1,6 @@
 #from sklearn.cluster import KMeans
 import numpy as np
+from model.item import Item,LinkBulletMag,LinkBullets,LinkMags,Magazines,Bullets
 
 class KMeans():
 
@@ -110,3 +111,66 @@ def distribute_nominal(database, items, totalNumDisplayed, distributorValue):
         item.nominal= max(round(item.nominal*ratio),1)
         item.min = max(round (item.min*ratio),1)
     database.session.commit()
+
+def get_bullet(mag_name, session):
+    return session.query(
+         Bullets
+    ).filter(
+         Magazines.name == mag_name,
+    ).filter(
+        Magazines.name == LinkBulletMag.magname
+    ).filter(
+        LinkBulletMag.bulletname == Bullets.name
+    ).first()
+
+def get_bullet_by_name(name,session):
+    return session.query(
+         Bullets
+    ).filter(
+        LinkBullets.bulletname == Bullets.name
+    ).filter(
+        LinkBullets.itemname == name
+    ).first()
+
+def get_mag(item_name,session):
+    return session.query(
+         Magazines
+    ).filter(
+        item_name == LinkMags.itemname
+    ).filter(
+        LinkMags.magname == Magazines.name
+    ).first()
+
+def get_item(name,session):
+    return session.query(
+         Item
+    ).filter(
+        name == Item.name
+    ).first()
+
+def distribute_mags_and_bullets(session,items):
+    weapons = items.filter(Item.item_type=="ranged")
+    mags_per_weapon = 5
+
+    for weapon in weapons:
+        mag = get_mag(weapon.name,session)
+        if mag:
+            bullet = get_bullet(mag.name, session)
+            mag_to_change = get_item(mag.name,session)
+            
+            if mag_to_change:
+                new_nominal = weapon.nominal * mags_per_weapon
+                mag_to_change.nominal = new_nominal
+                
+            if bullet:
+                bullet_to_change = get_item(bullet.name,session)
+                
+                if bullet_to_change:
+                    new_nominal = weapon.nominal * mags_per_weapon * mag.attachcount
+                    bullet_to_change.nominal = new_nominal
+        else:
+            bullet = get_bullet_by_name(weapon.name, session)
+            new_nominal = weapon.nominal * bullet.attachcount
+            bullet_to_change = get_item(bullet.name,session)
+            bullet_to_change.nominal=new_nominal
+    session.commit()
