@@ -71,7 +71,8 @@ clothingSubTypesDict = {
     "ghillie":{   "ghillie": ["ghillie"]
                 },
     "accessory":{   "belt": ["belt"],
-                    "armband": ["armband"]
+                    "armband": ["armband"],
+                    "sleeping": ["sleeping","pillow"]
                 }                
 }
 
@@ -79,7 +80,7 @@ foodSubTypesDict = {
     "natural":  {   "vegetables": ["mushroom", "apple", "pear", "plum", "pumpkin","zucchini","rice","potato","pepper","tomato"],
                     "animal":["meat", "lard","steak"]
                 },
-    "man made": {   "packaged food": ["can", "cereal", "powdered","marmala"]
+    "man made": {   "packaged food": ["can", "cereal", "powdered","marmala","bread","cheese"]
                 },
     "drink":    {   "drink": ["sodacan", "bottle", "canteen","waterbottle"]   
                 },
@@ -92,7 +93,7 @@ containerSubTypesDict = {
     "bags":     {   "bags": ["bag"]
                 },
     "l-storage":{   "tents": ["tent"],
-                    "crate": ["crate"],
+                    "crate": ["crate","hesco"],
                     "barrel" :  ["barrel"]
                 },
     "s-storage":{   "bear": ["bear"] ,
@@ -107,7 +108,7 @@ containerSubTypesDict = {
 
 toolsSubTypesDict = {
     "s-tools":  {   "handtools": ["screwdr", "wren", "sewingk", "pliers", "whetst", "saw", "cleaning", "chenkn", "anopen", "compas",
-                      "hatche", "machet", "lockpick", "binoc","hammer"],
+                    "hatche", "machet", "lockpick", "binoc","hammer"],
                     "melee": ["cattleprod", "brassknuckles", "bat", "stunbat"],
                     "knife": ["knife"]
                 },
@@ -119,7 +120,8 @@ toolsSubTypesDict = {
                 },
     "cooking":  {   "cooking": ["pot", "purific", "tripo","fryingpan","firep","oven"]
                 },
-    "hardware": {   "hardware": ["barrel", "canister", "handcuff", "netting", "seachest","rope"]
+    "hardware": {   "hardware": ["barrel", "canister", "handcuff", "netting", "seachest","rope","lock"],
+                    "spray": ["spraycan","spraypaint"]
                 },
     "tents":    {   "person tent": ["tent"]
                 },
@@ -130,12 +132,15 @@ toolsSubTypesDict = {
     "hunt/fish":  { "hunt/fish": ["hook","rod","pelt","trap","gardenplot","bait","smallg","burlap","guts","bone"]
                 },
     "personal":  {  "medical": ["bandage","blood","heatpack","rag","saline","tetracyclineantibiotics","thermo","vitaminbottle","epinephrine","morphine","painkillertablets","defibrillator","charcoaltablets"],
-                    "equipment": ["pen","paper"]
+                    "equipment": ["pen","paper"],
+                    "repair": ["tape","epoxy"]
                 },
     "bases":  {   "basestuff": ["flag","nail","shelter","barbedwire","fencekit","metalwire","woodenlog","woodenplank","watchtowerkit","pileofwoodenplanks"]
                 },
     "automotive":  {   "automotive": ["sparkp","headligh","engineo","carradiator","tirerepairkit"]
-                }                
+                },                
+    "kits":  {   "kits": ["kit"]
+                }
 }
 
 pistolsNamalskSubTypesDict = {
@@ -148,12 +153,12 @@ pistolsNamalskSubTypesDict = {
 riflesNamalskSubTypesDict = {
     "rifles": {
         "rifles": [],
-        "shotguns": ["shotgun","saiga"],
+        "shotguns": ["shotgun","saiga","Izh18"],
         "submachine guns": ["mp5k","ump45","cz61"],
         "assault rifles": ["ak101","ak74","m4a1","akm","aks74u","fal"],
         "light machine guns": [],
-        "sniper rifles": ["mosin9130","svd","vss"],
-        "hunting rifles": ["b95","cz527","Izh18","repeater","winchester70"],
+        "sniper rifles": ["mosin","svd","vss"],
+        "hunting rifles": ["b95","cz527","repeater","winchester70"],
         "semi-automatic rifles": ["ruger1022","sks"],
         "anti material rifles": []
             }
@@ -167,16 +172,17 @@ explosivesSubtypeDict = {
 
 weaponSubTypesDict = {
     "ranged": {
-        "Sidearms": [],
-        "pistols": ["fnx45","deagle","makarov","glock","colt1911","engraved1911","cz75","mkii","magnum"],
+        "sidearms": ["flaregun","taser"],
+        "pistols": ["fnx45","deagle","makarov","glock","colt1911","engraved1911","cz75","mkii","magnum","deag","m9","longhorn"],
         "rifles": [],
-        "shotguns": ["shotgun","saiga"],
-        "submachine guns": ["mp5k","ump45","cz61"],
-        "assault rifles": ["ak101","ak74","m4a1","akm","aks74u","fal"],
+        "shotguns": ["shotgun","saiga","Izh18","dt11","benellim4","Izh18"],
+        "submachine guns": ["mp5","mp7","mp9","mpx","ump","cz61","kedr"],
+        "assault rifles": ["ak101","ak74","m4a1","akm","aks74u","fal","rpk","sr25","g36","m1",],
         "light machine guns": ["lmg","m249"],
-        "sniper rifles": ["mosin9130","svd","vss"],
-        "hunting rifles": ["b95","cz527","Izh18","repeater","winchester70"],
+        "sniper rifles": ["mosin","svd","vss","barret","m300","val","awm"],
+        "hunting rifles": ["b95","cz527","Izh18","repeater","winchester70","kar98"],
         "semi-automatic rifles": ["ruger1022","sks"],
+        "launcher": ["rpg7","law","m79"],
         "anti material rifles": []
             },
     "melee":{
@@ -195,20 +201,20 @@ weaponSubTypesDict = {
         "magazines": ["mag"]
         },
     "explosive": {
-        "explosive": ["grenade"]
+        "explosives": ["grenade","ammorpg","ammolaw"]
         },
     "attachment": {
         "attachments": [""],
         "handguards": ["hndgrd", "handguard"],
         "bayonets": ["bayonet"],
-        "suppressor": ["suppressor"],
+        "suppressor": ["suppressor","suppressor"],
         "compensator" : ["compensator"],
         "light" : ["universallight","tlrlight"],
         "buttstocks": ["bttstck", "buttstock"]}
 }
 
 vehicleSubTypesDict = {
-    "vehicle":  {
+    "vehicles":  {
         "car": ["hatchback","sedan"],
         "truck": ["truck"]}
 }

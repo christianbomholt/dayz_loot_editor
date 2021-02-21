@@ -14,10 +14,8 @@ rarityForTrader = {"undefined": 0,
                    "Very Common": 45,
                    "All Over The Place": 50}
 
-
 def getKey(item):
     return int(item[2])
-
 
 def createTrader(root, subtype, rows):
     text = "\t<Category> {}\n".format(subtype)

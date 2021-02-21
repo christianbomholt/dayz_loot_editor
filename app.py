@@ -527,6 +527,7 @@ class GUI(object):
         def __update_helper(item, field, default_value):
             value_from_update_form = getattr(self, field).get()
             if value_from_update_form != default_value:
+                print("__update_item  :", value_from_update_form, default_value)
                 setattr(item, field, value_from_update_form)
 
         for items in self.treeView.selection():

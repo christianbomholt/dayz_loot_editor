@@ -121,6 +121,12 @@ class Dao(object):
         results = self.session.query(Item).filter(Item.name.like(search)).all()
         return results
 
+    def search_subtypeby_name(self, item_name):
+        search = f'%{item_name}%'
+        results = self.session.query(Item.name,Item.sub_type,Item.trader).filter(Item.name.like(search)).all()
+        return results
+
+
 
     def search_attach_name(self,attachClasse, item_name):
         search = f'%{item_name}%'

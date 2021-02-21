@@ -29,6 +29,8 @@ class TraderEditor(object):
         self.window.grab_set()
         self.selectedMods = selected_mods
         self.traderVal = []
+        self.wdict = []
+        self.searchName = StringVar()
         self.config = ConfigManager("config.xml")
         self.database = Dao(self.config.get_database())
         self.selected_trader = ""
@@ -45,7 +47,7 @@ class TraderEditor(object):
 
     def __create_sub_types(self):
         subtypes_frame = Frame(self.main)
-        subtypes_frame.grid(row=2, column=1, columnspan=1, pady=10)
+        subtypes_frame.grid(row=3, column=1, columnspan=1, pady=10)
         self.selected_trader = StringVar()
         traders_option_menu = OptionMenu(subtypes_frame,
                                          self.selected_trader,
@@ -57,11 +59,30 @@ class TraderEditor(object):
         self.subTypeListbox = Listbox(subtypes_frame, width=35, height=30, exportselection=False)
         self.subTypeListbox.grid(row=1, column=1, sticky="ns", padx=10)
         sub_type_lst = self.database.get_tradersubtypetupl(self.selected_trader, self.selectedMods)
+        self.wdict = {word: idx for idx, word in enumerate(sub_type_lst)}
 
         for sub_type in sub_type_lst:
             if sub_type == "":
                 sub_type = "UNASSIGNED"
             self.subTypeListbox.insert(END, sub_type)
+
+        self.serchName = Entry(subtypes_frame, textvariable=self.searchName, width=14).grid(row=5, columnspan=2, pady=5, padx=10, sticky="nesw")
+        Button(
+            subtypes_frame,
+            text="Search like Name",
+            width=14,
+            command=self.__search_like_name,
+        ).grid(row=6, columnspan=2, pady=5, padx=10, sticky="nesw")
+
+    def selection_set_by_word(self, word):
+        self.subTypeListbox.selection_set(self.wdict[word]-1)
+
+    def __search_like_name(self):
+        if self.searchName.get() != "":
+            items = self.database.search_subtypeby_name(self.searchName.get())
+            self.__set_selected_trader(items[0][2])
+            self.selection_set_by_word(items[0][1])
+            print("DEBUG  :",items[0][1],items[0][2])
 
     def __create_trader_editor(self, root):
         self.__fill_trader_window(root)
