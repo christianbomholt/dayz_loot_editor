@@ -56,8 +56,10 @@ class TraderEditor(object):
         traders_option_menu.grid(row=0, column=1, sticky="w", pady=5)
         self.selected_trader.set(self.config.get_traders()[0])
         self.selected_trader = self.config.get_traders()[0]
+        #self.scrollbar = Scrollbar(subtypes_frame)
         self.subTypeListbox = Listbox(subtypes_frame, width=35, height=30, exportselection=False)
         self.subTypeListbox.grid(row=1, column=1, sticky="ns", padx=10)
+        #self.subTypeListbox.config(yscrollcomand = self.scrollbar.set)
         sub_type_lst = self.database.get_tradersubtypetupl(self.selected_trader, self.selectedMods)
         self.wdict = {word: idx for idx, word in enumerate(sub_type_lst)}
 
@@ -75,7 +77,8 @@ class TraderEditor(object):
         ).grid(row=6, columnspan=2, pady=5, padx=10, sticky="nesw")
 
     def selection_set_by_word(self, word):
-        self.subTypeListbox.selection_set(self.wdict[word]-1)
+        self.subTypeListbox.select_set(self.wdict[word]-1)
+        self.subTypeListbox.see(self.wdict[word]-1)
 
     def __search_like_name(self):
         if self.searchName.get() != "":

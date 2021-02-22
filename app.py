@@ -13,7 +13,7 @@ import webbrowser
 import time
 import re
 #from utility.combo_box_manager import ComboBoxManager
-from utility import assign_rarity, distribute_nominal, column_definition, categoriesDict,categoriesNamalskDict, getweapons
+from utility import assign_rarity, distribute_nominal, column_definition, categoriesDict,categoriesNamalskDict, getweapons, distribute_mags_and_bullets
 
 class GUI(object):
     def __init__(self, main_container: Tk):
@@ -117,6 +117,8 @@ class GUI(object):
         tools_menu.add_command(label="Dump database to sql file", command=self.dump2sql)
         tools_menu.add_separator()
         tools_menu.add_command(label="Derive ammobox table", command=self.deriveammobox)
+        tools_menu.add_separator()
+        tools_menu.add_command(label="Distribute gun,mag and bullet", command=self.testdist)
         tools_menu.add_separator()
         tools_menu.add_command(label="TestFunction for DEV", command=self.testfunction)
 
@@ -459,7 +461,9 @@ class GUI(object):
 
     def testfunction(self):
         print("DEBUG  :", self.database.getNominalByCat(self.gridItems,"weapons"))    
-        
+
+    def testdist(self):
+        distribute_mags_and_bullets(self.database.session,self.gridItems)        
 
     def func2assign_raritiy(self):
         items = self.database.session.query(Item).filter(Item.nominal>0).all()
@@ -744,7 +748,7 @@ class GUI(object):
                 print("deriveammobox  :",item.name.lower(),int(x))
 
                 self.database.session.add(item_obj)
-                self.database.session.commit()
+        self.database.session.commit()
 
 
 
