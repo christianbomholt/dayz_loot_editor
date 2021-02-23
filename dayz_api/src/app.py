@@ -1,10 +1,12 @@
-from typing import Optional
+from typing import Optional, List
 from fastapi import FastAPI, status, HTTPException
 from fastapi.responses import JSONResponse
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+
+from pydantic import BaseModel
 
 Base = declarative_base()
 
@@ -36,27 +38,35 @@ def read_item(item_name: str):
     item_info = session.query(Item).filter_by(name=item_name).first()
     return item_info.__dict__
 
-@app.put("/items_update/{item_id}")
-async def upsert_item(
-    item_name: str, rarity: str, item_type: str, sub_type: str 
-):
-    item = {
-        "name ": item_name,
-        "rarity" : rarity,
-        "item_type": item_type,
-        "sub_type": sub_type
-    }
+@app.get("/item_list")
+def read_item() -> List[str]:
+    items = session.query(Item.name).distinct(Item.name).all()
+    items = [item[0] for item in items]
+    return items
 
-    exists = session.query(Item).filter(Item.name==item_name).first()
+class ItemInfo(BaseModel):
+    name: str
+    rarity: str
+    item_type: str
+    sub_type: str
+
+@app.put("/items_update/")
+async def upsert_item(item: ItemInfo):
+
+    print(item)
+    print(item.name)
+
+    exists = session.query(Item).filter(Item.name==item.name).first()
     print(exists)
+
     if exists:
         raise HTTPException(status_code=404, detail="Item exists")
     else:
-        item_to_add = Item(name= item_name, rarity=rarity, sub_type=sub_type, item_type=item_type)
+        item_to_add = Item(name= item.name, rarity=item.rarity, sub_type=item.sub_type, item_type=item.item_type)
         session.add(item_to_add)
         session.commit()
-
-    return JSONResponse(status_code=status.HTTP_201_CREATED, content=item)
+    response_json = {"code": "succes"}
+    return JSONResponse(status_code=status.HTTP_201_CREATED, content=response_json)
 
 # item = {
 #         "name": "Weapon",
