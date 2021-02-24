@@ -18,7 +18,7 @@ class Item(Base):
     item_type =  Column(String(50))
     sub_type =  Column(String(50))
   
-engine = create_engine('sqlite:///my.db')
+engine = create_engine('sqlite:///my.db', connect_args={'check_same_thread': False})
 
 Base.metadata.create_all(engine)
 
