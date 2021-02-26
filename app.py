@@ -94,7 +94,7 @@ class GUI(object):
 # file menus builder
         file_menu = Menu(self.menu_bar, tearoff=0)
         file_menu.add_command(label="Setup Database", command=self.__open_db_window)
-        file_menu.add_command(label="Import (UnderDev)", command=self.__import_link_window)
+        file_menu.add_command(label="Import attach (Dev)", command=self.__import_link_window)
         file_menu.add_separator()
         file_menu.add_command(label="Add Items", command=self.__open_items_window)
         file_menu.add_separator()
@@ -116,11 +116,9 @@ class GUI(object):
         tools_menu.add_separator()
         tools_menu.add_command(label="Dump database to sql file", command=self.dump2sql)
         tools_menu.add_separator()
-        tools_menu.add_command(label="Derive ammobox table", command=self.deriveammobox)
-        tools_menu.add_separator()
-        tools_menu.add_command(label="Distribute gun,mag and bullet", command=self.testdist)
-        tools_menu.add_separator()
-        tools_menu.add_command(label="TestFunction for DEV", command=self.testfunction)
+        tools_menu.add_command(label="Derive ammobox table (Dev)", command=self.deriveammobox)
+        tools_menu.add_command(label="Distribute gun,mag and bullet (Dev)", command=self.testdist)
+        tools_menu.add_command(label="TestFunction for (Dev)", command=self.testfunction)
 
 # initializing mods menu
         self.mods_menu = Menu(self.menu_bar, tearoff=0)
