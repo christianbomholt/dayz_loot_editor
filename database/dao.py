@@ -215,4 +215,7 @@ class Dao(object):
     def get_mapselectValue(self,item_id):
         results = self.session.query(Mapselect).get(item_id)
         self.session.commit()
-        return results      
+        return results 
+
+
+

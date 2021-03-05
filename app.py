@@ -13,7 +13,7 @@ import webbrowser
 import time
 import re
 #from utility.combo_box_manager import ComboBoxManager
-from utility import assign_rarity, distribute_nominal, column_definition, categoriesDict,categoriesNamalskDict, getweapons, distribute_mags_and_bullets
+from utility import assign_rarity, distribute_nominal, column_definition, categoriesDict,categoriesNamalskDict, distribute_mags_and_bullets,apipush, apipull
 
 class GUI(object):
     def __init__(self, main_container: Tk):
@@ -119,6 +119,8 @@ class GUI(object):
         tools_menu.add_command(label="Derive ammobox table (Dev)", command=self.deriveammobox)
         tools_menu.add_command(label="Distribute gun,mag and bullet (Dev)", command=self.testdist)
         tools_menu.add_command(label="TestFunction for (Dev)", command=self.testfunction)
+        tools_menu.add_command(label="APIPull (Dev)", command=self.apipull)
+        tools_menu.add_command(label="APIPush (Dev)", command=self.apipush)
 
 # initializing mods menu
         self.mods_menu = Menu(self.menu_bar, tearoff=0)
@@ -459,6 +461,13 @@ class GUI(object):
 
     def testfunction(self):
         print("DEBUG  :", self.database.getNominalByCat(self.gridItems,"weapons"))    
+
+    def apipull(self):
+        apipull(self.database.session)
+
+    def apipush(self):
+        apipush(self.database.session)
+
 
     def testdist(self):
         distribute_mags_and_bullets(self.database.session,self.gridItems)        
