@@ -31,7 +31,7 @@ class KMeans():
         centroids = self.initialize_centroids(items, self.n_clusters) 
         print(centroids)       
         
-        for items in range(self.max_iter):   
+        for i in range(self.max_iter):   
             closest = self.closest_centroid(items, centroids)
             centroids = self.move_centroids(items, closest, centroids)
 
