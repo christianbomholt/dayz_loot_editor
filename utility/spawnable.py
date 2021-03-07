@@ -9,23 +9,26 @@ def exportSpawnable(session, items):
         weapons = items.filter(Item.item_type=="ranged")
         root = ET.Element("type")
         for weapon in weapons:
+        
             if weapon.nominal > 0:
+                print("DEBUG  :", weapon.nominal)        
                 tagtype = ET.SubElement(root,"type",name=weapon.name)
+                
                 tagattach = get_class(session,"attachments",weapon.name)
                 tagmags = get_class(session,"magazines",weapon.name)
-                write_subelement(root,"attachments", tagattach)
-                write_subelement(root,"mags", tagmags)
+                if tagattach is not None:
+                    write_subelement(root,"attachments", tagattach)
+                if tagmags is not None :    
+                    write_subelement(root,"mags", tagmags)
 
         prettify(root)
         tree = ET.ElementTree(root)
         tree.write(fname)
 
 def write_subelement(root,tag, item_list):
-    attach_sub = ET.SubElement(root, tag)
-
+    attach_sub = ET.SubElement(root, tag + '" chance = "0.50"')
     for item in item_list:
-        if item is None:
-            ET.SubElement(attach_sub, "item", name=item.name, chance=str(item.prop))
+        ET.SubElement(attach_sub, "item", name=item.name, chance=str(item.prop))
 
 def get_class_by_tablename(tablename):
     for c in Base._decl_class_registry.values():
@@ -53,9 +56,8 @@ def get_class(session, tablename, name):
         ).filter(
             class_.prop>0
         ).all()
-    i = len(result)
-    if i > 0:
-        print("DEBUG result :", result)
+    
+    if len(result) > 0:
         return result
 
 def prettify(element, indent='  '):
