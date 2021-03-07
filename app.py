@@ -13,7 +13,7 @@ import webbrowser
 import time
 import re
 #from utility.combo_box_manager import ComboBoxManager
-from utility import assign_rarity, distribute_nominal, column_definition, categoriesDict,categoriesNamalskDict, distribute_mags_and_bullets,apipush, apipull
+from utility import assign_rarity, distribute_nominal, column_definition, categoriesDict,categoriesNamalskDict, distribute_mags_and_bullets,apipush, apipull, exportSpawnable
 
 class GUI(object):
     def __init__(self, main_container: Tk):
@@ -100,6 +100,8 @@ class GUI(object):
         file_menu.add_separator()
         file_menu.add_command(label="Export XML File", command=self.export_xml_normal)
         file_menu.add_command(label="Export Namalsk XML File", command=self.export_xml_Namalsk)
+        file_menu.add_separator()
+        file_menu.add_command(label="Export Spawnable Types", command=self.writespawnabletypes)
         file_menu.add_separator()
         file_menu.add_command(label="Exit", command=self.window.destroy)
 
@@ -470,7 +472,12 @@ class GUI(object):
 
 
     def testdist(self):
-        distribute_mags_and_bullets(self.database.session,self.gridItems)        
+        distribute_mags_and_bullets(self.database.session,self.gridItems)
+
+
+    def writespawnabletypes(self):
+        exportSpawnable(self.database.session,self.gridItems)    
+
 
     def func2assign_raritiy(self):
         items = self.database.session.query(Item).filter(Item.nominal>0).all()

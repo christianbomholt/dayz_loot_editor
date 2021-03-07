@@ -1,72 +1,53 @@
+from tkinter import Tk, filedialog,OptionMenu
+from model.item import Item,LinkBulletMag,LinkBullets,LinkMags,Magazines,Bullets
+import xml.etree.cElementTree as ET
 
-import dao
-import items
-import windows
-import xmlParser
 
-def exportSpawnable():
-    fname = windows.saveAsFile("xml", "w+")
+def exportSpawnable(session, items):
+    fname  = filedialog.asksaveasfilename(filetypes=[("xml file", ".xml")],defaultextension=".xml")
     if fname is not None:
-        spawnable = ""
-        rifles = xmlParser.itemFromRows(dao.getType("rifles"))
-        pistols = xmlParser.itemFromRows(dao.getType("pistols"))
-        gun = xmlParser.itemFromRows(dao.getType("gun"))
+        weapons = items.filter(Item.item_type=="ranged")
+        root = ET.Element("type")
+        for weapon in weapons:
+            print("DEBUG exportSpawnable  :", weapon.name)
+            attachment = get_class(session,"attachments",weapon.name)
+            mags = get_class(session,"magazines",weapon.name)
+            weapon_sub = ET.SubElement(root,"type", name = weapon.name)
+            write_subelement(root, attachments)
+            write_subelement(root, bullets)
+            write_subelement(root, mags)
 
-        items = gun + rifles + pistols
-        for item in items:
-            if item.mod != "Vanilla":
-                if item.nominal != 0:
-                    spawnable += item.getSpawnableTypes()
-        fname.write(spawnable)
+        tree = ET.ElementTree(root)
+        tree.write(fname)
 
+def write_subelement(root, item_list):
+    attach_sub = ET.SubElement(root, "attachments")
+    for item in item_list:
+        ET.SubElement(attach_sub, "item", name=item.name, chance=str(item.prop))
 
+def get_class_by_tablename(tablename):
+    for c in Base._decl_class_registry.values():
+        if hasattr(c, '__tablename__') and c.__tablename__ == tablename:
+            return c 
 
-    def getSpawnableTypes(self):
-        linkedItems = dao.getLinekd(self.name, self.type)
-
-        magChance = "0.30"
-        opticChance = "0.10"
-        attachmentChance = "0.20"
-
-        mags = []
-        optics = []
-        buttstocks = []
-        handguards = []
-        otherAttachments = []
-
-        for linkedItem in linkedItems:
-            if linkedItem.type == "mag":
-                mags.append(linkedItem)
-            if linkedItem.type == "optic":
-                optics.append(linkedItem)
-            if linkedItem.type == "attachment":
-                if linkedItem.subtype.lower() == "handguard":
-                    handguards.append(linkedItem)
-                elif linkedItem.subtype.lower() == "buttstock":
-                    buttstocks.append(linkedItem)
-                else:
-                    otherAttachments.append(linkedItem)
-
-        type = ""
-        type += "  <type name=\"{}\">\n".format(self.name)
-        type += attachmentBlock(mags, magChance)
-        type += attachmentBlock(optics, opticChance)
-        type += attachmentBlock(handguards, float(1.0))
-        type += attachmentBlock(buttstocks, float(1.0))
-        type += attachmentBlock(otherAttachments, attachmentChance)
-
-        type += "  </type>\n"
-
-        return type
-
-
-def attachmentBlock(items, chance):
-    type = ""
-    if len(items) != 0:
-        type += "    <attachments chance=\"{}\">\n".format(chance)
-        for item in items:
-            type += "      <item name=\"{}\" chance=\"{}\" />\n".format(item.name, round(1.0 / len(items), 2))
-
-        type += "    </attachments>\n"
-
-    return type        
+def get_class(session, tablename, name):
+    class_ = get_class_by_tablename(tablename)
+    return session.query(
+            class_
+        ).filter(
+             Item.name == name,
+        ).filter(
+            Item.name == LinkMags.itemname
+        ).filter(
+            LinkMags.magname == Magazines.name
+        ).filter(
+            Item.name == LinkBullets.itemname
+        ).filter(
+            LinkBullets.bulletname == Bullets.name
+        ).filter(
+            Item.name == LinkAttachments.itemname
+        ).filter(
+            LinkAttachments.attachname == Attachments.name
+        ).filter(
+            class_.prop>0
+        ).all()
