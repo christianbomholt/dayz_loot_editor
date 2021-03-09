@@ -34,9 +34,7 @@ class Dao(object):
 
 
     def get_attach(self,attachClasse, item_id):
-        print("get_attach  :",attachClasse)
         item = self.session.query(attachClasse).get(item_id)
-        print("get_attach  :",item)
         self.session.commit()
         return item
 
@@ -126,8 +124,6 @@ class Dao(object):
         results = self.session.query(Item.name,Item.sub_type,Item.trader).filter(Item.name.like(search)).all()
         return results
 
-
-
     def search_attach_name(self,attachClasse, item_name):
         search = f'%{item_name}%'
         results = self.session.query(attachClasse).filter(attachClasse.name.like(search)).all()
@@ -137,7 +133,6 @@ class Dao(object):
         search = f'%{item_name}%'
         results = self.session.query(attachClasse).filter(attachClasse.name.like(search)).all()
         return results
-
 
     def sql_dbDump(self):
         s =  str(self.db_name).split(".")
@@ -219,5 +214,10 @@ class Dao(object):
 
 
 # Make Spawnable types
-
+    def get_all_ranged(self):
+        result = self.session.query(Item.name).filter(Item.item_type=="ranged")
+        result=[c[0] for c in result if c[0] is not None]
+        result.append("all")
+        print("DEBUG get_all_ranged :", result)
+        return result
 

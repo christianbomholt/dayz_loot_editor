@@ -40,7 +40,14 @@ class LinkItem(object):
         self.attach = StringVar()
         self.attach.set(optionList[0])
         OptionMenu(self.entryFrame, self.attach, *optionList, command = self.__setattach__
-        ).grid(row=0, column=0, sticky="n,s,e,w",columnspan=2)
+        ).grid(row=0, column=0, sticky="n,s,e,w",columnspan=1)
+        gunlist = self.database.get_all_ranged()
+        print("DEBUG gunlist :",gunlist )
+        self.gunlist = StringVar()
+        self.gunlist.set(optionList[0])
+        OptionMenu(self.entryFrame, self.gunlist, *gunlist, command = self.__setattach__
+        ).grid(row=0, column=1, sticky="n,s,e,w",columnspan=1)
+
 
         # labels
         Label(self.entryFrame, text="Name").grid(row=1, column=0, sticky="w", pady=5)
