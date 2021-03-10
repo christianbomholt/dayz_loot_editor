@@ -12,9 +12,6 @@ import json
 import re
 from utility import attach_definition
 
-
-#Base = declarative_base()
-
 class LinkItem(object):
 
     def __init__(self, root):
@@ -30,7 +27,6 @@ class LinkItem(object):
         self.__initiate_attachs()
         self.tree.bind("<ButtonRelease-1>", self.__fill_entry_frame)
 
-
     def __create_entry_frame(self):
         self.entryFrameHolder = Frame(self.window)
         self.entryFrameHolder.grid(row=0, column=0, sticky="nw")
@@ -41,13 +37,12 @@ class LinkItem(object):
         self.attach.set(optionList[0])
         OptionMenu(self.entryFrame, self.attach, *optionList, command = self.__setattach__
         ).grid(row=0, column=0, sticky="n,s,e,w",columnspan=1)
+
         gunlist = self.database.get_all_ranged()
-        print("DEBUG gunlist :",gunlist )
         self.gunlist = StringVar()
-        self.gunlist.set(optionList[0])
+        self.gunlist.set(gunlist[0])
         OptionMenu(self.entryFrame, self.gunlist, *gunlist, command = self.__setattach__
         ).grid(row=0, column=1, sticky="n,s,e,w",columnspan=1)
-
 
         # labels
         Label(self.entryFrame, text="Name").grid(row=1, column=0, sticky="w", pady=5)
@@ -98,10 +93,10 @@ class LinkItem(object):
             self.configFrame, text="Open", width=12, command=self.openLinkItem
         ).grid(row=2, column=0, sticky="s", padx=30,pady=10)
 
-
     def __search_attach_name__(self):
             if self.searchName.get() != "":
-                attachs = self.database.search_attach_name(self.get_class_by_tablename(self.table),self.searchName.get())
+
+                #attachs = self.database.search_attach_name(self.get_class_by_tablename(self.table),self.searchName.get())
                 self.__populate_attachs(attachs)
                 self.gridAttachs = attachs
                 self.searchName.set("") 
@@ -114,7 +109,6 @@ class LinkItem(object):
     def __setattach__(self,selection):
         self.table = f'{self.attach.get()}'
         self.__initiate_attachs()
-        
 
     def __create_tree_view(self):
         style = ttk.Style()
@@ -181,12 +175,43 @@ class LinkItem(object):
             self.database.delete_attach(self.get_class_by_tablename(self.table),itemid)
         self.__populate_attachs(self.gridAttachs)
 
-
     def __initiate_attachs(self, attachs=None):
-        attachs = self.database.session.query(self.get_class_by_tablename(self.table))
+        if self.gunlist.get() == "all":
+            attachs = self.database.session.query(self.get_class_by_tablename(self.table))
+        else:
+            attachs = self.get_class(self.database.session,self.table,self.gunlist.get())
+            print("DEBUG attachs :", attachs)
+            print("DEBUG gunlist :", self.gunlist.get())
+            print("DEBUG table :", self.table)
+            print("DEBUG session :", self.database.session)
         self.gridAttachs = attachs
-        self.__populate_attachs(attachs.all())
+        self.__populate_attachs(attachs)
         self.searchName.set("") 
+
+    def get_class(self, session, tablename, name):
+        class_ = self.get_class_by_tablename(tablename)
+        result = session.query(
+                class_
+            ).filter(
+                Item.name == name,
+            ).filter(
+                Item.name == LinkMags.itemname
+            ).filter(
+                LinkMags.magname == Magazines.name
+            ).filter(
+                Item.name == LinkBullets.itemname
+            ).filter(
+                LinkBullets.bulletname == Bullets.name
+            ).filter(
+                Item.name == LinkAttachments.itemname
+            ).filter(
+                LinkAttachments.attachname == Attachments.name
+            ).filter(
+                class_.prop>0
+            ).all()
+        if len(result) > 0:
+            return result
+
 
     def __populate_attachs(self, attachs):
         if self.tree.get_children() != ():
@@ -224,8 +249,6 @@ class LinkItem(object):
         if "/" in LinkItemFile:
             LinkItemFile = LinkItemFile.split("/")[-1]       
         self.__loadLinkItem(LinkItemFile)
-
-
 
     def __loadLinkItem(self,LinkItemFile):
         with open(LinkItemFile, 'r') as myfile:
@@ -275,6 +298,10 @@ class LinkItem(object):
                         item_obj = LinkBulletMag(bulletname=bullet, magname=mag)
                         self.database.session.add(item_obj)
         self.database.session.commit()
+
+
+
+
 
 
 

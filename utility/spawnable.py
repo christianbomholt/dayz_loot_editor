@@ -16,21 +16,34 @@ def exportSpawnable(session, items):
                 
                 tagattach = get_class(session,"attachments",weapon.name)
                 tagmags = get_class(session,"magazines",weapon.name)
+
                 if tagattach is not None:
-                    write_subelement(tagtype,"attachments", tagattach)
+                    write_subelement(tagtype,"attachments", "hndgrd", 0.75, tagattach)
+                    write_subelement(tagtype,"attachments", "bttstck", 0.50, tagattach)
+                    write_subelement(tagtype,"attachments", "optic", 0.25, tagattach)
+                    write_subelement(tagtype,"attachments", "comp", 0.25, tagattach)
+                    write_subelement(tagtype,"attachments", "suppressor", 0.25, tagattach)
+                    write_subelement(tagtype,"attachments", "light", 0.25, tagattach)
                     print("DEBUG attachments:", tagattach)
                 if tagmags is not None :    
-                    write_subelement(tagtype,"mags", tagmags)
+                    write_subelement(tagtype,"mags", "mag", 0.50, tagmags)
 
         prettify(root)
         tree = ET.ElementTree(root)
         tree.write(fname)
 
-def write_subelement(root,tag, item_list):
-    chance = 0.50
-    attach_sub = ET.SubElement(root, tag, chance=str(chance))  
+def write_subelement(root, tag, grp, prop, item_list):
+    chance = prop
+    check = False
     for item in item_list:
-        ET.SubElement(attach_sub, "item", name=item.name, chance=str(item.prop/100))
+        if grp in item.name.lower():
+            check = True
+            break
+    if check is True:        
+        attach_sub = ET.SubElement(root, tag, chance=str(chance))  
+        for item in item_list:
+            if grp in item.name.lower():
+                ET.SubElement(attach_sub, "item", name=item.name, chance=str(item.prop/100))
 
 def get_class_by_tablename(tablename):
     for c in Base._decl_class_registry.values():
@@ -58,7 +71,6 @@ def get_class(session, tablename, name):
         ).filter(
             class_.prop>0
         ).all()
-    
     if len(result) > 0:
         return result
 

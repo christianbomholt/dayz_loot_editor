@@ -217,7 +217,6 @@ class Dao(object):
     def get_all_ranged(self):
         result = self.session.query(Item.name).filter(Item.item_type=="ranged")
         result=[c[0] for c in result if c[0] is not None]
-        result.append("all")
-        print("DEBUG get_all_ranged :", result)
+        result.insert(0,"all")
         return result
 
