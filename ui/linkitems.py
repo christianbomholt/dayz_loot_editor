@@ -206,8 +206,6 @@ class LinkItem(object):
                 Item.name == LinkAttachments.itemname
             ).filter(
                 LinkAttachments.attachname == Attachments.name
-            ).filter(
-                class_.prop>0
             ).all()
         if len(result) > 0:
             return result
