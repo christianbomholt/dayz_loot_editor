@@ -18,14 +18,14 @@ def exportSpawnable(session, items):
 
                 if tagattach is not None:
                     write_subelement(tagtype,"attachments", "hndgrd", 0.75, tagattach)
-                    write_subelement(tagtype,"attachments", "bttstck", 0.50, tagattach)
+                    write_subelement(tagtype,"attachments", "bttstck", 0.75, tagattach)
                     write_subelement(tagtype,"attachments", "optic", 0.25, tagattach)
                     write_subelement(tagtype,"attachments", "comp", 0.25, tagattach)
                     write_subelement(tagtype,"attachments", "suppressor", 0.25, tagattach)
                     write_subelement(tagtype,"attachments", "light", 0.25, tagattach)
                     write_remainder(tagtype,"attachments",0.50,tagattach)
                 if tagmags is not None :    
-                    write_subelement(tagtype,"mags", "mag", 0.50, tagmags)
+                    write_subelement(tagtype,"mags", "mag", 0.75, tagmags)
         
         prettify(root)
         tree = ET.ElementTree(root)
@@ -63,7 +63,7 @@ def write_subelement(root, tag, grp, prop, item_list):
 
 def write_remainder(root, tag, prop, item_list):
     chance = prop
-    attach_sub = ET.SubElement(root, "remainder", chance=str(chance))  
+    attach_sub = ET.SubElement(root, tag, chance=str(chance))  
     for item in item_list:
         ET.SubElement(attach_sub, "item", name=item.name, chance=str(item.prop/100))
 

@@ -94,7 +94,7 @@ class GUI(object):
 # file menus builder
         file_menu = Menu(self.menu_bar, tearoff=0)
         file_menu.add_command(label="Setup Database", command=self.__open_db_window)
-        file_menu.add_command(label="Import attach (Dev)", command=self.__import_link_window)
+        file_menu.add_command(label="Import attachfile", command=self.__import_link_window)
         file_menu.add_separator()
         file_menu.add_command(label="Add Items", command=self.__open_items_window)
         file_menu.add_separator()
@@ -104,7 +104,6 @@ class GUI(object):
         file_menu.add_command(label="Export Spawnable Types", command=self.writespawnabletypes)
         file_menu.add_separator()
         file_menu.add_command(label="Exit", command=self.window.destroy)
-
 # database menus builder
 
 # help menus builder
