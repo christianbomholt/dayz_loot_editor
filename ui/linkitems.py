@@ -1,7 +1,7 @@
 from tkinter import Tk, Toplevel, Frame, StringVar, Radiobutton, Label, Entry, Button, filedialog, OptionMenu, IntVar
 from tkinter import ttk, VERTICAL, HORIZONTAL, LabelFrame,Tcl
 import sqlite3
-from sqlalchemy import create_engine, Column, Integer, String, and_, func
+from sqlalchemy import create_engine, Column, Integer, String, and_, func, or_
 from sqlalchemy.orm import sessionmaker, mapper
 from model.item import Item, init_database, Base
 from model.item import Mapselect,Attachments,LinkAttachments,LinkBulletMag,LinkBullets,LinkMags,Magazines,Bullets
@@ -180,16 +180,24 @@ class LinkItem(object):
             attachs = self.database.session.query(self.get_class_by_tablename(self.table))
         else:
             attachs = self.get_class(self.database.session,self.table,self.gunlist.get())
-            print("DEBUG attachs :", attachs)
-            print("DEBUG gunlist :", self.gunlist.get())
-            print("DEBUG table :", self.table)
-            print("DEBUG session :", self.database.session)
         self.gridAttachs = attachs
         self.__populate_attachs(attachs)
         self.searchName.set("") 
 
-    def get_class(self, session, tablename, name):
-        class_ = self.get_class_by_tablename(tablename)
+    def get_attach(self, class_, session, tablename, name):
+        result = session.query(
+                class_
+            ).filter(
+                Item.name == name,
+            ).filter(
+                Item.name == LinkAttachments.itemname
+            ).filter(
+                LinkAttachments.attachname == Attachments.name
+            ).all()
+        if len(result) > 0:
+            return result    
+
+    def get_magazine(self, class_, session, tablename, name):
         result = session.query(
                 class_
             ).filter(
@@ -198,29 +206,45 @@ class LinkItem(object):
                 Item.name == LinkMags.itemname
             ).filter(
                 LinkMags.magname == Magazines.name
+            ).all()
+        if len(result) > 0:
+            return result    
+
+    def get_bullet(self, class_, session, tablename, name):
+        result = session.query(
+                class_
+            ).filter(
+                Item.name == name,
             ).filter(
                 Item.name == LinkBullets.itemname
             ).filter(
                 LinkBullets.bulletname == Bullets.name
-            ).filter(
-                Item.name == LinkAttachments.itemname
-            ).filter(
-                LinkAttachments.attachname == Attachments.name
             ).all()
         if len(result) > 0:
-            return result
+            return result    
 
+    def get_class(self, session, tablename, name):
+        class_ = self.get_class_by_tablename(tablename)
+        #optionList = ('attachments', 'bullets', 'magazines')
+        if tablename == 'magazines':
+            result = self.get_magazine(class_, session, tablename, name)
+        elif tablename == "bullets":
+            result = self.get_bullet(class_, session, tablename, name)
+        else:
+            result = self.get_attach(class_, session, tablename, name)
+        return result    
 
     def __populate_attachs(self, attachs):
         if self.tree.get_children() != ():
             self.tree.delete(*self.tree.get_children())
-        for idx,i in enumerate(attachs): 
-            if idx % 2 == 0:
-                self.tree.insert("", "end", text=i.id, value=[i.name,i.attachcount,i.prop],tags=('evenrow',))
-            else:
-                self.tree.insert("", "end", text=i.id, value=[i.name,i.attachcount,i.prop],tags=('oddrow',))
-        self.tree.tag_configure('oddrow', background='#FFFFFF')
-        self.tree.tag_configure('evenrow', background='#F5F5F5')
+        if attachs is not None:    
+            for idx,i in enumerate(attachs): 
+                if idx % 2 == 0:
+                    self.tree.insert("", "end", text=i.id, value=[i.name,i.attachcount,i.prop],tags=('evenrow',))
+                else:
+                    self.tree.insert("", "end", text=i.id, value=[i.name,i.attachcount,i.prop],tags=('oddrow',))
+            self.tree.tag_configure('oddrow', background='#FFFFFF')
+            self.tree.tag_configure('evenrow', background='#F5F5F5')
 
     def __fill_entry_frame(self, event):        
         tree_row = self.tree.item(self.tree.focus())

@@ -13,7 +13,6 @@ def exportSpawnable(session, items):
             if weapon.nominal > 0:
                 name=weapon.name        
                 tagtype = ET.SubElement(root,"type", name = str(name))
-                
                 tagattach = get_class(session,"attachments",weapon.name)
                 tagmags = get_class(session,"magazines",weapon.name)
 
@@ -24,13 +23,14 @@ def exportSpawnable(session, items):
                     write_subelement(tagtype,"attachments", "comp", 0.25, tagattach)
                     write_subelement(tagtype,"attachments", "suppressor", 0.25, tagattach)
                     write_subelement(tagtype,"attachments", "light", 0.25, tagattach)
-                    print("DEBUG attachments:", tagattach)
+                    write_remainder(tagtype,"attachments",0.50,tagattach)
                 if tagmags is not None :    
                     write_subelement(tagtype,"mags", "mag", 0.50, tagmags)
-
+        
         prettify(root)
         tree = ET.ElementTree(root)
         tree.write(fname)
+
 
 def write_subelement(root, tag, grp, prop, item_list):
     chance = prop
@@ -43,7 +43,30 @@ def write_subelement(root, tag, grp, prop, item_list):
         attach_sub = ET.SubElement(root, tag, chance=str(chance))  
         for item in item_list:
             if grp in item.name.lower():
+                ET.SubElement(attach_sub, "item", name=item.name, chance=str(item.prop/100)) 
+                item_list.remove(item)
+"""
+def write_subelement(root, tag, grp, prop, item_list):
+    chance = prop
+    print("DEBUG write_subelement: ",grp )
+    if grp in [x.name.lower() for x in item_list]:
+    if [i for i in item_list if grp in i.name.lower()]:    
+    DEBUG attachs
+
+        print("DEBUG write_subelement :", prop)
+        attach_sub = ET.SubElement(root, tag, chance=str(chance))  
+        for item in item_list:
+            if grp in item.name.lower():
                 ET.SubElement(attach_sub, "item", name=item.name, chance=str(item.prop/100))
+                print("DEBUG write_subelement  :", item)
+                #item_list.remove(item)"""
+
+def write_remainder(root, tag, prop, item_list):
+    chance = prop
+    attach_sub = ET.SubElement(root, "remainder", chance=str(chance))  
+    for item in item_list:
+        ET.SubElement(attach_sub, "item", name=item.name, chance=str(item.prop/100))
+
 
 def get_class_by_tablename(tablename):
     for c in Base._decl_class_registry.values():
