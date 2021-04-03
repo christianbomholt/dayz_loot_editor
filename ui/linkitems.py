@@ -268,26 +268,30 @@ class LinkItem(object):
 
     def openLinkItem(self):
         LinkItemFile = filedialog.askopenfilename(filetypes=[("DumpAttach", ".json")],defaultextension=".json")
-        if "/" in LinkItemFile:
-            LinkItemFile = LinkItemFile.split("/")[-1]       
+        """if "/" in LinkItemFile:
+            LinkItemFile = LinkItemFile.split("/")[-1]
+            print(LinkItemFile)       """
         self.__loadLinkItem(LinkItemFile)
 
     def __loadLinkItem(self,LinkItemFile):
         with open(LinkItemFile, 'r') as myfile:
             data=myfile.read()
         attachments = json.loads(data)["HlyngeWeapons"]
-
+        print(LinkItemFile)
+        number = 0
         for item in attachments:
             item_name = item.get("name")
             for attach in item.get("attachments"):
                 exists = self.database.session.query(Attachments).filter_by(name=attach).first()
                 if not exists:
                     item_obj = Attachments(name = attach)
+                    number += 1
                     self.database.session.add(item_obj)
                 
                 exists = self.database.session.query(LinkAttachments).filter_by(attachname=attach, itemname=item_name).first()
                 if not exists:
                     item_obj = LinkAttachments(attachname=attach, itemname=item_name)
+                    number += 1
                     self.database.session.add(item_obj)
         
             for mag in item.get("magazines"):
@@ -298,33 +302,34 @@ class LinkItem(object):
                         x = mag.lower().split("rnd")[-2].split("_")[-1]
                         x = re.sub("[^0-9]", "", x)
                     item_obj = Magazines(name = mag,attachcount = int(x))
+                    number += 1
                     self.database.session.add(item_obj)
                 exists = self.database.session.query(LinkMags).filter_by(magname=mag, itemname=item_name).first()
                 if not exists:
                     item_obj = LinkMags(magname=mag, itemname=item_name)
+                    number += 1
                     self.database.session.add(item_obj)
 
             for bullet in item.get("bullets"):
                 exists = self.database.session.query(Bullets).filter_by(name = bullet).first()
                 if not exists:
                     item_obj = Bullets(name = bullet)
+                    number += 1
                     self.database.session.add(item_obj)
                 exists = self.database.session.query(LinkBullets).filter_by(bulletname=bullet, itemname=item_name).first()
                 if not exists:
                     item_obj = LinkBullets(bulletname=bullet, itemname=item_name)
+                    number += 1
                     self.database.session.add(item_obj)
                     
                 for mag in item.get("magazines"):
                     exists = self.database.session.query(LinkBulletMag).filter_by(bulletname=bullet, magname=mag).first()
                     if not exists:
                         item_obj = LinkBulletMag(bulletname=bullet, magname=mag)
+                        number += 1
                         self.database.session.add(item_obj)
         self.database.session.commit()
-
-
-
-
-
+        print("Attachments have been added to the Database: " + str(number))
 
 
 def testWindow():

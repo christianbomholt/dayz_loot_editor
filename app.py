@@ -48,7 +48,7 @@ class GUI(object):
 
         #
         self.tree.bind("<ButtonRelease-1>", self.__fill_entry_frame)
-        self.window.wm_title("CE-Editor v0.10.2 - "+ self.config.get_database()+" used for maptype: " + self.database.get_mapselectValue(1).mapselectvalue)
+        self.window.wm_title("CE-Editor v0.11.1 - "+ self.config.get_database()+" used for maptype: " + self.database.get_mapselectValue(1).mapselectvalue)
 
     def initializeapp(self):
         self.__create_tree_view()
@@ -59,7 +59,7 @@ class GUI(object):
         self.__populate_items(self.gridItems)
         self.__initiate_items()
         self.__create_nominal_info()
-        self.window.wm_title("CE-Editor v0.10.2  UPDATED - fresh database - restart to see the right map")
+        self.window.wm_title("CE-Editor v0.11.1  UPDATED - fresh database - restart to see the right map")
 
     def deselectAllMods(self):
         for k in self.moddict: self.moddict[k].set(0)
@@ -108,7 +108,7 @@ class GUI(object):
 
 # help menus builder
         help_menu = Menu(self.menu_bar, tearoff=0)
-        help_menu.add_command(label="You'll never walk alone")
+        help_menu.add_command(label="Watch the video....",command=self.demovideo)
 
 # tools menus builder
         tools_menu = Menu(self.menu_bar, tearoff=0)
@@ -117,11 +117,11 @@ class GUI(object):
         tools_menu.add_separator()
         tools_menu.add_command(label="Dump database to sql file", command=self.dump2sql)
         tools_menu.add_separator()
-        tools_menu.add_command(label="Derive ammobox table (Dev)", command=self.deriveammobox)
-        tools_menu.add_command(label="Distribute gun,mag and bullet (Dev)", command=self.testdist)
-        tools_menu.add_command(label="TestFunction for (Dev)", command=self.testfunction)
-        tools_menu.add_command(label="APIPull (Dev)", command=self.apipull)
-        tools_menu.add_command(label="APIPush (Dev)", command=self.apipush)
+        tools_menu.add_command(label="Derive ammobox table", command=self.deriveammobox)
+        tools_menu.add_command(label="Distribute gun,mag and bullet", command=self.testdist)
+        #tools_menu.add_command(label="TestFunction for (Dev)", command=self.testfunction)
+        #tools_menu.add_command(label="APIPull (Dev)", command=self.apipull)
+        #tools_menu.add_command(label="APIPush (Dev)", command=self.apipush)
 
 # initializing mods menu
         self.mods_menu = Menu(self.menu_bar, tearoff=0)
@@ -401,7 +401,7 @@ class GUI(object):
             self.filterFrame,
             text="Donate !",
             width=14,
-            command=self.callback,
+            command=self.donate,
         ).grid(row=8, columnspan=2, pady=5, padx=10, sticky="nesw")
 
     """"
@@ -452,10 +452,16 @@ class GUI(object):
 
 
 
-    def callback(self):
+    def donate(self):
         new = 2
         url = "https://www.paypal.com/paypalme/Luskerne"
         webbrowser.open(url,new = new)       
+
+    def demovideo(self):
+        new = 2
+        url = "https://youtu.be/3Jxva7KCNSk"
+        webbrowser.open(url,new = new)       
+
 
     def dump2sql(self):
         self.database.sql_dbDump()
@@ -471,6 +477,7 @@ class GUI(object):
 
 
     def testdist(self):
+        self.deriveammobox
         distribute_mags_and_bullets(self.database.session,self.gridItems)
 
 
@@ -758,12 +765,8 @@ class GUI(object):
                     x = item.name.lower().split("rnd")[-2].split("_")[-1]
                     x = re.sub("[^0-9]", "", x)
                 item_obj = Ammobox(name = item.name,attachcount = int(x))
-                print("deriveammobox  :",item.name.lower(),int(x))
-
                 self.database.session.add(item_obj)
         self.database.session.commit()
-
-
 
 window = Tk()
 GUI(window)
