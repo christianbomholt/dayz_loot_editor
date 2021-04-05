@@ -1,6 +1,7 @@
 from tkinter import Tk, Menu, IntVar, Frame, Label, StringVar, Entry, Listbox, END, OptionMenu, Checkbutton, Button, Radiobutton
-from tkinter import ttk, VERTICAL, HORIZONTAL, LabelFrame,Tcl
+from tkinter import ttk, VERTICAL, HORIZONTAL, LabelFrame,Tcl, simpledialog
 from config import ConfigManager
+import os.path
 from database.dao import Dao
 from model.item import Item, Ammobox, init_database
 from ui.db import DB
@@ -12,14 +13,16 @@ import tkinter.filedialog as filedialog
 import webbrowser
 import time
 import re
+import json
 #from utility.combo_box_manager import ComboBoxManager
-from utility import assign_rarity, distribute_nominal, column_definition, categoriesDict,categoriesNamalskDict, distribute_mags_and_bullets,apipush, apipull, exportSpawnable
+from utility import assign_rarity, distribute_nominal, column_definition, categoriesDict,categoriesNamalskDict, distribute_mags_and_bullets,apipush, apipull, exportSpawnable,writeToJSONFile
 
 class GUI(object):
     def __init__(self, main_container: Tk):
         #
         self.config = ConfigManager("config.xml")
         self.database = Dao(self.config.get_database())
+        self.database.upgradeDB()
         self.selected_mods=[]
         self.gridItems = []
         #
@@ -45,7 +48,7 @@ class GUI(object):
         self.__create_side_bar()
         self.__initiate_items()
         self.__create_nominal_info()
-
+        self.makeExpansionDir()
         #
         self.tree.bind("<ButtonRelease-1>", self.__fill_entry_frame)
         self.window.wm_title("CE-Editor v0.11.1 - "+ self.config.get_database()+" used for maptype: " + self.database.get_mapselectValue(1).mapselectvalue)
@@ -60,6 +63,7 @@ class GUI(object):
         self.__initiate_items()
         self.__create_nominal_info()
         self.window.wm_title("CE-Editor v0.11.1  UPDATED - fresh database - restart to see the right map")
+        self.makeExpansionDir()
 
     def deselectAllMods(self):
         for k in self.moddict: self.moddict[k].set(0)
@@ -77,6 +81,15 @@ class GUI(object):
                 menu.add_checkbutton(label=mod, variable=int_var, command=self.__selectmodsfunction___)
                 self.moddict[mod] = int_var
                 self.selected_mods.append(mod)
+
+    def makeExpansionDir(self):
+        try:
+            os.mkdir("Expansion")
+            os.mkdir("Expansion/Traders")
+            os.mkdir("Expansion/TraderZones")
+            os.mkdir("Expansion/Market")
+        except Exception:
+            pass
 
     def updateAllMods(self,menu):
 
@@ -396,26 +409,20 @@ class GUI(object):
             width=14,
             command=self.openTraderEditor,
         ).grid(row=7, columnspan=2, pady=5, padx=10, sticky="nesw")
-        
+
+        Button(
+            self.filterFrame,
+            text="Expansion Trader",
+            width=14,
+            command=self.expansionTrader,
+        ).grid(row=8, columnspan=2, pady=5, padx=10, sticky="nesw")
+
         Button(
             self.filterFrame,
             text="Donate !",
             width=14,
             command=self.donate,
-        ).grid(row=8, columnspan=2, pady=5, padx=10, sticky="nesw")
-
-    """"
-
-        self.filterFrame = LabelFrame(self.filterFrameHolder,width=14, text="Filter")
-        self.filterFrame.grid(row=1, column=1, pady=5)
-
-        self.filterFrameHolder = Frame(self.window)
-        self.filterFrameHolder.grid(row=1, column=2, sticky="n")
-
-        self.entryFrameHolder = Frame(self.window)
-        self.entryFrameHolder.grid(row=0, column=0, sticky="nw")
-        self.entryFrame = Frame(self.entryFrameHolder)
-        self.entryFrame.grid(padx=8, pady=6)"""
+        ).grid(row=9, columnspan=2, pady=5, padx=10, sticky="nesw")
 
 
 # Normal Distribution block
@@ -433,23 +440,44 @@ class GUI(object):
         Button(
             self.distribution, text="Distribute", width=12, command=self.__distribute_nominal
         ).grid(row=5, columnspan=2, pady=10)
-    """
-# Weapon Distribution block
-    def __create_weapon_distribution_block(self):
-        self.weapondistribution = LabelFrame(self.filterFrameHolder,width=14, text="Weapon Distribution")
-        self.weapondistribution.grid(row=3, column=1, pady=5)
-        Label(self.weapondistribution, text="By Displayed Items").grid(row=0, columnspan=2)
-        Label(self.weapondistribution, text="Target Nominal").grid(row=1, columnspan=2)
-        self.weapondesiredNomEntry = Entry(
-            self.weapondistribution, textvariable=self.totalWeaponDisplayed, width=14
-        ).grid(row=2, columnspan=2, pady=7)
-        self.weapondistributorValue.set("Use Rarity")
-        Radiobutton(self.weapondistribution, text="Use Rarity", variable=self.weapondistributorValue, value="Use Rarity") .grid(row=3, column=0,sticky="w")
-        Radiobutton(self.weapondistribution, text="Use Nominal", variable=self.weapondistributorValue, value="Use Nominal").grid(row=4, column=0,sticky="w")
-        Button(
-            self.weapondistribution, text="Distribute", width=12, command=self.__distribute_nominal
-        ).grid(row=5, columnspan=2, pady=10)"""
 
+    def readexpansionworld(self):
+        try:
+            with open("./Expansion/TraderZones/World.json") as f:
+                world = json.load(f)
+            return world
+        except:
+            world = dict()
+            world['m_Version'] = 4
+            world['m_FileName']= "World"
+            world['m_ZoneName']= "World"
+            world['DisplayName'] = "World Trading Zone"
+            world['Position'] = [7500.0, 0.0, 7500.0]
+            world['Radius'] = 50000.0
+            world["Stock"] = dict()
+            writeToJSONFile('./Expansion/TraderZones',"World", world)
+            return world
+
+
+    def expansionTrader(self):
+        world = self.readexpansionworld()
+        TRADER_NAME = simpledialog.askstring(title="Trader Name",prompt="What's the name of the Trader?: ")
+        trader = dict()
+        trader['m_Version'] = 4
+        trader['m_FileName']= TRADER_NAME.upper()
+        trader['TraderName']= TRADER_NAME.upper()
+        trader['DisplayName']= "#STR_EXPANSION_MARKET_"+TRADER_NAME.upper()
+        trader['Items'] = []
+        to_append = dict()
+        to_append["Stock"] = dict()
+        for items in self.treeView.selection():
+            item = self.treeView.item(items)
+            item_name = (item['values'][0])
+            trader['Items'].append(item_name)
+            to_append["Stock"].update({item_name : 250})
+        writeToJSONFile('./Expansion/Traders',TRADER_NAME.upper(), trader)
+        world["Stock"].update(to_append["Stock"])
+        writeToJSONFile('./Expansion/TraderZones',"World", world)
 
 
     def donate(self):
@@ -551,7 +579,7 @@ class GUI(object):
         def __update_helper(item, field, default_value):
             value_from_update_form = getattr(self, field).get()
             if value_from_update_form != default_value:
-                print("__update_item  :", value_from_update_form, default_value)
+                #print("__update_item  :", value_from_update_form, default_value)
                 setattr(item, field, value_from_update_form)
 
         for items in self.treeView.selection():

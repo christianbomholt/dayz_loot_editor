@@ -12,9 +12,28 @@ class Dao(object):
         session_maker.configure(bind=engine)
         self.session = session_maker()
 
+
+    def upgradeDB(self):
+        try:
+            sql_String = f'ALTER TABLE items ADD COLUMN min_Stock INTEGER DEFAULT 10'
+            self.session.execute(sql_String)
+            self.session.commit()
+            print("DEBUG: The Column min_Stock added to database")
+        except:
+           pass
+
+        try:
+            sql_String = f'ALTER TABLE items ADD COLUMN max_Stock INTEGER DEFAULT 100'
+            self.session.execute(sql_String)
+            self.session.commit()
+            print("DEBUG: The Column max_stock added to database")
+        except:
+            print("DEBUG: You are good to go")
+
     """
     CRUD Operations related to items
     """
+
 
 # create item  - used in new_items.py
     def create_item(self, item: Item, duplicate=0):
@@ -148,25 +167,30 @@ class Dao(object):
         results = self.session.query(Item.sub_type).filter(and_(Item.trader==(traderSel),Item.mod.in_(selected_Mods))).group_by(Item.sub_type).order_by(Item.sub_type).all()
         results=[sub_type[0] for sub_type in results]
         return results
+
 # Used in Set prices
     def get_traderpricingtupl(self, traderSel, sub_type, selected_Mods):
-        results = self.session.query(Item.name,Item.sub_type,Item.traderCat,Item.buyprice,Item.sellprice,Item.rarity,Item.nominal,Item.traderExclude,Item.mod).filter(and_(Item.trader==(traderSel),Item.sub_type==(sub_type),Item.mod.in_(selected_Mods))).all()
+        results = self.session.query(Item.name,Item.sub_type,Item.traderCat,Item.buyprice,Item.sellprice,Item.rarity,Item.nominal,Item.traderExclude,Item.mod,Item.min_stock,Item.max_stock).filter(and_(Item.trader==(traderSel),Item.sub_type==(sub_type),Item.mod.in_(selected_Mods))).all()
         return results
+
 # Used in Set prices
     def get_traderitemstupl(self, traderSel, sub_type, selected_Mods):
         results = self.session.query(Item).filter(and_(Item.trader==(traderSel),Item.sub_type==(sub_type),Item.mod.in_(selected_Mods))).order_by(Item.sub_type).all()
         return [u.__dict__ for u in results]
+
 # Used in Set prices to save to DB
     def setTraderValues_fast(self, values):
         for value in values:
             self.session.query(Item).filter(
-                Item.name==value[5]
+                Item.name==value[7]
             ).update({
                 Item.traderCat: value[0],
                 Item.buyprice: value[1],
                 Item.sellprice: value[2],
                 Item.traderExclude: value[3],
-                Item.rarity: value[4]
+                Item.rarity: value[6],
+                Item.min_stock: value[4],
+                Item.max_stock: value[5]
             }, synchronize_session=False)
         self.session.commit()          
 

@@ -2,7 +2,7 @@ from tkinter import *
 from tkinter import _setit, messagebox
 from database.dao import Dao
 from utility.categories import traderCatSwitcher
-from utility.exportTrader import createTrader, distribute
+from utility.exportTrader import createTrader, expansionMarket, distribute
 from utility.exportTrader import rarityForTrader
 from config import ConfigManager
 
@@ -40,6 +40,8 @@ class TraderEditor(object):
         self.__create_trader_editor(self.window)
         self.__create_trader_setting(self.window, 1, 1)
         self.subTypeListbox.bind("<<ListboxSelect>>", self.__fill_trader_window)
+        self.min_stockval = IntVar()
+        self.max_stockval = IntVar()
 
     def __set_selected_trader(self, value):
         self.selected_trader = value
@@ -85,7 +87,6 @@ class TraderEditor(object):
             items = self.database.search_subtypeby_name(self.searchName.get())
             self.__set_selected_trader(items[0][2])
             self.selection_set_by_word(items[0][1])
-            print("DEBUG  :",items[0][1],items[0][2])
 
     def __create_trader_editor(self, root):
         self.__fill_trader_window(root)
@@ -100,15 +101,18 @@ class TraderEditor(object):
         Radiobutton(radio_frame, text=modes[1][0], variable=self.v, value=modes[1][1]).grid(row=0, column=1)
         frame = Frame(root)
         frame.grid(row=row + 1, column=column, sticky="w", pady=5)
-        self.buy_entries = self.__create_price_block(frame, "Buy Price", 0, 0)
-        self.sellEntries = self.__create_price_block(frame, "Sell Price", 0, 1)
+        self.buy_entries = self.__create_price_block(frame, "Buy/Max Price", 0, 0)
+        self.sellEntries = self.__create_price_block(frame, "Sell/Min Price", 0, 1)
+        self.StockEntries = self.__create_stock_block(frame, "Stock", 0, 2)
         button_frame = Frame(root)
         button_frame.grid(row=row + 2, column=column, sticky="w", pady=5)
 
-        Button(button_frame, text="Distribute Pricing", command=self.__distribute_pricing).grid(row=0, column=0)
-        Button(button_frame, text="Apply Fractions", command=self.__apply_fractions).grid(row=0, column=1)
-        Button(button_frame, text="Save Changes", command=self.update).grid(row=0, column=2)
-        Button(button_frame, text="Copy to Clipboard", command=self.__create_trader).grid(row=0, column=3, padx=5)
+        Button(button_frame, text="Distribute", command=self.__distribute_pricing).grid(row=0, column=0)
+        Button(button_frame, text="Fractions", command=self.__apply_fractions).grid(row=0, column=1)
+        Button(button_frame, text="Stock", command=self.__apply_stock).grid(row=0, column=2)
+        Button(button_frame, text="Save Changes", command=self.update).grid(row=0, column=3)
+        Button(button_frame, text="DrJones Trader", command=self.__create_trader).grid(row=0, column=4, padx=5)
+        Button(button_frame, text="Expansion Trader", command=self.__create_expansiontrader).grid(row=0, column=5, padx=5)
 
     def __trader__update(self):
         sub_type_lst = self.database.get_tradersubtypetupl(self.selected_trader, self.selectedMods)
@@ -117,6 +121,25 @@ class TraderEditor(object):
             if sub_type == "":
                 sub_type = "UNASSIGNED"
             self.subTypeListbox.insert(END, sub_type)
+
+    def __create_stock_block(self, parent, name, row, column):
+        stock_block = LabelFrame(parent, text=name)
+        stock_block.grid(row=row, column=column, padx=10)
+        #
+        create_label(stock_block, "MinStock:", 0, 0, "w")
+        create_label(stock_block, "MaxStock:", 1, 0, "w")
+        #
+        min_stockval = IntVar()
+        min_stockval.set(10)
+        min_stockvalE = Entry(stock_block, textvariable=min_stockval, width=7)
+        min_stockvalE.grid(row=0, column=1, padx=5, pady=5)
+        #
+        max_stockval = IntVar()
+        max_stockval.set(100)
+        max_stockvalE = Entry(stock_block, textvariable=max_stockval, width=7)
+        max_stockvalE.grid(row=1, column=1, padx=5, pady=5)
+        return min_stockval, max_stockval
+
 
     def __create_price_block(self, parent, name, row, column):
         buy_price = LabelFrame(parent, text=name)
@@ -127,17 +150,17 @@ class TraderEditor(object):
         #
         min_val = IntVar()
         min_val.set(0)
-        min_val = Entry(buy_price, textvariable=min_val)
+        min_val = Entry(buy_price, textvariable=min_val, width=7)
         min_val.grid(row=0, column=1, padx=5, pady=5)
         #
         max_val = IntVar()
         max_val.set(0)
-        max_val = Entry(buy_price, textvariable=max_val)
+        max_val = Entry(buy_price, textvariable=max_val, width=7)
         max_val.grid(row=1, column=1, padx=5, pady=5)
         #
         if "sell" in name.lower():
             create_label(buy_price, "fraction:", 2, 0, "w")
-            self.fraction = Entry(buy_price)
+            self.fraction = Entry(buy_price, width=7)
             self.fraction.insert(END, '1.0')
             self.fraction.grid(row=2, column=1, padx=5, pady=5)
         return min_val, max_val
@@ -145,7 +168,7 @@ class TraderEditor(object):
     def __update_scroll_region(self, root):
         self.canvas.configure(scrollregion=self.canvas.bbox("all"))
 
-    def __trader_row(self, parent, name, trader_category, buy_price, sell_price, rarity, nominal, exclude):
+    def __trader_row(self, parent, name, trader_category, buy_price, sell_price, rarity, nominal, exclude, min_stock, max_stock):
         frame = Frame(parent)
         frame.grid(padx=5, pady=2, sticky="w")
         #
@@ -164,18 +187,29 @@ class TraderEditor(object):
         sell_price_var = StringVar()
         sell_price_var.set(sell_price)
         #
+        min_stock_var = StringVar()
+        min_stock_var.set(min_stock)
+        #
+        max_stock_var = StringVar()
+        max_stock_var.set(max_stock)
+
         x_padding = 10
         Checkbutton(frame, variable=do_exclude).grid(row=0, column=0)
         name_entry = Entry(frame, textvariable=name_var, width=25)
         name_entry.grid(row=0, column=1, padx=x_padding)
         trader_cat_entry = Entry(frame, textvariable=trader_category_var, width=3)
         trader_cat_entry.grid(row=0, column=2, padx=x_padding)
-        buy_price_entry = Entry(frame, textvariable=buy_price_var, width=8)
+        buy_price_entry = Entry(frame, textvariable=buy_price_var, width=5)
         buy_price_entry.grid(row=0, column=3, padx=x_padding)
-        sell_price_entry = Entry(frame, textvariable=sell_price_var, width=8)
+        sell_price_entry = Entry(frame, textvariable=sell_price_var, width=5)
         sell_price_entry.grid(row=0, column=4, padx=x_padding)
+        min_stock_entry = Entry(frame, textvariable=min_stock_var, width=5)
+        min_stock_entry.grid(row=0, column=5, padx=x_padding)
+        max_stock_entry = Entry(frame, textvariable=max_stock_var, width=5)
+        max_stock_entry.grid(row=0, column=6, padx=x_padding)
+
         self.traderVal.append(
-            ([trader_cat_entry, buy_price_entry, sell_price_entry, do_exclude], [rarity, name, nominal]))
+            ([trader_cat_entry, buy_price_entry, sell_price_entry, do_exclude, min_stock_entry, max_stock_entry], [rarity, name, nominal]))
 
     # def fillTraderWindow(self,parent, event):
     def __fill_trader_window(self, root):
@@ -183,8 +217,8 @@ class TraderEditor(object):
         selected_sub_type = self.subTypeListbox.get(ANCHOR)
         selected_sub_type = "" if selected_sub_type == "UNASSIGNED" else selected_sub_type
         items = self.database.get_traderitemstupl(self.selected_trader, selected_sub_type, self.selectedMods)
-        height = 480
-        width = 400
+        height = 600
+        width = 450
         self.frame = Frame(root, height=height, width=width)
         self.frame.grid_forget()
         self.traderVal = []
@@ -201,11 +235,11 @@ class TraderEditor(object):
             subtype = i.get("sub_type")
             traderCat = set_trader_category(traderCat, subtype)
             self.__trader_row(self.canvasFrame, i.get("name"), traderCat, i.get("buyprice"), i.get("sellprice"),
-                              i.get("rarity"), i.get("nominal"), i.get("traderExclude"))
+                              i.get("rarity"), i.get("nominal"), i.get("traderExclude"),i.get("min_stock"),i.get("max_stock"))
         scrollbar = Scrollbar(self.frame, orient=VERTICAL)
         scrollbar.config(command=self.canvas.yview)
         self.canvas.config(yscrollcommand=scrollbar.set)
-        scrollbar.grid(row=0, column=1, sticky="ns")
+        scrollbar.grid(row=0, column=1, sticky="nsew",)
         root.rowconfigure(0, weight=1)
         root.columnconfigure(1, weight=1)
         self.canvasFrame.bind("<Configure>", self.__update_scroll_region)
@@ -230,10 +264,42 @@ class TraderEditor(object):
         items = self.__create_values()
         new_items = []
         for item in items:
-            # name, traderCat, buyPrice, sellPrice, rarity
-            new_item = [item[5], item[0], item[1], item[2], item[3], item[4]]
+            # name(7), traderCat, buyPrice, sellPrice, rarity(6)
+            new_item = [item[7], item[0], item[1], item[2], item[3], item[6]]
             new_items.append(new_item)
         createTrader(self.window, sub_type, new_items)
+
+    def __create_expansiontrader(self):
+        sub_type = self.subTypeListbox.get(ANCHOR)
+        sub_index = self.subTypeListbox.curselection()
+        
+        items = self.__create_values()
+        new_items = []
+        dictionary = dict()
+        dictionary['m_Version'] = 4
+        dictionary['m_FileName']= str(sub_type).upper()
+        dictionary['CategoryID']= sub_index[0]
+        dictionary['DisplayName'] = "#STR_EXPANSION_MARKET_CATEGORY_" + str(sub_type).upper()
+        dictionary['Items'] = []
+        keys = ['ClassName', 'MaxPriceThreshold', 'MinPriceThreshold','MaxStockThreshold','MinStockThreshold','PurchaseType', 'SpawnAttachments']
+        for item in items:
+            # name(7), buyPrice, sellPrice, minStock, maxStock, rarity(6)
+            if item[3] == 0:
+                new_item = [item[7], item[1], item[2], item[4], item[5], 0, []]
+                dictionary['Items'].append(dict(zip(keys,new_item)))
+        expansionMarket(self.window, sub_type, dictionary) 
+
+
+    def __apply_stock(self):
+        sel_subtype = self.subTypeListbox.get(ANCHOR)
+        sel_subtype = "" if sel_subtype == "UNASSIGNED" else sel_subtype
+        item = []
+        trader_item = self.database.get_traderpricingtupl(self.selected_trader, sel_subtype, self.selectedMods)
+        for i in trader_item:
+            item.append(i)
+        for item in self.traderVal:
+            set_entry_val(item[0][4], int(self.StockEntries[0].get()))
+            set_entry_val(item[0][5], int(self.StockEntries[1].get()))
 
     def __apply_fractions(self):
         sel_subtype = self.subTypeListbox.get(ANCHOR)
@@ -276,7 +342,6 @@ class TraderEditor(object):
                     key_value = rarityForTrader[i[1][0]] if rarity_is_set else i[1][2]
                 except KeyError:
                     key_value = 0
-                print(key_value)
                 set_entry_val(i[0][1], buy_pricing[key_value])
                 set_entry_val(i[0][2], sell_pricing[key_value])
 

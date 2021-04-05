@@ -1,4 +1,7 @@
 import pyperclip
+import json
+import os.path
+
 # from windows import addToClipboard
 from math import ceil
 
@@ -29,6 +32,16 @@ def createTrader(root, subtype, rows):
             text += "\t\t{},\t\t\t{},\t\t{},\t\t{}\n".format(name, traderCat, buyPrice, sellPrice)
     text += "\n"
     pyperclip.copy(text)
+
+def writeToJSONFile(path, fileName, data):
+    filePathNameWExt = './' + path + '/' + fileName + '.json'
+    with open(filePathNameWExt, 'w') as fp:
+        json.dump(data, fp, indent=2)
+
+
+def expansionMarket(root,subtype,rows):
+    writeToJSONFile('./Expansion/Market',subtype,rows)
+
 
 
 # (rarity, nominal)
