@@ -5,6 +5,42 @@
   "DisplayName": "#STR_EXPANSION_MARKET_CATEGORY_ARMBAND",
   "Items": [
     {
+      "ClassName": "Armband_Black",
+      "MaxPriceThreshold": "50",
+      "MinPriceThreshold": "15",
+      "MaxStockThreshold": "10",
+      "MinStockThreshold": "100",
+      "PurchaseType": 0,
+      "SpawnAttachments": []
+    },
+    {
+      "ClassName": "Armband_Blue",
+      "MaxPriceThreshold": "50",
+      "MinPriceThreshold": "15",
+      "MaxStockThreshold": "10",
+      "MinStockThreshold": "100",
+      "PurchaseType": 0,
+      "SpawnAttachments": []
+    },
+    {
+      "ClassName": "Armband_Green",
+      "MaxPriceThreshold": "50",
+      "MinPriceThreshold": "15",
+      "MaxStockThreshold": "10",
+      "MinStockThreshold": "100",
+      "PurchaseType": 0,
+      "SpawnAttachments": []
+    },
+    {
+      "ClassName": "Armband_Orange",
+      "MaxPriceThreshold": "50",
+      "MinPriceThreshold": "15",
+      "MaxStockThreshold": "10",
+      "MinStockThreshold": "100",
+      "PurchaseType": 0,
+      "SpawnAttachments": []
+    },
+    {
       "ClassName": "Armband_Pink",
       "MaxPriceThreshold": "50",
       "MinPriceThreshold": "15",

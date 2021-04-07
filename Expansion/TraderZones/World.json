@@ -1,0 +1,34 @@
+{
+  "m_Version": 4,
+  "m_FileName": "World",
+  "m_ZoneName": "World",
+  "DisplayName": "World Trading Zone",
+  "Position": [
+    7500.0,
+    0.0,
+    7500.0
+  ],
+  "Radius": 50000.0,
+  "Stock": {
+    "ACOGOptic": 250,
+    "AK101": 250,
+    "AK101_Black": 250,
+    "AK101_Green": 250,
+    "AK74": 250,
+    "AK74_Black": 250,
+    "AK74_Green": 250,
+    "AK74_Hndgrd": 250,
+    "AK74_WoodBttstck": 250,
+    "AKM": 250,
+    "AKS74U": 250,
+    "AKS74U_Black": 250,
+    "AKS74U_Bttstck": 250,
+    "AKS74U_Green": 250,
+    "AK_Bayonet": 250,
+    "AK_FoldingBttstck": 250,
+    "AK_FoldingBttstck_Black": 250,
+    "AK_FoldingBttstck_Green": 250,
+    "AK_PlasticBttstck": 250,
+    "AK_PlasticBttstck_Black": 250
+  }
+}
