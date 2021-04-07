@@ -95,8 +95,7 @@ class LinkItem(object):
 
     def __search_attach_name__(self):
             if self.searchName.get() != "":
-
-                #attachs = self.database.search_attach_name(self.get_class_by_tablename(self.table),self.searchName.get())
+                attachs = self.database.search_attach_name(self.get_class_by_tablename(self.table),self.searchName.get())
                 self.__populate_attachs(attachs)
                 self.gridAttachs = attachs
                 self.searchName.set("") 
