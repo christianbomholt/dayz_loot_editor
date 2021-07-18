@@ -69,7 +69,6 @@ def distribute(rows, minBuy, maxBuy, minSell, maxSell, useRarity):
 def getDistribution(rows, rarity_is_set):
     global rarityForTrader
     raritySet = set()
-
     if rarity_is_set:
         for item in rows:
             if item[0] != 0:

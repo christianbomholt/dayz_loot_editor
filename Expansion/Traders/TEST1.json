@@ -1,0 +1,25 @@
+{
+  "m_Version": 4,
+  "m_FileName": "TEST1",
+  "TraderName": "TEST1",
+  "DisplayName": "#STR_EXPANSION_MARKET_TEST1",
+  "Currencies": [
+    "expansiongoldbar",
+    "expansiongoldnugget",
+    "expansionsilverbar",
+    "expansionsilvernugget"
+  ],
+  "Items": {
+    "ACOGOptic": 1,
+    "AK101": 1,
+    "AK101_Black": 1,
+    "AK101_Green": 1,
+    "AK74": 1,
+    "AK74_Black": 1,
+    "AK74_Green": 1,
+    "AK74_Hndgrd": 1,
+    "AK74_WoodBttstck": 1,
+    "AKM": 1,
+    "AKS74U": 1
+  }
+}

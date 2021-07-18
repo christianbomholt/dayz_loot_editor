@@ -85,7 +85,6 @@ class XMLParser(object):
                         usages.append(i.attrib["name"])
                     except:
                         pass
-                        #print("DEBUG xmlParser, usage fix")    
                 elif i.tag == "value":
                     try:
                         tiers.append(i.attrib[tier_attrib])

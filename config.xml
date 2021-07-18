@@ -41,8 +41,14 @@
         <trader value="Trader 3" />
     </traders>
 
-    
-    
+
+    <Currencies>
+	    <Currency value="expansiongoldbar" />
+        <Currency value="expansiongoldnugget" />
+        <Currency value="expansionsilverbar" />
+		<Currency value="expansionsilvernugget" />
+    </Currencies>
+
     <rairties> 
         <rarity value="undefined" />
         <rarity value="Not in CE" />

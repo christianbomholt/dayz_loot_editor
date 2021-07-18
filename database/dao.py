@@ -18,7 +18,7 @@ class Dao(object):
             sql_String = f'ALTER TABLE items ADD COLUMN min_Stock INTEGER DEFAULT 10'
             self.session.execute(sql_String)
             self.session.commit()
-            print("DEBUG: The Column min_Stock added to database")
+            #print("DEBUG: The Column min_Stock added to database")
         except:
            pass
 
@@ -26,7 +26,7 @@ class Dao(object):
             sql_String = f'ALTER TABLE items ADD COLUMN max_Stock INTEGER DEFAULT 100'
             self.session.execute(sql_String)
             self.session.commit()
-            print("DEBUG: The Column max_stock added to database")
+            #print("DEBUG: The Column max_stock added to database")
         except:
             print("DEBUG: You are good to go")
 

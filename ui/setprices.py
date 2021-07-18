@@ -278,14 +278,14 @@ class TraderEditor(object):
         dictionary = dict()
         dictionary['m_Version'] = 4
         dictionary['m_FileName']= str(sub_type).upper()
-        dictionary['CategoryID']= sub_index[0]
+        #dictionary['CategoryID']= sub_index[0]
         dictionary['DisplayName'] = "#STR_EXPANSION_MARKET_CATEGORY_" + str(sub_type).upper()
         dictionary['Items'] = []
         keys = ['ClassName', 'MaxPriceThreshold', 'MinPriceThreshold','MaxStockThreshold','MinStockThreshold','PurchaseType', 'SpawnAttachments']
         for item in items:
             # name(7), buyPrice, sellPrice, minStock, maxStock, rarity(6)
             if item[3] == 0:
-                new_item = [item[7], item[1], item[2], item[4], item[5], 0, []]
+                new_item = [str(item[7]).lower(), item[1], item[2], item[4], item[5], 0, []]
                 dictionary['Items'].append(dict(zip(keys,new_item)))
         expansionMarket(self.window, sub_type, dictionary) 
 
@@ -321,6 +321,7 @@ class TraderEditor(object):
         trader_item = self.database.get_traderpricingtupl(self.selected_trader, selected_subtype, self.selectedMods)
         rarities = []
         for i in trader_item:
+            #print("DEBUG  :",i)
             item.append(i)
         # rarity, nominal
         for i in item:

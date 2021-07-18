@@ -40,7 +40,8 @@ class GUI(object):
         self.distributorValue = StringVar()
         self.weapondistributorValue = StringVar()
         self.searchName = StringVar()
-
+        self.worldName = StringVar()
+        self.worldName.set("world") 
         #
         self.__create_menu_bar()
         self.__create_entry_frame()
@@ -392,7 +393,7 @@ class GUI(object):
             self.filterFrame, text="Filter", width=12, command=self.__filter_items
         ).grid(row=4, columnspan=2, pady=5, padx=10, sticky="nesw")
 # Search like name        
-        self.serchName = Entry(self.filterFrame, textvariable=self.searchName, width=14).grid(row=5, columnspan=2, pady=5, padx=10, sticky="nesw")
+        self.searchName = Entry(self.filterFrame, textvariable=self.searchName, width=14).grid(row=5, columnspan=2, pady=5, padx=10, sticky="nesw")
         Button(
             self.filterFrame,
             text="Search like Name",
@@ -410,19 +411,21 @@ class GUI(object):
             command=self.openTraderEditor,
         ).grid(row=7, columnspan=2, pady=5, padx=10, sticky="nesw")
 
+        self.worldName = Entry(self.filterFrame, textvariable=self.worldName, width=14).grid(row=8, columnspan=2, pady=5, padx=10, sticky="nesw")
+
         Button(
             self.filterFrame,
             text="Expansion Trader",
             width=14,
             command=self.expansionTrader,
-        ).grid(row=8, columnspan=2, pady=5, padx=10, sticky="nesw")
+        ).grid(row=9, columnspan=2, pady=5, padx=10, sticky="nesw")
 
         Button(
             self.filterFrame,
             text="Donate !",
             width=14,
             command=self.donate,
-        ).grid(row=9, columnspan=2, pady=5, padx=10, sticky="nesw")
+        ).grid(row=10, columnspan=2, pady=5, padx=10, sticky="nesw")
 
 
 # Normal Distribution block
@@ -441,43 +444,53 @@ class GUI(object):
             self.distribution, text="Distribute", width=12, command=self.__distribute_nominal
         ).grid(row=5, columnspan=2, pady=10)
 
-    def readexpansionworld(self):
+    def readexpansionworld(self,newworld):
         try:
-            with open("./Expansion/TraderZones/World.json") as f:
+           #with open("./Expansion/TraderZones/World.json") as f:
+            with open(f"./Expansion/TraderZones/{newworld}.json") as f:
+
                 world = json.load(f)
             return world
         except:
             world = dict()
             world['m_Version'] = 4
-            world['m_FileName']= "World"
-            world['m_ZoneName']= "World"
-            world['DisplayName'] = "World Trading Zone"
+            world['m_FileName']= newworld
+            world['m_ZoneName']= newworld
+            world['DisplayName'] = newworld + " Trading Zone"
             world['Position'] = [7500.0, 0.0, 7500.0]
             world['Radius'] = 50000.0
             world["Stock"] = dict()
-            writeToJSONFile('./Expansion/TraderZones',"World", world)
+            writeToJSONFile('./Expansion/TraderZones',newworld, world)
             return world
 
 
     def expansionTrader(self):
-        world = self.readexpansionworld()
+       # newworld = str(self.worldName.get()).lower()
+        print(self.worldName.get()) 
+        newworld = self.worldName.get()
+        print("DEBUG  :", newworld)
+        world = self.readexpansionworld(newworld)
         TRADER_NAME = simpledialog.askstring(title="Trader Name",prompt="What's the name of the Trader?: ")
         trader = dict()
         trader['m_Version'] = 4
         trader['m_FileName']= TRADER_NAME.upper()
         trader['TraderName']= TRADER_NAME.upper()
         trader['DisplayName']= "#STR_EXPANSION_MARKET_"+TRADER_NAME.upper()
-        trader['Items'] = []
+        trader['Currencies']= ["expansiongoldbar","expansiongoldnugget","expansionsilverbar","expansionsilvernugget"]
+        #trader['Items'] = []
+
+        trader['Items'] = dict()
         to_append = dict()
         to_append["Stock"] = dict()
         for items in self.treeView.selection():
             item = self.treeView.item(items)
             item_name = (item['values'][0])
-            trader['Items'].append(item_name)
+
+            trader['Items'].update({item_name:1})
             to_append["Stock"].update({item_name : 250})
         writeToJSONFile('./Expansion/Traders',TRADER_NAME.upper(), trader)
         world["Stock"].update(to_append["Stock"])
-        writeToJSONFile('./Expansion/TraderZones',"World", world)
+        writeToJSONFile('./Expansion/TraderZones',newworld, world)
 
 
     def donate(self):
@@ -519,7 +532,7 @@ class GUI(object):
 
     def derivetypessubtypes(self):
         if self.database.get_mapselectValue(1).mapselectvalue == "Namalsk":
-            print("DEBUG derivetypessubtypes we are in a Namalsk map :", )
+            #print("DEBUG derivetypessubtypes we are in a Namalsk map :", )
             for Item in self.gridItems:
                 try:
                     for item_type, subtypes in categoriesNamalskDict.get(Item.cat_type).items():
@@ -778,6 +791,7 @@ class GUI(object):
             self.distributorValue.get()
         )
         self.__populate_items(self.gridItems)
+
 
     def openTraderEditor(self):
         TraderEditor(self.window,self.selected_mods)
