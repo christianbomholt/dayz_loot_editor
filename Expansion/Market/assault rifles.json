@@ -1,0 +1,313 @@
+{
+  "m_Version": 4,
+  "m_FileName": "ASSAULT RIFLES",
+  "DisplayName": "#STR_EXPANSION_MARKET_CATEGORY_ASSAULT RIFLES",
+  "Items": [
+    {
+      "ClassName": "ak101",
+      "MaxPriceThreshold": "4400",
+      "MinPriceThreshold": "1320",
+      "MaxStockThreshold": "10",
+      "MinStockThreshold": "100",
+      "PurchaseType": 0,
+      "SpawnAttachments": []
+    },
+    {
+      "ClassName": "ak101_black",
+      "MaxPriceThreshold": "-1",
+      "MinPriceThreshold": "-1",
+      "MaxStockThreshold": "10",
+      "MinStockThreshold": "100",
+      "PurchaseType": 0,
+      "SpawnAttachments": []
+    },
+    {
+      "ClassName": "ak101_green",
+      "MaxPriceThreshold": "-1",
+      "MinPriceThreshold": "-1",
+      "MaxStockThreshold": "10",
+      "MinStockThreshold": "100",
+      "PurchaseType": 0,
+      "SpawnAttachments": []
+    },
+    {
+      "ClassName": "ak74",
+      "MaxPriceThreshold": "2000",
+      "MinPriceThreshold": "600",
+      "MaxStockThreshold": "10",
+      "MinStockThreshold": "100",
+      "PurchaseType": 0,
+      "SpawnAttachments": []
+    },
+    {
+      "ClassName": "ak74_black",
+      "MaxPriceThreshold": "-1",
+      "MinPriceThreshold": "-1",
+      "MaxStockThreshold": "10",
+      "MinStockThreshold": "100",
+      "PurchaseType": 0,
+      "SpawnAttachments": []
+    },
+    {
+      "ClassName": "ak74_green",
+      "MaxPriceThreshold": "-1",
+      "MinPriceThreshold": "-1",
+      "MaxStockThreshold": "10",
+      "MinStockThreshold": "100",
+      "PurchaseType": 0,
+      "SpawnAttachments": []
+    },
+    {
+      "ClassName": "akm",
+      "MaxPriceThreshold": "4400",
+      "MinPriceThreshold": "1320",
+      "MaxStockThreshold": "10",
+      "MinStockThreshold": "100",
+      "PurchaseType": 0,
+      "SpawnAttachments": []
+    },
+    {
+      "ClassName": "aks74u",
+      "MaxPriceThreshold": "2000",
+      "MinPriceThreshold": "600",
+      "MaxStockThreshold": "10",
+      "MinStockThreshold": "100",
+      "PurchaseType": 0,
+      "SpawnAttachments": []
+    },
+    {
+      "ClassName": "aks74u_black",
+      "MaxPriceThreshold": "-1",
+      "MinPriceThreshold": "-1",
+      "MaxStockThreshold": "10",
+      "MinStockThreshold": "100",
+      "PurchaseType": 0,
+      "SpawnAttachments": []
+    },
+    {
+      "ClassName": "aks74u_green",
+      "MaxPriceThreshold": "-1",
+      "MinPriceThreshold": "-1",
+      "MaxStockThreshold": "10",
+      "MinStockThreshold": "100",
+      "PurchaseType": 0,
+      "SpawnAttachments": []
+    },
+    {
+      "ClassName": "fal",
+      "MaxPriceThreshold": "4400",
+      "MinPriceThreshold": "1320",
+      "MaxStockThreshold": "10",
+      "MinStockThreshold": "100",
+      "PurchaseType": 0,
+      "SpawnAttachments": []
+    },
+    {
+      "ClassName": "m4a1",
+      "MaxPriceThreshold": "4400",
+      "MinPriceThreshold": "1320",
+      "MaxStockThreshold": "10",
+      "MinStockThreshold": "100",
+      "PurchaseType": 0,
+      "SpawnAttachments": []
+    },
+    {
+      "ClassName": "m4a1_black",
+      "MaxPriceThreshold": "-1",
+      "MinPriceThreshold": "-1",
+      "MaxStockThreshold": "10",
+      "MinStockThreshold": "100",
+      "PurchaseType": 0,
+      "SpawnAttachments": []
+    },
+    {
+      "ClassName": "m4a1_green",
+      "MaxPriceThreshold": "-1",
+      "MinPriceThreshold": "-1",
+      "MaxStockThreshold": "10",
+      "MinStockThreshold": "100",
+      "PurchaseType": 0,
+      "SpawnAttachments": []
+    },
+    {
+      "ClassName": "expansion_m1a_railatt",
+      "MaxPriceThreshold": "4400",
+      "MinPriceThreshold": "1320",
+      "MaxStockThreshold": "10",
+      "MinStockThreshold": "100",
+      "PurchaseType": 0,
+      "SpawnAttachments": []
+    },
+    {
+      "ClassName": "expansion_g36",
+      "MaxPriceThreshold": "3400",
+      "MinPriceThreshold": "1020",
+      "MaxStockThreshold": "10",
+      "MinStockThreshold": "100",
+      "PurchaseType": 0,
+      "SpawnAttachments": []
+    },
+    {
+      "ClassName": "expansion_m16",
+      "MaxPriceThreshold": "4400",
+      "MinPriceThreshold": "1320",
+      "MaxStockThreshold": "10",
+      "MinStockThreshold": "100",
+      "PurchaseType": 0,
+      "SpawnAttachments": []
+    },
+    {
+      "ClassName": "expansion_m1a",
+      "MaxPriceThreshold": "4400",
+      "MinPriceThreshold": "1320",
+      "MaxStockThreshold": "10",
+      "MinStockThreshold": "100",
+      "PurchaseType": 0,
+      "SpawnAttachments": []
+    },
+    {
+      "ClassName": "expansion_m14",
+      "MaxPriceThreshold": "3900",
+      "MinPriceThreshold": "1170",
+      "MaxStockThreshold": "10",
+      "MinStockThreshold": "100",
+      "PurchaseType": 0,
+      "SpawnAttachments": []
+    },
+    {
+      "ClassName": "m14_eft",
+      "MaxPriceThreshold": "4400",
+      "MinPriceThreshold": "1320",
+      "MaxStockThreshold": "10",
+      "MinStockThreshold": "100",
+      "PurchaseType": 0,
+      "SpawnAttachments": []
+    },
+    {
+      "ClassName": "rpk16_black",
+      "MaxPriceThreshold": "4400",
+      "MinPriceThreshold": "1320",
+      "MaxStockThreshold": "10",
+      "MinStockThreshold": "100",
+      "PurchaseType": 0,
+      "SpawnAttachments": []
+    },
+    {
+      "ClassName": "rpk16_green",
+      "MaxPriceThreshold": "4400",
+      "MinPriceThreshold": "1320",
+      "MaxStockThreshold": "10",
+      "MinStockThreshold": "100",
+      "PurchaseType": 0,
+      "SpawnAttachments": []
+    },
+    {
+      "ClassName": "rpk16_tan",
+      "MaxPriceThreshold": "4400",
+      "MinPriceThreshold": "1320",
+      "MaxStockThreshold": "10",
+      "MinStockThreshold": "100",
+      "PurchaseType": 0,
+      "SpawnAttachments": []
+    },
+    {
+      "ClassName": "sr25_black",
+      "MaxPriceThreshold": "4400",
+      "MinPriceThreshold": "1320",
+      "MaxStockThreshold": "10",
+      "MinStockThreshold": "100",
+      "PurchaseType": 0,
+      "SpawnAttachments": []
+    },
+    {
+      "ClassName": "sr25_green",
+      "MaxPriceThreshold": "4400",
+      "MinPriceThreshold": "1320",
+      "MaxStockThreshold": "10",
+      "MinStockThreshold": "100",
+      "PurchaseType": 0,
+      "SpawnAttachments": []
+    },
+    {
+      "ClassName": "sr25_tan",
+      "MaxPriceThreshold": "4400",
+      "MinPriceThreshold": "1320",
+      "MaxStockThreshold": "10",
+      "MinStockThreshold": "100",
+      "PurchaseType": 0,
+      "SpawnAttachments": []
+    },
+    {
+      "ClassName": "m14rail",
+      "MaxPriceThreshold": "3900",
+      "MinPriceThreshold": "1170",
+      "MaxStockThreshold": "10",
+      "MinStockThreshold": "100",
+      "PurchaseType": 0,
+      "SpawnAttachments": []
+    },
+    {
+      "ClassName": "pam1911",
+      "MaxPriceThreshold": "4400",
+      "MinPriceThreshold": "1320",
+      "MaxStockThreshold": "10",
+      "MinStockThreshold": "100",
+      "PurchaseType": 0,
+      "SpawnAttachments": []
+    },
+    {
+      "ClassName": "wintergear_akm",
+      "MaxPriceThreshold": "4400",
+      "MinPriceThreshold": "1320",
+      "MaxStockThreshold": "10",
+      "MinStockThreshold": "100",
+      "PurchaseType": 0,
+      "SpawnAttachments": []
+    },
+    {
+      "ClassName": "massm110",
+      "MaxPriceThreshold": "4400",
+      "MinPriceThreshold": "1320",
+      "MaxStockThreshold": "10",
+      "MinStockThreshold": "100",
+      "PurchaseType": 0,
+      "SpawnAttachments": []
+    },
+    {
+      "ClassName": "massm19",
+      "MaxPriceThreshold": "3400",
+      "MinPriceThreshold": "1020",
+      "MaxStockThreshold": "10",
+      "MinStockThreshold": "100",
+      "PurchaseType": 0,
+      "SpawnAttachments": []
+    },
+    {
+      "ClassName": "massm19_wood",
+      "MaxPriceThreshold": "3400",
+      "MinPriceThreshold": "1020",
+      "MaxStockThreshold": "10",
+      "MinStockThreshold": "100",
+      "PurchaseType": 0,
+      "SpawnAttachments": []
+    },
+    {
+      "ClassName": "massm16",
+      "MaxPriceThreshold": "4400",
+      "MinPriceThreshold": "1320",
+      "MaxStockThreshold": "10",
+      "MinStockThreshold": "100",
+      "PurchaseType": 0,
+      "SpawnAttachments": []
+    },
+    {
+      "ClassName": "mass357m1911",
+      "MaxPriceThreshold": "3400",
+      "MinPriceThreshold": "1020",
+      "MaxStockThreshold": "10",
+      "MinStockThreshold": "100",
+      "PurchaseType": 0,
+      "SpawnAttachments": []
+    }
+  ]
+}

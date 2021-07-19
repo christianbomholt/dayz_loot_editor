@@ -411,7 +411,7 @@ class GUI(object):
             command=self.openTraderEditor,
         ).grid(row=7, columnspan=2, pady=5, padx=10, sticky="nesw")
 
-        self.worldName = Entry(self.filterFrame, textvariable=self.worldName, width=14).grid(row=8, columnspan=2, pady=5, padx=10, sticky="nesw")
+        Entry(self.filterFrame, textvariable=self.worldName, width=14).grid(row=8, columnspan=2, pady=5, padx=10, sticky="nesw")
 
         Button(
             self.filterFrame,
@@ -465,10 +465,7 @@ class GUI(object):
 
 
     def expansionTrader(self):
-       # newworld = str(self.worldName.get()).lower()
-        print(self.worldName.get()) 
-        newworld = self.worldName.get()
-        print("DEBUG  :", newworld)
+        newworld = str(self.worldName.get()).lower()
         world = self.readexpansionworld(newworld)
         TRADER_NAME = simpledialog.askstring(title="Trader Name",prompt="What's the name of the Trader?: ")
         trader = dict()
