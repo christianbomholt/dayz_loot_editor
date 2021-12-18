@@ -1,0 +1,15 @@
+{
+  "m_Version": 4,
+  "m_FileName": "world",
+  "m_ZoneName": "world",
+  "DisplayName": "world Trading Zone",
+  "Position": [
+    7500.0,
+    0.0,
+    7500.0
+  ],
+  "Radius": 50000.0,
+  "Stock": {
+    "AKS74U_Bttstck": 250
+  }
+}

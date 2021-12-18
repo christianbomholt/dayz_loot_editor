@@ -1,0 +1,15 @@
+{
+  "m_Version": 4,
+  "m_FileName": "YCBX",
+  "TraderName": "YCBX",
+  "DisplayName": "#STR_EXPANSION_MARKET_YCBX",
+  "Currencies": [
+    "expansiongoldbar",
+    "expansiongoldnugget",
+    "expansionsilverbar",
+    "expansionsilvernugget"
+  ],
+  "Items": {
+    "AKS74U_Bttstck": 1
+  }
+}

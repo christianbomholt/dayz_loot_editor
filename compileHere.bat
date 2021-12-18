@@ -1,4 +1,4 @@
-SET PATH_TO_PROJECT=%~dp0..
+SET PATH_TO_PROJECT=%~dp0
 
 call "%PATH_TO_PROJECT%\installer.bat"
 rmdir /Q/S "%PATH_TO_PROJECT%\build"
