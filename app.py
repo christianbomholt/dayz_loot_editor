@@ -1,7 +1,7 @@
 from tkinter import Tk, Menu, IntVar, Frame, Label, StringVar, Entry, Listbox, END, OptionMenu, Checkbutton, Button, Radiobutton
 from tkinter import ttk, VERTICAL, HORIZONTAL, LabelFrame, Tcl, simpledialog
 
-from sqlalchemy.sql.expression import column
+from sqlalchemy.sql.expression import column, or_
 from config import ConfigManager
 import os.path
 from database.dao import Dao
@@ -409,8 +409,7 @@ class GUI(object):
             row=2, column=0, sticky="w")
         Label(self.filterFrame, text="Sub type").grid(
             row=3, column=0, sticky="w")
-        """Label(self.filterFrame, text="UsageFlag").grid(
-            row=4, column=0, sticky="n")"""
+
         self.__create_distribution_block()
         # self.__create_weapon_distribution_block()
 
@@ -438,11 +437,6 @@ class GUI(object):
 # Usage_Flag
         self.usage_for_filter = StringVar(
             value=self.database.get_all_usage("usage"))
-        # self.usage_for_filter.set("all")
-        """self.LB_usage_filter = Listbox(
-            self.filterFrame, listvariable=self.usage_for_filter, height=4, selectmode="MULTIPLE", exportselection=False
-        ).grid(row=4, columnspan=2, sticky="w", padx=5)
-"""
 
         self.LB_usage_filter = Listbox(
             self.filterFrame, height=4, listvariable=self.usage_for_filter, selectmode="extended", exportselection=False
@@ -739,15 +733,17 @@ class GUI(object):
             self.gridItems = items
 
     def __filter_usage_items(self):
+        usagelst = []
         for i in self.LB_usage_filter.curselection():
-            print(self.LB_usage_filter.get(i))
+            usagelst.append(self.LB_usage_filter.get(i))
+            return usagelst
 
     def __filter_items(self):
         item_type = self.type_for_filter.get()
         sub_type = self.sub_type_for_filter.get()
         cat_type = self.cat_type_for_filter.get()
+        self.LB_usage_filter.get(0)
 
-        print(type(self.LB_usage_filter))
         self.__filter_usage_items()
 
         if item_type != "all":
@@ -761,7 +757,7 @@ class GUI(object):
                 self.selected_mods, 'cat_type', cat_type)
         else:
             items = self.database.session.query(Item).filter(
-                Item.mod.in_(self.selected_mods))
+                Item.mod.in_(self.selected_mods)).filter(or_(*[Item.usage.contains(p) for p in self.__filter_usage_items()]))
         self.gridItems = items
         self.__create_nominal_info()
         self.__populate_items(items.all())
