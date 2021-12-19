@@ -1,8 +1,10 @@
 import xml.etree.ElementTree as ET
 from model.item import Item
+from xml.dom import minidom
 
 
-def get_type_block(item: Item,mapname):
+def get_type_block(item: Item, mapname):
+
     type_block = ET.Element("type")
     type_block.set("name", item.name)
     # nominal
@@ -19,7 +21,7 @@ def get_type_block(item: Item,mapname):
     _min.text = str(item.min)
     quant_min = ET.SubElement(type_block, "quantmin")
     quant_min.text = str(item.qmin)
-    #max
+    # max
     quant_max = ET.SubElement(type_block, "quantmax")
     quant_max.text = str(item.qmax)
     cost = ET.SubElement(type_block, "cost")
@@ -44,9 +46,9 @@ def get_type_block(item: Item,mapname):
             else:
                 category.set("name", str(item.cat_type))
         else:
-            category.set("name", str(item.cat_type))        
+            category.set("name", str(item.cat_type))
 
-    else:                
+    else:
         category.set("name", str(item.cat_type))
     #
     usage_name = "tag" if mapname == "Namalsk" else "usage"
@@ -55,7 +57,6 @@ def get_type_block(item: Item,mapname):
     for i in usages:
         usage = ET.SubElement(type_block, usage_name)
         usage.set("name", i)
-
 
     tiers = item.tier.split(",")
     for i in tiers:
@@ -73,8 +74,9 @@ class XMLWriter(object):
     def export_xml(self, items, mapname):
         xml_file = open(self.filename, "a")
         self.mapname = mapname
-        xml_file.write('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>')
+        xml_file.write(
+            '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>')
         xml_file.write("\n<types>")
         for i in items:
-            xml_file.write("\n" + get_type_block(i, mapname))
+            xml_file.write("\n \t" + get_type_block(i, mapname))
         xml_file.write("\n</types>")

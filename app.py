@@ -487,6 +487,7 @@ class GUI(object):
 
 # Normal Distribution block
 
+
     def __create_distribution_block(self):
         self.distribution = LabelFrame(
             self.filterFrameHolder, width=14, text="Nominal Distribution")
@@ -649,6 +650,7 @@ class GUI(object):
 
 # Updated to loop through selected items in the grid.
 
+
     def __update_item(self):
         def __update_helper(item, field, default_value):
             value_from_update_form = getattr(self, field).get()
@@ -744,8 +746,6 @@ class GUI(object):
         cat_type = self.cat_type_for_filter.get()
         self.LB_usage_filter.get(0)
 
-        self.__filter_usage_items()
-
         if item_type != "all":
             items = self.database.filterby_type(
                 self.selected_mods, 'item_type', item_type)
@@ -757,7 +757,13 @@ class GUI(object):
                 self.selected_mods, 'cat_type', cat_type)
         else:
             items = self.database.session.query(Item).filter(
-                Item.mod.in_(self.selected_mods)).filter(or_(*[Item.usage.contains(p) for p in self.__filter_usage_items()]))
+                Item.mod.in_(self.selected_mods))
+            # Item.mod.in_(self.selected_mods)).filter(or_(*[Item.usage.contains(p) for p in self.__filter_usage_items()]))
+
+        if self.__filter_usage_items() != None:
+            items = items.filter(
+                or_(*[Item.usage.contains(p) for p in self.__filter_usage_items()]))
+
         self.gridItems = items
         self.__create_nominal_info()
         self.__populate_items(items.all())
