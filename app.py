@@ -56,7 +56,7 @@ class GUI(object):
         self.makeExpansionDir()
         #
         self.tree.bind("<ButtonRelease-1>", self.__fill_entry_frame)
-        self.window.wm_title("CE-Editor v0.11.1 - " + self.config.get_database() +
+        self.window.wm_title("CE-Editor v0.12.1 - " + self.config.get_database() +
                              " used for maptype: " + self.database.get_mapselectValue(1).mapselectvalue)
 
     def initializeapp(self):
@@ -126,6 +126,8 @@ class GUI(object):
         file_menu.add_command(
             label="Add Items", command=self.__open_items_window)
         file_menu.add_separator()
+        file_menu.add_command(label="Export Selected Mod_XML",
+                              command=self.export_mod_xml)
         file_menu.add_command(label="Export XML File",
                               command=self.export_xml_normal)
         file_menu.add_command(label="Export Namalsk XML File",
@@ -178,6 +180,9 @@ class GUI(object):
 
 # configuring menu bar
         self.window.config(menu=self.menu_bar)
+
+    def export_mod_xml(self):
+        self.__export_mod_xml()
 
     def export_xml_normal(self):
         self.__export_xml("Normal")
@@ -487,7 +492,6 @@ class GUI(object):
 
 # Normal Distribution block
 
-
     def __create_distribution_block(self):
         self.distribution = LabelFrame(
             self.filterFrameHolder, width=14, text="Nominal Distribution")
@@ -649,7 +653,6 @@ class GUI(object):
 
 
 # Updated to loop through selected items in the grid.
-
 
     def __update_item(self):
         def __update_helper(item, field, default_value):
@@ -860,6 +863,19 @@ class GUI(object):
             items = self.database.session.query(Item).filter(
                 Item.mod.in_(self.selected_mods))
             xml_writer.export_xml(items, mapname)
+
+    def __export_mod_xml(self):
+        self.output_dir = filedialog.askdirectory(title="select")
+
+        mapname = "Normal"
+        for i in self.selected_mods:
+            if self.output_dir != "":
+                Output = self.output_dir + "/" + i+".xml"
+                print(Output)
+                xml_writer = XMLWriter(Output)
+                items = self.database.session.query(Item).filter(
+                    Item.mod.contains(i))
+                xml_writer.export_xml(items, mapname)
 
     def tree_view_sort_column(self, tv, col, reverse):
         l = [(tv.set(k, col), k) for k in tv.get_children('')]

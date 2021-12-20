@@ -148,12 +148,19 @@ class XMLWriter(object):
                     tier = SubElement(type_block, "value")
                     tier.set("name", i)
             top.append(type_block)
+
         # print(prettify(top))
         xml_file.write(prettify(top))
 
     def export_xml(self, items, mapname):
+        print(self.filename)
         xml_file = open(self.filename, "a")
         self.mapname = mapname
         xml_file.truncate(0)
         self.pretty_xml(items, mapname, xml_file)
         xml_file.close()
+
+    def export_mod_xml(self, selected_mods, items, mapname):
+        self.database = Dao(self.config.get_database())
+        items = self.database.session.query(Item).filter(
+            Item.mod.in_(self.selected_mods))

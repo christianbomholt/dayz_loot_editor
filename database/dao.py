@@ -90,7 +90,6 @@ class Dao(object):
 
 # delete item - used in the delete button
 
-
     def delete_item(self, item_id):
         item = self.session.query(Item).get(item_id)
         self.session.delete(item)
@@ -100,7 +99,6 @@ class Dao(object):
 
 # delete item - used in the delete button
 
-
     def delete_attach(self, attachClasse, item_id):
         item = self.session.query(attachClasse).get(item_id)
         self.session.delete(item)
@@ -109,7 +107,6 @@ class Dao(object):
 
 
 # Used in __create_nominal_info
-
 
     def getNominal(self, grid_items):
         grid_items = grid_items.subquery()
@@ -263,7 +260,6 @@ class Dao(object):
 
 
 # Make Spawnable types
-
 
     def get_all_ranged(self):
         result = self.session.query(Item.name).filter(
