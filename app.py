@@ -18,6 +18,7 @@ import re
 import json
 # from utility.combo_box_manager import ComboBoxManager
 from utility import assign_rarity, distribute_nominal, column_definition, categoriesDict, categoriesNamalskDict, distribute_mags_and_bullets, apipush, apipull, exportSpawnable, writeToJSONFile
+from tests.test_xml import test__export_xml
 
 
 class GUI(object):
@@ -158,7 +159,8 @@ class GUI(object):
             label="Derive ammobox table", command=self.deriveammobox)
         tools_menu.add_command(
             label="Distribute gun,mag and bullet", command=self.testdist)
-        # tools_menu.add_command(label="TestFunction for (Dev)", command=self.testfunction)
+        tools_menu.add_command(
+            label="TestFunction for (Dev)", command=self.testfunction)
         # tools_menu.add_command(label="APIPull (Dev)", command=self.apipull)
         # tools_menu.add_command(label="APIPush (Dev)", command=self.apipush)
 
@@ -572,8 +574,8 @@ class GUI(object):
         self.database.sql_dbDump()
 
     def testfunction(self):
-        print("DEBUG  :", self.database.getNominalByCat(
-            self.gridItems, "weapons"))
+        print("DEBUG  : Before test function")
+        test__export_xml(self)
 
     def apipull(self):
         apipull(self.database.session)
@@ -867,7 +869,7 @@ class GUI(object):
     def __export_mod_xml(self):
         self.output_dir = filedialog.askdirectory(title="select")
 
-        mapname = "Normal"
+        mapname = "Normal Map"
         for i in self.selected_mods:
             if self.output_dir != "":
                 Output = self.output_dir + "/" + i+".xml"

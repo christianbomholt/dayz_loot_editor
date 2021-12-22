@@ -148,8 +148,6 @@ class XMLWriter(object):
                     tier = SubElement(type_block, "value")
                     tier.set("name", i)
             top.append(type_block)
-
-        # print(prettify(top))
         xml_file.write(prettify(top))
 
     def export_xml(self, items, mapname):
