@@ -689,14 +689,19 @@ class GUI(object):
             usages = self.usagesListBox.curselection()
             usage_values = [self.usagesListBox.get(i) for i in usages]
             usages = ",".join(usage_values)
-            if usages != "":
+            if usages != "" and usages != "None":
                 setattr(item_to_update, "usage", usages)
+            elif usages == "None":
+                setattr(item_to_update, "usage", "")
 
             tiers = self.tiersListBox.curselection()
             tier_values = [self.tiersListBox.get(i) for i in tiers]
             tiers = ",".join(tier_values)
-            if tiers != "":
+            print(tiers)
+            if tiers != "" and tiers != "None":
                 setattr(item_to_update, "tier", tiers)
+            elif tiers == "None":
+                setattr(item_to_update, "tier", "")
             self.database.session.commit()
         self.__populate_items(self.gridItems)
 

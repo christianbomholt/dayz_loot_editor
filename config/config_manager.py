@@ -1,9 +1,10 @@
 from xml.dom import minidom
-import xml.etree.ElementTree as ET 
+import xml.etree.ElementTree as ET
+
 
 class ConfigManager(object):
     def __init__(self, config_file):
-        self.cofig_name = config_file 
+        self.cofig_name = config_file
         self.config_file = minidom.parse(config_file)
 
     def get_usages(self):
@@ -11,6 +12,7 @@ class ConfigManager(object):
         usages = list()
         for i in usage_list:
             usages.append(i.attributes["value"].value)
+        usages.append("None")
         return usages
 
     def get_database(self):
@@ -20,7 +22,6 @@ class ConfigManager(object):
     def get_mapselect(self):
         mapselect = self.config_file.getElementsByTagName("mapselect")
         return mapselect[0].attributes["value"].value
-
 
     def get_cat_types(self):
         cat_type_list = self.config_file.getElementsByTagName("category")
@@ -48,6 +49,7 @@ class ConfigManager(object):
         tiers = list()
         for i in tier_list:
             tiers.append(i.attributes["value"].value)
+        tiers.append("None")
         return tiers
 
     def get_mods(self):
@@ -91,9 +93,9 @@ class ConfigManager(object):
     def set_database(self, name):
         tree = ET.parse(self.cofig_name)
         root = tree.getroot()
-        
+
         elems = tree.findall('databasefile')
         for elem in elems:
-            list(elem)[0].set("value",name)
-        
+            list(elem)[0].set("value", name)
+
         tree.write(self.cofig_name)
