@@ -1,5 +1,5 @@
 import xml.etree.ElementTree as ET
-from xml.etree.ElementTree import Element, SubElement, Comment, tostring
+from xml.etree.ElementTree import Element, SubElement, Comment
 from model.item import Item
 from xml.etree import ElementTree
 from xml.dom import minidom
@@ -157,8 +157,3 @@ class XMLWriter(object):
         xml_file.truncate(0)
         self.pretty_xml(items, mapname, xml_file)
         xml_file.close()
-
-#    def export_mod_xml(self, selected_mods, items, mapname):
-#        self.database = Dao(self.config.get_database())
-#        items = self.database.session.query(Item).filter(
-#            Item.mod.in_(self.selected_mods))

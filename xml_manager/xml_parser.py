@@ -2,6 +2,7 @@ import xml.etree.ElementTree as ET
 from model.item import Item
 from config import ConfigManager
 
+
 def is_mag(name):
     if "mag" in name.lower():
         return True
@@ -29,16 +30,11 @@ class XMLReader(object):
 
         with open(filename) as file:
             lines = file.readlines()
-        # tree = ET.parse(filename)
-        # print(tree)
-        # string_tree = ET.tostring(tree)
-        
         print(''.join(lines))
         self.parser = XMLParser(''.join(lines))
 
     def _get_parser(self):
         return self.parser
-
 
 
 class XMLParser(object):
@@ -79,7 +75,7 @@ class XMLParser(object):
             tiers = list()
             item.name = item_value.attrib["name"]
             if item_value.find('category') is None:
-                item.cat_type ='object'    
+                item.cat_type = 'object'
             for i in item_value:
                 if i.tag == "nominal":
                     item.nominal = i.text
@@ -104,7 +100,7 @@ class XMLParser(object):
                     try:
                         tiers.append(i.attrib[tier_attrib])
                     except KeyError:
-                        pass                        
+                        pass
                 elif i.tag == "flags":
                     item.dynamic_event = i.attrib["deloot"]
                     item.count_in_hoarder = i.attrib["count_in_hoarder"]
@@ -140,5 +136,5 @@ class XMLParser(object):
     def __remove_mod_prefix(self, name):
         for prefix in self.mod_prefixes:
             if name.startswith(prefix):
-                name = name[len(prefix) :]
+                name = name[len(prefix):]
         return name
