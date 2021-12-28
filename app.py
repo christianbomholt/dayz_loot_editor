@@ -515,7 +515,6 @@ class GUI(object):
         try:
            # with open("./Expansion/TraderZones/World.json") as f:
             with open(f"./Expansion/TraderZones/{newworld}.json") as f:
-
                 world = json.load(f)
             return world
         except Exception:
@@ -764,7 +763,7 @@ class GUI(object):
                 Item.mod.in_(self.selected_mods))
             # Item.mod.in_(self.selected_mods)).filter(or_(*[Item.usage.contains(p) for p in self.__filter_usage_items()]))
 
-        if self.__filter_usage_items() != None:
+        if self.__filter_usage_items() is not None:
             items = items.filter(
                 or_(*[Item.usage.contains(p) for p in self.__filter_usage_items()]))
 
@@ -814,7 +813,7 @@ class GUI(object):
         try:
             value = self.database.getNominalByCat(
                 self.gridItems, "weapons")[0][1]
-        except:
+        except Exception:
             value = 0
         self.totalWeaponDisplayed.set(value)
         Label(self.infoFrame, text="Displayed:").grid(row=0, column=1)
@@ -879,12 +878,12 @@ class GUI(object):
                 xml_writer.export_xml(items, mapname)
 
     def tree_view_sort_column(self, tv, col, reverse):
-        l = [(tv.set(k, col), k) for k in tv.get_children('')]
+        col_sort = [(tv.set(k, col), k) for k in tv.get_children('')]
         try:
-            l.sort(key=lambda t: int(t[0]), reverse=reverse)
+            col_sort.sort(key=lambda t: int(t[0]), reverse=reverse)
         except ValueError:
-            l.sort(reverse=reverse)
-        for index, (val, k) in enumerate(l):
+            col_sort.sort(reverse=reverse)
+        for index, (val, k) in enumerate(col_sort):
             tv.move(k, '', index)
         tv.heading(col, command=lambda: self.tree_view_sort_column(
             tv, col, not reverse))
