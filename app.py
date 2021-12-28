@@ -15,7 +15,8 @@ import tkinter.filedialog as filedialog
 import webbrowser
 import re
 import json
-from utility import assign_rarity, distribute_nominal, column_definition, categoriesDict, categoriesNamalskDict, distribute_mags_and_bullets, apipush, apipull, exportSpawnable, writeToJSONFile
+from utility import assign_rarity, distribute_nominal, column_definition, categoriesDict, categoriesNamalskDict
+from utility import distribute_mags_and_bullets, apipush, apipull, exportSpawnable, writeToJSONFile
 
 
 class GUI(object):
