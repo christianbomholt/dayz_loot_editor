@@ -1,5 +1,5 @@
 import sqlite3
-from sqlalchemy import create_engine, and_, func, desc, asc
+from sqlalchemy import create_engine, and_, func, desc
 from sqlalchemy.orm import sessionmaker
 from model.item import Item, Mapselect
 
@@ -14,19 +14,19 @@ class Dao(object):
 
     def upgradeDB(self):
         try:
-            sql_String = f'ALTER TABLE items ADD COLUMN min_Stock INTEGER DEFAULT 10'
+            sql_String = f'{"ALTER TABLE items ADD COLUMN min_Stock INTEGER DEFAULT 10"}'
             self.session.execute(sql_String)
             self.session.commit()
             #print("DEBUG: The Column min_Stock added to database")
-        except:
+        except Exception:
             pass
 
         try:
-            sql_String = f'ALTER TABLE items ADD COLUMN max_Stock INTEGER DEFAULT 100'
+            sql_String = f'{"ALTER TABLE items ADD COLUMN max_Stock INTEGER DEFAULT 100"}'
             self.session.execute(sql_String)
             self.session.commit()
             #print("DEBUG: The Column max_stock added to database")
-        except:
+        except Exception:
             print("DEBUG: You are good to go")
 
     """
