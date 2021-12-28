@@ -1,17 +1,61 @@
 from xml_manager.xml_writer import XMLWriter
+from xml_manager.xml_parser import XMLReader
 from database import Dao
 from model import Item
+
 dbtest = Dao("test.db")
 
 
-def test__export_xml(self):
-    print("DEBUG  : I am in the test function and initiated xml_writer")
-    self.database = Dao("test.db")
-    file = "c:/temp/test.xml"
-    selected_Mods = ("Vanilla", "Mod 1", "Mod 2")
+# def test__export_xml():
+#     print("DEBUG  : I am in the test function and initiated xml_writer")
+#     database = Dao("test.db")
+#     file = "./tests/test.xml"
+#     selected_Mods = ("Vanilla", "Mod 1", "Mod 2")
 
-    xml_writer = XMLWriter(filename=file)
-    print("DEBUG  : I am in the test function and initiated xml_writer" + file)
-    items = self.database.session.query(Item).filter(
-        Item.mod.in_(selected_Mods))
-    xml_writer.export_xml(items, "Normal map")
+#     xml_writer = XMLWriter(filename=file)
+#     print("DEBUG  : I am in the test function and initiated xml_writer" + file)
+#     items = database.session.query(Item).filter(
+#         Item.mod.in_(selected_Mods))
+#     xml_writer.export_xml(items, "Normal map")
+
+
+def test__roundtrip():
+
+    xml_parser = XMLReader("tests/test.xml")._get_parser()
+
+    items = xml_parser.get_items("Normal Map")
+    expected = [
+        Item(
+            id=None,
+            name="MassGhillieSuitBoxMossy",
+            nominal="200",
+            min="3",
+            qmin="-1",
+            qmax="-1",
+            restock="100",
+            lifetime="12",
+            usage="Military",
+            tier="Tier1",
+            rarity=None,
+            cat_type="weapons",
+            item_type=None,
+            sub_type=None,
+            mod=None,
+            trader=None,
+            dynamic_event="1",
+            count_in_cargo="0",
+            count_in_hoarder="0",
+            count_in_map="0",
+            count_in_player="0",
+            buyprice=None,
+            sellprice=None,
+            traderExclude=None,
+            traderCat=None,
+            min_stock=None,
+            max_stock=None,
+        )
+    ]
+    # assert items == expected
+    assert items[0].cat_type == expected[0].cat_type
+    assert items[0].name == expected[0].name
+    assert items[0].count_in_player == expected[0].count_in_player

@@ -2,8 +2,6 @@ import xml.etree.ElementTree as ET
 from model.item import Item
 from config import ConfigManager
 
-
-
 def is_mag(name):
     if "mag" in name.lower():
         return True
@@ -24,6 +22,23 @@ def is_optics(name):
         return True
     else:
         return False
+
+
+class XMLReader(object):
+    def __init__(self, filename):
+
+        with open(filename) as file:
+            lines = file.readlines()
+        # tree = ET.parse(filename)
+        # print(tree)
+        # string_tree = ET.tostring(tree)
+        
+        print(''.join(lines))
+        self.parser = XMLParser(''.join(lines))
+
+    def _get_parser(self):
+        return self.parser
+
 
 
 class XMLParser(object):
