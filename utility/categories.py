@@ -1,30 +1,30 @@
 column_definition = [
-    {"text": "Name", "width": 250, "col_id": "#1", "stretch": "YES" },
-    {"text": "Nominal", "width": 60, "col_id": "#2", "stretch": "YES" },
-    {"text": "Min", "width": 50, "col_id": "#3", "stretch": "NO" },
-    {"text": "QMin", "width": 50, "col_id": "#4", "stretch": "NO" },
-    {"text": "QMax", "width": 50, "col_id": "#5", "stretch": "NO" },
-    {"text": "Restock", "width": 60, "col_id": "#6", "stretch": "YES" },
-    {"text": "Lifetime", "width": 60, "col_id": "#7", "stretch": "YES" },
-    {"text": "Usage", "width": 200, "col_id": "#8", "stretch": "YES" },
-    {"text": "Tier", "width": 200, "col_id": "#9", "stretch": "YES" },
-    {"text": "Rarity", "width": 60, "col_id": "#10", "stretch": "YES" },
-    {"text": "Category", "width": 60, "col_id": "#11", "stretch": "YES" },
-    {"text": "Type", "width": 60, "col_id": "#12", "stretch": "YES" },
-    {"text": "Sub Type", "width": 60, "col_id": "#13", "stretch": "YES" },
-    {"text": "Mod", "width": 60, "col_id": "#14", "stretch": "YES" },
-    {"text": "Trader", "width": 60, "col_id": "#15", "stretch": "YES" },
-    {"text": "D", "width": 20, "col_id": "#16", "stretch": "NO" },
-    {"text": "H", "width": 20, "col_id": "#17", "stretch": "NO" },
-    {"text": "C", "width": 20, "col_id": "#18", "stretch": "NO" },
-    {"text": "P", "width": 20, "col_id": "#19", "stretch": "NO" },
-    {"text": "M", "width": 20, "col_id": "#20", "stretch": "NO" }
+    {"text": "Name", "width": 250, "col_id": "#1", "stretch": "YES"},
+    {"text": "Nominal", "width": 60, "col_id": "#2", "stretch": "YES"},
+    {"text": "Min", "width": 50, "col_id": "#3", "stretch": "NO"},
+    {"text": "QMin", "width": 50, "col_id": "#4", "stretch": "NO"},
+    {"text": "QMax", "width": 50, "col_id": "#5", "stretch": "NO"},
+    {"text": "Restock", "width": 60, "col_id": "#6", "stretch": "YES"},
+    {"text": "Lifetime", "width": 60, "col_id": "#7", "stretch": "YES"},
+    {"text": "Usage", "width": 200, "col_id": "#8", "stretch": "YES"},
+    {"text": "Tier", "width": 200, "col_id": "#9", "stretch": "YES"},
+    {"text": "Rarity", "width": 60, "col_id": "#10", "stretch": "YES"},
+    {"text": "Category", "width": 60, "col_id": "#11", "stretch": "YES"},
+    {"text": "Type", "width": 60, "col_id": "#12", "stretch": "YES"},
+    {"text": "Sub Type", "width": 60, "col_id": "#13", "stretch": "YES"},
+    {"text": "Mod", "width": 60, "col_id": "#14", "stretch": "YES"},
+    {"text": "Trader", "width": 60, "col_id": "#15", "stretch": "YES"},
+    {"text": "D", "width": 20, "col_id": "#16", "stretch": "NO"},
+    {"text": "H", "width": 20, "col_id": "#17", "stretch": "NO"},
+    {"text": "C", "width": 20, "col_id": "#18", "stretch": "NO"},
+    {"text": "P", "width": 20, "col_id": "#19", "stretch": "NO"},
+    {"text": "M", "width": 20, "col_id": "#20", "stretch": "NO"}
 ]
 
 attach_definition = [
-    {"text": "Name", "width": 250, "col_id": "#1", "stretch": "YES" },
-    {"text": "Count", "width": 60, "col_id": "#2", "stretch": "YES" },
-    {"text": "Prop", "width": 50, "col_id": "#3", "stretch": "NO" },
+    {"text": "Name", "width": 250, "col_id": "#1", "stretch": "YES"},
+    {"text": "Count", "width": 60, "col_id": "#2", "stretch": "YES"},
+    {"text": "Prop", "width": 50, "col_id": "#3", "stretch": "NO"},
 ]
 
 gunSubTypesDict = {
@@ -40,182 +40,182 @@ gunSubTypesDict = {
 }
 
 clothingSubTypesDict = {
-    "eyewear":{ "glasses": ["glasses","goggles"],
+    "eyewear": {"glasses": ["glasses", "goggles"],
                 "nightvision": ["nvg"],
                 "melee": ["bat"]
                 },
-    "headwear":{    "masks": ["mask"],
-                    "hat": ["hat","cap","beret"],
-                    "helmet": ["helm"],
-                    "balaclava": ["balaclava"],
-                    "bandana": ["bandana"],
-                    "gas masks": ["gas"],
-                    "fun": ["santasbeard"]
+    "headwear": {"masks": ["mask"],
+                 "hat": ["hat", "cap", "beret"],
+                 "helmet": ["helm"],
+                 "balaclava": ["balaclava"],
+                 "bandana": ["bandana"],
+                 "gas masks": ["gas"],
+                 "fun": ["santasbeard"]
+                 },
+    "gloves": {"gloves": ["gloves"]
+               },
+    "footwear": {"shoes": ["shoes", "sneakers"],
+                 "boots": ["boot", "wellies"],
+                 },
+    "lowerbody": {"pants": ["pant", "breech", "jeans"],
+                  "skirt/dress": ["skirt", "dress_"]
+                  },
+    "upperbody": {"vests": ["vest"],
+                  "shirts": ["shirt", "blouse"],
+                  "hoodies": ["hoodie"],
+                  "sweaters": ["sweater"],
+                  "jackets": ["jacket"],
+                  "coats": ["coat"],
+                  "suits": ["suit"]
+                  },
+    "ghillie": {"ghillie": ["ghillie"]
                 },
-    "gloves":{      "gloves": ["gloves"]
-                },
-    "footwear":{    "shoes": ["shoes","sneakers"],
-                    "boots": ["boot", "wellies"],
-                },
-    "lowerbody":{   "pants": ["pant", "breech", "jeans"],
-                    "skirt/dress": ["skirt", "dress_"]
-                },
-    "upperbody":{   "vests": ["vest"],
-                    "shirts": ["shirt", "blouse"],
-                    "hoodies": ["hoodie"],
-                    "sweaters": ["sweater"],
-                    "jackets": ["jacket"],
-                    "coats": ["coat"],
-                    "suits": ["suit"]
-                },
-    "ghillie":{   "ghillie": ["ghillie"]
-                },
-    "accessory":{   "belt": ["belt"],
-                    "armband": ["armband"],
-                    "sleeping": ["sleeping","pillow"]
-                }                
+    "accessory": {"belt": ["belt"],
+                  "armband": ["armband"],
+                  "sleeping": ["sleeping", "pillow"]
+                  }
 }
 
 foodSubTypesDict = {
-    "natural":  {   "vegetables": ["mushroom", "apple", "pear", "plum", "pumpkin","zucchini","rice","potato","pepper","tomato"],
-                    "animal":["meat", "lard","steak"]
-                },
-    "man made": {   "packaged food": ["can", "cereal", "powdered","marmala","bread","cheese"]
-                },
-    "drink":    {   "drink": ["sodacan", "bottle", "canteen","waterbottle"]   
-                },
-    "medical":  {   "firstaid": ["saline", "bandage", "firstaid", "kitiv", "bloodte", "thermom"],
-                    "medicin": ["charcoal", "disinf", "vitamin", "tetracy", "painkil", "epine", "morph"]
-                }
+    "natural":  {"vegetables": ["mushroom", "apple", "pear", "plum", "pumpkin", "zucchini", "rice", "potato", "pepper", "tomato"],
+                 "animal": ["meat", "lard", "steak"]
+                 },
+    "man made": {"packaged food": ["can", "cereal", "powdered", "marmala", "bread", "cheese"]
+                 },
+    "drink":    {"drink": ["sodacan", "bottle", "canteen", "waterbottle"]
+                 },
+    "medical":  {"firstaid": ["saline", "bandage", "firstaid", "kitiv", "bloodte", "thermom"],
+                 "medicin": ["charcoal", "disinf", "vitamin", "tetracy", "painkil", "epine", "morph"]
+                 }
 }
 
 containerSubTypesDict = {
-    "bags":     {   "bags": ["bag"]
-                },
-    "l-storage":{   "tents": ["tent"],
-                    "crate": ["crate","hesco"],
-                    "barrel" :  ["barrel"]
-                },
-    "s-storage":{   "bear": ["bear"] ,
-                    "giftbox": ["giftbox"],
-                    "ammobox": ["ammobox"] 
-                },
-    "medical":  {   "firstaid": ["saline", "bandage", "firstaid", "kitiv", "bloodte", "thermom"],
-                    "medicin": ["charcoal", "disinf", "vitamin", "tetracy", "painkil", "epine", "morph"]
-                }
+    "bags":     {"bags": ["bag"]
+                 },
+    "l-storage": {"tents": ["tent"],
+                  "crate": ["crate", "hesco"],
+                  "barrel":  ["barrel"]
+                  },
+    "s-storage": {"bear": ["bear"],
+                  "giftbox": ["giftbox"],
+                  "ammobox": ["ammobox"]
+                  },
+    "medical":  {"firstaid": ["saline", "bandage", "firstaid", "kitiv", "bloodte", "thermom"],
+                 "medicin": ["charcoal", "disinf", "vitamin", "tetracy", "painkil", "epine", "morph"]
+                 }
 }
 
 
 toolsSubTypesDict = {
-    "s-tools":  {   "handtools": ["screwdr", "wren", "sewingk", "pliers", "whetst", "saw", "cleaning", "chenkn", "anopen", "compas",
-                    "hatche", "machet", "lockpick", "binoc","hammer"],
-                    "melee": ["cattleprod", "brassknuckles", "bat", "stunbat"],
-                    "knife": ["knife"]
+    "s-tools":  {"handtools": ["screwdr", "wren", "sewingk", "pliers", "whetst", "saw", "cleaning", "chenkn", "anopen", "compas",
+                               "hatche", "machet", "lockpick", "binoc", "hammer"],
+                 "melee": ["cattleprod", "brassknuckles", "bat", "stunbat"],
+                 "knife": ["knife"]
+                 },
+    "l-tools":  {"largetools": ["lugwr", "crowb", "shov", "picka", "sledge", "woodax", "ghterax", "pipe"]
+                 },
+    "electro":  {"electro": ["battery", "radio", "megaph", "cableree", "electronicrep", "xmaslights", "rangef", "baseradio"]
+                 },
+    "lightsource": {"light": ["chemlight", "flare", "flashlight", "ablegas", "torch", "spotlight"]
+                    },
+    "cooking":  {"cooking": ["pot", "purific", "tripo", "fryingpan", "firep", "oven"]
+                 },
+    "hardware": {"hardware": ["barrel", "canister", "handcuff", "netting", "seachest", "rope", "lock"],
+                 "spray": ["spraycan", "spraypaint"]
+                 },
+    "tents":    {"person tent": ["tent"]
+                 },
+    "fire":    {"fire": ["firewood", "lighter", "bark", "handdri", "matchbox", "woodenstick"]
                 },
-    "l-tools":  {   "largetools": ["lugwr", "crowb", "shov", "picka", "sledge", "woodax", "ghterax","pipe"]
-                },
-    "electro":  {   "electro": ["battery", "radio", "megaph", "cableree", "electronicrep","xmaslights","rangef","baseradio"]
-                },
-    "lightsource":{ "light": ["chemlight", "flare", "flashlight", "ablegas", "torch", "spotlight"]
-                },
-    "cooking":  {   "cooking": ["pot", "purific", "tripo","fryingpan","firep","oven"]
-                },
-    "hardware": {   "hardware": ["barrel", "canister", "handcuff", "netting", "seachest","rope","lock"],
-                    "spray": ["spraycan","spraypaint"]
-                },
-    "tents":    {   "person tent": ["tent"]
-                },
-    "fire":    {   "fire": ["firewood","lighter","bark","handdri", "matchbox","woodenstick"]
-                },
-    "farming":  {   "farming": ["seeds","plant","lime","antipestsspray","gardenplot"]
-                },
-    "hunt/fish":  { "hunt/fish": ["hook","rod","pelt","trap","gardenplot","bait","smallg","burlap","guts","bone"]
-                },
-    "personal":  {  "medical": ["bandage","blood","heatpack","rag","saline","tetracyclineantibiotics","thermo","vitaminbottle","epinephrine","morphine","painkillertablets","defibrillator","charcoaltablets"],
-                    "equipment": ["pen","paper"],
-                    "repair": ["tape","epoxy"]
-                },
-    "bases":  {   "basestuff": ["flag","nail","shelter","barbedwire","fencekit","metalwire","woodenlog","woodenplank","watchtowerkit","pileofwoodenplanks"]
-                },
-    "automotive":  {   "automotive": ["sparkp","headligh","engineo","carradiator","tirerepairkit"]
-                },                
-    "kits":  {   "kits": ["kit"]
-                }
+    "farming":  {"farming": ["seeds", "plant", "lime", "antipestsspray", "gardenplot"]
+                 },
+    "hunt/fish":  {"hunt/fish": ["hook", "rod", "pelt", "trap", "gardenplot", "bait", "smallg", "burlap", "guts", "bone"]
+                   },
+    "personal":  {"medical": ["bandage", "blood", "heatpack", "rag", "saline", "tetracyclineantibiotics", "thermo", "vitaminbottle", "epinephrine", "morphine", "painkillertablets", "defibrillator", "charcoaltablets"],
+                  "equipment": ["pen", "paper"],
+                  "repair": ["tape", "epoxy"]
+                  },
+    "bases":  {"basestuff": ["flag", "nail", "shelter", "barbedwire", "fencekit", "metalwire", "woodenlog", "woodenplank", "watchtowerkit", "pileofwoodenplanks"]
+               },
+    "automotive":  {"automotive": ["sparkp", "headligh", "engineo", "carradiator", "tirerepairkit"]
+                    },
+    "kits":  {"kits": ["kit"]
+              }
 }
 
 pistolsNamalskSubTypesDict = {
     "pistols": {
         "Sidearms": [],
-        "pistols": ["fnx45","deagle","makarov","glock","colt1911","engraved1911","cz75","mkii","magnum"]
-            }
+        "pistols": ["fnx45", "deagle", "makarov", "glock", "colt1911", "engraved1911", "cz75", "mkii", "magnum"]
+    }
 }
 
 riflesNamalskSubTypesDict = {
     "rifles": {
         "rifles": [],
-        "shotguns": ["shotgun","saiga","Izh18"],
-        "submachine guns": ["mp5k","ump45","cz61"],
-        "assault rifles": ["ak101","ak74","m4a1","akm","aks74u","fal"],
+        "shotguns": ["shotgun", "saiga", "Izh18"],
+        "submachine guns": ["mp5k", "ump45", "cz61"],
+        "assault rifles": ["ak101", "ak74", "m4a1", "akm", "aks74u", "fal"],
         "light machine guns": [],
-        "sniper rifles": ["mosin","svd","vss"],
-        "hunting rifles": ["b95","cz527","repeater","winchester70"],
-        "semi-automatic rifles": ["ruger1022","sks"],
+        "sniper rifles": ["mosin", "svd", "vss"],
+        "hunting rifles": ["b95", "cz527", "repeater", "winchester70"],
+        "semi-automatic rifles": ["ruger1022", "sks"],
         "anti material rifles": []
-            }
+    }
 }
 
 explosivesSubtypeDict = {
     "explosives": {
-        "explosives": ["grenade","mine"]
-            }
+        "explosives": ["grenade", "mine"]
+    }
 }
 
 weaponSubTypesDict = {
     "ranged": {
-        "sidearms": ["flaregun","taser"],
-        "pistols": ["fnx45","deagle","makarov","glock","colt1911","engraved1911","cz75","mkii","magnum","deag","m9","longhorn"],
+        "sidearms": ["flaregun", "taser"],
+        "pistols": ["fnx45", "deagle", "makarov", "glock", "colt1911", "engraved1911", "cz75", "mkii", "magnum", "deag", "m9", "longhorn"],
         "rifles": [],
-        "shotguns": ["shotgun","saiga","Izh18","dt11","benellim4","Izh18"],
-        "submachine guns": ["mp5","mp7","mp9","mpx","ump","cz61","kedr"],
-        "assault rifles": ["ak101","ak74","m4a1","akm","aks74u","fal","rpk","sr25","g36","m1",],
-        "light machine guns": ["lmg","m249"],
-        "sniper rifles": ["mosin","svd","vss","barret","m300","val","awm"],
-        "hunting rifles": ["b95","cz527","Izh18","repeater","winchester70","kar98"],
-        "semi-automatic rifles": ["ruger1022","sks"],
-        "launcher": ["rpg7","law","m79"],
+        "shotguns": ["shotgun", "saiga", "Izh18", "dt11", "benellim4", "Izh18"],
+        "submachine guns": ["mp5", "mp7", "mp9", "mpx", "ump", "cz61", "kedr"],
+        "assault rifles": ["ak101", "ak74", "m4a1", "akm", "aks74u", "fal", "rpk", "sr25", "g36", "m1", ],
+        "light machine guns": ["lmg", "m249"],
+        "sniper rifles": ["mosin", "svd", "vss", "barret", "m300", "val", "awm"],
+        "hunting rifles": ["b95", "cz527", "Izh18", "repeater", "winchester70", "kar98"],
+        "semi-automatic rifles": ["ruger1022", "sks"],
+        "launcher": ["rpg7", "law", "m79"],
         "anti material rifles": []
-            },
-    "melee":{
+    },
+    "melee": {
         "knife": ["knife"],
         "axe": ["axe"],
         "melee": ["bat"]
-            },
+    },
     "ammo": {
         "single ammo": ["ammo_"],
         "boxed ammo": ["ammob"],
-        },
+    },
     "optic": {
         "scopes": ["optic", "lrs", "scope"]
-        },
+    },
     "mag": {
         "magazines": ["mag"]
-        },
+    },
     "explosive": {
-        "explosives": ["grenade","ammorpg","ammolaw"]
-        },
+        "explosives": ["grenade", "ammorpg", "ammolaw"]
+    },
     "attachment": {
         "attachments": [""],
         "handguards": ["hndgrd", "handguard"],
         "bayonets": ["bayonet"],
-        "suppressor": ["suppressor","suppressor"],
-        "compensator" : ["compensator"],
-        "light" : ["universallight","tlrlight"],
+        "suppressor": ["suppressor", "suppressor"],
+        "compensator": ["compensator"],
+        "light": ["universallight", "tlrlight"],
         "buttstocks": ["bttstck", "buttstock"]}
 }
 
 vehicleSubTypesDict = {
     "vehicles":  {
-        "car": ["hatchback","sedan"],
+        "car": ["hatchback", "sedan"],
         "truck": ["truck"]}
 }
 
@@ -234,30 +234,29 @@ vehiclepartsSubTypesDict = {
 }
 
 categoriesDict = {"weapons": weaponSubTypesDict,
-                  "explosives" : explosivesSubtypeDict,
+                  "explosives": explosivesSubtypeDict,
                   "containers": containerSubTypesDict,
                   "clothes": clothingSubTypesDict,
                   "food": foodSubTypesDict,
                   "tools": toolsSubTypesDict,
                   "vehicles": vehicleSubTypesDict,
                   "vehiclesparts": vehiclepartsSubTypesDict,
-                  "object":objectSubTypesDict
+                  "object": objectSubTypesDict
                   }
 
 categoriesNamalskDict = {
-                  "pistols": pistolsNamalskSubTypesDict,
-                  "rifles": riflesNamalskSubTypesDict,
-                  "weapons": weaponSubTypesDict,
-                  "explosives" : explosivesSubtypeDict,
-                  "containers": containerSubTypesDict,
-                  "clothes": clothingSubTypesDict,
-                  "food": foodSubTypesDict,
-                  "tools": toolsSubTypesDict,
-                  "vehicles": vehicleSubTypesDict,
-                  "vehiclesparts": vehiclepartsSubTypesDict,
-                  "object":objectSubTypesDict
-                  }
-
+    "pistols": pistolsNamalskSubTypesDict,
+    "rifles": riflesNamalskSubTypesDict,
+    "weapons": weaponSubTypesDict,
+    "explosives": explosivesSubtypeDict,
+    "containers": containerSubTypesDict,
+    "clothes": clothingSubTypesDict,
+    "food": foodSubTypesDict,
+    "tools": toolsSubTypesDict,
+    "vehicles": vehicleSubTypesDict,
+    "vehiclesparts": vehiclepartsSubTypesDict,
+    "object": objectSubTypesDict
+}
 
 
 weaponSubTypes = list(weaponSubTypesDict.keys())
@@ -314,6 +313,7 @@ def appendKeys(dict, tolist):
         tolist.append(cat)
     return tolist
 
+
 allcats = appendKeys(weaponSubTypesDict, allcats)
 allcats = appendKeys(clothingSubTypesDict, allcats)
 allcats = appendKeys(foodSubTypesDict, allcats)
@@ -322,7 +322,7 @@ allcats = appendKeys(vehicleSubTypesDict, allcats)
 
 
 def traderCatSwitcher(argument):
-    
+
     argument = argument.lower()
 
     if "magazine" in argument or "barrel_" in argument:
