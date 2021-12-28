@@ -22,7 +22,7 @@ def apipush(session):
             "sub_type": item.sub_type
         }
         url = f'{base_url}{item_endpoint}'
-        # r = requests.put(url, json=payload)
+        req = requests.put(url, json=payload)
 
 
 def apipull(session):
