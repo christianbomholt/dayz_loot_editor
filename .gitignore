@@ -6,3 +6,8 @@ venv/
 .vscode/
 .cache/
 compiled/
+relase/
+relase.exe
+release.zip
+compiled.zip
+DayzLootEditor.exe

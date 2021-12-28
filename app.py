@@ -18,7 +18,7 @@ import re
 import json
 # from utility.combo_box_manager import ComboBoxManager
 from utility import assign_rarity, distribute_nominal, column_definition, categoriesDict, categoriesNamalskDict, distribute_mags_and_bullets, apipush, apipull, exportSpawnable, writeToJSONFile
-from tests.test_xml import test__export_xml
+#from tests.test_xml import test__export_xml
 
 
 class GUI(object):
@@ -575,7 +575,7 @@ class GUI(object):
 
     def testfunction(self):
         print("DEBUG  : Before test function")
-        test__export_xml(self)
+        # test__export_xml(self)
 
     def apipull(self):
         apipull(self.database.session)
