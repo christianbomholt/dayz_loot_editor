@@ -53,6 +53,8 @@ import subprocess
 import sys
 import time
 import warnings
+import gi
+from gi.repository import gtk
 
 from ctypes import c_size_t, sizeof, c_wchar_p, get_errno, c_wchar
 
@@ -99,7 +101,7 @@ class PyperclipWindowsException(PyperclipException):
 def _stringifyText(text):
     if PY2:
         pass
-        #acceptedTypes = (unicode, str, int, float, bool)
+        # acceptedTypes = (unicode, str, int, float, bool)
     else:
         acceptedTypes = (str, int, float, bool)
     if not isinstance(text, acceptedTypes):
@@ -146,7 +148,6 @@ def init_osx_pyobjc_clipboard():
 
 def init_gtk_clipboard():
     global gtk
-    import gtk
 
     def copy_gtk(text):
         global cb
@@ -173,10 +174,10 @@ def init_qt_clipboard():
     # Try to import from qtpy, but if that fails try PyQt5 then PyQt4
     try:
         from qtpy.QtWidgets import QApplication
-    except:
+    except Exception:
         try:
             from PyQt5.QtWidgets import QApplication
-        except:
+        except Exception:
             from PyQt4.QtGui import QApplication
 
     app = QApplication.instance()
