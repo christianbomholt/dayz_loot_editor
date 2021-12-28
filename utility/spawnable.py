@@ -59,11 +59,11 @@ def write_subelement(root, tag, grp, prop, item_list):
     chance = prop
     print("DEBUG write_subelement: ",grp )
     if grp in [x.name.lower() for x in item_list]:
-    if [i for i in item_list if grp in i.name.lower()]:    
+    if [i for i in item_list if grp in i.name.lower()]:
     DEBUG attachs
 
         print("DEBUG write_subelement :", prop)
-        attach_sub = ET.SubElement(root, tag, chance=str(chance))  
+        attach_sub = ET.SubElement(root, tag, chance=str(chance))
         for item in item_list:
             if grp in item.name.lower():
                 ET.SubElement(attach_sub, "item", name=item.name, chance=str(item.prop/100))
