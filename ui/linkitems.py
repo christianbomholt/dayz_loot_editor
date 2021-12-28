@@ -235,7 +235,7 @@ class LinkItem(object):
 
     def get_class(self, session, tablename, name):
         class_ = self.get_class_by_tablename(tablename)
-        #optionList = ('attachments', 'bullets', 'magazines')
+        # optionList = ('attachments', 'bullets', 'magazines')
         if tablename == 'magazines':
             result = self.get_magazine(class_, session, tablename, name)
         elif tablename == "bullets":
@@ -270,12 +270,12 @@ class LinkItem(object):
             self.prop.set(-1)
 
     def tree_view_sort_column(self, tv, col, reverse):
-        l = [(tv.set(k, col), k) for k in tv.get_children('')]
+        sort_column = [(tv.set(k, col), k) for k in tv.get_children('')]
         try:
-            l.sort(key=lambda t: int(t[0]), reverse=reverse)
+            sort_column.sort(key=lambda t: int(t[0]), reverse=reverse)
         except ValueError:
-            l.sort(reverse=reverse)
-        for index, (val, k) in enumerate(l):
+            sort_column.sort(reverse=reverse)
+        for index, (val, k) in enumerate(sort_column):
             tv.move(k, '', index)
         tv.heading(col, command=lambda: self.tree_view_sort_column(
             tv, col, not reverse))

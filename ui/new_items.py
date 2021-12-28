@@ -1,14 +1,11 @@
 from tkinter import messagebox
 from database.dao import Dao
-from tkinter import *
+from tkinter import Toplevel, Frame, Label, IntVar, StringVar, Checkbutton, Text, Radiobutton, Button, END, Tk
 from tkinter import ttk
 from config import ConfigManager
 from xml_manager.xml_parser import XMLParser
 import itertools as IT
 from xml.etree import ElementTree as ET
-from xml.etree.ElementTree import Element, SubElement, Comment, tostring, fromstring
-from xml.dom import minidom
-import sys
 import io
 
 StringIO = io.StringIO
