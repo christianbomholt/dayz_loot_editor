@@ -94,7 +94,7 @@ class XMLParser(object):
                 elif i.tag == usage_name:
                     try:
                         usages.append(i.attrib["name"])
-                    except:
+                    except Exception:
                         pass
                 elif i.tag == "value":
                     try:
