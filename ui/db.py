@@ -1,6 +1,8 @@
 from tkinter import Tk, Toplevel, Frame, StringVar, Label, Button, filedialog, OptionMenu
 from config import ConfigManager
 from database.dao import Dao
+from sqlalchemy.orm import relationship, backref, sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
 
 # Base = declarative_base()
 
