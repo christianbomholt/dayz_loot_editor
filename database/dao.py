@@ -17,7 +17,7 @@ class Dao(object):
             sql_String = f'{"ALTER TABLE items ADD COLUMN min_Stock INTEGER DEFAULT 10"}'
             self.session.execute(sql_String)
             self.session.commit()
-            #print("DEBUG: The Column min_Stock added to database")
+            # print("DEBUG: The Column min_Stock added to database")
         except Exception:
             pass
 
@@ -25,7 +25,7 @@ class Dao(object):
             sql_String = f'{"ALTER TABLE items ADD COLUMN max_Stock INTEGER DEFAULT 100"}'
             self.session.execute(sql_String)
             self.session.commit()
-            #print("DEBUG: The Column max_stock added to database")
+            # print("DEBUG: The Column max_stock added to database")
         except Exception:
             print("DEBUG: You are good to go")
 
@@ -87,27 +87,21 @@ class Dao(object):
         result.append("all")
         return result
 
-
 # delete item - used in the delete button
-
     def delete_item(self, item_id):
         item = self.session.query(Item).get(item_id)
         self.session.delete(item)
         self.session.commit()
     # delete items
 
-
 # delete item - used in the delete button
-
     def delete_attach(self, attachClasse, item_id):
         item = self.session.query(attachClasse).get(item_id)
         self.session.delete(item)
         self.session.commit()
     # delete items
 
-
 # Used in __create_nominal_info
-
     def getNominal(self, grid_items):
         grid_items = grid_items.subquery()
         result = self.session\
@@ -158,12 +152,6 @@ class Dao(object):
         search = f'%{item_name}%'
         results = self.session.query(Item.name, Item.sub_type, Item.trader).filter(
             Item.name.like(search)).all()
-        return results
-
-    def search_attach_name(self, attachClasse, item_name):
-        search = f'%{item_name}%'
-        results = self.session.query(attachClasse).filter(
-            attachClasse.name.like(search)).all()
         return results
 
     def search_attach_name(self, attachClasse, item_name):
@@ -225,6 +213,7 @@ class Dao(object):
     def items_table_exist(self):
         db_connection = sqlite3.connect(self.db_name)
         db_cursor = db_connection.cursor()
+        # sql_filter_items = f'{"ALTER TABLE items ADD COLUMN max_Stock INTEGER DEFAULT 100"}'
         sql_filter_items = f"SELECT name FROM sqlite_master WHERE type='table' AND name='items'"
         db_cursor.execute(sql_filter_items)
         tables = db_cursor.fetchall()
@@ -258,9 +247,7 @@ class Dao(object):
         self.session.commit()
         return results
 
-
 # Make Spawnable types
-
     def get_all_ranged(self):
         result = self.session.query(Item.name).filter(
             Item.item_type == "ranged")
