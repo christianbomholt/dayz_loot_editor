@@ -53,8 +53,6 @@ import subprocess
 import sys
 import time
 import warnings
-import gi
-from gi.repository import gtk
 
 from ctypes import c_size_t, sizeof, c_wchar_p, get_errno, c_wchar
 
@@ -85,9 +83,8 @@ def _executable_exists(name):
     return subprocess.call([WHICH_CMD, name],
                            stdout=subprocess.PIPE, stderr=subprocess.PIPE) == 0
 
+
 # Exceptions
-
-
 class PyperclipException(RuntimeError):
     pass
 
@@ -101,7 +98,7 @@ class PyperclipWindowsException(PyperclipException):
 def _stringifyText(text):
     if PY2:
         pass
-        # acceptedTypes = (unicode, str, int, float, bool)
+        #acceptedTypes = (unicode, str, int, float, bool)
     else:
         acceptedTypes = (str, int, float, bool)
     if not isinstance(text, acceptedTypes):
@@ -148,6 +145,7 @@ def init_osx_pyobjc_clipboard():
 
 def init_gtk_clipboard():
     global gtk
+    import gtk
 
     def copy_gtk(text):
         global cb
@@ -163,7 +161,6 @@ def init_gtk_clipboard():
             return ''
         else:
             return clipboardContents
-
     return copy_gtk, paste_gtk
 
 
@@ -174,10 +171,10 @@ def init_qt_clipboard():
     # Try to import from qtpy, but if that fails try PyQt5 then PyQt4
     try:
         from qtpy.QtWidgets import QApplication
-    except Exception:
+    except:
         try:
             from PyQt5.QtWidgets import QApplication
-        except Exception:
+        except:
             from PyQt4.QtGui import QApplication
 
     app = QApplication.instance()
@@ -315,9 +312,8 @@ def init_no_clipboard():
 
     return ClipboardUnavailable(), ClipboardUnavailable()
 
+
 # Windows-related clipboard functions:
-
-
 class CheckedCall(object):
     def __init__(self, f):
         super(CheckedCall, self).__setattr__("f", f)
@@ -489,9 +485,8 @@ def init_wsl_clipboard():
 
     return copy_wsl, paste_wsl
 
+
 # Automatic detection of clipboard mechanisms and importing is done in deteremine_clipboard():
-
-
 def determine_clipboard():
     '''
     Determine the OS/platform and set the copy() and paste() functions

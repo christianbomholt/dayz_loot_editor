@@ -1,5 +1,5 @@
 from tkinter import Label, StringVar, END, Toplevel, Frame, IntVar, Listbox, Entry, Button, OptionMenu
-from tkinter import Radiobutton, LabelFrame, Checkbutton, ANCHOR, Canvas, Scrollbar, VERTICAL, windows, Tk
+from tkinter import Radiobutton, LabelFrame, Checkbutton, ANCHOR, Canvas, Scrollbar, VERTICAL, Tk, messagebox
 from database.dao import Dao
 from utility.categories import traderCatSwitcher
 from utility.exportTrader import createTrader, expansionMarket, distribute
@@ -353,8 +353,10 @@ class TraderEditor(object):
             pricing = distribute(rarities, int(self.buy_entries[0].get()), int(self.buy_entries[1].get()),
                                  int(self.sellEntries[0].get()), int(self.sellEntries[1].get()), rarity_is_set)
         except IndexError:
-            windows.showError(self.window, "No rarities",
-                              "Set the rarity for your items, or use nominals")
+            messagebox(self.window, "No rarities",
+                       "Set the rarity for your items, or use nominals")
+            # windows.showError(self.window, "No rarities",
+            #                   "Set the rarity for your items, or use nominals")
         if len(pricing) == 2:
             for i in self.traderVal:
                 set_entry_val(i[0][1], int(self.buy_entries[0].get()))
