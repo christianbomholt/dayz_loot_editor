@@ -1,7 +1,7 @@
 from tkinter import Tk, Menu, IntVar, Frame, Label, StringVar, Entry, Listbox, END, OptionMenu, Checkbutton, Button, Radiobutton
-from tkinter import ttk, VERTICAL, HORIZONTAL, LabelFrame, Tcl, simpledialog
+from tkinter import ttk, VERTICAL, HORIZONTAL, LabelFrame, simpledialog
 
-from sqlalchemy.sql.expression import column, or_
+from sqlalchemy.sql.expression import or_
 from config import ConfigManager
 import os.path
 from database.dao import Dao
@@ -13,7 +13,6 @@ from ui.setprices import TraderEditor
 from xml_manager.xml_writer import XMLWriter
 import tkinter.filedialog as filedialog
 import webbrowser
-import time
 import re
 import json
 # from utility.combo_box_manager import ComboBoxManager
@@ -112,7 +111,9 @@ class GUI(object):
             if mod != "all":
                 int_var = IntVar(value=1)
                 menu.add_checkbutton(
-                    label=mod, variable=int_var, command=self.__selectmodsfunction___)
+                    label=mod,
+                    variable=int_var,
+                    command=self.__selectmodsfunction___)
                 self.moddict[mod] = int_var
                 self.selected_mods.append(mod)
 
@@ -494,6 +495,7 @@ class GUI(object):
 
 # Normal Distribution block
 
+
     def __create_distribution_block(self):
         self.distribution = LabelFrame(
             self.filterFrameHolder, width=14, text="Nominal Distribution")
@@ -655,6 +657,7 @@ class GUI(object):
 
 
 # Updated to loop through selected items in the grid.
+
 
     def __update_item(self):
         def __update_helper(item, field, default_value):
