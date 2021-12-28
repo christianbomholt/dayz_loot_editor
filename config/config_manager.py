@@ -92,10 +92,8 @@ class ConfigManager(object):
 
     def set_database(self, name):
         tree = ET.parse(self.cofig_name)
-        root = tree.getroot()
-
+        # root = tree.getroot()
         elems = tree.findall('databasefile')
         for elem in elems:
             list(elem)[0].set("value", name)
-
         tree.write(self.cofig_name)

@@ -1,4 +1,4 @@
-from typing import Optional, List
+from typing import List
 from fastapi import FastAPI, status, HTTPException
 from fastapi.responses import JSONResponse
 from sqlalchemy import Column, Integer, String
@@ -44,7 +44,7 @@ def read_item(item_name: str):
 
 
 @app.get("/item_list")
-def read_item() -> List[str]:
+def read_list() -> List[str]:
     items = session.query(Item.name).distinct(Item.name).all()
     items = [item[0] for item in items]
     return items
