@@ -1,15 +1,9 @@
-from tkinter import Tk, Toplevel, Frame, StringVar, Radiobutton, Label, Entry, Button, filedialog, OptionMenu
-import sqlite3
-from sqlalchemy import create_engine, Column, Integer, String, and_, func
-from sqlalchemy.orm import sessionmaker
-from model.item import Item, init_database
-from model.item import Mapselect
+from tkinter import Tk, Toplevel, Frame, StringVar, Label, Button, filedialog, OptionMenu
 from config import ConfigManager
 from database.dao import Dao
-from sqlalchemy.ext.declarative import declarative_base
 
+# Base = declarative_base()
 
-#Base = declarative_base()
 
 class DB(object):
 
@@ -23,7 +17,8 @@ class DB(object):
         self.configFrame = Frame(self.window)
         self.configFrame.grid(row=3, column=0, sticky="n,w,e", padx=30)
 
-        Label(self.configFrame, text="Database Name:").grid(row=1, column=0, sticky="w")
+        Label(self.configFrame, text="Database Name:").grid(
+            row=1, column=0, sticky="w")
         self.db_name = StringVar()
         self.db_name.set(self.database_name)
         self.db_status = StringVar()
@@ -34,14 +29,16 @@ class DB(object):
         self.db_name = self.db_status
         button_frame = Frame(self.window)
         button_frame.grid(row=6, column=0, columnspan=2, pady=10)
-# Selections        
+# Selections
         self.DbInitValue = StringVar()
-        optionList = ('Chernarus', 'Livonia', 'Namalsk','Deerisle','Chiemsee')
+        optionList = ('Chernarus', 'Livonia',
+                      'Namalsk', 'Deerisle', 'Chiemsee')
         self.DbInitValue.set(optionList[0])
         self.DbInit = OptionMenu(
             button_frame, self.DbInitValue, *optionList
-        ).grid(row=4,column=1,sticky="w")
-        self.DbInitValue.set(Dao(self.database_name).get_mapselectValue(1).mapselectvalue)
+        ).grid(row=4, column=1, sticky="w")
+        self.DbInitValue.set(
+            Dao(self.database_name).get_mapselectValue(1).mapselectvalue)
 
 # Buttons
         Button(
@@ -52,29 +49,29 @@ class DB(object):
         ).grid(row=6, column=1, sticky="w", padx=5)
         self.window.wait_window()
 
-
     def openDB(self):
-        db_name = filedialog.askopenfilename(filetypes=[("Sqlite db's", ".db")],defaultextension=".db")
+        db_name = filedialog.askopenfilename(
+            filetypes=[("Sqlite db's", ".db")], defaultextension=".db")
         if "/" in db_name:
-            db_name = db_name.split("/")[-1]       
+            db_name = db_name.split("/")[-1]
             self.db_status.set("Database connected to: " + db_name)
         newDataBase = False
         self.__start_db(newDataBase, db_name)
 
     def newDB(self):
-        db_name = filedialog.asksaveasfilename(filetypes=[("Sqlite db's", ".db")],defaultextension=".db")
+        db_name = filedialog.asksaveasfilename(
+            filetypes=[("Sqlite db's", ".db")], defaultextension=".db")
         if "/" in db_name:
             db_name = db_name.split("/")[-1]
         newDataBase = True
         self.__start_db(newDataBase, db_name)
-        
 
     def __start_db(self, newDataBase, db_name):
         if newDataBase:
-            #init_database(db_name)
+            # init_database(db_name)
             engine = init_database(db_name)
-            #engine = create_engine(f"sqlite:///{db_name}")
-            #Base.metadata.create_all(engine)
+            # engine = create_engine(f"sqlite:///{db_name}")
+            # Base.metadata.create_all(engine)
             raw_connection = engine.raw_connection()
             mapinit = self.DbInitValue.get()
             c = raw_connection.cursor()
@@ -84,7 +81,8 @@ class DB(object):
                 nrows = c.fetchall()[0][0]
             if nrows == 0:
                 print(f"Initializing rows using '{mapinit}.sql'")
-                raw_connection.cursor().executescript(open(f"{mapinit}.sql").read())
+                raw_connection.cursor().executescript(
+                    open(f"{mapinit}.sql").read())
                 c.execute("select count(*) from items")
                 nrows = c.fetchall()[0][0]
                 print(f"Inserted { nrows } in the database")
@@ -97,12 +95,13 @@ class DB(object):
         else:
             if Dao(db_name).items_table_exist():
                 self.config.set_database(db_name)
-                #self.DbInitValue.set(Dao(self.database_name).get_mapselectValue(1).mapselectvalue)
+                # self.DbInitValue.set(Dao(self.database_name).get_mapselectValue(1).mapselectvalue)
                 self.db_status.set("We are opening: " + db_name)
                 self.window.destroy()
             else:
-                self.db_status.set("items table doesn't exist! Please initialize your Database.")      
-         
+                self.db_status.set(
+                    "items table doesn't exist! Please initialize your Database.")
+
 
 def testWindow():
     window = Tk()

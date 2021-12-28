@@ -61,7 +61,7 @@ class NewItems(object):
             )
         else:
             try:
-                tree = ET.fromstring(string_data)
+                # tree = ET.fromstring(string_data)
                 xml_parser = XMLParser(string_data)
                 items = xml_parser.get_items(self.mapselectValue.get())
                 for i in items:
