@@ -1,16 +1,13 @@
-from tkinter import Tk, Toplevel, Frame, StringVar, Radiobutton, Label, Entry, Button, filedialog, OptionMenu, IntVar
-from tkinter import ttk, VERTICAL, HORIZONTAL, LabelFrame,Tcl
-import sqlite3
-from sqlalchemy import create_engine, Column, Integer, String, and_, func, or_
-from sqlalchemy.orm import sessionmaker, mapper
-from model.item import Item, init_database, Base
-from model.item import Mapselect,Attachments,LinkAttachments,LinkBulletMag,LinkBullets,LinkMags,Magazines,Bullets
+from tkinter import Tk, Toplevel, Frame, StringVar, Label, Entry, Button, filedialog, OptionMenu, IntVar
+from tkinter import ttk, VERTICAL, HORIZONTAL, LabelFrame
+from model.item import Item, Base
+from model.item import Attachments, LinkAttachments, LinkBulletMag, LinkBullets, LinkMags, Magazines, Bullets
 from config import ConfigManager
 from database.dao import Dao
-from sqlalchemy.ext.declarative import declarative_base
 import json
 import re
 from utility import attach_definition
+
 
 class LinkItem(object):
 
@@ -35,26 +32,29 @@ class LinkItem(object):
         optionList = ('attachments', 'bullets', 'magazines')
         self.attach = StringVar()
         self.attach.set(optionList[0])
-        OptionMenu(self.entryFrame, self.attach, *optionList, command = self.__setattach__
-        ).grid(row=0, column=0, sticky="n,s,e,w",columnspan=1)
+        OptionMenu(self.entryFrame, self.attach, *optionList, command=self.__setattach__
+                   ).grid(row=0, column=0, sticky="n,s,e,w", columnspan=1)
 
         gunlist = self.database.get_all_ranged()
         self.gunlist = StringVar()
         self.gunlist.set(gunlist[0])
-        OptionMenu(self.entryFrame, self.gunlist, *gunlist, command = self.__setattach__
-        ).grid(row=0, column=1, sticky="n,s,e,w",columnspan=1)
+        OptionMenu(self.entryFrame, self.gunlist, *gunlist, command=self.__setattach__
+                   ).grid(row=0, column=1, sticky="n,s,e,w", columnspan=1)
 
         # labels
-        Label(self.entryFrame, text="Name").grid(row=1, column=0, sticky="w", pady=5)
-        Label(self.entryFrame, text="Count").grid(row=2, column=0, sticky="w", pady=5)
-        Label(self.entryFrame, text="Prop").grid(row=3, column=0, sticky="w", pady=5)
+        Label(self.entryFrame, text="Name").grid(
+            row=1, column=0, sticky="w", pady=5)
+        Label(self.entryFrame, text="Count").grid(
+            row=2, column=0, sticky="w", pady=5)
+        Label(self.entryFrame, text="Prop").grid(
+            row=3, column=0, sticky="w", pady=5)
 
         # input variables
         self.id = IntVar()
         self.name = StringVar()
         self.attachcount = IntVar()
         self.prop = IntVar()
-        
+
         # form fields
         self.nameField = Entry(self.entryFrame, textvariable=self.name)
         self.nameField.grid(row=1, column=1, sticky="w")
@@ -72,56 +72,63 @@ class LinkItem(object):
         ).grid(row=4, column=1, pady=5, sticky="w")
 
         # Search frame
-        self.searchFrame = LabelFrame(self.entryFrameHolder,borderwidth="2", relief="ridge",text="Search")
+        self.searchFrame = LabelFrame(
+            self.entryFrameHolder, borderwidth="2", relief="ridge", text="Search")
         self.searchFrame.grid(row=2, column=0, sticky="n,w,e", padx=30)
-        Label(self.searchFrame, text="Search like name:").grid(row=1, column=0, sticky="n")
+        Label(self.searchFrame, text="Search like name:").grid(
+            row=1, column=0, sticky="n")
 
-        self.serchName = Entry(self.searchFrame, textvariable=self.searchName, width=14).grid(row=2, columnspan=2, pady=5, padx=10, sticky="nesw")
+        self.serchName = Entry(self.searchFrame, textvariable=self.searchName, width=14).grid(
+            row=2, columnspan=2, pady=5, padx=10, sticky="nesw")
         Button(
             self.searchFrame, text="Search", width=12, command=self.__search_attach_name__
-        ).grid(row=3, column=0, sticky="w", padx=5,pady=10)
+        ).grid(row=3, column=0, sticky="w", padx=5, pady=10)
         Button(
             self.searchFrame, text="Reset", width=12, command=self.__initiate_attachs
-        ).grid(row=3, column=1, sticky="e", padx=5,pady=10)
+        ).grid(row=3, column=1, sticky="e", padx=5, pady=10)
 
         # Load Config files frame
-        self.configFrame = Frame(self.entryFrameHolder,borderwidth="2", relief="ridge")
+        self.configFrame = Frame(
+            self.entryFrameHolder, borderwidth="2", relief="ridge")
         self.configFrame.grid(row=3, column=0, sticky="n,w,e", padx=30)
-        Label(self.configFrame, text="Select the LinkAttach File:").grid(row=1, column=0, sticky="n")
+        Label(self.configFrame, text="Select the LinkAttach File:").grid(
+            row=1, column=0, sticky="n")
 
         Button(
             self.configFrame, text="Open", width=12, command=self.openLinkItem
-        ).grid(row=2, column=0, sticky="s", padx=30,pady=10)
+        ).grid(row=2, column=0, sticky="s", padx=30, pady=10)
 
     def __search_attach_name__(self):
-            if self.searchName.get() != "":
-                attachs = self.database.search_attach_name(self.get_class_by_tablename(self.table),self.searchName.get())
-                self.__populate_attachs(attachs)
-                self.gridAttachs = attachs
-                self.searchName.set("") 
+        if self.searchName.get() != "":
+            attachs = self.database.search_attach_name(
+                self.get_class_by_tablename(self.table), self.searchName.get())
+            self.__populate_attachs(attachs)
+            self.gridAttachs = attachs
+            self.searchName.set("")
 
-    def get_class_by_tablename(self,tablename):
+    def get_class_by_tablename(self, tablename):
         for c in Base._decl_class_registry.values():
             if hasattr(c, '__tablename__') and c.__tablename__ == tablename:
                 return c
 
-    def __setattach__(self,selection):
+    def __setattach__(self, selection):
         self.table = f'{self.attach.get()}'
         self.__initiate_attachs()
 
     def __create_tree_view(self):
         style = ttk.Style()
-        style.configure('Treeview', background='#97FFFF',foreground='black')
+        style.configure('Treeview', background='#97FFFF', foreground='black')
 
         self.treeFrame = Frame(self.window)
         self.treeFrame.grid(row=0, column=1, sticky="nsew")
         self.treeFrame.grid_rowconfigure(0, weight=1)
         self.treeFrame.grid_columnconfigure(1, weight=1)
 
-        self.tree = ttk.Treeview(self.treeFrame, columns=[col.get("text") for col in attach_definition], height=40)
+        self.tree = ttk.Treeview(self.treeFrame, columns=[col.get(
+            "text") for col in attach_definition], height=40)
         style.map("Treeview",
-                foreground=self.fixed_map(style,"foreground"),
-                background=self.fixed_map(style,"background"))
+                  foreground=self.fixed_map(style, "foreground"),
+                  background=self.fixed_map(style, "background"))
         for col in attach_definition:
             self.tree.heading(
                 col.get("col_id"),
@@ -131,13 +138,13 @@ class LinkItem(object):
                 ),
             )
             self.tree.column(
-                col.get("col_id"), 
-                width=col.get("width"), 
+                col.get("col_id"),
+                width=col.get("width"),
                 stretch=col.get("stretch")
             )
         self.tree.grid(row=0, column=0, sticky="nsew")
         self.tree.heading('#0', text='ID')
-        self.tree.column('#0', width ="60", stretch="NO")
+        self.tree.column('#0', width="60", stretch="NO")
         self.treeView = self.tree
         vertical = ttk.Scrollbar(self.treeFrame, orient=VERTICAL)
         horizontal = ttk.Scrollbar(self.treeFrame, orient=HORIZONTAL)
@@ -161,7 +168,8 @@ class LinkItem(object):
         for attachs in self.treeView.selection():
             attach = self.treeView.item(attachs)
             id_of_interest = attach["text"]
-            attach_to_update = self.database.session.query(self.get_class_by_tablename(self.table)).get(id_of_interest)
+            attach_to_update = self.database.session.query(
+                self.get_class_by_tablename(self.table)).get(id_of_interest)
             __update_helper(attach_to_update, "attachcount", -1)
             __update_helper(attach_to_update, "prop", -1)
             self.database.session.commit()
@@ -171,56 +179,59 @@ class LinkItem(object):
         for attachs in self.treeView.selection():
             attach = self.treeView.item(attachs)
             itemid = attach["text"]
-            self.database.delete_attach(self.get_class_by_tablename(self.table),itemid)
+            self.database.delete_attach(
+                self.get_class_by_tablename(self.table), itemid)
         self.__populate_attachs(self.gridAttachs)
 
     def __initiate_attachs(self, attachs=None):
         if self.gunlist.get() == "all":
-            attachs = self.database.session.query(self.get_class_by_tablename(self.table))
+            attachs = self.database.session.query(
+                self.get_class_by_tablename(self.table))
         else:
-            attachs = self.get_class(self.database.session,self.table,self.gunlist.get())
+            attachs = self.get_class(
+                self.database.session, self.table, self.gunlist.get())
         self.gridAttachs = attachs
         self.__populate_attachs(attachs)
-        self.searchName.set("") 
+        self.searchName.set("")
 
     def get_attach(self, class_, session, tablename, name):
         result = session.query(
-                class_
-            ).filter(
-                Item.name == name,
-            ).filter(
-                Item.name == LinkAttachments.itemname
-            ).filter(
-                LinkAttachments.attachname == Attachments.name
-            ).all()
+            class_
+        ).filter(
+            Item.name == name,
+        ).filter(
+            Item.name == LinkAttachments.itemname
+        ).filter(
+            LinkAttachments.attachname == Attachments.name
+        ).all()
         if len(result) > 0:
-            return result    
+            return result
 
     def get_magazine(self, class_, session, tablename, name):
         result = session.query(
-                class_
-            ).filter(
-                Item.name == name,
-            ).filter(
-                Item.name == LinkMags.itemname
-            ).filter(
-                LinkMags.magname == Magazines.name
-            ).all()
+            class_
+        ).filter(
+            Item.name == name,
+        ).filter(
+            Item.name == LinkMags.itemname
+        ).filter(
+            LinkMags.magname == Magazines.name
+        ).all()
         if len(result) > 0:
-            return result    
+            return result
 
     def get_bullet(self, class_, session, tablename, name):
         result = session.query(
-                class_
-            ).filter(
-                Item.name == name,
-            ).filter(
-                Item.name == LinkBullets.itemname
-            ).filter(
-                LinkBullets.bulletname == Bullets.name
-            ).all()
+            class_
+        ).filter(
+            Item.name == name,
+        ).filter(
+            Item.name == LinkBullets.itemname
+        ).filter(
+            LinkBullets.bulletname == Bullets.name
+        ).all()
         if len(result) > 0:
-            return result    
+            return result
 
     def get_class(self, session, tablename, name):
         class_ = self.get_class_by_tablename(tablename)
@@ -231,31 +242,34 @@ class LinkItem(object):
             result = self.get_bullet(class_, session, tablename, name)
         else:
             result = self.get_attach(class_, session, tablename, name)
-        return result    
+        return result
 
     def __populate_attachs(self, attachs):
         if self.tree.get_children() != ():
             self.tree.delete(*self.tree.get_children())
-        if attachs is not None:    
-            for idx,i in enumerate(attachs): 
+        if attachs is not None:
+            for idx, i in enumerate(attachs):
                 if idx % 2 == 0:
-                    self.tree.insert("", "end", text=i.id, value=[i.name,i.attachcount,i.prop],tags=('evenrow',))
+                    self.tree.insert("", "end", text=i.id, value=[
+                                     i.name, i.attachcount, i.prop], tags=('evenrow',))
                 else:
-                    self.tree.insert("", "end", text=i.id, value=[i.name,i.attachcount,i.prop],tags=('oddrow',))
+                    self.tree.insert("", "end", text=i.id, value=[
+                                     i.name, i.attachcount, i.prop], tags=('oddrow',))
             self.tree.tag_configure('oddrow', background='#FFFFFF')
             self.tree.tag_configure('evenrow', background='#F5F5F5')
 
-    def __fill_entry_frame(self, event):        
+    def __fill_entry_frame(self, event):
         tree_row = self.tree.item(self.tree.focus())
         id = tree_row["text"]
-        attach = self.database.get_attach(self.get_class_by_tablename(self.table),id)
+        attach = self.database.get_attach(
+            self.get_class_by_tablename(self.table), id)
         if attach:
             self.id.set(id)
             self.name.set(attach.name)
             self.attachcount.set(-1)
             self.prop.set(-1)
 
-    def tree_view_sort_column(self,tv, col, reverse):
+    def tree_view_sort_column(self, tv, col, reverse):
         l = [(tv.set(k, col), k) for k in tv.get_children('')]
         try:
             l.sort(key=lambda t: int(t[0]), reverse=reverse)
@@ -263,68 +277,80 @@ class LinkItem(object):
             l.sort(reverse=reverse)
         for index, (val, k) in enumerate(l):
             tv.move(k, '', index)
-        tv.heading(col, command=lambda: self.tree_view_sort_column(tv, col, not reverse)) 
+        tv.heading(col, command=lambda: self.tree_view_sort_column(
+            tv, col, not reverse))
 
     def openLinkItem(self):
-        LinkItemFile = filedialog.askopenfilename(filetypes=[("DumpAttach", ".json")],defaultextension=".json")
+        LinkItemFile = filedialog.askopenfilename(
+            filetypes=[("DumpAttach", ".json")], defaultextension=".json")
         """if "/" in LinkItemFile:
             LinkItemFile = LinkItemFile.split("/")[-1]
             print(LinkItemFile)       """
         self.__loadLinkItem(LinkItemFile)
 
-    def __loadLinkItem(self,LinkItemFile):
+    def __loadLinkItem(self, LinkItemFile):
         with open(LinkItemFile, 'r') as myfile:
-            data=myfile.read()
+            data = myfile.read()
         attachments = json.loads(data)["HlyngeWeapons"]
         print(LinkItemFile)
         number = 0
         for item in attachments:
             item_name = item.get("name")
             for attach in item.get("attachments"):
-                exists = self.database.session.query(Attachments).filter_by(name=attach).first()
+                exists = self.database.session.query(
+                    Attachments).filter_by(name=attach).first()
                 if not exists:
-                    item_obj = Attachments(name = attach)
+                    item_obj = Attachments(name=attach)
                     number += 1
                     self.database.session.add(item_obj)
-                
-                exists = self.database.session.query(LinkAttachments).filter_by(attachname=attach, itemname=item_name).first()
+
+                exists = self.database.session.query(LinkAttachments).filter_by(
+                    attachname=attach, itemname=item_name).first()
                 if not exists:
-                    item_obj = LinkAttachments(attachname=attach, itemname=item_name)
+                    item_obj = LinkAttachments(
+                        attachname=attach, itemname=item_name)
                     number += 1
                     self.database.session.add(item_obj)
-        
+
             for mag in item.get("magazines"):
-                exists = self.database.session.query(Magazines).filter_by(name=mag).first()
+                exists = self.database.session.query(
+                    Magazines).filter_by(name=mag).first()
                 if not exists:
-                    x=0
+                    x = 0
                     if "rnd" in mag.lower():
                         x = mag.lower().split("rnd")[-2].split("_")[-1]
                         x = re.sub("[^0-9]", "", x)
-                    item_obj = Magazines(name = mag,attachcount = int(x))
+                    item_obj = Magazines(name=mag, attachcount=int(x))
                     number += 1
                     self.database.session.add(item_obj)
-                exists = self.database.session.query(LinkMags).filter_by(magname=mag, itemname=item_name).first()
+                exists = self.database.session.query(LinkMags).filter_by(
+                    magname=mag, itemname=item_name).first()
                 if not exists:
                     item_obj = LinkMags(magname=mag, itemname=item_name)
                     number += 1
                     self.database.session.add(item_obj)
 
             for bullet in item.get("bullets"):
-                exists = self.database.session.query(Bullets).filter_by(name = bullet).first()
+                exists = self.database.session.query(
+                    Bullets).filter_by(name=bullet).first()
                 if not exists:
-                    item_obj = Bullets(name = bullet)
+                    item_obj = Bullets(name=bullet)
                     number += 1
                     self.database.session.add(item_obj)
-                exists = self.database.session.query(LinkBullets).filter_by(bulletname=bullet, itemname=item_name).first()
+                exists = self.database.session.query(LinkBullets).filter_by(
+                    bulletname=bullet, itemname=item_name).first()
                 if not exists:
-                    item_obj = LinkBullets(bulletname=bullet, itemname=item_name)
+                    item_obj = LinkBullets(
+                        bulletname=bullet, itemname=item_name)
                     number += 1
                     self.database.session.add(item_obj)
-                    
+
                 for mag in item.get("magazines"):
-                    exists = self.database.session.query(LinkBulletMag).filter_by(bulletname=bullet, magname=mag).first()
+                    exists = self.database.session.query(LinkBulletMag).filter_by(
+                        bulletname=bullet, magname=mag).first()
                     if not exists:
-                        item_obj = LinkBulletMag(bulletname=bullet, magname=mag)
+                        item_obj = LinkBulletMag(
+                            bulletname=bullet, magname=mag)
                         number += 1
                         self.database.session.add(item_obj)
         self.database.session.commit()
