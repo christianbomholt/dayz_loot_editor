@@ -1,8 +1,5 @@
 import pyperclip
 import json
-import os.path
-
-# from windows import addToClipboard
 from math import ceil
 
 rarityForTrader = {"undefined": 0,
@@ -17,8 +14,10 @@ rarityForTrader = {"undefined": 0,
                    "Very Common": 45,
                    "All Over The Place": 50}
 
+
 def getKey(item):
     return int(item[2])
+
 
 def createTrader(root, subtype, rows):
     text = "\t<Category> {}\n".format(subtype)
@@ -29,9 +28,11 @@ def createTrader(root, subtype, rows):
         sellPrice = row[3]
         excluded = True if row[4] == 1 else False
         if not excluded:
-            text += "\t\t{},\t\t\t{},\t\t{},\t\t{}\n".format(name, traderCat, buyPrice, sellPrice)
+            text += "\t\t{},\t\t\t{},\t\t{},\t\t{}\n".format(
+                name, traderCat, buyPrice, sellPrice)
     text += "\n"
     pyperclip.copy(text)
+
 
 def writeToJSONFile(path, fileName, data):
     filePathNameWExt = './' + path + '/' + fileName + '.json'
@@ -39,9 +40,8 @@ def writeToJSONFile(path, fileName, data):
         json.dump(data, fp, indent=2)
 
 
-def expansionMarket(root,subtype,rows):
-    writeToJSONFile('./Expansion/Market',subtype,rows)
-
+def expansionMarket(root, subtype, rows):
+    writeToJSONFile('./Expansion/Market', subtype, rows)
 
 
 # (rarity, nominal)
@@ -93,7 +93,8 @@ def scale(maxP, minP, newMax, newMin, todistribute):
     newPoints = []
     for point in todistribute:
         if ((maxP - minP) + newMin) != 0:
-            newPoint = (point - minP) * ((newMax - newMin) / (maxP - minP)) + newMin
+            newPoint = (point - minP) * \
+                ((newMax - newMin) / (maxP - minP)) + newMin
         else:
             newPoint = 0
         newPoints.append(newPoint)
@@ -105,7 +106,9 @@ def distributePricing(to_distribute, maxPrice, minPrice):
     bottom = 0
     pricing = []
     for point in to_distribute:
-        price = (maxPrice - minPrice) * (((to_distribute[-1] - point) - bottom) ** 2 / (top - bottom) ** 2) + minPrice
+        price = (maxPrice - minPrice) * \
+            (((to_distribute[-1] - point) - bottom)
+             ** 2 / (top - bottom) ** 2) + minPrice
         pricing.append(price)
     ouch = []
 
