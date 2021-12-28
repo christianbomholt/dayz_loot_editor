@@ -158,7 +158,7 @@ class XMLWriter(object):
         self.pretty_xml(items, mapname, xml_file)
         xml_file.close()
 
-    def export_mod_xml(self, selected_mods, items, mapname):
-        self.database = Dao(self.config.get_database())
-        items = self.database.session.query(Item).filter(
-            Item.mod.in_(self.selected_mods))
+#    def export_mod_xml(self, selected_mods, items, mapname):
+#        self.database = Dao(self.config.get_database())
+#        items = self.database.session.query(Item).filter(
+#            Item.mod.in_(self.selected_mods))
