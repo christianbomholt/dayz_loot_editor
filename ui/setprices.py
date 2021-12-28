@@ -1,4 +1,5 @@
-from tkinter import Label, StringVar, END, Toplevel, Frame, IntVar, Listbox, Entry, Button, OptionMenu, Radiobutton, LabelFrame, Checkbutton, ANCHOR, Canvas, Scrollbar, VERTICAL, windows, Tk
+from tkinter import Label, StringVar, END, Toplevel, Frame, IntVar, Listbox, Entry, Button, OptionMenu
+from tkinter import Radiobutton, LabelFrame, Checkbutton, ANCHOR, Canvas, Scrollbar, VERTICAL, windows, Tk
 from database.dao import Dao
 from utility.categories import traderCatSwitcher
 from utility.exportTrader import createTrader, expansionMarket, distribute

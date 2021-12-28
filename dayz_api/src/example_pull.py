@@ -1,5 +1,4 @@
 import requests
-import requests
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -28,7 +27,8 @@ for weapon in weapons.json():
     print(weapon_info.json())
     weapon_json = weapon_info.json()
 
-    exists = session.query(Item).filter(Item.name==weapon_json.get("name")).first()
+    exists = session.query(Item).filter(
+        Item.name == weapon_json.get("name")).first()
     if exists:
         print(exists.rarity, "->", weapon_json.get("rarity"))
         exists.rarity = weapon_json.get("rarity")
