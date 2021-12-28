@@ -513,7 +513,7 @@ class GUI(object):
 
     def readexpansionworld(self, newworld):
         try:
-           # with open("./Expansion/TraderZones/World.json") as f:
+            # with open("./Expansion/TraderZones/World.json") as f:
             with open(f"./Expansion/TraderZones/{newworld}.json") as f:
                 world = json.load(f)
             return world

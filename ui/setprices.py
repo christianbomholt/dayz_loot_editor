@@ -1,4 +1,4 @@
-from tkinter import _setit, Label, StringVar, END, Toplevel, Frame, IntVar, Listbox, Entry, Button, OptionMenu, Radiobutton, LabelFrame, Checkbutton, ANCHOR, Canvas, Scrollbar, VERTICAL, windows, Tk
+from tkinter import Label, StringVar, END, Toplevel, Frame, IntVar, Listbox, Entry, Button, OptionMenu, Radiobutton, LabelFrame, Checkbutton, ANCHOR, Canvas, Scrollbar, VERTICAL, windows, Tk
 from database.dao import Dao
 from utility.categories import traderCatSwitcher
 from utility.exportTrader import createTrader, expansionMarket, distribute
@@ -59,11 +59,11 @@ class TraderEditor(object):
         traders_option_menu.grid(row=0, column=1, sticky="w", pady=5)
         self.selected_trader.set(self.config.get_traders()[0])
         self.selected_trader = self.config.get_traders()[0]
-        #self.scrollbar = Scrollbar(subtypes_frame)
+        # self.scrollbar = Scrollbar(subtypes_frame)
         self.subTypeListbox = Listbox(
             subtypes_frame, width=35, height=30, exportselection=False)
         self.subTypeListbox.grid(row=1, column=1, sticky="ns", padx=10)
-        #self.subTypeListbox.config(yscrollcomand = self.scrollbar.set)
+        # self.subTypeListbox.config(yscrollcomand = self.scrollbar.set)
         sub_type_lst = self.database.get_tradersubtypetupl(
             self.selected_trader, self.selectedMods)
         self.wdict = {word: idx for idx, word in enumerate(sub_type_lst)}
@@ -287,14 +287,14 @@ class TraderEditor(object):
 
     def __create_expansiontrader(self):
         sub_type = self.subTypeListbox.get(ANCHOR)
-        sub_index = self.subTypeListbox.curselection()
+        # sub_index = self.subTypeListbox.curselection()
 
         items = self.__create_values()
-        new_items = []
+        # new_items = []
         dictionary = dict()
         dictionary['m_Version'] = 4
         dictionary['m_FileName'] = str(sub_type).upper()
-        #dictionary['CategoryID']= sub_index[0]
+        # dictionary['CategoryID']= sub_index[0]
         dictionary['DisplayName'] = "#STR_EXPANSION_MARKET_CATEGORY_" + \
             str(sub_type).upper()
         dictionary['Items'] = []
@@ -343,7 +343,7 @@ class TraderEditor(object):
             self.selected_trader, selected_subtype, self.selectedMods)
         rarities = []
         for i in trader_item:
-            #print("DEBUG  :",i)
+            # print("DEBUG  :",i)
             item.append(i)
         # rarity, nominal
         for i in item:
