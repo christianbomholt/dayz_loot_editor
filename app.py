@@ -15,9 +15,7 @@ import tkinter.filedialog as filedialog
 import webbrowser
 import re
 import json
-# from utility.combo_box_manager import ComboBoxManager
 from utility import assign_rarity, distribute_nominal, column_definition, categoriesDict, categoriesNamalskDict, distribute_mags_and_bullets, apipush, apipull, exportSpawnable, writeToJSONFile
-#from tests.test_xml import test__export_xml
 
 
 class GUI(object):
@@ -491,10 +489,7 @@ class GUI(object):
             width=14,
             command=self.donate,
         ).grid(row=11, columnspan=2, pady=5, padx=10, sticky="nesw")
-
-
 # Normal Distribution block
-
 
     def __create_distribution_block(self):
         self.distribution = LabelFrame(
@@ -523,7 +518,7 @@ class GUI(object):
 
                 world = json.load(f)
             return world
-        except:
+        except Exception:
             world = dict()
             world['m_Version'] = 4
             world['m_FileName'] = newworld
@@ -599,7 +594,6 @@ class GUI(object):
 
     def derivetypessubtypes(self):
         if self.database.get_mapselectValue(1).mapselectvalue == "Namalsk":
-            # print("DEBUG derivetypessubtypes we are in a Namalsk map :", )
             for Item in self.gridItems:
                 try:
                     for item_type, subtypes in categoriesNamalskDict.get(Item.cat_type).items():
@@ -610,7 +604,7 @@ class GUI(object):
                                     Item.sub_type = subtype
                     if Item.cat_type in {"rifles", "pistols"}:
                         Item.cat_type = "weapons"
-                except:
+                except Exception:
                     print("DEBUG item category not found :",
                           Item.cat_type, Item.name)
         else:
@@ -622,7 +616,7 @@ class GUI(object):
                                 if item_substring in Item.name.lower() and item_substring != "":
                                     Item.item_type = item_type
                                     Item.sub_type = subtype
-                except:
+                except Exception:
                     print("DEBUG item category not found :",
                           Item.cat_type, Item.name)
         self.database.session.commit()
@@ -655,10 +649,7 @@ class GUI(object):
         self.sub_type_for_filter.set("all")
         self.cat_type_for_filter.set("all")
 
-
 # Updated to loop through selected items in the grid.
-
-
     def __update_item(self):
         def __update_helper(item, field, default_value):
             value_from_update_form = getattr(self, field).get()
