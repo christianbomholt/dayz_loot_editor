@@ -11,7 +11,7 @@ class Dao(object):
         session_maker = sessionmaker()
         session_maker.configure(bind=engine)
         self.session = session_maker()
-        print("DEBUG: Post Session_maker assign self")
+        print("DEBUG: Post Session_maker assign self: " + db_name)
 
     def upgradeDB(self):
         try:
