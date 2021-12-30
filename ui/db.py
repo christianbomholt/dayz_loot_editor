@@ -1,7 +1,7 @@
 from tkinter import Tk, Toplevel, Frame, StringVar, Label, Button, filedialog, OptionMenu
 from config import ConfigManager
 from database.dao import Dao
-from model.item import init_database
+# from model.item import init_database
 
 # Base = declarative_base()
 
@@ -39,9 +39,6 @@ class DB(object):
         self.DbInit = OptionMenu(
             button_frame, self.DbInitValue, *optionList
         ).grid(row=4, column=1, sticky="w")
-        print("debug: " + self.database_name)
-        print("debug: " + Dao(self.database_name).get_mapselectValue(1).mapselectvalue)
-
         self.DbInitValue.set(
             Dao(self.database_name).get_mapselectValue(1).mapselectvalue)
 
