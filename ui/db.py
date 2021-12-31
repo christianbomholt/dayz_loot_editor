@@ -1,7 +1,7 @@
 from tkinter import Tk, Toplevel, Frame, StringVar, Label, Button, filedialog, OptionMenu
 from config import ConfigManager
 from database.dao import Dao
-# from model.item import init_database
+from model.item import init_database
 
 # Base = declarative_base()
 
