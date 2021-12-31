@@ -13,7 +13,6 @@ class DB(object):
         self.window.grab_set()
         self.config = ConfigManager("config.xml")
         self.database_name = self.config.get_database()
-        print("debug: " + self.database_name)
         self.mapselectValue = StringVar()
 
         self.configFrame = Frame(self.window)
