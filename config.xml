@@ -1,6 +1,6 @@
 <config>
     <databasefile>
-        <database value="test8.db" />
+        <database value="Chernarus1.db" />
     </databasefile>
    
     <tiers>

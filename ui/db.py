@@ -12,6 +12,7 @@ class DB(object):
         self.window = Toplevel(root)
         self.window.grab_set()
         self.config = ConfigManager("config.xml")
+        self.database = Dao(self.config.get_database())
         self.database_name = self.config.get_database()
         self.mapselectValue = StringVar()
 
@@ -38,8 +39,9 @@ class DB(object):
         self.DbInit = OptionMenu(
             button_frame, self.DbInitValue, *optionList
         ).grid(row=4, column=1, sticky="w")
-        self.DbInitValue.set(
-            Dao(self.database_name).get_mapselectValue(1).mapselectvalue)
+        db_map_name = self.database.get_mapselectValue(1).mapselectvalue
+        self.DbInitValue.set(db_map_name)
+        
 
 # Buttons
         Button(
