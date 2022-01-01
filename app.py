@@ -840,7 +840,8 @@ class GUI(object):
 
     def __open_db_window(self):
         DB(self.window)
-        self.initializeapp()
+        self.__init__(self.window)
+
 
     def __import_link_window(self):
         LinkItem(self.window)
@@ -857,7 +858,6 @@ class GUI(object):
         self.gridItems = items
         self.__populate_items(items.all())
         self.updateAllMods(self.mods_menu)
-        # self.__create_menu_bar()
 
     def __export_xml(self, mapname):
         file = filedialog.asksaveasfile(mode="a", defaultextension=".xml")
