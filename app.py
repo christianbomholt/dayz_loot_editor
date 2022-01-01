@@ -59,7 +59,7 @@ class GUI(object):
         self.makeExpansionDir()
         #
         self.tree.bind("<ButtonRelease-1>", self.__fill_entry_frame)
-        self.window.wm_title("CE-Editor v0.12.1 - " + self.config.get_database() +
+        self.window.wm_title("CE-Editor v0.13.0 - " + self.config.get_database() +
                              " used for maptype: " + self.database.get_mapselectValue(1).mapselectvalue)
 
     def initializeapp(self):
@@ -73,7 +73,7 @@ class GUI(object):
         self.__initiate_items()
         self.__create_nominal_info()
         self.window.wm_title(
-            "CE-Editor v0.11.1  UPDATED - fresh database - restart to see the right map")
+            "CE-Editor v0.13.0  UPDATED - fresh database - restart to see the right map")
         self.makeExpansionDir()
 
     def deselectAllMods(self):
@@ -222,10 +222,6 @@ class GUI(object):
             label="Select All", command=self.selectAllHive)
         self.hive_menu.add_separator()
         self.initAllHive(self.hive_menu)
-
-
-
-
 
 # building menu bar
         self.menu_bar.add_cascade(label="File", menu=file_menu)
