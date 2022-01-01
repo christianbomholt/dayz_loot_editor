@@ -39,6 +39,8 @@ class Item(Base):
     traderCat = Column(String, nullable=True)
     min_stock = Column(Integer, nullable=True)
     max_stock = Column(Integer, nullable=True)
+    hive = Column(String, default="Base_Hive")
+
 
     def __repr__(self):
         return f"Items(id={self.id},name={self.name},nominal={self.nominal},min={self.min},qmin={self.qmin},qmax={self.qmax},restock={self.restock},\
@@ -46,7 +48,7 @@ class Item(Base):
         item_type={self.item_type},sub_type={self.sub_type},mod={self.mod},trader={self.trader},dynamic_event={self.dynamic_event},\
         count_in_cargo={self.count_in_cargo},count_in_hourder={self.count_in_hoarder},count_in_map={self.count_in_map},\
         count_in_player={self.count_in_player},buyprice={self.buyprice},sellprice={self.sellprice},traderExclude={self.traderExclude},\
-        traderCat={self.traderCat},minStock={self.min_stock},maxStock={self.max_stock})"
+        traderCat={self.traderCat},minStock={self.min_stock},maxStock={self.max_stock},hive={self.hive})"
 
 
 class Mapselect(Base):

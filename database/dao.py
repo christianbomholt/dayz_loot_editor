@@ -29,6 +29,15 @@ class Dao(object):
         except Exception:
             print("DEBUG: You are good to go")
 
+        try:
+            sql_String = f"ALTER TABLE items ADD COLUMN hive STRING DEFAULT 'Base_Hive'"
+                       # f"SELECT name FROM sqlite_master WHERE type='table' AND name='items'"
+            self.session.execute(sql_String)
+            self.session.commit()
+            # print("DEBUG: The Column max_stock added to database")
+        except Exception:
+            print("DEBUG: You are good to go")
+
     """
     CRUD Operations related to items
     """
