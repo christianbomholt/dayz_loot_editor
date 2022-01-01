@@ -41,7 +41,7 @@ class DB(object):
         ).grid(row=4, column=1, sticky="w")
         db_map_name = self.database.get_mapselectValue(1).mapselectvalue
         self.DbInitValue.set(db_map_name)
-        
+
 
 # Buttons
         Button(

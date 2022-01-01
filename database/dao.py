@@ -75,7 +75,7 @@ class Dao(object):
         flattened_word_list = Dao.flatten(word_list)
         unique_word_list = list(sorted(set(flattened_word_list)))
         unique_word_list = list(filter(lambda x: x != "", unique_word_list))
-        # unique_word_list.insert(0, "")
+        unique_word_list.insert(0, "ALL")
         # unique_word_list.append("all")
         return unique_word_list
 

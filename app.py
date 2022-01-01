@@ -571,7 +571,7 @@ class GUI(object):
         self.database.sql_dbDump()
 
     def testfunction(self):
-        print("DEBUG  : Before test function")
+        print("DEBUG  : test function" + self.__filter_usage_items())
         # test__export_xml(self)
 
     def apipull(self):
@@ -765,8 +765,11 @@ class GUI(object):
             # Item.mod.in_(self.selected_mods)).filter(or_(*[Item.usage.contains(p) for p in self.__filter_usage_items()]))
 
         if self.__filter_usage_items() is not None:
-            items = items.filter(
-                or_(*[Item.usage.contains(p) for p in self.__filter_usage_items()]))
+            if self.__filter_usage_items() == ["ALL"]:
+                items = items
+            else:    
+                items = items.filter(
+                    or_(*[Item.usage.contains(p) for p in self.__filter_usage_items()]))
 
         self.gridItems = items
         self.__create_nominal_info()

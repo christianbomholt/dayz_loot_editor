@@ -98,7 +98,7 @@ class PyperclipWindowsException(PyperclipException):
 def _stringifyText(text):
     if PY2:
         pass
-        #acceptedTypes = (unicode, str, int, float, bool)
+        # acceptedTypes = (unicode, str, int, float, bool)
     else:
         acceptedTypes = (str, int, float, bool)
     if not isinstance(text, acceptedTypes):
@@ -171,10 +171,10 @@ def init_qt_clipboard():
     # Try to import from qtpy, but if that fails try PyQt5 then PyQt4
     try:
         from qtpy.QtWidgets import QApplication
-    except:
+    except Exception:
         try:
             from PyQt5.QtWidgets import QApplication
-        except:
+        except Exception:
             from PyQt4.QtGui import QApplication
 
     app = QApplication.instance()
