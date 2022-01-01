@@ -34,7 +34,13 @@
         <tier value="Tier28" />
         <tier value="Tier29" />
     </tiers>
-      
+
+    <hives>
+	    <hive value="Base_Hive" />
+        <hive value="Extra_Hive" />
+    </hives>
+
+
     <traders>
 	    <trader value="Trader 1" />
         <trader value="Trader 2" />

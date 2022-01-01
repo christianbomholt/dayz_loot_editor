@@ -25,16 +25,20 @@ class GUI(object):
         self.config = ConfigManager("config.xml")
         self.database = Dao(self.config.get_database())
         self.database.upgradeDB()
-        self.selected_mods = []
         self.gridItems = []
         #
         self.window = main_container
         self.window.grid_rowconfigure(0, weight=1)
         self.window.grid_columnconfigure(1, weight=1)
         self.menu_bar = Menu(self.window)
+        self.selected_mods = []
         self.moddict = {}
         self.modcount = 0
         self.moddlist = []
+        self.selected_hive = []
+        self.hivedict = {}
+        self.hivecount = 0
+        self.hivelist = []
         self.totalWeaponDisplayed = IntVar()
         self.totalNumDisplayed = IntVar()
         self.nomVars = []
@@ -92,6 +96,29 @@ class GUI(object):
                 self.moddict[mod] = int_var
                 self.selected_mods.append(mod)
 
+
+
+    def deselectAllHive(self):
+        for k in self.hivedict:
+            self.hivedict[k].set(0)
+        self.__selecthivefunction___()
+
+    def selectAllHive(self):
+        for k in self.hivedict:
+            self.hivedict[k].set(1)
+        self.__selecthivefunction___()
+
+    def initAllHive(self, menu):
+        for hive in self.database.get_all_types("hive"):
+            if hive != "all":
+                self.hivecount += 1
+                int_var = IntVar(value=1)
+                menu.add_checkbutton(
+                    label=hive, variable=int_var, command=self.__selecthivefunction___)
+                self.hivedict[hive] = int_var
+                self.selected_hive.append(hive)
+
+
     def makeExpansionDir(self):
         try:
             os.mkdir("Expansion")
@@ -102,7 +129,6 @@ class GUI(object):
             pass
 
     def updateAllMods(self, menu):
-
         for i in range(self.modcount+3):
             if i > 2:
                 menu.delete(i)
@@ -115,6 +141,21 @@ class GUI(object):
                     command=self.__selectmodsfunction___)
                 self.moddict[mod] = int_var
                 self.selected_mods.append(mod)
+
+    def updateAllHive(self, menu):
+        for i in range(self.hivecount+3):
+            if i > 2:
+                menu.delete(i)
+        for hive in self.database.get_all_types("hive"):
+            if hive != "all":
+                int_var = IntVar(value=1)
+                menu.add_checkbutton(
+                    label=hive,
+                    variable=int_var,
+                    command=self.__selecthivefunction___)
+                self.hivedict[hive] = int_var
+                self.selected_hive.append(hive)
+
 
     def __create_menu_bar(self):
         # file menus builder
@@ -173,10 +214,23 @@ class GUI(object):
         self.mods_menu.add_separator()
         self.initAllMods(self.mods_menu)
 
+# initializing hive menu
+        self.hive_menu = Menu(self.menu_bar, tearoff=0)
+        self.hive_menu.add_command(
+            label="Deselect All", command=self.deselectAllHive)
+        self.hive_menu.add_command(
+            label="Select All", command=self.selectAllHive)
+        self.hive_menu.add_separator()
+        self.initAllHive(self.hive_menu)
+
+
+
+
 
 # building menu bar
         self.menu_bar.add_cascade(label="File", menu=file_menu)
         self.menu_bar.add_cascade(label="Mods In Use", menu=self.mods_menu)
+        self.menu_bar.add_cascade(label="Hive In Use", menu=self.hive_menu)
         self.menu_bar.add_cascade(label="Help", menu=help_menu)
         self.menu_bar.add_cascade(label="Tools", menu=tools_menu)
 
@@ -229,6 +283,8 @@ class GUI(object):
             row=13, column=0, sticky="w", pady=5)
         Label(self.entryFrame, text="Trader").grid(
             row=14, column=0, sticky="w", pady=5)
+        Label(self.entryFrame, text="Hive").grid(
+            row=15, column=0, sticky="w", pady=5)
         # input variables
         self.id = IntVar()
         self.name = StringVar()
@@ -251,6 +307,7 @@ class GUI(object):
         self.count_in_hoarder = IntVar()
         self.count_in_player = IntVar()
         self.count_in_map = IntVar()
+        self.hive = StringVar()
         # form fields
         self.nameField = Entry(self.entryFrame, textvariable=self.name)
         self.nameField.grid(row=0, column=1, sticky="w")
@@ -320,6 +377,13 @@ class GUI(object):
             self.entryFrame, self.trader, *self.config.get_traders()
         )
         self.traderOption.grid(row=14, column=1, sticky="w", pady=5)
+
+        self.hiveOption = OptionMenu(
+            self.entryFrame, self.hive, *self.config.get_hive()
+        )
+        self.hiveOption.grid(row=15, column=1, sticky="w", pady=5)
+
+
 
         self.checkBoxFrame = Frame(self.entryFrameHolder)
         self.checkBoxFrame.grid(row=1, column=0, columnspan=2, sticky="w")
@@ -649,6 +713,20 @@ class GUI(object):
         self.sub_type_for_filter.set("all")
         self.cat_type_for_filter.set("all")
 
+    def __selecthivefunction___(self):
+        values = [(hive, var.get()) for hive, var in self.hivedict.items()]
+        self.hivelist = values
+        self.selected_hive = [x[0] for x in self.hivelist if x[1] == 1]
+        items = self.database.session.query(Item).filter(
+            Item.hive.in_(self.selected_hive))
+        self.gridItems = items
+        self.__populate_items(self.gridItems)
+        self.__create_nominal_info()
+        self.type_for_filter.set("all")
+        self.sub_type_for_filter.set("all")
+        self.cat_type_for_filter.set("all")
+
+
 # Updated to loop through selected items in the grid.
     def __update_item(self):
         def __update_helper(item, field, default_value):
@@ -674,6 +752,7 @@ class GUI(object):
             __update_helper(item_to_update, "sub_type", "")
             __update_helper(item_to_update, "mod", "")
             __update_helper(item_to_update, "trader", "")
+            __update_helper(item_to_update, "hive", "")
             __update_helper(item_to_update, "dynamic_event", -1)
             __update_helper(item_to_update, "count_in_hoarder", -1)
             __update_helper(item_to_update, "count_in_cargo", -1)
@@ -698,6 +777,7 @@ class GUI(object):
                 setattr(item_to_update, "tier", "")
             self.database.session.commit()
         self.__populate_items(self.gridItems)
+        self.__init__(window)
 
     def __delete_item(self):
         for items in self.treeView.selection():

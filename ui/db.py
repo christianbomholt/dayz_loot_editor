@@ -2,7 +2,6 @@ from tkinter import Tk, Toplevel, Frame, StringVar, Label, Button, filedialog, O
 from config import ConfigManager
 from database.dao import Dao
 from model.item import init_database
-from app import GUI
 
 # Base = declarative_base()
 
@@ -98,7 +97,6 @@ class DB(object):
                 self.config.set_database(db_name)
                 # self.DbInitValue.set(Dao(self.database_name).get_mapselectValue(1).mapselectvalue)
                 self.db_status.set("We are opening: " + db_name)
-                GUI()
                 self.window.destroy()
             else:
                 self.db_status.set(
@@ -106,6 +104,6 @@ class DB(object):
 
 
 def testWindow():
-    window = Tk()
-    DB(window)
-    window.mainloop()
+    db_window = Tk()
+    DB(db_window)
+    db_window.mainloop()

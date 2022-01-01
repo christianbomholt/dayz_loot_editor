@@ -59,6 +59,13 @@ class ConfigManager(object):
             mods.append(i.attributes["value"].value)
         return mods
 
+    def get_hive(self):
+        hive_list = self.config_file.getElementsByTagName("hive")
+        hive = list()
+        for i in hive_list:
+            hive.append(i.attributes["value"].value)
+        return hive
+
     def get_traders(self):
         trader_list = self.config_file.getElementsByTagName("trader")
         traders = list()
