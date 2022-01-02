@@ -68,12 +68,17 @@ class Dao(object):
 
     def get_filter_types(self,cat):
         print("Debug: " + cat)
-        result = self.session.query(Item).distinct(Item.item_type).filter(Item.cat_type==(cat))
-        result = [c[0] for c in result if c[0] is not None]
-        result.append("all")
-        return result       
+        search = f'%{cat}%'
+        result = self.session\
+                        .query(Item)\
+                        .distinct(Item.item_type)\
+                        .filter(Item.cat_type.like(search)).all()
+        row_list = [c.item_type for c in result if c.item_type is not None]
+        result = list(sorted(set(row_list)))                
+        print(result)
+        return result     
 
-    def get_all_categories(self, col):
+    def get_all_categories(self):
         result = self.session.query(Item).distinct(Item.cat_type)
         result = [c[0] for c in result if c[0] is not None]
         result.append("all")

@@ -1,4 +1,5 @@
-from tkinter import Tk, Menu, IntVar, Frame, Label, StringVar, Entry, Listbox, END, OptionMenu, Checkbutton, Button, Radiobutton
+from tkinter import Tk, Menu, IntVar, Frame, Label, StringVar, Entry, Listbox
+from tkinter import END, OptionMenu, Checkbutton, Button, Radiobutton
 from tkinter import ttk, VERTICAL, HORIZONTAL, LabelFrame, simpledialog
 
 from sqlalchemy.sql.expression import or_
@@ -15,8 +16,20 @@ import tkinter.filedialog as filedialog
 import webbrowser
 import re
 import json
-from utility import assign_rarity, distribute_nominal, column_definition, categoriesDict, categoriesNamalskDict
-from utility import distribute_mags_and_bullets, apipush, apipull, exportSpawnable, writeToJSONFile
+from utility import (
+    assign_rarity,
+    distribute_nominal,
+    column_definition,
+    categoriesDict,
+    categoriesNamalskDict,
+)
+from utility import (
+    distribute_mags_and_bullets,
+    apipush,
+    apipull,
+    exportSpawnable,
+    writeToJSONFile,
+)
 
 
 class GUI(object):
@@ -42,8 +55,13 @@ class GUI(object):
         self.totalWeaponDisplayed = IntVar()
         self.totalNumDisplayed = IntVar()
         self.nomVars = []
-        self.weaponNomTypes = {"ranged": 0, "ammo": 0,
-                               "optic": 0, "mag": 0, "attachment": 0}
+        self.weaponNomTypes = {
+            "ranged": 0,
+            "ammo": 0,
+            "optic": 0,
+            "mag": 0,
+            "attachment": 0,
+        }
         self.distributorValue = StringVar()
         self.weapondistributorValue = StringVar()
         self.searchName = StringVar()
@@ -59,21 +77,25 @@ class GUI(object):
         self.makeExpansionDir()
         #
         self.tree.bind("<ButtonRelease-1>", self.__fill_entry_frame)
-        self.window.wm_title("CE-Editor v0.13.0 - " + self.config.get_database() +
-                             " used for maptype: " + self.database.get_mapselectValue(1).mapselectvalue)
+        self.window.wm_title(
+            "CE-Editor v0.13.0 - "
+            + self.config.get_database()
+            + " used for maptype: "
+            + self.database.get_mapselectValue(1).mapselectvalue
+        )
 
     def initializeapp(self):
         self.__create_tree_view()
         self.__create_side_bar()
         self.database = Dao(self.config.get_database())
         items = self.database.session.query(Item).filter(
-            Item.mod.in_(self.selected_mods))
+            Item.mod.in_(self.selected_mods)
+        )
         self.gridItems = items
         self.__populate_items(self.gridItems)
         self.__initiate_items()
         self.__create_nominal_info()
-        self.window.wm_title(
-            "CE-Editor v0.13.0  UPDATED - fresh database - restart to see the right map")
+        self.window.wm_title("CE-Editor v0.13.0 - New database - restart")
         self.makeExpansionDir()
 
     def deselectAllMods(self):
@@ -92,11 +114,10 @@ class GUI(object):
                 self.modcount += 1
                 int_var = IntVar(value=1)
                 menu.add_checkbutton(
-                    label=mod, variable=int_var, command=self.__selectmodsfunction___)
+                    label=mod, variable=int_var, command=self.__selectmodsfunction___
+                )
                 self.moddict[mod] = int_var
                 self.selected_mods.append(mod)
-
-
 
     def deselectAllHive(self):
         for k in self.hivedict:
@@ -114,10 +135,10 @@ class GUI(object):
                 self.hivecount += 1
                 int_var = IntVar(value=1)
                 menu.add_checkbutton(
-                    label=hive, variable=int_var, command=self.__selecthivefunction___)
+                    label=hive, variable=int_var, command=self.__selecthivefunction___
+                )
                 self.hivedict[hive] = int_var
                 self.selected_hive.append(hive)
-
 
     def makeExpansionDir(self):
         try:
@@ -129,108 +150,103 @@ class GUI(object):
             pass
 
     def updateAllMods(self, menu):
-        for i in range(self.modcount+3):
+        for i in range(self.modcount + 3):
             if i > 2:
                 menu.delete(i)
         for mod in self.database.get_all_types("mod"):
             if mod != "all":
                 int_var = IntVar(value=1)
                 menu.add_checkbutton(
-                    label=mod,
-                    variable=int_var,
-                    command=self.__selectmodsfunction___)
+                    label=mod, variable=int_var, command=self.__selectmodsfunction___
+                )
                 self.moddict[mod] = int_var
                 self.selected_mods.append(mod)
 
     def updateAllHive(self, menu):
-        for i in range(self.hivecount+3):
+        for i in range(self.hivecount + 3):
             if i > 2:
                 menu.delete(i)
         for hive in self.database.get_all_types("hive"):
             if hive != "all":
                 int_var = IntVar(value=1)
                 menu.add_checkbutton(
-                    label=hive,
-                    variable=int_var,
-                    command=self.__selecthivefunction___)
+                    label=hive, variable=int_var, command=self.__selecthivefunction___
+                )
                 self.hivedict[hive] = int_var
                 self.selected_hive.append(hive)
-
 
     def __create_menu_bar(self):
         # file menus builder
         file_menu = Menu(self.menu_bar, tearoff=0)
-        file_menu.add_command(label="Setup Database",
-                              command=self.__open_db_window)
-        file_menu.add_command(label="Import attachfile",
-                              command=self.__import_link_window)
+        file_menu.add_command(label="Setup Database", command=self.__open_db_window)
+        file_menu.add_command(
+            label="Import attachfile", command=self.__import_link_window
+        )
+        file_menu.add_separator()
+        file_menu.add_command(label="Add Items", command=self.__open_items_window)
         file_menu.add_separator()
         file_menu.add_command(
-            label="Add Items", command=self.__open_items_window)
+            label="Export Selected Mod_XML", command=self.export_mod_xml
+        )
+        file_menu.add_command(label="Export XML File", command=self.export_xml_normal)
+        file_menu.add_command(
+            label="Export Namalsk XML File", command=self.export_xml_Namalsk
+        )
         file_menu.add_separator()
-        file_menu.add_command(label="Export Selected Mod_XML",
-                              command=self.export_mod_xml)
-        file_menu.add_command(label="Export XML File",
-                              command=self.export_xml_normal)
-        file_menu.add_command(label="Export Namalsk XML File",
-                              command=self.export_xml_Namalsk)
-        file_menu.add_separator()
-        file_menu.add_command(label="Export Spawnable Types",
-                              command=self.writespawnabletypes)
+        file_menu.add_command(
+            label="Export Spawnable Types", command=self.writespawnabletypes
+        )
         file_menu.add_separator()
         file_menu.add_command(label="Exit", command=self.window.destroy)
-# database menus builder
+        # database menus builder
 
-# help menus builder
+        # help menus builder
         help_menu = Menu(self.menu_bar, tearoff=0)
-        help_menu.add_command(label="Watch the video....",
-                              command=self.demovideo)
+        help_menu.add_command(label="Watch the video....", command=self.demovideo)
 
-# tools menus builder
+        # tools menus builder
         tools_menu = Menu(self.menu_bar, tearoff=0)
         tools_menu.add_command(
-            label="Derive types and subtypes", command=self.derivetypessubtypes)
+            label="Derive types and subtypes", command=self.derivetypessubtypes
+        )
         tools_menu.add_command(
-            label="Assign Rarity from nominal", command=self.func2assign_raritiy)
+            label="Assign Rarity from nominal", command=self.func2assign_raritiy
+        )
         tools_menu.add_separator()
-        tools_menu.add_command(
-            label="Dump database to sql file", command=self.dump2sql)
+        tools_menu.add_command(label="Dump database to sql file", command=self.dump2sql)
         tools_menu.add_separator()
+        tools_menu.add_command(label="Derive ammobox table", command=self.deriveammobox)
         tools_menu.add_command(
-            label="Derive ammobox table", command=self.deriveammobox)
+            label="Distribute gun,mag and bullet", command=self.testdist
+        )
         tools_menu.add_command(
-            label="Distribute gun,mag and bullet", command=self.testdist)
-        tools_menu.add_command(
-            label="TestFunction for (Dev)", command=self.testfunction)
+            label="TestFunction for (Dev)", command=self.testfunction
+        )
         # tools_menu.add_command(label="APIPull (Dev)", command=self.apipull)
         # tools_menu.add_command(label="APIPush (Dev)", command=self.apipush)
 
-# initializing mods menu
+        # initializing mods menu
         self.mods_menu = Menu(self.menu_bar, tearoff=0)
-        self.mods_menu.add_command(
-            label="Deselect All", command=self.deselectAllMods)
-        self.mods_menu.add_command(
-            label="Select All", command=self.selectAllMods)
+        self.mods_menu.add_command(label="Deselect All", command=self.deselectAllMods)
+        self.mods_menu.add_command(label="Select All", command=self.selectAllMods)
         self.mods_menu.add_separator()
         self.initAllMods(self.mods_menu)
 
-# initializing hive menu
+        # initializing hive menu
         self.hive_menu = Menu(self.menu_bar, tearoff=0)
-        self.hive_menu.add_command(
-            label="Deselect All", command=self.deselectAllHive)
-        self.hive_menu.add_command(
-            label="Select All", command=self.selectAllHive)
+        self.hive_menu.add_command(label="Deselect All", command=self.deselectAllHive)
+        self.hive_menu.add_command(label="Select All", command=self.selectAllHive)
         self.hive_menu.add_separator()
         self.initAllHive(self.hive_menu)
 
-# building menu bar
+        # building menu bar
         self.menu_bar.add_cascade(label="File", menu=file_menu)
         self.menu_bar.add_cascade(label="Mods In Use", menu=self.mods_menu)
         self.menu_bar.add_cascade(label="Hive In Use", menu=self.hive_menu)
         self.menu_bar.add_cascade(label="Help", menu=help_menu)
         self.menu_bar.add_cascade(label="Tools", menu=tools_menu)
 
-# configuring menu bar
+        # configuring menu bar
         self.window.config(menu=self.menu_bar)
 
     def export_mod_xml(self):
@@ -242,45 +258,35 @@ class GUI(object):
     def export_xml_Namalsk(self):
         self.__export_xml("Namalsk")
 
-# Create Left side entry frame  *************************************************
+    # Create Left side entry frame  *************************************************
     def __create_entry_frame(self):
         self.entryFrameHolder = Frame(self.window)
         self.entryFrameHolder.grid(row=0, column=0, sticky="nw")
         self.entryFrame = Frame(self.entryFrameHolder)
         self.entryFrame.grid(padx=8, pady=6)
         # labels
-        Label(self.entryFrame, text="Name").grid(
-            row=0, column=0, sticky="w", pady=5)
-        Label(self.entryFrame, text="Nominal").grid(
-            row=1, column=0, sticky="w", pady=5)
-        Label(self.entryFrame, text="Min").grid(
-            row=2, column=0, sticky="w", pady=5)
-        Label(self.entryFrame, text="QMin").grid(
-            row=3, column=0, sticky="w", pady=5)
-        Label(self.entryFrame, text="QMax").grid(
-            row=4, column=0, sticky="w", pady=5)
-        Label(self.entryFrame, text="Restock").grid(
-            row=5, column=0, sticky="w", pady=5)
+        Label(self.entryFrame, text="Name").grid(row=0, column=0, sticky="w", pady=5)
+        Label(self.entryFrame, text="Nominal").grid(row=1, column=0, sticky="w", pady=5)
+        Label(self.entryFrame, text="Min").grid(row=2, column=0, sticky="w", pady=5)
+        Label(self.entryFrame, text="QMin").grid(row=3, column=0, sticky="w", pady=5)
+        Label(self.entryFrame, text="QMax").grid(row=4, column=0, sticky="w", pady=5)
+        Label(self.entryFrame, text="Restock").grid(row=5, column=0, sticky="w", pady=5)
         Label(self.entryFrame, text="Lifetime").grid(
-            row=6, column=0, sticky="w", pady=5)
-        Label(self.entryFrame, text="Usages").grid(
-            row=7, column=0, sticky="w", pady=5)
-        Label(self.entryFrame, text="Tiers").grid(
-            row=8, column=0, sticky="w", pady=5)
+            row=6, column=0, sticky="w", pady=5
+        )
+        Label(self.entryFrame, text="Usages").grid(row=7, column=0, sticky="w", pady=5)
+        Label(self.entryFrame, text="Tiers").grid(row=8, column=0, sticky="w", pady=5)
         Label(self.entryFrame, text="Category").grid(
-            row=9, column=0, sticky="w", pady=5)
-        Label(self.entryFrame, text="Type").grid(
-            row=10, column=0, sticky="w", pady=5)
+            row=9, column=0, sticky="w", pady=5
+        )
+        Label(self.entryFrame, text="Type").grid(row=10, column=0, sticky="w", pady=5)
         Label(self.entryFrame, text="Sub Type").grid(
-            row=11, column=0, sticky="w", pady=5)
-        Label(self.entryFrame, text="Rarity").grid(
-            row=12, column=0, sticky="w", pady=5)
-        Label(self.entryFrame, text="Mod").grid(
-            row=13, column=0, sticky="w", pady=5)
-        Label(self.entryFrame, text="Trader").grid(
-            row=14, column=0, sticky="w", pady=5)
-        Label(self.entryFrame, text="Hive").grid(
-            row=15, column=0, sticky="w", pady=5)
+            row=11, column=0, sticky="w", pady=5
+        )
+        Label(self.entryFrame, text="Rarity").grid(row=12, column=0, sticky="w", pady=5)
+        Label(self.entryFrame, text="Mod").grid(row=13, column=0, sticky="w", pady=5)
+        Label(self.entryFrame, text="Trader").grid(row=14, column=0, sticky="w", pady=5)
+        Label(self.entryFrame, text="Hive").grid(row=15, column=0, sticky="w", pady=5)
         # input variables
         self.id = IntVar()
         self.name = StringVar()
@@ -342,22 +348,25 @@ class GUI(object):
             self.tiersListBox.insert(END, i)
 
         self.cat_typeOption = OptionMenu(
-            self.entryFrame, self.cat_type, *
-            self.database.get_all_types("cat_type")[:-1]
+            self.entryFrame,
+            self.cat_type,
+            *self.database.get_all_types("cat_type")[:-1],
         )
         self.cat_typeOption.grid(row=9, column=1, sticky="w", pady=5)
 
         self.itemtypeAutoComp = ttk.Combobox(
-            self.entryFrame, textvariable=self.item_type, values=self.database.get_all_types(
-                "item_type")[:-1]
+            self.entryFrame,
+            textvariable=self.item_type,
+            values=self.database.get_all_types("item_type")[:-1],
         )
         self.itemtypeAutoComp.grid(row=10, column=1, sticky="w", pady=5)
 
         self.subtypeAutoComp = ttk.Combobox(
-            self.entryFrame, textvariable=self.sub_type, values=self.database.get_all_types("sub_type")[
-                :-1]
+            self.entryFrame,
+            textvariable=self.sub_type,
+            values=self.database.get_all_types("sub_type")[:-1],
         )
-        self.subtypeAutoComp .grid(row=11, column=1, sticky="w", pady=5)
+        self.subtypeAutoComp.grid(row=11, column=1, sticky="w", pady=5)
 
         self.rarityOption = OptionMenu(
             self.entryFrame, self.rarity, *self.config.get_rarities()
@@ -379,32 +388,50 @@ class GUI(object):
         )
         self.hiveOption.grid(row=15, column=1, sticky="w", pady=5)
 
-
-
         self.checkBoxFrame = Frame(self.entryFrameHolder)
         self.checkBoxFrame.grid(row=1, column=0, columnspan=2, sticky="w")
         self.dynamic_event_check = Checkbutton(
-            self.checkBoxFrame, text="Dynamic Event", variable=self.dynamic_event, onvalue=1, offvalue=0
+            self.checkBoxFrame,
+            text="Dynamic Event",
+            variable=self.dynamic_event,
+            onvalue=1,
+            offvalue=0,
         )
         self.dynamic_event_check.grid(row=0, column=0, sticky="w")
 
         self.count_in_hoarder_check = Checkbutton(
-            self.checkBoxFrame, text="Count in Hoarder", variable=self.count_in_hoarder, onvalue=1, offvalue=0
+            self.checkBoxFrame,
+            text="Count in Hoarder",
+            variable=self.count_in_hoarder,
+            onvalue=1,
+            offvalue=0,
         )
         self.count_in_hoarder_check.grid(row=1, column=0, sticky="w")
 
         self.count_in_cargo_check = Checkbutton(
-            self.checkBoxFrame, text="Count in Cargo", variable=self.count_in_cargo, onvalue=1, offvalue=0
+            self.checkBoxFrame,
+            text="Count in Cargo",
+            variable=self.count_in_cargo,
+            onvalue=1,
+            offvalue=0,
         )
         self.count_in_cargo_check.grid(row=2, column=0, sticky="w")
 
         self.count_in_player_check = Checkbutton(
-            self.checkBoxFrame, text="Count in Player", variable=self.count_in_player, onvalue=1, offvalue=0
+            self.checkBoxFrame,
+            text="Count in Player",
+            variable=self.count_in_player,
+            onvalue=1,
+            offvalue=0,
         )
         self.count_in_player_check.grid(row=3, column=0, sticky="w")
 
         self.count_in_map_check = Checkbutton(
-            self.checkBoxFrame, text="Count in Map", variable=self.count_in_map, onvalue=1, offvalue=0
+            self.checkBoxFrame,
+            text="Count in Map",
+            variable=self.count_in_map,
+            onvalue=1,
+            offvalue=0,
         )
         self.count_in_map_check.grid(row=4, column=0, sticky="w")
 
@@ -416,27 +443,35 @@ class GUI(object):
             self.checkBoxFrame, text="Delete", width=8, command=self.__delete_item
         ).grid(row=5, column=1, pady=5, sticky="w")
 
-# **********************Create tree view ************************************************************
-#
+    # **********************Create tree view ************************************************************
+    #
 
     def fixed_map(self, style, option):
-        return [elm for elm in style.map("Treeview", query_opt=option)
-                if elm[:2] != ("!disabled", "!selected")]
+        return [
+            elm
+            for elm in style.map("Treeview", query_opt=option)
+            if elm[:2] != ("!disabled", "!selected")
+        ]
 
     def __create_tree_view(self):
         style = ttk.Style()
-        style.configure('Treeview', background='#97FFFF', foreground='black')
+        style.configure("Treeview", background="#97FFFF", foreground="black")
 
         self.treeFrame = Frame(self.window)
         self.treeFrame.grid(row=0, column=1, sticky="nsew")
         self.treeFrame.grid_rowconfigure(0, weight=1)
         self.treeFrame.grid_columnconfigure(1, weight=1)
 
-        self.tree = ttk.Treeview(self.treeFrame, columns=[col.get(
-            "text") for col in column_definition], height=40)
-        style.map("Treeview",
-                  foreground=self.fixed_map(style, "foreground"),
-                  background=self.fixed_map(style, "background"))
+        self.tree = ttk.Treeview(
+            self.treeFrame,
+            columns=[col.get("text") for col in column_definition],
+            height=40,
+        )
+        style.map(
+            "Treeview",
+            foreground=self.fixed_map(style, "foreground"),
+            background=self.fixed_map(style, "background"),
+        )
         for col in column_definition:
             self.tree.heading(
                 col.get("col_id"),
@@ -446,14 +481,12 @@ class GUI(object):
                 ),
             )
             self.tree.column(
-                col.get("col_id"),
-                width=col.get("width"),
-                stretch=col.get("stretch")
+                col.get("col_id"), width=col.get("width"), stretch=col.get("stretch")
             )
         self.tree.grid(row=0, column=0, sticky="nsew")
-        self.tree.heading('#0', text='ID')
+        self.tree.heading("#0", text="ID")
 
-        self.tree.column('#0', width="60", stretch="NO")
+        self.tree.column("#0", width="60", stretch="NO")
         self.treeView = self.tree
         vertical = ttk.Scrollbar(self.treeFrame, orient=VERTICAL)
         horizontal = ttk.Scrollbar(self.treeFrame, orient=HORIZONTAL)
@@ -467,50 +500,57 @@ class GUI(object):
     def __create_side_bar(self):
         self.filterFrameHolder = Frame(self.window)
         self.filterFrameHolder.grid(row=0, column=2, sticky="n")
-        self.filterFrame = LabelFrame(
-            self.filterFrameHolder, width=14, text="Filter")
+        self.filterFrame = LabelFrame(self.filterFrameHolder, width=14, text="Filter")
         self.filterFrame.grid(row=1, column=1, pady=5)
-        Label(self.filterFrame, text="Category").grid(
-            row=1, column=0, sticky="w")
-        Label(self.filterFrame, text="Item type").grid(
-            row=2, column=0, sticky="w")
-        Label(self.filterFrame, text="Sub type").grid(
-            row=3, column=0, sticky="w")
+        Label(self.filterFrame, text="Category").grid(row=1, column=0, sticky="w")
+        Label(self.filterFrame, text="Item type").grid(row=2, column=0, sticky="w")
+        Label(self.filterFrame, text="Sub type").grid(row=3, column=0, sticky="w")
 
         self.__create_distribution_block()
         # self.__create_weapon_distribution_block()
-
         cat_filter = self.database.get_all_types("cat_type")
         type_filter = self.database.get_all_types("item_type")
         subtype_filter = self.database.get_all_types("sub_type")
 
-# Category
+        # Category
         self.cat_type_for_filter = StringVar()
         self.cat_type_for_filter.set("all")
-        OptionMenu(
-            self.filterFrame, self.cat_type_for_filter, *cat_filter, command=self.__CatFilter__
-        ).grid(row=1, column=1,  sticky="w", padx=5)
+        self.cat_option_m = OptionMenu(
+            self.filterFrame,
+            self.cat_type_for_filter,
+            *cat_filter,
+            command=self.__CatFilter__,
+        ).grid(row=1, column=1, sticky="w", padx=5)
 
-# Item_type
+        # Item_type
         self.type_for_filter = StringVar()
         self.type_for_filter.set("all")
-        OptionMenu(
-            self.filterFrame, self.type_for_filter, *type_filter, command=self.__TypeFilter__
+        self.type_option_m = OptionMenu(
+            self.filterFrame,
+            self.type_for_filter,
+            *type_filter,
+            command=self.__TypeFilter__,
         ).grid(row=2, column=1, sticky="w", padx=5)
 
-# Sub_type
+        # Sub_type
         self.sub_type_for_filter = StringVar()
         self.sub_type_for_filter.set("all")
-        OptionMenu(
-            self.filterFrame, self.sub_type_for_filter, *subtype_filter, command=self.__SubTypeFilter__
+        self.suptype_option_m = OptionMenu(
+            self.filterFrame,
+            self.sub_type_for_filter,
+            *subtype_filter,
+            command=self.__SubTypeFilter__,
         ).grid(row=3, column=1, sticky="w", padx=5)
 
-# Usage_Flag
-        self.usage_for_filter = StringVar(
-            value=self.database.get_all_usage("usage"))
+        # Usage_Flag
+        self.usage_for_filter = StringVar(value=self.database.get_all_usage("usage"))
 
         self.LB_usage_filter = Listbox(
-            self.filterFrame, height=4, listvariable=self.usage_for_filter, selectmode="extended", exportselection=False
+            self.filterFrame,
+            height=4,
+            listvariable=self.usage_for_filter,
+            selectmode="extended",
+            exportselection=False,
         )
         self.LB_usage_filter.grid(row=4, columnspan=2, sticky="w", padx=5)
 
@@ -518,9 +558,10 @@ class GUI(object):
             self.filterFrame, text="Filter", width=12, command=self.__filter_items
         ).grid(row=5, columnspan=2, pady=5, padx=10, sticky="nesw")
 
-# Search like name
+        # Search like name
         Entry(self.filterFrame, textvariable=self.searchName, width=14).grid(
-            row=6, columnspan=2, pady=5, padx=10, sticky="nesw")
+            row=6, columnspan=2, pady=5, padx=10, sticky="nesw"
+        )
         Button(
             self.filterFrame,
             text="Search like Name",
@@ -528,9 +569,9 @@ class GUI(object):
             command=self.__search_like_name,
         ).grid(row=7, columnspan=2, pady=5, padx=10, sticky="nesw")
 
-#
-# This is were we have the test button
-#
+        #
+        # This is were we have the test button
+        #
         Button(
             self.filterFrame,
             text="Trader Editor",
@@ -539,7 +580,8 @@ class GUI(object):
         ).grid(row=8, columnspan=2, pady=5, padx=10, sticky="nesw")
 
         Entry(self.filterFrame, textvariable=self.worldName, width=14).grid(
-            row=9, columnspan=2, pady=5, padx=10, sticky="nesw")
+            row=9, columnspan=2, pady=5, padx=10, sticky="nesw"
+        )
 
         Button(
             self.filterFrame,
@@ -554,26 +596,37 @@ class GUI(object):
             width=14,
             command=self.donate,
         ).grid(row=11, columnspan=2, pady=5, padx=10, sticky="nesw")
-# Normal Distribution block
+
+    # Normal Distribution block
 
     def __create_distribution_block(self):
         self.distribution = LabelFrame(
-            self.filterFrameHolder, width=14, text="Nominal Distribution")
+            self.filterFrameHolder, width=14, text="Nominal Distribution"
+        )
         self.distribution.grid(row=2, column=1, pady=5)
-        Label(self.distribution, text="By Displayed Items").grid(
-            row=0, columnspan=2)
-        Label(self.distribution, text="Target Nominal").grid(
-            row=1, columnspan=2)
+        Label(self.distribution, text="By Displayed Items").grid(row=0, columnspan=2)
+        Label(self.distribution, text="Target Nominal").grid(row=1, columnspan=2)
         self.desiredNomEntry = Entry(
             self.distribution, textvariable=self.totalNumDisplayed, width=14
         ).grid(row=2, columnspan=2, pady=7)
         self.distributorValue.set("Use Rarity")
-        Radiobutton(self.distribution, text="Use Rarity", variable=self.distributorValue,
-                    value="Use Rarity") .grid(row=3, column=0, sticky="w")
-        Radiobutton(self.distribution, text="Use Nominal", variable=self.distributorValue,
-                    value="Use Nominal").grid(row=4, column=0, sticky="w")
+        Radiobutton(
+            self.distribution,
+            text="Use Rarity",
+            variable=self.distributorValue,
+            value="Use Rarity",
+        ).grid(row=3, column=0, sticky="w")
+        Radiobutton(
+            self.distribution,
+            text="Use Nominal",
+            variable=self.distributorValue,
+            value="Use Nominal",
+        ).grid(row=4, column=0, sticky="w")
         Button(
-            self.distribution, text="Distribute", width=12, command=self.__distribute_nominal
+            self.distribution,
+            text="Distribute",
+            width=12,
+            command=self.__distribute_nominal,
         ).grid(row=5, columnspan=2, pady=10)
 
     def readexpansionworld(self, newworld):
@@ -584,42 +637,47 @@ class GUI(object):
             return world
         except Exception:
             world = dict()
-            world['m_Version'] = 4
-            world['m_FileName'] = newworld
-            world['m_ZoneName'] = newworld
-            world['DisplayName'] = newworld + " Trading Zone"
-            world['Position'] = [7500.0, 0.0, 7500.0]
-            world['Radius'] = 50000.0
+            world["m_Version"] = 4
+            world["m_FileName"] = newworld
+            world["m_ZoneName"] = newworld
+            world["DisplayName"] = newworld + " Trading Zone"
+            world["Position"] = [7500.0, 0.0, 7500.0]
+            world["Radius"] = 50000.0
             world["Stock"] = dict()
-            writeToJSONFile('./Expansion/TraderZones', newworld, world)
+            writeToJSONFile("./Expansion/TraderZones", newworld, world)
             return world
 
     def expansionTrader(self):
         newworld = str(self.worldName.get()).lower()
         world = self.readexpansionworld(newworld)
         TRADER_NAME = simpledialog.askstring(
-            title="Trader Name", prompt="What's the name of the Trader?: ")
+            title="Trader Name", prompt="What's the name of the Trader?: "
+        )
         trader = dict()
-        trader['m_Version'] = 4
-        trader['m_FileName'] = TRADER_NAME.upper()
-        trader['TraderName'] = TRADER_NAME.upper()
-        trader['DisplayName'] = "#STR_EXPANSION_MARKET_"+TRADER_NAME.upper()
-        trader['Currencies'] = ["expansiongoldbar", "expansiongoldnugget",
-                                "expansionsilverbar", "expansionsilvernugget"]
+        trader["m_Version"] = 4
+        trader["m_FileName"] = TRADER_NAME.upper()
+        trader["TraderName"] = TRADER_NAME.upper()
+        trader["DisplayName"] = "#STR_EXPANSION_MARKET_" + TRADER_NAME.upper()
+        trader["Currencies"] = [
+            "expansiongoldbar",
+            "expansiongoldnugget",
+            "expansionsilverbar",
+            "expansionsilvernugget",
+        ]
         # trader['Items'] = []
 
-        trader['Items'] = dict()
+        trader["Items"] = dict()
         to_append = dict()
         to_append["Stock"] = dict()
         for items in self.treeView.selection():
             item = self.treeView.item(items)
-            item_name = (item['values'][0])
+            item_name = item["values"][0]
 
-            trader['Items'].update({item_name: 1})
+            trader["Items"].update({item_name: 1})
             to_append["Stock"].update({item_name: 250})
-        writeToJSONFile('./Expansion/Traders', TRADER_NAME.upper(), trader)
+        writeToJSONFile("./Expansion/Traders", TRADER_NAME.upper(), trader)
         world["Stock"].update(to_append["Stock"])
-        writeToJSONFile('./Expansion/TraderZones', newworld, world)
+        writeToJSONFile("./Expansion/TraderZones", newworld, world)
 
     def donate(self):
         new = 2
@@ -635,8 +693,8 @@ class GUI(object):
         self.database.sql_dbDump()
 
     def testfunction(self):
-        print("DEBUG  : test function" + self.__filter_usage_items())
-        # test__export_xml(self)
+        print("DEBUG  : test function")
+        print(type(self.type_option_m))
 
     def apipull(self):
         apipull(self.database.session)
@@ -652,41 +710,56 @@ class GUI(object):
         exportSpawnable(self.database.session, self.gridItems)
 
     def func2assign_raritiy(self):
-        items = self.database.session.query(
-            Item).filter(Item.nominal > 0).all()
+        items = self.database.session.query(Item).filter(Item.nominal > 0).all()
         assign_rarity(items, self.database.session)
 
     def derivetypessubtypes(self):
         if self.database.get_mapselectValue(1).mapselectvalue == "Namalsk":
             for Item in self.gridItems:
                 try:
-                    for item_type, subtypes in categoriesNamalskDict.get(Item.cat_type).items():
+                    for item_type, subtypes in categoriesNamalskDict.get(
+                        Item.cat_type
+                    ).items():
                         for subtype, substrings in subtypes.items():
                             for item_substring in substrings:
-                                if item_substring in Item.name.lower() and item_substring != "":
+                                if (
+                                    item_substring in Item.name.lower()
+                                    and item_substring != ""
+                                ):
                                     Item.item_type = item_type
                                     Item.sub_type = subtype
                     if Item.cat_type in {"rifles", "pistols"}:
                         Item.cat_type = "weapons"
                 except Exception:
-                    print("DEBUG item category not found :",
-                          Item.cat_type, Item.name)
+                    print("DEBUG item category not found :", Item.cat_type, Item.name)
         else:
             for Item in self.gridItems:
                 try:
-                    for item_type, subtypes in categoriesDict.get(Item.cat_type).items():
+                    for item_type, subtypes in categoriesDict.get(
+                        Item.cat_type
+                    ).items():
                         for subtype, substrings in subtypes.items():
                             for item_substring in substrings:
-                                if item_substring in Item.name.lower() and item_substring != "":
+                                if (
+                                    item_substring in Item.name.lower()
+                                    and item_substring != ""
+                                ):
                                     Item.item_type = item_type
                                     Item.sub_type = subtype
                 except Exception:
-                    print("DEBUG item category not found :",
-                          Item.cat_type, Item.name)
+                    print("DEBUG item category not found :", Item.cat_type, Item.name)
         self.database.session.commit()
+
+    def refresh(self, option_m, option_var, new_data):
+        option_m.destroy()
+        option_m.set("")
+        option_m = option_m(filterFrame, option_var, *new_data)
+        option_m.pack()
 
     def __CatFilter__(self, selection):
         if selection != "all":
+            type_filter = self.database.get_filter_types(selection)
+            self.refresh(self.type_option_m, self.type_for_filter, type_filter)
             self.type_for_filter.set("all")
             self.sub_type_for_filter.set("all")
 
@@ -705,7 +778,8 @@ class GUI(object):
         self.moddlist = values
         self.selected_mods = [x[0] for x in self.moddlist if x[1] == 1]
         items = self.database.session.query(Item).filter(
-            Item.mod.in_(self.selected_mods))
+            Item.mod.in_(self.selected_mods)
+        )
         self.gridItems = items
         self.__populate_items(self.gridItems)
         self.__create_nominal_info()
@@ -718,7 +792,8 @@ class GUI(object):
         self.hivelist = values
         self.selected_hive = [x[0] for x in self.hivelist if x[1] == 1]
         items = self.database.session.query(Item).filter(
-            Item.hive.in_(self.selected_hive))
+            Item.hive.in_(self.selected_hive)
+        )
         self.gridItems = items
         self.__populate_items(self.gridItems)
         self.__create_nominal_info()
@@ -726,8 +801,7 @@ class GUI(object):
         self.sub_type_for_filter.set("all")
         self.cat_type_for_filter.set("all")
 
-
-# Updated to loop through selected items in the grid.
+    # Updated to loop through selected items in the grid.
     def __update_item(self):
         def __update_helper(item, field, default_value):
             value_from_update_form = getattr(self, field).get()
@@ -738,8 +812,7 @@ class GUI(object):
         for items in self.treeView.selection():
             item = self.treeView.item(items)
             id_of_interest = item["text"]
-            item_to_update = self.database.session.query(
-                Item).get(id_of_interest)
+            item_to_update = self.database.session.query(Item).get(id_of_interest)
             __update_helper(item_to_update, "nominal", -1)
             __update_helper(item_to_update, "min", -1)
             __update_helper(item_to_update, "qmin", -1)
@@ -788,7 +861,8 @@ class GUI(object):
 
     def __initiate_items(self, items=None):
         items = self.database.session.query(Item).filter(
-            Item.mod.in_(self.selected_mods))
+            Item.mod.in_(self.selected_mods)
+        )
         self.gridItems = items
         self.__populate_items(items.all())
 
@@ -798,17 +872,65 @@ class GUI(object):
 
         for idx, i in enumerate(items):
             if idx % 2 == 0:
-                self.tree.insert("", "end", text=i.id, value=[i.name, i.nominal, i.min, i.qmin, i.qmax,
-                                                              i.restock, i.lifetime, i.usage, i.tier, i.rarity, i.cat_type, i.item_type, i.sub_type,
-                                                              i.mod, i.trader, i.dynamic_event, i.count_in_hoarder, i.count_in_cargo,
-                                                              i.count_in_player, i.count_in_map], tags=('evenrow',))
+                self.tree.insert(
+                    "",
+                    "end",
+                    text=i.id,
+                    value=[
+                        i.name,
+                        i.nominal,
+                        i.min,
+                        i.qmin,
+                        i.qmax,
+                        i.restock,
+                        i.lifetime,
+                        i.usage,
+                        i.tier,
+                        i.rarity,
+                        i.cat_type,
+                        i.item_type,
+                        i.sub_type,
+                        i.mod,
+                        i.trader,
+                        i.dynamic_event,
+                        i.count_in_hoarder,
+                        i.count_in_cargo,
+                        i.count_in_player,
+                        i.count_in_map,
+                    ],
+                    tags=("evenrow",),
+                )
             else:
-                self.tree.insert("", "end", text=i.id, value=[i.name, i.nominal, i.min, i.qmin, i.qmax,
-                                                              i.restock, i.lifetime, i.usage, i.tier, i.rarity, i.cat_type, i.item_type, i.sub_type,
-                                                              i.mod, i.trader, i.dynamic_event, i.count_in_hoarder, i.count_in_cargo,
-                                                              i.count_in_player, i.count_in_map], tags=('oddrow',))
-        self.tree.tag_configure('oddrow', background='#FFFFFF')
-        self.tree.tag_configure('evenrow', background='#F5F5F5')
+                self.tree.insert(
+                    "",
+                    "end",
+                    text=i.id,
+                    value=[
+                        i.name,
+                        i.nominal,
+                        i.min,
+                        i.qmin,
+                        i.qmax,
+                        i.restock,
+                        i.lifetime,
+                        i.usage,
+                        i.tier,
+                        i.rarity,
+                        i.cat_type,
+                        i.item_type,
+                        i.sub_type,
+                        i.mod,
+                        i.trader,
+                        i.dynamic_event,
+                        i.count_in_hoarder,
+                        i.count_in_cargo,
+                        i.count_in_player,
+                        i.count_in_map,
+                    ],
+                    tags=("oddrow",),
+                )
+        self.tree.tag_configure("oddrow", background="#FFFFFF")
+        self.tree.tag_configure("evenrow", background="#F5F5F5")
 
     def __search_like_name(self):
         searchname = str(self.searchName.get()).lower()
@@ -832,24 +954,29 @@ class GUI(object):
 
         if item_type != "all":
             items = self.database.filterby_type(
-                self.selected_mods, 'item_type', item_type)
+                self.selected_mods, "item_type", item_type
+            )
         elif sub_type != "all":
             items = self.database.filterby_type(
-                self.selected_mods, 'sub_type', sub_type)
+                self.selected_mods, "sub_type", sub_type
+            )
         elif cat_type != "all":
             items = self.database.filterby_type(
-                self.selected_mods, 'cat_type', cat_type)
+                self.selected_mods, "cat_type", cat_type
+            )
         else:
             items = self.database.session.query(Item).filter(
-                Item.mod.in_(self.selected_mods))
+                Item.mod.in_(self.selected_mods)
+            )
             # Item.mod.in_(self.selected_mods)).filter(or_(*[Item.usage.contains(p) for p in self.__filter_usage_items()]))
 
         if self.__filter_usage_items() is not None:
             if self.__filter_usage_items() == ["ALL"]:
                 items = items
-            else:    
+            else:
                 items = items.filter(
-                    or_(*[Item.usage.contains(p) for p in self.__filter_usage_items()]))
+                    or_(*[Item.usage.contains(p) for p in self.__filter_usage_items()])
+                )
 
         self.gridItems = items
         self.__create_nominal_info()
@@ -870,11 +997,11 @@ class GUI(object):
             self.restock.set(-1)
             self.mod.set("")
             self.trader.set("")
-            usages = tree_row['values'][7]
+            usages = tree_row["values"][7]
             if usages != "":
                 for i in range(len(usages)):
                     self.usagesListBox.select_clear(i)
-            tiers = tree_row['values'][8]
+            tiers = tree_row["values"][8]
             if tiers != "":
                 for i in range(len(tiers)):
                     self.tiersListBox.select_clear(i)
@@ -891,37 +1018,38 @@ class GUI(object):
     def __create_nominal_info(self):
         self.infoFrame = Frame(self.window)
         self.infoFrame.grid(row=1, column=1, sticky="s,w,e")
-        Label(self.infoFrame, text="Nominal counts: ").grid(
-            row=0, column=0)
+        Label(self.infoFrame, text="Nominal counts: ").grid(row=0, column=0)
         self.totalNumDisplayed.set(self.database.getNominal(self.gridItems)[0])
         try:
-            value = self.database.getNominalByCat(
-                self.gridItems, "weapons")[0][1]
+            value = self.database.getNominalByCat(self.gridItems, "weapons")[0][1]
         except Exception:
             value = 0
         self.totalWeaponDisplayed.set(value)
         Label(self.infoFrame, text="Displayed:").grid(row=0, column=1)
-        Label(self.infoFrame, textvariable=self.totalNumDisplayed).grid(
-            row=0, column=2)
+        Label(self.infoFrame, textvariable=self.totalNumDisplayed).grid(row=0, column=2)
         i = 3
-        self.weaponNomTypes = {"ranged": 0, "ammo": 0,
-                               "optic": 0, "mag": 0, "attachment": 0}
+        self.weaponNomTypes = {
+            "ranged": 0,
+            "ammo": 0,
+            "optic": 0,
+            "mag": 0,
+            "attachment": 0,
+        }
         for item_type in list(self.weaponNomTypes):
             var = StringVar()
-            nomvar = (self.database.getNominalByType(
-                self.gridItems, item_type))
+            nomvar = self.database.getNominalByType(self.gridItems, item_type)
             self.weaponNomTypes.update(nomvar)
             var.set(self.weaponNomTypes.get(item_type))
             self.nomVars.append(var)
-            Label(self.infoFrame, text=item_type.capitalize() +
-                  ":").grid(row=0, column=i)
+            Label(self.infoFrame, text=item_type.capitalize() + ":").grid(
+                row=0, column=i
+            )
             Label(self.infoFrame, textvariable=var).grid(row=0, column=i + 1)
             i += 4
 
     def __open_db_window(self):
         DB(self.window)
         self.__init__(self.window)
-
 
     def __import_link_window(self):
         LinkItem(self.window)
@@ -934,7 +1062,8 @@ class GUI(object):
     def __open_items_window(self):
         NewItems(self.window)
         items = self.database.session.query(Item).filter(
-            Item.mod.in_(self.selected_mods))
+            Item.mod.in_(self.selected_mods)
+        )
         self.gridItems = items
         self.__populate_items(items.all())
         self.updateAllMods(self.mods_menu)
@@ -945,7 +1074,8 @@ class GUI(object):
             # mapname = self.database.get_mapselectValue(1).mapselectvalue
             xml_writer = XMLWriter(filename=file.name)
             items = self.database.session.query(Item).filter(
-                Item.mod.in_(self.selected_mods))
+                Item.mod.in_(self.selected_mods)
+            )
             xml_writer.export_xml(items, mapname)
 
     def __export_mod_xml(self):
@@ -954,30 +1084,30 @@ class GUI(object):
         mapname = "Normal Map"
         for i in self.selected_mods:
             if self.output_dir != "":
-                Output = self.output_dir + "/" + i+".xml"
+                Output = self.output_dir + "/" + i + ".xml"
                 print(Output)
                 xml_writer = XMLWriter(Output)
-                items = self.database.session.query(Item).filter(
-                    Item.mod.contains(i))
+                items = self.database.session.query(Item).filter(Item.mod.contains(i))
                 xml_writer.export_xml(items, mapname)
 
     def tree_view_sort_column(self, tv, col, reverse):
-        col_sort = [(tv.set(k, col), k) for k in tv.get_children('')]
+        col_sort = [(tv.set(k, col), k) for k in tv.get_children("")]
         try:
             col_sort.sort(key=lambda t: int(t[0]), reverse=reverse)
         except ValueError:
             col_sort.sort(reverse=reverse)
         for index, (val, k) in enumerate(col_sort):
-            tv.move(k, '', index)
-        tv.heading(col, command=lambda: self.tree_view_sort_column(
-            tv, col, not reverse))
+            tv.move(k, "", index)
+        tv.heading(
+            col, command=lambda: self.tree_view_sort_column(tv, col, not reverse)
+        )
 
     def __distribute_nominal(self):
         distribute_nominal(
             self.database,
             self.gridItems.filter(Item.nominal > 0),
             self.totalNumDisplayed.get(),
-            self.distributorValue.get()
+            self.distributorValue.get(),
         )
         self.__populate_items(self.gridItems)
 
@@ -988,8 +1118,9 @@ class GUI(object):
         init_database(self.config.get_database())
         items = self.database.search_like_name("ammobox")
         for item in items:
-            exists = self.database.session.query(
-                Ammobox).filter_by(name=item.name).first()
+            exists = (
+                self.database.session.query(Ammobox).filter_by(name=item.name).first()
+            )
             if not exists:
                 x = 0
                 if "rnd" in item.name.lower():
