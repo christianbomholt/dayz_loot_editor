@@ -41,7 +41,6 @@ class Item(Base):
     max_stock = Column(Integer, nullable=True)
     hive = Column(String, default="Base_Hive")
 
-
     def __repr__(self):
         return f"Items(id={self.id},name={self.name},nominal={self.nominal},min={self.min},qmin={self.qmin},qmax={self.qmax},restock={self.restock},\
         lifetime={self.lifetime},usage={self.usage},tier={self.tier},rarity={self.rarity},cat_type={self.cat_type},\

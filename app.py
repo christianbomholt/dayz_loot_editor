@@ -505,12 +505,28 @@ class GUI(object):
         Label(self.filterFrame, text="Category").grid(row=1, column=0, sticky="w")
         Label(self.filterFrame, text="Item type").grid(row=2, column=0, sticky="w")
         Label(self.filterFrame, text="Sub type").grid(row=3, column=0, sticky="w")
-
         self.__create_distribution_block()
-        # self.__create_weapon_distribution_block()
+
         cat_filter = self.database.get_all_types("cat_type")
         type_filter = self.database.get_all_types("item_type")
         subtype_filter = self.database.get_all_types("sub_type")
+
+        def update_options_type(*args):
+            type_filter = self.database.get_filter_types(self.cat_type_for_filter.get())
+            self.type_for_filter.set('all')
+            menu = self.type_option_m['menu']
+            menu.delete(0, 'end')
+            for types in type_filter:
+                menu.add_command(label=types, command=lambda nation=types: self.type_for_filter.set(nation))
+
+        def update_options_subtype(*args):
+            sub_type_for_filter = self.database.get_filter_subtypes(self.type_for_filter.get())
+            self.sub_type_for_filter.set('all')
+            menu = self.suptype_option_m['menu']
+            menu.delete(0, 'end')
+            for types in sub_type_for_filter:
+                menu.add_command(label=types, command=lambda nation=types: self.get_filter_subtypes.set(nation))
+
 
         # Category
         self.cat_type_for_filter = StringVar()
@@ -522,6 +538,8 @@ class GUI(object):
             command=self.__CatFilter__,
         ).grid(row=1, column=1, sticky="w", padx=5)
 
+        self.cat_type_for_filter.trace('w', update_options_type)
+
         # Item_type
         self.type_for_filter = StringVar()
         self.type_for_filter.set("all")
@@ -530,7 +548,9 @@ class GUI(object):
             self.type_for_filter,
             *type_filter,
             command=self.__TypeFilter__,
-        ).grid(row=2, column=1, sticky="w", padx=5)
+        )
+        self.type_option_m.grid(row=2, column=1, sticky="w", padx=5)
+        self.type_for_filter.trace('w', update_options_subtype)
 
         # Sub_type
         self.sub_type_for_filter = StringVar()
@@ -540,7 +560,8 @@ class GUI(object):
             self.sub_type_for_filter,
             *subtype_filter,
             command=self.__SubTypeFilter__,
-        ).grid(row=3, column=1, sticky="w", padx=5)
+        )
+        self.suptype_option_m.grid(row=3, column=1, sticky="w", padx=5)
 
         # Usage_Flag
         self.usage_for_filter = StringVar(value=self.database.get_all_usage("usage"))
@@ -751,15 +772,13 @@ class GUI(object):
         self.database.session.commit()
 
     def refresh(self, option_m, option_var, new_data):
-        option_m.destroy()
-        option_m.set("")
+        # option_m.destroy()
+        # option_m.set("")
         option_m = option_m(self.filterFrame, option_var, *new_data)
-        option_m.pack()
+        # option_m.pack()
 
     def __CatFilter__(self, selection):
         if selection != "all":
-            type_filter = self.database.get_filter_types(selection)
-            self.refresh(self.type_option_m, self.type_for_filter, type_filter)
             self.type_for_filter.set("all")
             self.sub_type_for_filter.set("all")
 
@@ -968,8 +987,6 @@ class GUI(object):
             items = self.database.session.query(Item).filter(
                 Item.mod.in_(self.selected_mods)
             )
-            # Item.mod.in_(self.selected_mods)).filter\
-            # (or_(*[Item.usage.contains(p) for p in self.__filter_usage_items()]))
 
         if self.__filter_usage_items() is not None:
             if self.__filter_usage_items() == ["ALL"]:
