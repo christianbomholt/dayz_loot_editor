@@ -31,7 +31,7 @@ class Dao(object):
 
         try:
             sql_String = f"ALTER TABLE items ADD COLUMN hive STRING DEFAULT 'Base_Hive'"
-                       # f"SELECT name FROM sqlite_master WHERE type='table' AND name='items'"
+            # f"SELECT name FROM sqlite_master WHERE type='table' AND name='items'"
             self.session.execute(sql_String)
             self.session.commit()
             # print("DEBUG: The Column max_stock added to database")
@@ -65,18 +65,16 @@ class Dao(object):
         return item
 
 # Used in a different filters
-
-    def get_filter_types(self,cat):
+    def get_filter_types(self, cat):
         print("Debug: " + cat)
         search = f'%{cat}%'
-        result = self.session\
-                        .query(Item)\
-                        .distinct(Item.item_type)\
-                        .filter(Item.cat_type.like(search)).all()
+        result = self.session.query(
+            Item).distinct(Item.item_type)\
+            .filter(Item.cat_type.like(search)).all()
         row_list = [c.item_type for c in result if c.item_type is not None]
-        result = list(sorted(set(row_list)))                
+        result = list(sorted(set(row_list)))
         print(result)
-        return result     
+        return result
 
     def get_all_categories(self):
         result = self.session.query(Item).distinct(Item.cat_type)
@@ -89,7 +87,7 @@ class Dao(object):
 
     def get_all_usage(self, col):
         result = self.session\
-            .query(getattr(Item, col).distinct().label(col+'s'))\
+            .query(getattr(Item, col).distinct().label(col + 's'))\
             .order_by(desc(getattr(Item, col))).all()
         row_list = [c[0] for c in result if c[0] is not None]
         word_list = [i.split(',') for i in row_list]
@@ -102,7 +100,7 @@ class Dao(object):
 
     def get_all_types(self, col):
         result = self.session\
-            .query(getattr(Item, col).distinct().label(col+'s'))\
+            .query(getattr(Item, col).distinct().label(col + 's'))\
             .order_by(desc(getattr(Item, col)))
         result = [c[0] for c in result if c[0] is not None]
         result.append("all")
@@ -199,8 +197,11 @@ class Dao(object):
 
 # Used in Set prices
     def get_traderpricingtupl(self, traderSel, sub_type, selected_Mods):
-        results = self.session.query(Item.name, Item.sub_type, Item.traderCat, Item.buyprice, Item.sellprice, Item.rarity, Item.nominal, Item.traderExclude,
-                                     Item.mod, Item.min_stock, Item.max_stock).filter(and_(Item.trader == (traderSel), Item.sub_type == (sub_type), Item.mod.in_(selected_Mods))).all()
+        results = self.session.query(
+            Item.name, Item.sub_type, Item.traderCat,
+            Item.buyprice, Item.sellprice, Item.rarity, Item.nominal,
+            Item.traderExclude, Item.mod, Item.min_stock, Item.max_stock).filter(and_(Item.trader == (traderSel),
+            Item.sub_type == (sub_type), Item.mod.in_(selected_Mods))).all()
         return results
 
 # Used in Set prices

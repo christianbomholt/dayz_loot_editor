@@ -753,7 +753,7 @@ class GUI(object):
     def refresh(self, option_m, option_var, new_data):
         option_m.destroy()
         option_m.set("")
-        option_m = option_m(filterFrame, option_var, *new_data)
+        option_m = option_m(self.filterFrame, option_var, *new_data)
         option_m.pack()
 
     def __CatFilter__(self, selection):
@@ -968,7 +968,8 @@ class GUI(object):
             items = self.database.session.query(Item).filter(
                 Item.mod.in_(self.selected_mods)
             )
-            # Item.mod.in_(self.selected_mods)).filter(or_(*[Item.usage.contains(p) for p in self.__filter_usage_items()]))
+            # Item.mod.in_(self.selected_mods)).filter\
+            # (or_(*[Item.usage.contains(p) for p in self.__filter_usage_items()]))
 
         if self.__filter_usage_items() is not None:
             if self.__filter_usage_items() == ["ALL"]:
