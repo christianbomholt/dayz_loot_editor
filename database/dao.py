@@ -87,8 +87,6 @@ class Dao(object):
         result.append("all")
         return result
 
-
-
     def get_all_categories(self):
         result = self.session.query(Item).distinct(Item.cat_type)
         result = [c[0] for c in result if c[0] is not None]
@@ -213,8 +211,8 @@ class Dao(object):
         results = self.session.query(
             Item.name, Item.sub_type, Item.traderCat,
             Item.buyprice, Item.sellprice, Item.rarity, Item.nominal,
-            Item.traderExclude, Item.mod, Item.min_stock, Item.max_stock).filter(and_(Item.trader == (traderSel),
-            Item.sub_type == (sub_type), Item.mod.in_(selected_Mods))).all()
+            Item.traderExclude, Item.mod, Item.min_stock, Item.max_stock).filter(
+            and_(Item.trader == (traderSel), Item.sub_type == (sub_type), Item.mod.in_(selected_Mods))).all()
         return results
 
 # Used in Set prices

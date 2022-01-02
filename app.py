@@ -48,6 +48,8 @@ class GUI(object):
         self.moddict = {}
         self.modcount = 0
         self.moddlist = []
+        self.import_mods = self.config.get_import_mod()
+        print(self.import_mods)
         self.selected_hive = []
         self.hivedict = {}
         self.hivecount = 0
@@ -109,6 +111,7 @@ class GUI(object):
         self.__selectmodsfunction___()
 
     def initAllMods(self, menu):
+
         for mod in self.database.get_all_types("mod"):
             if mod != "all":
                 self.modcount += 1
@@ -373,9 +376,12 @@ class GUI(object):
         )
         self.rarityOption.grid(row=12, column=1, sticky="w", pady=5)
 
+        self.mod_select_list = list(set(self.import_mods + self.database.get_all_types("mod")[:-1]))
+
         self.modOption = OptionMenu(
-            self.entryFrame, self.mod, *self.database.get_all_types("mod")[:-1]
+            self.entryFrame, self.mod, *self.mod_select_list
         )
+
         self.modOption.grid(row=13, column=1, sticky="w", pady=5)
 
         self.traderOption = OptionMenu(
@@ -526,7 +532,6 @@ class GUI(object):
             menu.delete(0, 'end')
             for types in sub_type_for_filter:
                 menu.add_command(label=types, command=lambda nation=types: self.get_filter_subtypes.set(nation))
-
 
         # Category
         self.cat_type_for_filter = StringVar()
@@ -770,12 +775,6 @@ class GUI(object):
                 except Exception:
                     print("DEBUG item category not found :", Item.cat_type, Item.name)
         self.database.session.commit()
-
-    def refresh(self, option_m, option_var, new_data):
-        # option_m.destroy()
-        # option_m.set("")
-        option_m = option_m(self.filterFrame, option_var, *new_data)
-        # option_m.pack()
 
     def __CatFilter__(self, selection):
         if selection != "all":

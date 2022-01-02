@@ -40,6 +40,12 @@
         <hive value="Extra_Hive" />
     </hives>
 
+    <import_mods>
+	    <import_mod value="ZT_tents" />
+        <import_mod value="MassManyItems" />
+        <import_mod value="Vanilla" />
+    </import_mods>
+
 
     <traders>
 	    <trader value="Trader 1" />

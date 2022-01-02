@@ -52,12 +52,12 @@ class ConfigManager(object):
         tiers.append("None")
         return tiers
 
-    def get_mods(self):
-        mod_list = self.config_file.getElementsByTagName("mod")
-        mods = list()
+    def get_import_mod(self):
+        mod_list = self.config_file.getElementsByTagName("import_mod")
+        import_mods = list()
         for i in mod_list:
-            mods.append(i.attributes["value"].value)
-        return mods
+            import_mods.append(i.attributes["value"].value)
+        return import_mods
 
     def get_hive(self):
         hive_list = self.config_file.getElementsByTagName("hive")
