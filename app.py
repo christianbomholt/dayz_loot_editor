@@ -480,25 +480,29 @@ class GUI(object):
         self.__create_distribution_block()
         # self.__create_weapon_distribution_block()
 
+        cat_filter = self.database.get_all_types("cat_type")
+        type_filter = self.database.get_all_types("item_type")
+        subtype_filter = self.database.get_all_types("sub_type")
+
 # Category
         self.cat_type_for_filter = StringVar()
         self.cat_type_for_filter.set("all")
         OptionMenu(
-            self.filterFrame, self.cat_type_for_filter, *self.database.get_all_types("cat_type"), command=self.__CatFilter__
+            self.filterFrame, self.cat_type_for_filter, *cat_filter, command=self.__CatFilter__
         ).grid(row=1, column=1,  sticky="w", padx=5)
 
 # Item_type
         self.type_for_filter = StringVar()
         self.type_for_filter.set("all")
         OptionMenu(
-            self.filterFrame, self.type_for_filter, *self.database.get_all_types("item_type"), command=self.__TypeFilter__
+            self.filterFrame, self.type_for_filter, *type_filter, command=self.__TypeFilter__
         ).grid(row=2, column=1, sticky="w", padx=5)
 
 # Sub_type
         self.sub_type_for_filter = StringVar()
         self.sub_type_for_filter.set("all")
         OptionMenu(
-            self.filterFrame, self.sub_type_for_filter, *self.database.get_all_types("sub_type"), command=self.__SubTypeFilter__
+            self.filterFrame, self.sub_type_for_filter, *subtype_filter, command=self.__SubTypeFilter__
         ).grid(row=3, column=1, sticky="w", padx=5)
 
 # Usage_Flag
