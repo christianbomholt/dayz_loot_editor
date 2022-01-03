@@ -23,10 +23,6 @@ numpy = "^1.21.1"
 requests = "^2.26.0"
 
 
-[flake8]
-max-line-length = 120
-extend-ignore = E203
-
 [tool.poetry.dev-dependencies]
 
 [tool.poetry.scripts]
