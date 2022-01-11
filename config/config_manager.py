@@ -1,10 +1,12 @@
 from xml.dom import minidom
 import xml.etree.ElementTree as ET
+import os
 
 
 class ConfigManager(object):
     def __init__(self, config_file):
         self.cofig_name = config_file
+        print(os.getcwd())
         self.config_file = minidom.parse(config_file)
 
     def get_usages(self):

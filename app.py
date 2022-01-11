@@ -518,7 +518,12 @@ class GUI(object):
         subtype_filter = self.database.get_all_types("sub_type")
 
         def update_options_type(*args):
-            type_filter = self.database.get_filter_types(self.cat_type_for_filter.get())
+            if self.cat_type_for_filter.get() == "all":
+                type_filter = self.database.get_all_types("item_type")
+            else:
+                type_filter = self.database.get_filter_types(
+                    self.cat_type_for_filter.get()
+                )
             self.type_for_filter.set("all")
             menu = self.type_option_m["menu"]
             menu.delete(0, "end")
@@ -529,16 +534,21 @@ class GUI(object):
                 )
 
         def update_options_subtype(*args):
-            sub_type_for_filter = self.database.get_filter_subtypes(
-                self.type_for_filter.get()
-            )
+            if self.type_for_filter.get() == "all":
+                sub_type_for_filter = self.database.get_all_types("sub_type")
+            else:
+                sub_type_for_filter = self.database.get_filter_subtypes(
+                    self.type_for_filter.get()
+                )
+
             self.sub_type_for_filter.set("all")
             menu = self.suptype_option_m["menu"]
             menu.delete(0, "end")
-            for types in sub_type_for_filter:
+
+            for elem in sub_type_for_filter:
                 menu.add_command(
-                    label=types,
-                    command=lambda nation=types: self.get_filter_subtypes.set(nation),
+                    label=elem,
+                    command=lambda nation=elem: self.sub_type_for_filter.set(nation),
                 )
 
         # Category
@@ -551,7 +561,7 @@ class GUI(object):
             command=self.__CatFilter__,
         ).grid(row=1, column=1, sticky="w", padx=5)
 
-        # self.cat_type_for_filter.trace("w", update_options_type)
+        self.cat_type_for_filter.trace("w", update_options_type)
 
         # Item_type
         self.type_for_filter = StringVar()
@@ -563,7 +573,7 @@ class GUI(object):
             command=self.__TypeFilter__,
         )
         self.type_option_m.grid(row=2, column=1, sticky="w", padx=5)
-        # self.type_for_filter.trace("w", update_options_subtype)
+        self.type_for_filter.trace("w", update_options_subtype)
 
         # Sub_type
         self.sub_type_for_filter = StringVar()
@@ -795,6 +805,7 @@ class GUI(object):
             self.sub_type_for_filter.set("all")
 
     def __SubTypeFilter__(self, selection):
+        print("Debug: subtypefilter: " + selection)
         if selection != "all":
             self.cat_type_for_filter.set("all")
             self.type_for_filter.set("all")
