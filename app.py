@@ -598,20 +598,32 @@ class GUI(object):
         )
         self.LB_usage_filter.grid(row=4, columnspan=2, sticky="w", padx=5)
 
+        # Tiers_Filter
+        self.tier_for_filter = StringVar(value=self.database.get_all_tier("tier"))
+
+        self.LB_tier_filter = Listbox(
+            self.filterFrame,
+            height=4,
+            listvariable=self.tier_for_filter,
+            selectmode="extended",
+            exportselection=False,
+        )
+        self.LB_tier_filter.grid(row=5, columnspan=2, sticky="w", padx=5)
+
         Button(
             self.filterFrame, text="Filter", width=12, command=self.__filter_items
-        ).grid(row=5, columnspan=2, pady=5, padx=10, sticky="nesw")
+        ).grid(row=6, columnspan=2, pady=5, padx=10, sticky="nesw")
 
         # Search like name
         Entry(self.filterFrame, textvariable=self.searchName, width=14).grid(
-            row=6, columnspan=2, pady=5, padx=10, sticky="nesw"
+            row=7, columnspan=2, pady=5, padx=10, sticky="nesw"
         )
         Button(
             self.filterFrame,
             text="Search like Name",
             width=14,
             command=self.__search_like_name,
-        ).grid(row=7, columnspan=2, pady=5, padx=10, sticky="nesw")
+        ).grid(row=8, columnspan=2, pady=5, padx=10, sticky="nesw")
 
         #
         # This is were we have the test button
@@ -621,10 +633,10 @@ class GUI(object):
             text="Trader Editor",
             width=14,
             command=self.openTraderEditor,
-        ).grid(row=8, columnspan=2, pady=5, padx=10, sticky="nesw")
+        ).grid(row=9, columnspan=2, pady=5, padx=10, sticky="nesw")
 
         Entry(self.filterFrame, textvariable=self.worldName, width=14).grid(
-            row=9, columnspan=2, pady=5, padx=10, sticky="nesw"
+            row=10, columnspan=2, pady=5, padx=10, sticky="nesw"
         )
 
         Button(
@@ -632,14 +644,14 @@ class GUI(object):
             text="Expansion Trader",
             width=14,
             command=self.expansionTrader,
-        ).grid(row=10, columnspan=2, pady=5, padx=10, sticky="nesw")
+        ).grid(row=11, columnspan=2, pady=5, padx=10, sticky="nesw")
 
         Button(
             self.filterFrame,
             text="Donate !",
             width=14,
             command=self.donate,
-        ).grid(row=11, columnspan=2, pady=5, padx=10, sticky="nesw")
+        ).grid(row=12, columnspan=2, pady=5, padx=10, sticky="nesw")
 
     # Normal Distribution block
 
@@ -983,11 +995,18 @@ class GUI(object):
             usagelst.append(self.LB_usage_filter.get(i))
             return usagelst
 
+    def __filter_tier_items(self):
+        tierlst = []
+        for i in self.LB_tier_filter.curselection():
+            tierlst.append(self.LB_tier_filter.get(i))
+            return tierlst
+
     def __filter_items(self):
         item_type = self.type_for_filter.get()
         sub_type = self.sub_type_for_filter.get()
         cat_type = self.cat_type_for_filter.get()
         self.LB_usage_filter.get(0)
+        self.LB_tier_filter.get(0)
 
         if item_type != "all":
             items = self.database.filterby_type(
@@ -1013,7 +1032,14 @@ class GUI(object):
                 items = items.filter(
                     or_(*[Item.usage.contains(p) for p in self.__filter_usage_items()])
                 )
+        if self.__filter_tier_items() is not None:
+            if self.__filter_tier_items() == ["ALL"]:
+                items = items
+            else:
 
+                items = items.filter(
+                    or_(*[Item.tier.contains(p) for p in self.__filter_tier_items()])
+                )
         self.gridItems = items
         self.__create_nominal_info()
         self.__populate_items(items.all())

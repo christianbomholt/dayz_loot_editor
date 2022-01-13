@@ -120,6 +120,20 @@ class Dao(object):
         # unique_word_list.append("all")
         return unique_word_list
 
+    def get_all_tier(self, col):
+        result = (
+            self.session.query(getattr(Item, col).distinct().label(col + "s"))
+            .order_by(desc(getattr(Item, col)))
+            .all()
+        )
+        row_list = [c[0] for c in result if c[0] is not None]
+        word_list = [i.split(",") for i in row_list]
+        flattened_word_list = Dao.flatten(word_list)
+        unique_word_list = list(sorted(set(flattened_word_list)))
+        unique_word_list = list(filter(lambda x: x != "", unique_word_list))
+        unique_word_list.insert(0, "ALL")
+        return unique_word_list
+
     def get_all_types(self, col):
         result = self.session.query(
             getattr(Item, col).distinct().label(col + "s")
