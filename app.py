@@ -49,7 +49,6 @@ class GUI(object):
         self.modcount = 0
         self.moddlist = []
         self.import_mods = self.config.get_import_mod()
-        print(self.import_mods)
         self.selected_hive = []
         self.hivedict = {}
         self.hivecount = 0
@@ -852,9 +851,14 @@ class GUI(object):
 
     # Updated to loop through selected items in the grid.
     def __update_item(self):
+        # get filter values from UI
+        usage_filter = self.LB_usage_filter.curselection()
+        tier_filter = self.LB_tier_filter.curselection()
+
         def __update_helper(item, field, default_value):
             value_from_update_form = getattr(self, field).get()
             if value_from_update_form != default_value:
+
                 # print("__update_item  :", value_from_update_form, default_value)
                 setattr(item, field, value_from_update_form)
 
@@ -899,7 +903,10 @@ class GUI(object):
                 setattr(item_to_update, "tier", "")
             self.database.session.commit()
         self.__populate_items(self.gridItems)
-        self.__init__(window)
+        self.__filter_items()
+        self.__create_entry_frame()
+        self.__reset_entry_frame()
+        # self.__init__(window)
 
     def __delete_item(self):
         for items in self.treeView.selection():
@@ -1036,13 +1043,37 @@ class GUI(object):
             if self.__filter_tier_items() == ["ALL"]:
                 items = items
             else:
-
                 items = items.filter(
-                    or_(*[Item.tier.contains(p) for p in self.__filter_tier_items()])
+                    or_(
+                        *[
+                            or_(Item.tier.contains(p + ","), Item.tier == p)
+                            for p in self.__filter_tier_items()
+                        ]
+                    )
                 )
         self.gridItems = items
         self.__create_nominal_info()
         self.__populate_items(items.all())
+
+    def __reset_entry_frame(self):
+        self.name.set("")
+        self.nominal.set(-1)
+        self.min.set(-1)
+        self.qmin.set(-1)
+        self.qmax.set(-1)
+        self.lifetime.set(-1)
+        self.restock.set(-1)
+        self.mod.set("")
+        self.trader.set("")
+        self.rarity.set("")
+        self.cat_type.set("")
+        self.item_type.set("")
+        self.sub_type.set("")
+        self.dynamic_event.set(-1)
+        self.count_in_hoarder.set(-1)
+        self.count_in_cargo.set(-1)
+        self.count_in_map.set(-1)
+        self.count_in_player.set(-1)
 
     def __fill_entry_frame(self, event):
         tree_row = self.tree.item(self.tree.focus())
