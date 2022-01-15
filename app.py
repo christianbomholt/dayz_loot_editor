@@ -852,9 +852,6 @@ class GUI(object):
     # Updated to loop through selected items in the grid.
     def __update_item(self):
         # get filter values from UI
-        usage_filter = self.LB_usage_filter.curselection()
-        tier_filter = self.LB_tier_filter.curselection()
-
         def __update_helper(item, field, default_value):
             value_from_update_form = getattr(self, field).get()
             if value_from_update_form != default_value:
@@ -1079,6 +1076,7 @@ class GUI(object):
         tree_row = self.tree.item(self.tree.focus())
         id = tree_row["text"]
         item = self.database.get_item(id)
+        print("DEBUG: " + str(self.tree.index(self.tree.selection())))
         if item:
             self.id.set(id)
             self.name.set(item.name)
