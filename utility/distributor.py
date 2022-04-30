@@ -3,8 +3,7 @@ import numpy as np
 from model.item import Item, LinkBulletMag, LinkBullets, LinkMags, Magazines, Bullets
 
 
-class KMeans():
-
+class KMeans:
     def __init__(self, n_clusters, max_iter):
 
         self.n_clusters = n_clusters
@@ -19,14 +18,15 @@ class KMeans():
 
     def closest_centroid(self, points, centroids):
         """returns an array containing the index to the nearest centroid for each point"""
-        distances = np.sqrt(
-            ((points - centroids[:, np.newaxis])**2).sum(axis=2))
+        distances = np.sqrt(((points - centroids[:, np.newaxis]) ** 2).sum(axis=2))
         print(distances.shape)
         return np.argmin(distances, axis=0)
 
     def move_centroids(self, points, closest, centroids):
         """returns the new centroids assigned from the points closest to them"""
-        return np.array([points[closest == k].mean(axis=0) for k in range(centroids.shape[0])])
+        return np.array(
+            [points[closest == k].mean(axis=0) for k in range(centroids.shape[0])]
+        )
 
     def fit(self, items):
         centroids = self.initialize_centroids(items, self.n_clusters)
@@ -40,20 +40,15 @@ class KMeans():
 
 def assign_rarity(items, session):
     kmeans = KMeans(
-        n_clusters=9,
+        n_clusters=10,
         max_iter=10,
     )
     items_nominal = [item.nominal for item in items]
     items_nominal = np.array(items_nominal)
     items_nominal.shape = [len(items_nominal), 1]
-    # print(items_nominal)
     kmeans.fit(items_nominal)
-    print(kmeans.cluster_centers_)
-    print(kmeans.labels_)
-    labels = [sorted(kmeans.cluster_centers_).index(x)
-              for x in kmeans.cluster_centers_]
-    index = [list(kmeans.cluster_centers_).index(x)
-             for x in kmeans.cluster_centers_]
+    labels = [sorted(kmeans.cluster_centers_).index(x) for x in kmeans.cluster_centers_]
+    index = [list(kmeans.cluster_centers_).index(x) for x in kmeans.cluster_centers_]
     mapping = dict(zip(index, labels))
     print(mapping)
     rarities = {
@@ -65,18 +60,28 @@ def assign_rarity(items, session):
         5: "Uncommon",
         6: "Common",
         7: "Very Common",
-        8: "All Over The Place"
+        8: "All Over The Place",
     }
     # Just for clarity
     mapped_label = [mapping[x] for x in index]
     mapped_rarity = [rarities[x] for x in mapped_label]
     print(mapped_label)
     print(mapped_rarity)
-    [print(f"An item with a nominal of ~{x[0]} will have a rarity of {y}") for x, y in zip(
-        kmeans.cluster_centers_, mapped_rarity)]
+    [
+        print(f"An item with a nominal of ~{x[0]} will have a rarity of {y}")
+        for x, y in zip(kmeans.cluster_centers_, mapped_rarity)
+    ]
     derived_rarities = [rarities[mapping[x]] for x in kmeans.labels_]
     for item, rarity in zip(items, derived_rarities):
         item.rarity = rarity
+    session.commit()
+
+
+def assign_NotInCE(items, session):
+    print("In the function")
+    for item in items:
+        if item.nominal == 0 and item.min == 0:
+            item.rarity = "Not in CE"
     session.commit()
 
 
@@ -84,66 +89,62 @@ def distribute_nominal(database, items, totalNumDisplayed, distributorValue):
     rarities = {
         "undefined": 1,
         "Legendary": 1,
-        "Extremely Rare": 1.5,
-        "Very Rare": 2,
-        "Rare": 2.5,
-        "Somewhat Rare": 3,
-        "Uncommon": 5,
-        "Common": 8,
-        "Very Common": 12,
-        "All Over The Place": 20
+        "Extremely Rare": 2,
+        "Very Rare": 3,
+        "Rare": 4,
+        "Somewhat Rare": 5,
+        "Uncommon": 7,
+        "Common": 10,
+        "Very Common": 15,
+        "All Over The Place": 20,
     }
     targetNominal = int(totalNumDisplayed)
     if distributorValue == "Use Rarity":
         for item in items:
             multiplier = rarities.get(item.rarity)
-            item.nominal = round(item.nominal*multiplier)
+            # item.nominal = round(item.nominal * multiplier)
+            item.nominal = multiplier
     currentNominal = database.getNominal(items)[0]
-    ratio = targetNominal/currentNominal
-    for item in items:
-        item.nominal = max(round(item.nominal*ratio), 1)
-        item.min = max(round(item.min*ratio), 1)
+    if targetNominal != currentNominal:
+        ratio = targetNominal / currentNominal
+        for item in items:
+            item.nominal = max(round(item.nominal * ratio), 1)
+            item.min = max(round(item.nominal / 10), 1)
     database.session.commit()
 
 
 def get_bullet(mag_name, session):
-    return session.query(
-        Bullets
-    ).filter(
-        Magazines.name == mag_name,
-    ).filter(
-        Magazines.name == LinkBulletMag.magname
-    ).filter(
-        LinkBulletMag.bulletname == Bullets.name
-    ).first()
+    return (
+        session.query(Bullets)
+        .filter(
+            Magazines.name == mag_name,
+        )
+        .filter(Magazines.name == LinkBulletMag.magname)
+        .filter(LinkBulletMag.bulletname == Bullets.name)
+        .first()
+    )
 
 
 def get_bullet_by_name(name, session):
-    return session.query(
-        Bullets
-    ).filter(
-        LinkBullets.bulletname == Bullets.name
-    ).filter(
-        LinkBullets.itemname == name
-    ).first()
+    return (
+        session.query(Bullets)
+        .filter(LinkBullets.bulletname == Bullets.name)
+        .filter(LinkBullets.itemname == name)
+        .first()
+    )
 
 
 def get_mag(item_name, session):
-    return session.query(
-        Magazines
-    ).filter(
-        item_name == LinkMags.itemname
-    ).filter(
-        LinkMags.magname == Magazines.name
-    ).first()
+    return (
+        session.query(Magazines)
+        .filter(item_name == LinkMags.itemname)
+        .filter(LinkMags.magname == Magazines.name)
+        .first()
+    )
 
 
 def get_item(name, session):
-    return session.query(
-        Item
-    ).filter(
-        name == Item.name
-    ).first()
+    return session.query(Item).filter(name == Item.name).first()
 
 
 def distribute_mags_and_bullets(session, items):

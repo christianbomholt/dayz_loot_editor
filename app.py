@@ -18,6 +18,7 @@ import re
 import json
 from utility import (
     assign_rarity,
+    assign_NotInCE,
     distribute_nominal,
     column_definition,
     categoriesDict,
@@ -767,6 +768,9 @@ class GUI(object):
     def func2assign_raritiy(self):
         items = self.database.session.query(Item).filter(Item.nominal > 0).all()
         assign_rarity(items, self.database.session)
+        print("First part done")
+        items = self.database.session.query(Item).filter(Item.nominal == 0).all()
+        assign_NotInCE(items, self.database.session)
 
     def derivetypessubtypes(self):
         if self.database.get_mapselectValue(1).mapselectvalue == "Namalsk":
@@ -1076,7 +1080,6 @@ class GUI(object):
         tree_row = self.tree.item(self.tree.focus())
         id = tree_row["text"]
         item = self.database.get_item(id)
-        print("DEBUG: " + str(self.tree.index(self.tree.selection())))
         if item:
             self.id.set(id)
             self.name.set(item.name)
