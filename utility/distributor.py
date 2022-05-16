@@ -61,6 +61,7 @@ def assign_rarity(items, session):
         6: "Common",
         7: "Very Common",
         8: "All Over The Place",
+        9: "undefined",
     }
     # Just for clarity
     mapped_label = [mapping[x] for x in index]
@@ -87,7 +88,7 @@ def assign_NotInCE(items, session):
 
 def distribute_nominal(database, items, totalNumDisplayed, distributorValue):
     rarities = {
-        "undefined": 1,
+        "undefined": 0,
         "Legendary": 1,
         "Extremely Rare": 2,
         "Very Rare": 3,
