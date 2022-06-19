@@ -1,0 +1,13 @@
+{
+  "m_Version": 4,
+  "m_FileName": "",
+  "TraderName": "",
+  "DisplayName": "#STR_EXPANSION_MARKET_",
+  "Currencies": [
+    "expansiongoldbar",
+    "expansiongoldnugget",
+    "expansionsilverbar",
+    "expansionsilvernugget"
+  ],
+  "Items": {}
+}

@@ -2,6 +2,8 @@ from tkinter import Tk, Menu, IntVar, Frame, Label, StringVar, Entry, Listbox
 from tkinter import END, OptionMenu, Checkbutton, Button, Radiobutton
 from tkinter import ttk, VERTICAL, HORIZONTAL, LabelFrame, simpledialog
 
+# from pyrsistent import T
+
 from sqlalchemy.sql.expression import or_
 from config import ConfigManager
 import os.path
@@ -709,31 +711,35 @@ class GUI(object):
         TRADER_NAME = simpledialog.askstring(
             title="Trader Name", prompt="What's the name of the Trader?: "
         )
-        trader = dict()
-        trader["m_Version"] = 4
-        trader["m_FileName"] = TRADER_NAME.upper()
-        trader["TraderName"] = TRADER_NAME.upper()
-        trader["DisplayName"] = "#STR_EXPANSION_MARKET_" + TRADER_NAME.upper()
-        trader["Currencies"] = [
-            "expansiongoldbar",
-            "expansiongoldnugget",
-            "expansionsilverbar",
-            "expansionsilvernugget",
-        ]
-        # trader['Items'] = []
+        if TRADER_NAME != "":
+            trader = dict()
+            trader["m_Version"] = 7
+            trader["m_FileName"] = TRADER_NAME.upper()
+            trader["TraderName"] = TRADER_NAME.upper()
+            trader["DisplayName"] = "#STR_EXPANSION_MARKET_" + TRADER_NAME.upper()
+            trader["TraderIcon"] = "Shotgun"
+            trader["Currencies"] = [
+                "expansiongoldbar",
+                "expansiongoldnugget",
+                "expansionsilverbar",
+                "expansionsilvernugget",
+            ]
+            # trader['Items'] = []
 
-        trader["Items"] = dict()
-        to_append = dict()
-        to_append["Stock"] = dict()
-        for items in self.treeView.selection():
-            item = self.treeView.item(items)
-            item_name = item["values"][0]
+            trader["Items"] = dict()
+            to_append = dict()
+            to_append["Stock"] = dict()
+            for items in self.treeView.selection():
+                item = self.treeView.item(items)
+                item_name = item["values"][0]
 
-            trader["Items"].update({item_name: 1})
-            to_append["Stock"].update({item_name: 250})
-        writeToJSONFile("./Expansion/Traders", TRADER_NAME.upper(), trader)
-        world["Stock"].update(to_append["Stock"])
-        writeToJSONFile("./Expansion/TraderZones", newworld, world)
+                trader["Items"].update({item_name: 1})
+                to_append["Stock"].update({item_name: 250})
+            writeToJSONFile("./Expansion/Traders", TRADER_NAME.upper(), trader)
+            world["Stock"].update(to_append["Stock"])
+            writeToJSONFile("./Expansion/TraderZones", newworld, world)
+        else:
+            print("You did not enter a name of the trader")
 
     def donate(self):
         new = 2
