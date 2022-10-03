@@ -355,7 +355,7 @@ class GUI(object):
         self.cat_typeOption = OptionMenu(
             self.entryFrame,
             self.cat_type,
-            *self.database.get_all_types("cat_type")[:-1],
+            self.database.get_all_types("cat_type")[:-1],
         )
         self.cat_typeOption.grid(row=9, column=1, sticky="w", pady=5)
 
