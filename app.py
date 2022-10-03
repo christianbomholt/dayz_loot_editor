@@ -1,9 +1,6 @@
 from tkinter import Tk, Menu, IntVar, Frame, Label, StringVar, Entry, Listbox
 from tkinter import END, OptionMenu, Checkbutton, Button, Radiobutton
 from tkinter import ttk, VERTICAL, HORIZONTAL, LabelFrame, simpledialog
-
-# from pyrsistent import T
-
 from sqlalchemy.sql.expression import or_
 from config import ConfigManager
 import os.path
@@ -18,6 +15,7 @@ import tkinter.filedialog as filedialog
 import webbrowser
 import re
 import json
+
 from utility import (
     assign_rarity,
     assign_NotInCE,
@@ -34,9 +32,17 @@ from utility import (
     writeToJSONFile,
 )
 
+from loguru import logger
+
+logger.add(
+    "DayzEditor.log", rotation="1 week"
+)  # Once the file is too old, it's rotated
+
 
 class GUI(object):
     def __init__(self, main_container: Tk):
+
+        logger.info("Initiation started")
         #
         self.config = ConfigManager("config.xml")
         self.database = Dao(self.config.get_database())
@@ -87,6 +93,7 @@ class GUI(object):
             + " used for maptype: "
             + self.database.get_mapselectValue(1).mapselectvalue
         )
+        logger.info("Initiation completed")
 
     def initializeapp(self):
         self.__create_tree_view()
@@ -739,7 +746,7 @@ class GUI(object):
             world["Stock"].update(to_append["Stock"])
             writeToJSONFile("./Expansion/TraderZones", newworld, world)
         else:
-            print("You did not enter a name of the trader")
+            logger.debug("You did not enter a name of the trader")
 
     def donate(self):
         new = 2
@@ -756,6 +763,7 @@ class GUI(object):
 
     def testfunction(self):
         print("DEBUG  : test function")
+        logger.debug("Test Function")
         print(type(self.type_option_m))
 
     def apipull(self):
@@ -771,13 +779,15 @@ class GUI(object):
     def writespawnabletypes(self):
         exportSpawnable(self.database.session, self.gridItems)
 
+    @logger.catch
     def func2assign_raritiy(self):
         items = self.database.session.query(Item).filter(Item.nominal > 0).all()
         assign_rarity(items, self.database.session)
-        print("First part done")
+        logger.debug("First part done")
         items = self.database.session.query(Item).filter(Item.nominal == 0).all()
         assign_NotInCE(items, self.database.session)
 
+    @logger.catch
     def derivetypessubtypes(self):
         if self.database.get_mapselectValue(1).mapselectvalue == "Namalsk":
             for Item in self.gridItems:
@@ -796,7 +806,10 @@ class GUI(object):
                     if Item.cat_type in {"rifles", "pistols"}:
                         Item.cat_type = "weapons"
                 except Exception:
-                    print("DEBUG item category not found :", Item.cat_type, Item.name)
+                    # print("DEBUG item category not found :", Item.cat_type, Item.name)
+                    logger.debug(
+                        f"Item category not found :{Item.cat_type}, {Item.name}"
+                    )
         else:
             for Item in self.gridItems:
                 try:
@@ -812,7 +825,10 @@ class GUI(object):
                                     Item.item_type = item_type
                                     Item.sub_type = subtype
                 except Exception:
-                    print("DEBUG item category not found :", Item.cat_type, Item.name)
+                    # print("DEBUG item category not found :", Item.cat_type, Item.name)
+                    logger.debug(
+                        f"Item category not found :{Item.cat_type}, {Item.name}"
+                    )
         self.database.session.commit()
 
     def __CatFilter__(self, selection):
@@ -826,7 +842,7 @@ class GUI(object):
             self.sub_type_for_filter.set("all")
 
     def __SubTypeFilter__(self, selection):
-        print("Debug: subtypefilter: " + selection)
+        logger.debug(f"subtypefilter: {selection}")
         if selection != "all":
             self.cat_type_for_filter.set("all")
             self.type_for_filter.set("all")
@@ -860,13 +876,12 @@ class GUI(object):
         self.cat_type_for_filter.set("all")
 
     # Updated to loop through selected items in the grid.
+    @logger.catch
     def __update_item(self):
         # get filter values from UI
         def __update_helper(item, field, default_value):
             value_from_update_form = getattr(self, field).get()
             if value_from_update_form != default_value:
-
-                # print("__update_item  :", value_from_update_form, default_value)
                 setattr(item, field, value_from_update_form)
 
         for items in self.treeView.selection():
@@ -903,7 +918,7 @@ class GUI(object):
             tiers = self.tiersListBox.curselection()
             tier_values = [self.tiersListBox.get(i) for i in tiers]
             tiers = ",".join(tier_values)
-            print(tiers)
+            logger.info(f"{tiers}")
             if tiers != "" and tiers != "None":
                 setattr(item_to_update, "tier", tiers)
             elif tiers == "None":
@@ -998,7 +1013,7 @@ class GUI(object):
     def __search_like_name(self):
         searchname = str(self.searchName.get()).lower()
         if searchname != "":
-            print(searchname)
+            logger.info(f"{searchname}")
             items = self.database.search_like_name(searchname)
             self.__populate_items(items)
             self.gridItems = items
@@ -1149,6 +1164,7 @@ class GUI(object):
 
     def __open_db_window(self):
         DB(self.window)
+        logger.info("Starting Db dialog")
         self.__init__(self.window)
 
     def __import_link_window(self):
@@ -1161,6 +1177,7 @@ class GUI(object):
 
     def __open_items_window(self):
         NewItems(self.window)
+        logger.info("Starting Import Items dialog")
         items = self.database.session.query(Item).filter(
             Item.mod.in_(self.selected_mods)
         )
@@ -1170,6 +1187,7 @@ class GUI(object):
 
     def __export_xml(self, mapname):
         file = filedialog.asksaveasfile(mode="a", defaultextension=".xml")
+        logger.info("Exporting xml")
         if file != "":
             # mapname = self.database.get_mapselectValue(1).mapselectvalue
             xml_writer = XMLWriter(filename=file.name)
@@ -1185,7 +1203,7 @@ class GUI(object):
         for i in self.selected_mods:
             if self.output_dir != "":
                 Output = self.output_dir + "/" + i + ".xml"
-                print(Output)
+                logger.info(f"{Output}")
                 xml_writer = XMLWriter(Output)
                 items = self.database.session.query(Item).filter(Item.mod.contains(i))
                 xml_writer.export_xml(items, mapname)
@@ -1203,6 +1221,7 @@ class GUI(object):
         )
 
     def __distribute_nominal(self):
+        logger.info("Distribute nominal")
         distribute_nominal(
             self.database,
             self.gridItems.filter(Item.nominal > 0),
@@ -1212,9 +1231,11 @@ class GUI(object):
         self.__populate_items(self.gridItems)
 
     def openTraderEditor(self):
+        logger.info("Starting TraderEditor dialog")
         TraderEditor(self.window, self.selected_mods)
 
     def deriveammobox(self):
+        logger.info("Deriving Ammo")
         init_database(self.config.get_database())
         items = self.database.search_like_name("ammobox")
         for item in items:

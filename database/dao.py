@@ -2,6 +2,7 @@ import sqlite3
 from sqlalchemy import create_engine, and_, func, desc
 from sqlalchemy.orm import sessionmaker
 from model.item import Item, Mapselect
+from app import logger
 
 
 class Dao(object):
@@ -40,7 +41,7 @@ class Dao(object):
             self.session.commit()
             # print("DEBUG: The Column max_stock added to database")
         except Exception:
-            print("DEBUG: You are good to go")
+            logger.debug("DEBUG: You are good to go")
 
     """
     CRUD Operations related to items
