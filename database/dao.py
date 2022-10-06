@@ -2,16 +2,18 @@ import sqlite3
 from sqlalchemy import create_engine, and_, func, desc
 from sqlalchemy.orm import sessionmaker
 from model.item import Item, Mapselect
-from app import logger
+from loguru import logger
 
 
 class Dao(object):
     def __init__(self, db_name):
+
         self.db_name = db_name
         engine = create_engine(f"sqlite:///{db_name}")
         session_maker = sessionmaker()
         session_maker.configure(bind=engine)
         self.session = session_maker()
+        logger.info(f"Database initiation: {db_name}")
 
     def upgradeDB(self):
         try:

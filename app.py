@@ -4,6 +4,7 @@ from tkinter import ttk, VERTICAL, HORIZONTAL, LabelFrame, simpledialog
 from sqlalchemy.sql.expression import or_
 from config import ConfigManager
 import os.path
+import loguru
 from database.dao import Dao
 from model.item import Item, Ammobox, init_database
 from ui.db import DB
