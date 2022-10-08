@@ -2,18 +2,18 @@ import sqlite3
 from sqlalchemy import create_engine, and_, func, desc
 from sqlalchemy.orm import sessionmaker
 from model.item import Item, Mapselect
-from loguru import logger
+import logging
 
 
 class Dao(object):
     def __init__(self, db_name):
-
         self.db_name = db_name
         engine = create_engine(f"sqlite:///{db_name}")
         session_maker = sessionmaker()
         session_maker.configure(bind=engine)
         self.session = session_maker()
-        logger.info(f"Database initiation: {db_name}")
+        print(f"Database initiation: {db_name}")
+        logging.debug(f"Database initiation: {db_name}")
 
     def upgradeDB(self):
         try:
@@ -22,7 +22,7 @@ class Dao(object):
             )
             self.session.execute(sql_String)
             self.session.commit()
-            # print("DEBUG: The Column min_Stock added to database")
+            logging.debug("DEBUG: The Column min_Stock added to database")
         except Exception:
             pass
 
@@ -32,18 +32,18 @@ class Dao(object):
             )
             self.session.execute(sql_String)
             self.session.commit()
-            # print("DEBUG: The Column max_stock added to database")
+            logging.debug("DEBUG: The Column max_stock added to database")
         except Exception:
-            print("DEBUG: You are good to go")
+            logging.debug("DEBUG: You are good to go")
 
         try:
             sql_String = f"ALTER TABLE items ADD COLUMN hive STRING DEFAULT 'Base_Hive'"
             # f"SELECT name FROM sqlite_master WHERE type='table' AND name='items'"
             self.session.execute(sql_String)
             self.session.commit()
-            # print("DEBUG: The Column max_stock added to database")
+            logging.debug("DEBUG: The Column max_stock added to database")
         except Exception:
-            logger.debug("DEBUG: You are good to go")
+            logging.debug("DEBUG: You are good to go")
 
     """
     CRUD Operations related to items
@@ -72,7 +72,7 @@ class Dao(object):
 
     # Used in a different filters
     def get_filter_types(self, cat):
-        print("Debug: " + cat)
+        logging.debug("Debug: " + cat)
         search = f"%{cat}%"
         result = (
             self.session.query(Item)
@@ -86,7 +86,7 @@ class Dao(object):
         return result
 
     def get_filter_subtypes(self, types):
-        print("Debug: " + types)
+        logging.debug("Debug: " + types)
         search = f"%{types}%"
         result = (
             self.session.query(Item)
@@ -198,7 +198,7 @@ class Dao(object):
 
     # *******************Used for Filter section***********************************************
     def filterby_type(self, selected_mods, col, value):
-        print("Debug: filtering by " + col + " and: " + value)
+        logging.debug("Debug: filtering by " + col + " and: " + value)
         result = self.session.query(Item).filter(
             and_(Item.mod.in_(selected_mods)), getattr(Item, col) == value
         )
@@ -230,7 +230,7 @@ class Dao(object):
     def sql_dbDump(self):
         s = str(self.db_name).split(".")
         filename = f"../{s[0]}.sql"
-        print(filename)
+        logging.debug(filename)
         db_connection = sqlite3.connect(self.db_name)
         with open(filename, "w") as f:
             for line in db_connection.iterdump():

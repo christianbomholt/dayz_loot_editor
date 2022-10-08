@@ -1,15 +1,6 @@
-2022-10-03 05:21:13.038 | DEBUG    | __main__:__init__:43 - Initiation started
-2022-10-03 05:21:13.109 | DEBUG    | __main__:__init__:94 - Initiation completed
-2022-10-03 05:37:27.765 | INFO     | __main__:__init__:45 - Initiation started
-2022-10-03 05:37:27.838 | INFO     | __main__:__init__:96 - Initiation completed
-2022-10-03 05:43:19.578 | INFO     | __main__:__init__:45 - Initiation started
-2022-10-03 05:43:19.652 | INFO     | __main__:__init__:96 - Initiation completed
-2022-10-03 06:01:01.515 | INFO     | __main__:__init__:45 - Initiation started
-2022-10-03 19:52:06.513 | INFO     | __main__:__init__:45 - Initiation started
-2022-10-03 19:52:06.519 | INFO     | database.dao:__init__:16 - Database initiation: Chernarus1.db
-2022-10-03 19:52:06.521 | DEBUG    | database.dao:upgradeDB:46 - DEBUG: You are good to go
-2022-10-03 19:52:06.600 | INFO     | __main__:__init__:96 - Initiation completed
-2022-10-05 05:25:02.080 | INFO     | __main__:__init__:45 - Initiation started
-2022-10-05 05:25:02.086 | INFO     | database.dao:__init__:16 - Database initiation: Chernarus1.db
-2022-10-05 05:25:02.089 | DEBUG    | database.dao:upgradeDB:46 - DEBUG: You are good to go
-2022-10-05 05:25:02.163 | INFO     | __main__:__init__:96 - Initiation completed
+root - DEBUG - Initiation started
+root - DEBUG - Database initiation: Chernarus1.db
+root - DEBUG - DEBUG: You are good to go
+root - DEBUG - DEBUG: You are good to go
+root - DEBUG - Debug: vehiclesparts
+root - DEBUG - Debug: filtering by cat_type and: vehiclesparts

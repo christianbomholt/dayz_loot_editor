@@ -1,6 +1,7 @@
 # from sklearn.cluster import KMeans
 import numpy as np
 from model.item import Item, LinkBulletMag, LinkBullets, LinkMags, Magazines, Bullets
+import logging
 
 
 class KMeans:
@@ -19,7 +20,7 @@ class KMeans:
     def closest_centroid(self, points, centroids):
         """returns an array containing the index to the nearest centroid for each point"""
         distances = np.sqrt(((points - centroids[:, np.newaxis]) ** 2).sum(axis=2))
-        print(distances.shape)
+        logging.debug(distances.shape)
         return np.argmin(distances, axis=0)
 
     def move_centroids(self, points, closest, centroids):
@@ -30,7 +31,7 @@ class KMeans:
 
     def fit(self, items):
         centroids = self.initialize_centroids(items, self.n_clusters)
-        print(centroids)
+        logging.debug(centroids)
         for i in range(self.max_iter):
             closest = self.closest_centroid(items, centroids)
             centroids = self.move_centroids(items, closest, centroids)
@@ -50,7 +51,7 @@ def assign_rarity(items, session):
     labels = [sorted(kmeans.cluster_centers_).index(x) for x in kmeans.cluster_centers_]
     index = [list(kmeans.cluster_centers_).index(x) for x in kmeans.cluster_centers_]
     mapping = dict(zip(index, labels))
-    print(mapping)
+    logging.debug(mapping)
     rarities = {
         0: "Legendary",
         1: "Extremely Rare",
@@ -66,10 +67,10 @@ def assign_rarity(items, session):
     # Just for clarity
     mapped_label = [mapping[x] for x in index]
     mapped_rarity = [rarities[x] for x in mapped_label]
-    print(mapped_label)
-    print(mapped_rarity)
+    logging.debug(mapped_label)
+    logging.debug(mapped_rarity)
     [
-        print(f"An item with a nominal of ~{x[0]} will have a rarity of {y}")
+        logging.debug(f"An item with a nominal of ~{x[0]} will have a rarity of {y}")
         for x, y in zip(kmeans.cluster_centers_, mapped_rarity)
     ]
     derived_rarities = [rarities[mapping[x]] for x in kmeans.labels_]
@@ -79,7 +80,7 @@ def assign_rarity(items, session):
 
 
 def assign_NotInCE(items, session):
-    print("In the function")
+    logging.debug("In the function")
     for item in items:
         if item.nominal == 0 and item.min == 0:
             item.rarity = "Not in CE"
