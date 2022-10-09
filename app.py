@@ -46,6 +46,7 @@ class GUI(object):
         #
         self.config = ConfigManager("config.xml")
         self.database = Dao(self.config.get_database())
+        logging.info(f"Db name is: {self.database}")
         self.database.upgradeDB()
         self.gridItems = []
         #
@@ -58,6 +59,7 @@ class GUI(object):
         self.modcount = 0
         self.moddlist = []
         self.import_mods = self.config.get_import_mod()
+        logging.info("getMods")
         self.selected_hive = []
         self.hivedict = {}
         self.hivecount = 0
@@ -87,6 +89,8 @@ class GUI(object):
         self.makeExpansionDir()
         #
         self.tree.bind("<ButtonRelease-1>", self.__fill_entry_frame)
+        logging.info("tree_bind")
+        print("tree_bind")
         self.window.wm_title(
             "CE-Editor v0.13.0 - "
             + self.config.get_database()
@@ -259,6 +263,7 @@ class GUI(object):
 
         # configuring menu bar
         self.window.config(menu=self.menu_bar)
+        print("Menubar created")
 
     def export_mod_xml(self):
         self.__export_mod_xml()
@@ -1248,6 +1253,8 @@ class GUI(object):
         self.database.session.commit()
 
 
+print("before window = TK()")
 window = Tk()
 GUI(window)
+
 window.mainloop()
