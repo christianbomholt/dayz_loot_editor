@@ -1,6 +1,7 @@
 root - DEBUG - Initiation started
 root - DEBUG - Database initiation: Chernarus1.db
+root - INFO - Db name is: <database.dao.Dao object at 0x7feb9f2fbfd0>
 root - DEBUG - DEBUG: You are good to go
 root - DEBUG - DEBUG: You are good to go
-root - DEBUG - Debug: vehiclesparts
-root - DEBUG - Debug: filtering by cat_type and: vehiclesparts
+root - INFO - getMods
+root - INFO - tree_bind
