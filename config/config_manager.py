@@ -41,10 +41,10 @@ class ConfigManager(object):
 
     def get_sub_types(self):
         type_list = self.config_file.getElementsByTagName("sub_type")
-        types = list()
+        sub_types = list()
         for i in type_list:
             types.append(i.attributes["value"].value)
-        return types
+        return sub_types
 
     def get_tiers(self):
         tier_list = self.config_file.getElementsByTagName("tier")

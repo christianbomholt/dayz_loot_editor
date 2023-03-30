@@ -90,4 +90,20 @@
         <usage value="Industrial" />
         <usage value="Lunapark" />
     </usages>
+
+    <categories>
+        <category value="Test categories1" />
+        <category value="Test categories2" />
+    </categories>
+
+    <types>
+        <type value="Test Type1" />
+        <type value="Test Type2" />
+    </types>
+
+    <sub_types>
+        <sub_type value="Test sub_Type1" />
+        <sub_type value="Test sub_Type2" />
+    </sub_types>
+
 </config>

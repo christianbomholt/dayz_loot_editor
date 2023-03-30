@@ -363,22 +363,20 @@ class TraderEditor(object):
         items = self.__create_values()
         # new_items = []
         dictionary = dict()
-        dictionary["m_Version"] = 9
-        # dictionary['m_FileName'] = str(sub_type).upper()
-        dictionary["Icon"] = "Deliver"
-        dictionary["Color"] = "FBFCFEFF"
-        # dictionary['CategoryID']= sub_index[0]
+        dictionary["m_Version"] = 12
         dictionary["DisplayName"] = (
             "#STR_EXPANSION_MARKET_CATEGORY_" + str(sub_type).upper()
         )
         dictionary["Icon"] = "Deliver"
         dictionary["Color"] = "FBFCFEFF"
+        dictionary["IsExchange"] = 0
         dictionary["InitStockPercent"] = 75.0
         dictionary["Items"] = []
         keys = [
             "ClassName",
             "MaxPriceThreshold",
             "MinPriceThreshold",
+            "SellPricePercent",
             "MaxStockThreshold",
             "MinStockThreshold",
             "QuantityPercent",
@@ -386,14 +384,15 @@ class TraderEditor(object):
             "Variants",
         ]
         for item in items:
-            # name(7), buyPrice, sellPrice, minStock, maxStock, rarity(6)
+            # name(7), buyPrice, sellPrice,-1.0, minStock, maxStock, rarity(6)
             if item[3] == 0:
                 new_item = [
                     str(item[7]).lower(),
-                    item[1],
-                    item[2],
-                    item[4],
-                    item[5],
+                    int(item[1]),
+                    int(item[2]),
+                    -1.0,
+                    int(item[4]),
+                    int(item[5]),
                     -1,
                     [],
                     [],

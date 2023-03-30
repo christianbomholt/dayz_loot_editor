@@ -363,10 +363,15 @@ class GUI(object):
         for i in tiers:
             self.tiersListBox.insert(END, i)
 
+        all_types = self.database.get_all_types("cat_type")[:-1]
+        conf_types = self.config.get_types()
+        all_types = all_types.append(conf_types)
+        print(all_types)
         self.cat_typeOption = OptionMenu(
             self.entryFrame,
             self.cat_type,
-            self.database.get_all_types("cat_type")[:-1],
+            all_types
+            # self.database.get_all_types("cat_type")[:-1],
         )
         self.cat_typeOption.grid(row=9, column=1, sticky="w", pady=5)
 
@@ -919,7 +924,7 @@ class GUI(object):
             tiers = self.tiersListBox.curselection()
             tier_values = [self.tiersListBox.get(i) for i in tiers]
             tiers = ",".join(tier_values)
-            logging.debug()(f"{tiers}")
+            logging.debug(f"{tiers}")
             if tiers != "" and tiers != "None":
                 setattr(item_to_update, "tier", tiers)
             elif tiers == "None":
