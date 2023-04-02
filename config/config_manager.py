@@ -5,7 +5,7 @@ import os
 
 class ConfigManager(object):
     def __init__(self, config_file):
-        self.cofig_name = config_file
+        self.config_name = config_file
         print(os.getcwd())
         self.config_file = minidom.parse(config_file)
 
@@ -76,6 +76,22 @@ class ConfigManager(object):
         traders.append("EXCLUDE")
         return traders
 
+    def set_traders(self, tradernames):
+        tree = ET.parse("config.xml")
+        root = tree.getroot()
+        # Find the "trader" element
+        traders = root.find("traders")
+        if traders is not None:  # Remove existing trader elements
+            for trader in traders.findall("trader"):
+                traders.remove(
+                    trader
+                )  # Iterate through the list and create an XML element for each item
+            for name in tradernames:
+                trader = ET.Element("trader")
+                trader.set("value", name)
+                traders.append(trader)
+        tree.write("config.xml")
+
     def get_rarities(self):
         rarity_list = self.config_file.getElementsByTagName("rarity")
         rarities = list()
@@ -100,9 +116,9 @@ class ConfigManager(object):
         return columns, columns_info
 
     def set_database(self, name):
-        tree = ET.parse(self.cofig_name)
+        tree = ET.parse(self.config_name)
         # root = tree.getroot()
-        elems = tree.findall('databasefile')
+        elems = tree.findall("databasefile")
         for elem in elems:
             list(elem)[0].set("value", name)
-        tree.write(self.cofig_name)
+        tree.write(self.config_name)

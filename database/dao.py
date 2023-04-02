@@ -1,5 +1,5 @@
 import sqlite3
-from sqlalchemy import create_engine, and_, func, desc
+from sqlalchemy import create_engine, and_, func, desc, distinct
 from sqlalchemy.orm import sessionmaker
 from model.item import Item, Mapselect
 import logging
@@ -361,3 +361,22 @@ class Dao(object):
         result = [c[0] for c in result if c[0] is not None]
         result.insert(0, "all")
         return result
+
+    def setDrJonesImportTrader(self, traderen, traderCat, buyprice, sellprice, name):
+        self.session.query(Item).filter(Item.name == name).update(
+            {
+                Item.trader: traderen,
+                Item.traderCat: traderCat,
+                Item.buyprice: buyprice,
+                Item.sellprice: sellprice,
+            },
+            synchronize_session=False,
+        )
+        self.session.commit()
+
+    def get_all_traders(self):
+        distinct_traders_query = self.session.query(
+            distinct(Item.trader).label("trader")
+        )
+        distinct_traders = [row[0] for row in distinct_traders_query.all()]
+        return distinct_traders
