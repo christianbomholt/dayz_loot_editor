@@ -16,7 +16,7 @@ for line in lines:
     line = line.strip()
     line = line.split("//", 1)[0].strip()  # Remove comments and extra whitespace
     line = re.sub(r"\t", "", line)
-    if line is "":
+    if line == "":
         continue
     if line.startswith("<Trader>"):
         trader_str = line.replace("<Trader>", "")
