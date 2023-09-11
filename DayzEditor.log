@@ -1,6 +1,6 @@
 root - DEBUG - Initiation started
 root - DEBUG - Database initiation: Chernarus1.db
-root - INFO - Db name is: <database.dao.Dao object at 0x7feb9f2fbfd0>
+root - INFO - Db name is: <database.dao.Dao object at 0x7fc5142e5e50>
 root - DEBUG - DEBUG: You are good to go
 root - DEBUG - DEBUG: You are good to go
 root - INFO - getMods
