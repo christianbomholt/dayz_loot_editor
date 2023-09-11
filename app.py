@@ -1,6 +1,6 @@
 from tkinter import Tk, Menu, IntVar, Frame, Label, StringVar, Entry, Listbox
 from tkinter import END, OptionMenu, Checkbutton, Button, Radiobutton
-from tkinter import ttk, VERTICAL, HORIZONTAL, LabelFrame, simpledialog
+from tkinter import ttk, VERTICAL, HORIZONTAL, LabelFrame, simpledialog, filedialog
 from sqlalchemy.sql.expression import or_
 from config import ConfigManager
 import os.path
@@ -32,6 +32,7 @@ from utility import (
     exportSpawnable,
     writeToJSONFile,
 )
+from utility import importTrader
 
 
 class GUI(object):
@@ -234,6 +235,12 @@ class GUI(object):
         tools_menu.add_command(
             label="Distribute gun,mag and bullet", command=self.testdist
         )
+        tools_menu.add_separator()
+        tools_menu.add_command(
+            label="Import Dr Jones TraderFile", command=self.importDrJones
+        )
+        tools_menu.add_separator()
+
         tools_menu.add_command(
             label="TestFunction for (Dev)", command=self.testfunction
         )
@@ -363,10 +370,15 @@ class GUI(object):
         for i in tiers:
             self.tiersListBox.insert(END, i)
 
+        all_types = self.database.get_all_types("cat_type")[:-1]
+        conf_types = self.config.get_types()
+        all_types = all_types.append(conf_types)
+        print(all_types)
         self.cat_typeOption = OptionMenu(
             self.entryFrame,
             self.cat_type,
-            self.database.get_all_types("cat_type")[:-1],
+            all_types
+            # self.database.get_all_types("cat_type")[:-1],
         )
         self.cat_typeOption.grid(row=9, column=1, sticky="w", pady=5)
 
@@ -668,6 +680,18 @@ class GUI(object):
 
     # Normal Distribution block
 
+    def importTraderfunc(self):
+        file_path = filedialog.askopenfilename(
+            title="Select a Dr.Jones trader file",
+            filetypes=(("Dr jones", "*.txt"), ("All files", "*.txt")),
+        )
+        if file_path:
+            data = importTrader.read_trader_file(file_path)
+            importTrader.updateDrJonesdb(self.database, data)
+
+        else:
+            print("No file selected")
+
     def __create_distribution_block(self):
         self.distribution = LabelFrame(
             self.filterFrameHolder, width=14, text="Nominal Distribution"
@@ -765,10 +789,15 @@ class GUI(object):
     def dump2sql(self):
         self.database.sql_dbDump()
 
+    def importDrJones(self):
+        print("DEBUG  : importing DrJones trader file")
+        logging.debug("importing DrJones trader file")
+        self.importTraderfunc()
+
     def testfunction(self):
         print("DEBUG  : test function")
         logging.debug("Test Function")
-        print(type(self.type_option_m))
+        self.importTraderfunc()
 
     def apipull(self):
         apipull(self.database.session)
@@ -919,7 +948,7 @@ class GUI(object):
             tiers = self.tiersListBox.curselection()
             tier_values = [self.tiersListBox.get(i) for i in tiers]
             tiers = ",".join(tier_values)
-            logging.debug()(f"{tiers}")
+            logging.debug(f"{tiers}")
             if tiers != "" and tiers != "None":
                 setattr(item_to_update, "tier", tiers)
             elif tiers == "None":

@@ -48,10 +48,7 @@
 
 
     <traders>
-	    <trader value="Trader 1" />
-        <trader value="Trader 2" />
-        <trader value="Trader 3" />
-    </traders>
+	    <trader value="Weapon Supplies" /><trader value="Weapon Trader" /><trader value="Trader 1" /><trader value="Consume Trader" /><trader value="Clothing Trader" /><trader value="Misc Trader" /><trader value="Vehicles Trader" /></traders>
 
 
     <Currencies>
@@ -90,4 +87,20 @@
         <usage value="Industrial" />
         <usage value="Lunapark" />
     </usages>
+
+    <categories>
+        <category value="Test categories1" />
+        <category value="Test categories2" />
+    </categories>
+
+    <types>
+        <type value="Test Type1" />
+        <type value="Test Type2" />
+    </types>
+
+    <sub_types>
+        <sub_type value="Test sub_Type1" />
+        <sub_type value="Test sub_Type2" />
+    </sub_types>
+
 </config>

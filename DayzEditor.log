@@ -5,3 +5,6 @@ root - DEBUG - DEBUG: You are good to go
 root - DEBUG - DEBUG: You are good to go
 root - INFO - getMods
 root - INFO - tree_bind
+root - DEBUG - importing DrJones trader file
+root - DEBUG - Starting TraderEditor dialog
+root - DEBUG - Database initiation: Chernarus1.db
