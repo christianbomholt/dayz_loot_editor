@@ -1,10 +1,10 @@
 root - DEBUG - Initiation started
 root - DEBUG - Database initiation: Chernarus1.db
-root - INFO - Db name is: <database.dao.Dao object at 0x7fc5142e5e50>
+root - INFO - Db name is: <database.dao.Dao object at 0x7fed250a3fa0>
 root - DEBUG - DEBUG: You are good to go
 root - DEBUG - DEBUG: You are good to go
 root - INFO - getMods
+root - INFO - blank initialized
+root - INFO - world set
+root - INFO - Expansion dir created
 root - INFO - tree_bind
-root - DEBUG - importing DrJones trader file
-root - DEBUG - Starting TraderEditor dialog
-root - DEBUG - Database initiation: Chernarus1.db

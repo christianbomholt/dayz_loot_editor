@@ -8,7 +8,10 @@ import logging
 class Dao(object):
     def __init__(self, db_name):
         self.db_name = db_name
-        engine = create_engine(f"sqlite:///{db_name}")
+        engine = create_engine(
+            f"sqlite:///{db_name}",
+            connect_args={"check_same_thread": False, "timeout": 15},
+        )
         session_maker = sessionmaker()
         session_maker.configure(bind=engine)
         self.session = session_maker()

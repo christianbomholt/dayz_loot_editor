@@ -4,6 +4,7 @@ from tkinter import ttk, VERTICAL, HORIZONTAL, LabelFrame, simpledialog, filedia
 from sqlalchemy.sql.expression import or_
 from config import ConfigManager
 import os.path
+import time
 from database.dao import Dao
 from model.item import Item, Ammobox, init_database
 from ui.db import DB
@@ -16,6 +17,7 @@ import webbrowser
 import re
 import json
 import logging
+import traceback
 
 from utility import (
     assign_rarity,
@@ -68,6 +70,7 @@ class GUI(object):
         self.totalWeaponDisplayed = IntVar()
         self.totalNumDisplayed = IntVar()
         self.nomVars = []
+        logging.info("blank initialized")
         self.weaponNomTypes = {
             "ranged": 0,
             "ammo": 0,
@@ -81,6 +84,7 @@ class GUI(object):
         self.worldName = StringVar()
         self.worldName.set("world")
         #
+        logging.info("world set")
         self.__create_menu_bar()
         self.__create_entry_frame()
         self.__create_tree_view()
@@ -88,6 +92,7 @@ class GUI(object):
         self.__initiate_items()
         self.__create_nominal_info()
         self.makeExpansionDir()
+        logging.info("Expansion dir created")
         #
         self.tree.bind("<ButtonRelease-1>", self.__fill_entry_frame)
         logging.info("tree_bind")
@@ -100,6 +105,7 @@ class GUI(object):
         )
 
     def initializeapp(self):
+        input("Press Enter to close...")
         self.__create_tree_view()
         self.__create_side_bar()
         self.database = Dao(self.config.get_database())
@@ -123,8 +129,10 @@ class GUI(object):
             self.moddict[k].set(1)
         self.__selectmodsfunction___()
 
-    def initAllMods(self, menu):
+    def refreshScreen(self):
+        self.__selectmodsfunction___()
 
+    def initAllMods(self, menu):
         for mod in self.database.get_all_types("mod"):
             if mod != "all":
                 self.modcount += 1
@@ -251,6 +259,8 @@ class GUI(object):
         self.mods_menu = Menu(self.menu_bar, tearoff=0)
         self.mods_menu.add_command(label="Deselect All", command=self.deselectAllMods)
         self.mods_menu.add_command(label="Select All", command=self.selectAllMods)
+        self.mods_menu.add_separator()
+        self.mods_menu.add_command(label="Refresh", command=self.refreshScreen)
         self.mods_menu.add_separator()
         self.initAllMods(self.mods_menu)
 
@@ -1285,5 +1295,4 @@ class GUI(object):
 print("before window = TK()")
 window = Tk()
 GUI(window)
-
 window.mainloop()
