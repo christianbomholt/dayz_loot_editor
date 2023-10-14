@@ -41,8 +41,8 @@ class KMeans:
 
 def assign_rarity(items, session):
     kmeans = KMeans(
-        n_clusters=10,
-        max_iter=10,
+        n_clusters=9,
+        max_iter=9,
     )
     items_nominal = [item.nominal for item in items]
     items_nominal = np.array(items_nominal)
